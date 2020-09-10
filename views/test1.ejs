@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+    <!-- Standard Items -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" 
+          integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+
+    <!-- Site-specific Items -->
+    <script src="https://kit.fontawesome.com/1fb7304d11.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Julius+Sans+One|Lato:400,700&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="/css/foa.css">
+
+    <title>Future of Aviation</title>
+
+  </head>
+
+  <body>
+    <!-- Logo and Main Menu -->
+    <div id="logoandmenu" style="margin: 10px 0px 10px 0px;"></div>
+    <div class="container pagetitle" align="center">
+      Find a Scholarship
+      <br/><%= scholarshipName %>
+      <hr class="pagetitlebreak">
+    </div>
+
+    <!-- Flex Grid for Body -->
+    <div class="container">
+      <!-- Search Options -->
+      <div class="row">
+        <div id="scholarshipsearchcriteria" class="col-3 bodylayout1col1"></div>
+        <div class="col-9 bodylayout1col2" id="scholarshipsearchresultscolumn">
+          <span class="bodylayout1col2title" id="searchResultsTitle">Enter criteria and click "Search"</span><br>
+          <hr class="bodycol2break">
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-foa"><br>
+      ® 2019 FUTURE OF AVIATION INITIATIVE
+      <img src="/img/imgFofALogo_Cropped.png" alt="Logo for Future of Aviation Website" class="img-responsive footer-logo">
+      SUPPORTED BY THE AMCG FOUNDATION
+    </div>
+
+    <!-- Scripts -->
+    <!-- Load remaining HTML elements -->
+    <script>
+      $('#logoandmenu').load('/html/logoandmenu.html');
+      $('#scholarshipsearchcriteria').load('/html/scholarshipsearchcriteria.html');
+    </script>
+
+    <!-- Load all script libraries (after all HTML elements are loaded) -->
+    <script src="/data/foa_scholarships.js"></script>
+    <script src="/data/foa_sponsors.js"></script>
+    <script src="/data/foa_statesprovinces.js"></script>
+    <script src="/data/foa_citizenships.js"></script>
+    <script src="/data/foa_educationlevels.js"></script>
+    <script src="/data/foa_higheredenrollmentstatuses.js"></script>
+    <script src="/data/foa_schooltypes.js"></script>
+    <script src="/data/foa_usmilitaryservicetypes.js"></script>
+    <script src="/data/foa_areasofinterest.js"></script>
+    <script src="/data/foa_faamedicalcertificates.js"></script>
+    <script src="/data/foa_faapilotcertificates.js"></script>
+    <script src="/data/foa_faapilotratings.js"></script>
+    <script src="/data/foa_faamechaniccertificates.js"></script>
+    <script src="/js/foa_fx.js"></script>
+    <script src="/js/foa_fx_scholarships.js"></script>
+
+  </body>
+
+</html>
+
