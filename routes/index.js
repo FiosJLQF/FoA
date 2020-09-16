@@ -5,8 +5,12 @@
 
 const routes = require('express').Router();
 const { pool } = require('../db/dbstuff.js');
+const { pool2 } = require('../db/dbstuff2.js');
 const async = require('async');
 const queries = require('../db/sql.js');
+
+console.log(pool);
+console.log(pool2);
 
 // Website "Home"
 routes.get('/', (request, response) => {
@@ -19,7 +23,8 @@ routes.get('/scholarships', (request, response, next) => {
 
     async function queryResults() {
 //        try {
-            let resSponsors = await pool.query(queries.qrySponsorsActiveDDL.text);
+//            let resSponsors = await pool.query(queries.qrySponsorsActiveDDL.text);
+            let resSponsors = await pool2.query(queries.qrySponsorsActiveDDL.text);
             const resSponsorsRows = resSponsors.rows;
             let resFieldOfStudyCategories = await pool.query(queries.qryFieldOfStudyCategoriesActiveDDL.text);
             const resFieldOfStudyCategoriesRows = resFieldOfStudyCategories.rows;
