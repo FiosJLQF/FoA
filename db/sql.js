@@ -6,17 +6,17 @@
 module.exports = {
 
     // SQL: Fields Of Study (for active scholarships)
-    qryFieldOfStudyCategoriesActiveDDL: {
+    qryFieldOfStudyCategoriesAllDDL: {
         text: `SELECT   "FieldOfStudyCategoryID" AS optionid, "FieldOfStudyCategory" AS optiontext
-               FROM     public."vwFieldOfStudyCategoriesActive"
+               FROM     public."vwFieldOfStudyCategoriesAll"
                ORDER BY "FieldOfStudyCategory"`,
         rowMode: 'array',
     },
 
     // SQL: Sponsors (for active scholarships)
-    qrySponsorsActiveDDL: {
+    qrySponsorsAllDDL: {
     text: `SELECT   "sponsorid" AS optionid, "sponsorname" AS optiontext
-           FROM     public."vwSponsorsActive"
+           FROM     public."vwSponsorsAll"
            ORDER BY "sponsorname"`,
     rowMode: 'array',
     },

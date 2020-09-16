@@ -9,9 +9,6 @@ const { pool2 } = require('../db/dbstuff2.js');
 const async = require('async');
 const queries = require('../db/sql.js');
 
-console.log(pool);
-console.log(pool2);
-
 // Website "Home"
 routes.get('/', (request, response) => {
   response.status(200).json({ message: 'Connected!' });
@@ -24,9 +21,9 @@ routes.get('/scholarships', (request, response, next) => {
     async function queryResults() {
 //        try {
 //            let resSponsors = await pool.query(queries.qrySponsorsActiveDDL.text);
-            let resSponsors = await pool2.query(queries.qrySponsorsActiveDDL.text);
+            let resSponsors = await pool2.query(queries.qrySponsorsAllDDL.text);
             const resSponsorsRows = resSponsors.rows;
-            let resFieldOfStudyCategories = await pool.query(queries.qryFieldOfStudyCategoriesActiveDDL.text);
+            let resFieldOfStudyCategories = await pool2.query(queries.qryFieldOfStudyCategoriesAllDDL.text);
             const resFieldOfStudyCategoriesRows = resFieldOfStudyCategories.rows;
             let resCitizenships = await pool.query(queries.qryCitizenshipsActiveDDL.text);
             const resCitizenshipsRows = resCitizenships.rows;
@@ -43,7 +40,7 @@ routes.get('/scholarships', (request, response, next) => {
             let resFAAMechanicCertificateCategories = await pool.query(queries.qryFAAMechanicCertificateCategoriesActiveDDL.text);
             const resFAAMechanicCertificateCategoriesRows = resFAAMechanicCertificateCategories.rows;
             // Load all scholarships
-            let resScholarships = await pool.query(queries.qryScholarships.text);
+            let resScholarships = await pool2.query(queries.qryScholarships.text);
             const resScholarshipsRows = resScholarships.rows;
             // Return all data sets to the calling function
             return { resSponsorsRows, 
