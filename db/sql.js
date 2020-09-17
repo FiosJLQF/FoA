@@ -30,10 +30,10 @@ module.exports = {
     },
     
     // SQL: Year of Need (for active scholarships)
-    qryYearOfNeedActiveDDL: {
-       text: `SELECT   "YearOfNeedID" AS optionid, "YearOfNeed" AS optiontext
-              FROM     public."vwYearOfNeedActive"
-              ORDER BY "YearOfNeed"`,
+    qryYearOfNeedCategoriesAllDDL: {
+       text: `SELECT   "YearOfNeedCategoryID" AS optionid, "YearOfNeedCategory" AS optiontext
+              FROM     public."vwYearOfNeedCategoriesAll"
+              ORDER BY "YearOfNeedCategorySortOrder"`,
        rowMode: 'array',
    },
    
