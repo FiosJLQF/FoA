@@ -84,7 +84,7 @@ module.exports = {
                       , "ScholarshipContactFName" , "ScholarshipContactLName" , "ScholarshipContactEmail" , "ScholarshipContactPhone"
                       , "Criteria_FieldOfStudyText", "Criteria_Gender_FemaleOnly"
                FROM     public."vwScholarshipsActive"
-               ORDER BY "ScholarshipName"`,
+               ORDER BY  "ScholarshipName"`,
         rowMode: 'array',  // returns results in an array instead of key/value pairs
     }
    

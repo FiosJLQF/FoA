@@ -41,7 +41,7 @@ BEGIN
         varOldString := RIGHT(varOldString, LENGTH(varOldString)-STRPOS(varOldString, '|'));
 --        RAISE NOTICE 'varOldString (%)', varOldString;
 
-        if LENGTH(varOldString) = 0 then
+        if LENGTH(varOldString) = 0 OR STRPOS(varOldString, '|') = 0 then
 		    exit;
 		end if;
 

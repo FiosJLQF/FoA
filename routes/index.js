@@ -1,4 +1,3 @@
-
 ///////////////////////////////////////////////////////
 // Routes
 ///////////////////////////////////////////////////////
@@ -18,11 +17,7 @@ routes.get('/', (request, response) => {
 // Get all scholarships, regardless of filters
 routes.get('/scholarships', (request, response, next) => {
 
-    console.log('Test 1');
     async function queryResults() {
-//        try {
-//            let resSponsors = await pool.query(queries.qrySponsorsActiveDDL.text);
-console.log('Test 2');
             let resSponsors = await pool2.query(queries.qrySponsorsAllDDL.text);
             const resSponsorsRows = resSponsors.rows;
             let resFieldOfStudyCategories = await pool2.query(queries.qryFieldOfStudyCategoriesAllDDL.text);
@@ -45,7 +40,8 @@ console.log('Test 2');
             let resScholarships = await pool2.query(queries.qryScholarships.text);
             const resScholarshipsRows = resScholarships.rows;
             // Return all data sets to the calling function
-            return { resSponsorsRows, 
+            return {
+                     resSponsorsRows, 
                      resFieldOfStudyCategoriesRows, 
                      resCitizenshipsRows, 
                      resYearOfNeedRows,
@@ -56,73 +52,24 @@ console.log('Test 2');
                      resFAAMechanicCertificateCategoriesRows,
                      resScholarshipsRows
             };
-//        }
-//        catch {
-//
-//        }
-//        finally {
-//
-//        }
-
-        // Collect all data sets and render the Scholarships Search page
-        queryResults().then( (result) => {
-//        console.log('test3A');
-//        console.log(result.resSponsorsRows);
-//        console.log(result.resAreasOfInterestRows);
-//        console.log('test3B');
-//        console.log(Object.assign({}, ...result.resultsRows1));
-//        console.log(result.resCitizenshipsRows);
-            response.render('scholarshipsearch', { 
-                sponsors:                         result.resSponsorsRows,
-                fieldofstudycategories:           result.resFieldOfStudyCategoriesRows,
-                citizenships:                     result.resCitizenshipsRows,
-                yearofneed:                       result.resYearOfNeedRows,
-                enrollmentstatuscategories:       result.resEnrollmentStatusesRows,
-                militaryservicecategories:        result.resMilitaryServiceCategoriesRows,
-                faapilotcertificatecategories:    result.resFAAPilotCertificateCategoriesRows,
-                faapilotratingcategories:         result.resFAAPilotRatingCategoriesRows,
-                faamechaniccertificatecategories: result.resFAAMechanicCertificateCategoriesRows,
-                scholarships:                     result.resScholarshipsRows
-            });
-        })
     }
-});
 
- /*
-    let results1 = [];
-
-        const data1 = async db.query(qryFind.text, qryFind.values, (err, res) => {
-        if (err) return next(err);
-        console.log('test1');
-//        response.render('scholarshipsearch', { scholarships: res.rows, test: res.rows });
-//        if (err) return next(err);
-//        console.log('test2');
-//        results1 = res.rows;
-//        return res.rows;
-//        callback(null, res.rows);
-        setValue(res.rows);
+    // Collect all data sets and render the Scholarships Search page
+    queryResults().then( (result) => {
+        response.render('scholarshipsearch', { 
+            sponsors:                         result.resSponsorsRows,
+            fieldofstudycategories:           result.resFieldOfStudyCategoriesRows,
+            citizenships:                     result.resCitizenshipsRows,
+            yearofneed:                       result.resYearOfNeedRows,
+            enrollmentstatuscategories:       result.resEnrollmentStatusesRows,
+            militaryservicecategories:        result.resMilitaryServiceCategoriesRows,
+            faapilotcertificatecategories:    result.resFAAPilotCertificateCategoriesRows,
+            faapilotratingcategories:         result.resFAAPilotRatingCategoriesRows,
+            faamechaniccertificatecategories: result.resFAAMechanicCertificateCategoriesRows,
+            scholarships:                     result.resScholarshipsRows
         });
-    
-        function setValue(value) {
-            results1 = value;
-            console.log('test6');
-            console.log(results1);
-        }
-    console.log('test4');
-    console.log(results1);
-    console.log('test5');
-//    response.render('scholarshipsearch', { scholarships: results1.rows, test: results1.rows });
-
-
-/*     db.query(qryFind.text, qryFind.values, (err, res) => {
-        if (err) return next(err);
-        console.log('test1');
-        response.render('scholarshipsearch', { scholarships: res.rows, test: res.rows });
-        if (err) return next(err);
-        console.log('test2');
-        results1 = res.rows;
     })
- */
+});
 
  // Get a specific scholarship
  routes.get('/scholarships/:id', (request, response, next) => {
@@ -137,6 +84,28 @@ console.log('Test 2');
     })
 });
 
-//   console.log(results1);
+// Get all sponsors, regardless of filters
+routes.get('/sponsors', (request, response, next) => {
+
+    async function queryResults() {
+            let resSponsors = await pool2.query(queries.qrySponsorsAllDDL.text);
+            const resSponsorsRows = resSponsors.rows;
+            let resFieldOfStudyCategories = await pool2.query(queries.qryFieldOfStudyCategoriesAllDDL.text);
+            const resFieldOfStudyCategoriesRows = resFieldOfStudyCategories.rows;
+            // Return all data sets to the calling function
+            return {
+                     resSponsorsRows, 
+                     resFieldOfStudyCategoriesRows
+            };
+    }
+
+    // Collect all data sets and render the Scholarships Search page
+    queryResults().then( (result) => {
+        response.render('sponsorsearch', { 
+            sponsors:                         result.resSponsorsRows,
+            fieldofstudycategories:           result.resFieldOfStudyCategoriesRows
+        });
+    })
+});
 
 module.exports = routes;
