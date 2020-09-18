@@ -5,15 +5,15 @@
 
 module.exports = {
 
-    // SQL: Fields Of Study (for active scholarships)
+    // SQL: Fields Of Study
     qryFieldOfStudyCategoriesAllDDL: {
         text: `SELECT   "FieldOfStudyCategoryID" AS optionid, "FieldOfStudyCategory" AS optiontext
                FROM     public."vwFieldOfStudyCategoriesAll"
-               ORDER BY "FieldOfStudyCategory"`,
+               ORDER BY "FieldOfStudyCategorySortOrder"`,
         rowMode: 'array',
     },
 
-    // SQL: Sponsors (for active scholarships)
+    // SQL: Sponsors
     qrySponsorsAllDDL: {
     text: `SELECT   "sponsorid" AS optionid, "sponsorname" AS optiontext
            FROM     public."vwSponsorsAll"
@@ -21,15 +21,15 @@ module.exports = {
     rowMode: 'array',
     },
 
-    // SQL: Citizenships (for active scholarships)
-    qryCitizenshipsActiveDDL: {
-        text: `SELECT   "citizenshipid" AS optionid, "citizenshipname" AS optiontext
-               FROM     public."vwCitizenshipsActive"
-               ORDER BY "citizenshipname"`,
+    // SQL: Citizenships
+    qryCitizenshipCategoriesAllDDL: {
+        text: `SELECT   "CitizenshipCategoryID" AS optionid, "CitizenshipCategory" AS optiontext
+               FROM     public."vwCitizenshipCategoriesAll"
+               ORDER BY "CitizenshipCategorySortOrder"`,
         rowMode: 'array',
     },
     
-    // SQL: Year of Need (for active scholarships)
+    // SQL: Year of Need
     qryYearOfNeedCategoriesAllDDL: {
        text: `SELECT   "YearOfNeedCategoryID" AS optionid, "YearOfNeedCategory" AS optiontext
               FROM     public."vwYearOfNeedCategoriesAll"

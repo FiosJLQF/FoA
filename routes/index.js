@@ -18,14 +18,16 @@ routes.get('/', (request, response) => {
 // Get all scholarships, regardless of filters
 routes.get('/scholarships', (request, response, next) => {
 
+    console.log('Test 1');
     async function queryResults() {
 //        try {
 //            let resSponsors = await pool.query(queries.qrySponsorsActiveDDL.text);
+console.log('Test 2');
             let resSponsors = await pool2.query(queries.qrySponsorsAllDDL.text);
             const resSponsorsRows = resSponsors.rows;
             let resFieldOfStudyCategories = await pool2.query(queries.qryFieldOfStudyCategoriesAllDDL.text);
             const resFieldOfStudyCategoriesRows = resFieldOfStudyCategories.rows;
-            let resCitizenships = await pool.query(queries.qryCitizenshipsActiveDDL.text);
+            let resCitizenships = await pool2.query(queries.qryCitizenshipCategoriesAllDDL.text);
             const resCitizenshipsRows = resCitizenships.rows;
             let resYearOfNeed = await pool2.query(queries.qryYearOfNeedCategoriesAllDDL.text);
             const resYearOfNeedRows = resYearOfNeed.rows;
@@ -61,31 +63,32 @@ routes.get('/scholarships', (request, response, next) => {
 //        finally {
 //
 //        }
-    }
 
-    // Collect all data sets and render the Scholarships Search page
-    queryResults().then( (result) => {
+        // Collect all data sets and render the Scholarships Search page
+        queryResults().then( (result) => {
 //        console.log('test3A');
 //        console.log(result.resSponsorsRows);
 //        console.log(result.resAreasOfInterestRows);
 //        console.log('test3B');
 //        console.log(Object.assign({}, ...result.resultsRows1));
 //        console.log(result.resCitizenshipsRows);
-        response.render('scholarshipsearch', { 
-            sponsors:                         result.resSponsorsRows,
-            fieldofstudycategories:           result.resFieldOfStudyCategoriesRows,
-            citizenships:                     result.resCitizenshipsRows,
-            yearofneed:                       result.resYearOfNeedRows,
-            enrollmentstatuscategories:       result.resEnrollmentStatusesRows,
-            militaryservicecategories:        result.resMilitaryServiceCategoriesRows,
-            faapilotcertificatecategories:    result.resFAAPilotCertificateCategoriesRows,
-            faapilotratingcategories:         result.resFAAPilotRatingCategoriesRows,
-            faamechaniccertificatecategories: result.resFAAMechanicCertificateCategoriesRows,
-            scholarships:                     result.resScholarshipsRows
-        });
-    })
+            response.render('scholarshipsearch', { 
+                sponsors:                         result.resSponsorsRows,
+                fieldofstudycategories:           result.resFieldOfStudyCategoriesRows,
+                citizenships:                     result.resCitizenshipsRows,
+                yearofneed:                       result.resYearOfNeedRows,
+                enrollmentstatuscategories:       result.resEnrollmentStatusesRows,
+                militaryservicecategories:        result.resMilitaryServiceCategoriesRows,
+                faapilotcertificatecategories:    result.resFAAPilotCertificateCategoriesRows,
+                faapilotratingcategories:         result.resFAAPilotRatingCategoriesRows,
+                faamechaniccertificatecategories: result.resFAAMechanicCertificateCategoriesRows,
+                scholarships:                     result.resScholarshipsRows
+            });
+        })
+    }
+});
 
-/*
+ /*
     let results1 = [];
 
         const data1 = async db.query(qryFind.text, qryFind.values, (err, res) => {
@@ -135,7 +138,5 @@ routes.get('/scholarships', (request, response, next) => {
 });
 
 //   console.log(results1);
-
-});
 
 module.exports = routes;
