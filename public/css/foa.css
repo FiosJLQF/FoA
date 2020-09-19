@@ -65,6 +65,14 @@ hr.bodycol2scholarshipbreak{
   padding: 0px;
   width: 100%;
 }
+
+hr.bodycol2sponsorbreak{
+  border-top: 2px solid var(--amcg-yellow);
+  margin: 10px 0px 0px 0px;
+  padding: 0px;
+  width: 100%;
+}
+
 a:link {
     color: var(--amcg-blue);
     background-color: transparent;
@@ -397,6 +405,30 @@ a:link {
   font-variant: normal;
   padding-top: 8px;
   line-height: 1.3;
+}
+
+.sponsorsearchresultscol4 {
+  width: 500px;    /* fix this later to take up the remaining screen width */
+  font-size: 0.875em;
+  font-variant: normal;
+  padding-top: 3px;
+  line-height: 1.8;
+}
+
+.sponsorsearchresultscol4.text-block {
+  width: 500px;    /* fix this later to take up the remaining screen width */
+  font-size: 0.875em;
+  font-variant: normal;
+  padding-top: 8px;
+  line-height: 1.3;
+}
+
+.sponsorsearchresultscol4.text-block.description-short {
+  max-height: 115px; /* default to 6 lines of text */
+/*  white-space: nowrap; */
+/*  overflow: hidden; */
+/*  text-overflow: ellipsis; */
+  overflow: hidden;
 }
 
 a.text-link {

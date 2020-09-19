@@ -793,7 +793,6 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber) {
         // add the first row to the search results div
         divSearchResultsDivs.appendChild(divScholarshipRow2);
     
-
         // add the scholarship break line to the search results div
         const hrScholarshipBreak = document.createElement('hr');
         hrScholarshipBreak.classList.add('bodycol2scholarshipbreak');
