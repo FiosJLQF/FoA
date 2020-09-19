@@ -13,7 +13,7 @@ module.exports = {
         rowMode: 'array',
     },
 
-    // SQL: Sponsors
+    // SQL: Sponsors for DDL (All)
     qrySponsorsAllDDL: {
     text: `SELECT   "sponsorid" AS optionid, "sponsorname" AS optiontext
            FROM     public."vwSponsorsAll"
@@ -84,17 +84,29 @@ module.exports = {
                       , "ScholarshipContactFName" , "ScholarshipContactLName" , "ScholarshipContactEmail" , "ScholarshipContactPhone"
                       , "Criteria_FieldOfStudyText", "Criteria_Gender_FemaleOnly"
                FROM     public."vwScholarshipsActive"
-               ORDER BY  "ScholarshipName"`,
+               ORDER BY  "SponsorName", "ScholarshipName"`,
         rowMode: 'array',  // returns results in an array instead of key/value pairs
-    }
+    },
    
-/*    // SQL: Scholarships (All)
-    qryScholarshipsAll: {
-    text: `SELECT   "ScholarshipID", "ScholarshipName", "SponsorName"
-           FROM     public."vwScholarshipsActive"
-           WHERE    "ScholarshipID" = $1`,
-    values: ['705'],
-    rowMode: 'array',  // returns results in an array instead of key/value pairs
-    }
- */
+    // SQL: Sponsors (All)
+    qrySponsorsAllWithScholarshipInfo: {
+        text: `SELECT    "SponsorID", "ScholarshipID", "ScholarshipName", "SponsorName", "SponsorLogo", "SponsorDescription", "SponsorWebsite"
+                       , "SponsorContactFName", "SponsorContactLName", "SponsorContactEmail", "SponsorContactTelephone", "SponsorTypeText"
+                       , "ScholarshipDescription", "ScholarshipAward", "ScholarshipLink", "ScholarshipEligibilityReqs"
+                       , "ScholarshipApplStartDate", "ScholarshipApplEndDate", "ScholarshipApplDatesText", "ScholarshipContactFName"
+                       , "ScholarshipContactLName", "ScholarshipContactEmail", "ScholarshipContactPhone", "Criteria_FieldOfStudy"
+                       , "Criteria_FieldOfStudyText", "Criteria_Gender_FemaleOnly"
+               FROM      public."vwSponsorsAllWithScholarshipInfo"
+               ORDER BY "SponsorName"`,
+       rowMode: 'array',
+    },
+  
+       // SQL: Sponsor Types (All)
+    qrySponsorTypeCategoriesAllDDL: {
+       text: `SELECT   "SponsorTypeCategoryID" AS optionid, "SponsorTypeCategory" AS optiontext
+              FROM     public."vwSponsorTypeCategoriesAll"
+              ORDER BY "SponsorTypeCategorySortOrder"`,
+       rowMode: 'array',
+   }
+
 }

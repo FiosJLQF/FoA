@@ -3,8 +3,6 @@
     <hr class="bodycol1break">
     <div class="searchInstructions">Enter search criteria below and click "search".</div><br>
 
-<!-- <%= sponsors[0]['SponsorName'] %><br> -->
-
     <!-- Keyword(s) -->
     Keyword(s): <button type="button" class="btn btn-default button-small"
         onclick="toggleSearchCriteriaInputBlock(
@@ -31,27 +29,27 @@
         <select id="filterSponsorNamesInput" class="filter_select" multiple></select><br>
     </div>
 
-    <!-- Field(s) of Study -->
-    Field(s) of Study: <button type="button" class="btn btn-default button-small"
+    <!-- Sponsor Type(s) -->
+    Sponsor Type(s): <button type="button" class="btn btn-default button-small"
         onclick="toggleSearchCriteriaInputBlock(
-            document.querySelector('#filterFieldOfStudyIcon'),
-            document.querySelector('#filterFieldOfStudyInputBlock'),
-            document.querySelector('#filterFieldOfStudyInput'), '')">
-        <i id="filterFieldOfStudyIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+            document.querySelector('#filterSponsorTypeIcon'),
+            document.querySelector('#filterSponsorTypeInputBlock'),
+            document.querySelector('#filterSponsorTypeInput'), '')">
+        <i id="filterSponsorTypeIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
     </button><br>
-    <div id="filterFieldOfStudyInputBlock" class="filter-input-block">
+    <div id="filterSponsorTypeInputBlock" class="filter-input-block">
         <div class="searchInstructions">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
-        <select id="filterFieldOfStudyInput" class="filter_select" multiple></select><br>
+        <select id="filterSponsorTypeInput" class="filter_select" multiple></select><br>
     </div>
 
 <br>
 
     <div style="text-align:left">
-        <button type="button" class="btn btn-default button-search" onclick="findMatchingSponsors(spnRows, 1);">
+        <button type="button" class="btn btn-default button-search" onclick="findMatchingSponsors(spaRows, 1);">
             <img src="/img/imgMagnifyingGlass.png" alt="Magnifying Glass" style="width:35px;" class="img-responsive">
             Search
         </button><br>
-        <button type="button" class="btn btn-default button-small" onclick="buildSponsorSearchResults(spnRows, 1);">
+        <button type="button" class="btn btn-default button-small" onclick="buildSponsorSearchResults(spaRows, 1);">
             >> Show All Sponsors
         </button><br>
         <button type="button" class="btn btn-default button-small" onclick="clearSponsorSearchCriteria();">
@@ -63,13 +61,15 @@
 
 <script>
 
-    var fosRows = <%- JSON.stringify(fieldofstudycategories) %>;
-    loadSelectOptionsList("filterFieldOfStudyInput", "(Not Selected)", 0, fosRows);
-    var spnRows = <%- JSON.stringify(sponsors) %>;
-    loadSelectOptionsList("filterSponsorNamesInput", "(Not Selected)", 0, spnRows);
+    // Load the Sponsor List into the DDL
+    var splRows = <%- JSON.stringify(sponsorslist) %>;
+    loadSelectOptionsList("filterSponsorNamesInput", "(Not Selected)", 0, splRows);
 
-    var spnRows = <%- JSON.stringify(sponsors) %>;
-    // initally load all scholarships  (decision reversed 1/29/20 by KK)
-//    const createResults = buildScholarshipSearchResults(scholarships, 1);
+    // Load the Sponsor Type options into the DDL
+    var spsRows = <%- JSON.stringify(sponsortypecategories) %>;
+    loadSelectOptionsList("filterSponsorTypeInput", "(Not Selected)", 0, spsRows);
+
+    // Load "all sponsors with scholarship information" into the "Search" button destinations
+    var spaRows = <%- JSON.stringify(sponsorsallwithscholarshipinfo) %>;
 
 </script>

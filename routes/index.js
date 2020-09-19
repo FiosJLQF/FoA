@@ -88,22 +88,26 @@ routes.get('/scholarships', (request, response, next) => {
 routes.get('/sponsors', (request, response, next) => {
 
     async function queryResults() {
-            let resSponsors = await pool2.query(queries.qrySponsorsAllDDL.text);
-            const resSponsorsRows = resSponsors.rows;
-            let resFieldOfStudyCategories = await pool2.query(queries.qryFieldOfStudyCategoriesAllDDL.text);
-            const resFieldOfStudyCategoriesRows = resFieldOfStudyCategories.rows;
-            // Return all data sets to the calling function
-            return {
-                     resSponsorsRows, 
-                     resFieldOfStudyCategoriesRows
-            };
+        let resSponsorsList = await pool2.query(queries.qrySponsorsAllDDL.text);
+        const resSponsorsListRows = resSponsorsList.rows;
+        let resSponsorTypeCategories = await pool2.query(queries.qrySponsorTypeCategoriesAllDDL.text);
+        const resSponsorTypeCategoriesRows = resSponsorTypeCategories.rows;
+        let resSponsorsAllWithScholarshipInfo = await pool2.query(queries.qrySponsorsAllWithScholarshipInfo.text);
+        const resSponsorsAllWithScholarshipInfoRows = resSponsorsAllWithScholarshipInfo.rows;
+        // Return all data sets to the calling function
+        return {
+            resSponsorsListRows, 
+            resSponsorTypeCategoriesRows,
+            resSponsorsAllWithScholarshipInfoRows
+        };
     }
 
     // Collect all data sets and render the Scholarships Search page
     queryResults().then( (result) => {
         response.render('sponsorsearch', { 
-            sponsors:                         result.resSponsorsRows,
-            fieldofstudycategories:           result.resFieldOfStudyCategoriesRows
+            sponsorslist:                   result.resSponsorsListRows,
+            sponsortypecategories:          result.resSponsorTypeCategoriesRows,
+            sponsorsallwithscholarshipinfo: result.resSponsorsAllWithScholarshipInfoRows
         });
     })
 });

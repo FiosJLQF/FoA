@@ -99,7 +99,9 @@ a:link {
  .femaleapplicantsonly {
      font-weight: bold;
      float: right;
-     background-color: lightseagreen;
+     background-color: lightgreen;
+     margin-top: 10px;
+     font-size: 0.85em;
 }
 
  .textbold {
@@ -338,6 +340,67 @@ a:link {
   font-weight: bold;
   text-decoration: underline;
   color: var(--amcg-blue);
+}
+
+.sponsorSearchResultsSummaryRow {
+  margin: 0px 0px 0px 0px;
+}
+
+.sponsorsearchresultscol1 {
+  padding: 5px 0px 0px 0px;
+  font-size: 0.875em;
+  width: 125px;
+  white-space: normal;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.sponsorsearchresultscol2 {
+  font-size: 1.25em;
+  text-align: center;
+  width: 30px;
+}
+
+.sponsorsearchresultscol3 {
+  width: 660px;    /* fix this later to take up the remaining screen width */
+/*  color: black;  */
+  margin: 0px 0px 0px 15px;
+  line-height: 1.8;
+}
+
+.sponsorsearchresultscol3A {
+  width: 140px;
+  font-size: 0.875em;
+  font-variant: normal;
+  padding-top: 3px;
+  font-weight: bold;
+}
+
+.sponsorsearchresultscol3A.text-block {
+  width: 140px;    /* fix this later to take up the remaining screen width */
+  font-size: 0.875em;
+  font-variant: normal;
+  padding-top: 8px;
+  line-height: 1.3;
+}
+
+.sponsorsearchresultscol3B {
+  width: 500px;    /* fix this later to take up the remaining screen width */
+  font-size: 0.875em;
+  font-variant: normal;
+  padding-top: 3px;
+}
+
+.sponsorsearchresultscol3B.text-block {
+  width: 500px;    /* fix this later to take up the remaining screen width */
+  font-size: 0.875em;
+  font-variant: normal;
+  padding-top: 8px;
+  line-height: 1.3;
+}
+
+a.text-link {
+  text-decoration: underline;
 }
 
 .paginationNavBar {
