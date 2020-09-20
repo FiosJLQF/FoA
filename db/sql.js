@@ -79,8 +79,8 @@ module.exports = {
 
     // SQL: Scholarships (All)
     qryScholarships: {
-        text: `SELECT   "SponsorLogo", "ScholarshipID", "ScholarshipName", "SponsorName", "ScholarshipDescription", "ScholarshipAward"
-                      , "ScholarshipLink", "ScholarshipEligibilityReqs", "ScholarshipApplDatesText"
+        text: `SELECT   "SponsorID", "SponsorLogo", "ScholarshipID", "ScholarshipName", "SponsorName", "ScholarshipDescription"
+                      , "ScholarshipAward", "ScholarshipLink", "ScholarshipEligibilityReqs", "ScholarshipApplDatesText"
                       , "ScholarshipContactFName" , "ScholarshipContactLName" , "ScholarshipContactEmail" , "ScholarshipContactPhone"
                       , "Criteria_FieldOfStudyText", "Criteria_Gender_FemaleOnly"
                FROM     public."vwScholarshipsActive"
@@ -89,6 +89,16 @@ module.exports = {
     },
    
     // SQL: Sponsors (All)
+    qrySponsorsAll: {
+       text: `SELECT DISTINCT
+                        "SponsorID", "SponsorName", "SponsorLogo", "SponsorDescription", "SponsorWebsite", "SponsorTypeText"
+                      , "SponsorContactFName", "SponsorContactLName", "SponsorContactEmail", "SponsorContactTelephone"
+              FROM      public."vwSponsorsAllWithScholarshipInfo"
+              ORDER BY "SponsorName"`,
+      rowMode: 'array',
+   },
+ 
+   // SQL: Sponsors with Scholarship Info (All)
     qrySponsorsAllWithScholarshipInfo: {
         text: `SELECT    "SponsorID", "ScholarshipID", "ScholarshipName", "SponsorName", "SponsorLogo", "SponsorDescription", "SponsorWebsite"
                        , "SponsorContactFName", "SponsorContactLName", "SponsorContactEmail", "SponsorContactTelephone", "SponsorTypeText"

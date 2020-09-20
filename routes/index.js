@@ -92,13 +92,19 @@ routes.get('/sponsors', (request, response, next) => {
         const resSponsorsListRows = resSponsorsList.rows;
         let resSponsorTypeCategories = await pool2.query(queries.qrySponsorTypeCategoriesAllDDL.text);
         const resSponsorTypeCategoriesRows = resSponsorTypeCategories.rows;
-        let resSponsorsAllWithScholarshipInfo = await pool2.query(queries.qrySponsorsAllWithScholarshipInfo.text);
-        const resSponsorsAllWithScholarshipInfoRows = resSponsorsAllWithScholarshipInfo.rows;
+//        let resSponsorsAllWithScholarshipInfo = await pool2.query(queries.qrySponsorsAllWithScholarshipInfo.text);
+//        const resSponsorsAllWithScholarshipInfoRows = resSponsorsAllWithScholarshipInfo.rows;
+        let resScholarships = await pool2.query(queries.qryScholarships.text);
+        const resScholarshipsRows = resScholarships.rows;
+        let resSponsorsAll = await pool2.query(queries.qrySponsorsAll.text);
+        const resSponsorsAllRows = resSponsorsAll.rows;
         // Return all data sets to the calling function
         return {
             resSponsorsListRows, 
             resSponsorTypeCategoriesRows,
-            resSponsorsAllWithScholarshipInfoRows
+//            resSponsorsAllWithScholarshipInfoRows,
+            resScholarshipsRows,
+            resSponsorsAllRows
         };
     }
 
@@ -107,7 +113,9 @@ routes.get('/sponsors', (request, response, next) => {
         response.render('sponsorsearch', { 
             sponsorslist:                   result.resSponsorsListRows,
             sponsortypecategories:          result.resSponsorTypeCategoriesRows,
-            sponsorsallwithscholarshipinfo: result.resSponsorsAllWithScholarshipInfoRows
+//            sponsorsallwithscholarshipinfo: result.resSponsorsAllWithScholarshipInfoRows,
+            scholarshipsactive:             result.resScholarshipsRows,
+            sponsorsall:                    result.resSponsorsAllRows
         });
     })
 });

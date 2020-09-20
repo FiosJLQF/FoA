@@ -45,11 +45,11 @@
 <br>
 
     <div style="text-align:left">
-        <button type="button" class="btn btn-default button-search" onclick="findMatchingSponsors(spaRows, 1);">
+        <button type="button" class="btn btn-default button-search" onclick="findMatchingSponsors(spnRows, schRows, 1);">
             <img src="/img/imgMagnifyingGlass.png" alt="Magnifying Glass" style="width:35px;" class="img-responsive">
             Search
         </button><br>
-        <button type="button" class="btn btn-default button-small" onclick="buildSponsorSearchResults(spaRows, 1);">
+        <button type="button" class="btn btn-default button-small" onclick="buildSponsorSearchResults(spnRows, schRows, 1);">
             >> Show All Sponsors
         </button><br>
         <button type="button" class="btn btn-default button-small" onclick="clearSponsorSearchCriteria();">
@@ -69,7 +69,10 @@
     var spsRows = <%- JSON.stringify(sponsortypecategories) %>;
     loadSelectOptionsList("filterSponsorTypeInput", "(Not Selected)", 0, spsRows);
 
+    // Load distinct list of Sponsors into the "Search" button destinations
+    var spnRows = <%- JSON.stringify(sponsorsall) %>;
+
     // Load "all sponsors with scholarship information" into the "Search" button destinations
-    var spaRows = <%- JSON.stringify(sponsorsallwithscholarshipinfo) %>;
+    var schRows = <%- JSON.stringify(scholarshipsactive) %>;
 
 </script>
