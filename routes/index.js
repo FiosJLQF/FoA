@@ -119,4 +119,36 @@ routes.get('/sponsors', (request, response, next) => {
     })
 });
 
+// take the user to the "My Account / Login" page
+routes.get('/myaccount', (request, response, next) => {
+
+//    async function queryResults() {
+//        let resSponsorsList = await pool2.query(queries.qrySponsorsAllDDL.text);
+//        const resSponsorsListRows = resSponsorsList.rows;
+//        let resSponsorTypeCategories = await pool2.query(queries.qrySponsorTypeCategoriesAllDDL.text);
+//        const resSponsorTypeCategoriesRows = resSponsorTypeCategories.rows;
+//        let resScholarships = await pool2.query(queries.qryScholarships.text);
+//        const resScholarshipsRows = resScholarships.rows;
+//        let resSponsorsAll = await pool2.query(queries.qrySponsorsAll.text);
+//        const resSponsorsAllRows = resSponsorsAll.rows;
+//        // Return all data sets to the calling function
+//        return {
+//            resSponsorsListRows, 
+//            resSponsorTypeCategoriesRows,
+//            resScholarshipsRows,
+//            resSponsorsAllRows
+//        };
+//    }
+
+//    // Collect all data sets and render the Scholarships Search page
+//    queryResults().then( (result) => {
+        response.render('myaccount', { 
+//            sponsorslist:                   result.resSponsorsListRows,
+//            sponsortypecategories:          result.resSponsorTypeCategoriesRows,
+//            scholarshipsactive:             result.resScholarshipsRows,
+//            sponsorsall:                    result.resSponsorsAllRows
+        });
+//    })
+});
+
 module.exports = routes;
