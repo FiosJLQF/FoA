@@ -10,8 +10,7 @@ const queries = require('../db/sql.js');
 
 // Website "Home"
 routes.get('/', (request, response) => {
-  response.status(200).json({ message: 'Connected!' });
-//  response.render('scholarshipsearch');
+    response.redirect('../scholarships');
 });
 
 // Get all scholarships, regardless of filters
