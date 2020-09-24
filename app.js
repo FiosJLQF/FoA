@@ -20,7 +20,7 @@ app.set('views', 'views');  // HTML pages and templates, using EJS for templatin
 app.set('view engine', 'ejs');  // Sets the EJS engine
 app.use('/', routes);  // imports the root folder URL endpoint routes from index.js
 app.use('/sponsorsearch', require('./routes/sponsorRoutes'));  // imports the "sponsors" URL endpoint routes from sponsors.js
-//app.use('/scholarships', require('./routes/scholarships'));  // imports the "scholarships" URL endpoint routes from scholarships.js
+//app.use('/scholarshipsearch', require('./routes/scholarshipRoutes'));  // imports the "scholarships" URL endpoint routes from scholarships.js
 
 // For local testing only
 app.listen(port, function(err) {
