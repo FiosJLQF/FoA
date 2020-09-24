@@ -4,7 +4,8 @@ const path = require('path');
 const db = require('./../db/db_config.js');
 const Sponsors = require(path.join(__dirname, '../models/', 'sponsorModels2.js'));
 //const Sponsors = require('./../models/sponsorModels');
-const Scholarships = require('./../models/scholarshipModels');
+const Scholarships = require(path.join(__dirname, '../models/', 'scholarshipModels2.js'));
+//const Scholarships = require('./../models/scholarshipModels');
 
 // All routes that start with "/sponsorsearch"; since this is part of the definition in app.js
 // the "/" implies "/sponsorsearch".
