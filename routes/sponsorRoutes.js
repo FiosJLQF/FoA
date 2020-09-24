@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db/db_config.js');
-const Sponsors = require('../models/sponsorModels.js');
-const Scholarships = require('../models/scholarshipModels.js');
+const db = require('./../db/db_config.js');
+const Sponsors = require('./../models/sponsorModels.js');
+const Scholarships = require('./../models/scholarshipModels.js');
 
 // All routes that start with "/sponsorsearch"; since this is part of the definition in app.js
 // the "/" implies "/sponsorsearch".
