@@ -3,7 +3,7 @@
 ///////////////////////////////////////////////////////
 
 const routes = require('express').Router();
-const { pool } = require('../db/dbstuff.js');
+//const { pool } = require('../db/dbstuff.js');
 const { pool2 } = require('../db/dbstuff2.js');
 const async = require('async');
 const queries = require('../db/sql.js');
