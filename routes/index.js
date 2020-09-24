@@ -82,7 +82,7 @@ routes.get('/scholarships', (request, response, next) => {
         console.log('test2');
     })
 });
-
+/*
 // Get all sponsors, regardless of filters
 routes.get('/sponsors', (request, response, next) => {
 
@@ -150,5 +150,5 @@ routes.get('/myaccount', (request, response, next) => {
         });
 //    })
 });
-
+*/
 module.exports = routes;

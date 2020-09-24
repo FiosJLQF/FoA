@@ -625,7 +625,7 @@ function toggleApplyButton(checkStatus, linkID, linkHref) {
         lnkToChange.target = "";
     }
 }
-
+/*
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // load the list of Sponsors into the Search Criteria option
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -650,7 +650,7 @@ function loadSponsorList(sponsors) {
     });
 
 }
-
+*/
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // return a formatted <div> of the "Sponsor Summary Block"
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -767,10 +767,7 @@ function createSponsorSummaryDiv(selectedSponsor) {
             const divSponsorRow1Col3Row4Col2 = document.createElement('div');
             divSponsorRow1Col3Row4Col2.classList.add('sponsorsearchresultscol3B');
             divSponsorRow1Col3Row4Col2.classList.add('text-block');
-            divSponsorRow1Col3Row4Col2.innerHTML =
-                selectedSponsor['SponsorContactFName'] + " " + selectedSponsor['SponsorContactLName'] + "<br>" +
-                selectedSponsor['SponsorContactEmail'] + "<br>" +
-                selectedSponsor['SponsorContactTelephone'];
+            divSponsorRow1Col3Row4Col2.innerHTML = selectedSponsor['SponsorContactInfoFormatted'];
 
         divSponsorRow1Col3Rows.appendChild(divSponsorRow1Col3Row4Col2);
 

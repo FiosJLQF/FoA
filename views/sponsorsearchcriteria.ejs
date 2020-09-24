@@ -62,17 +62,17 @@
 <script>
 
     // Load the Sponsor List into the DDL
-    var splRows = <%- JSON.stringify(sponsorslist) %>;
+    var splRows = <%- JSON.stringify(sponsorsddl) %>;
     loadSelectOptionsList("filterSponsorNamesInput", "(Not Selected)", 0, splRows);
 
     // Load the Sponsor Type options into the DDL
-    var spsRows = <%- JSON.stringify(sponsortypecategories) %>;
+    var spsRows = <%- JSON.stringify(sponsortypesddl) %>;
     loadSelectOptionsList("filterSponsorTypeInput", "(Not Selected)", 0, spsRows);
 
     // Load distinct list of Sponsors into the "Search" button destinations
-    var spnRows = <%- JSON.stringify(sponsorsall) %>;
+    var spnRows = <%- JSON.stringify(sponsors) %>;
 
     // Load "all sponsors with scholarship information" into the "Search" button destinations
-    var schRows = <%- JSON.stringify(scholarshipsactive) %>;
+    var schRows = <%- JSON.stringify(scholarships) %>;
 
 </script>
