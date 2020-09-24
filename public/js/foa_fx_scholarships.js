@@ -778,10 +778,7 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber) {
                 const divScholarshipRow2Col3Row3Col2 = document.createElement('div');
                 divScholarshipRow2Col3Row3Col2.classList.add('scholarshipsearchresultscol3B');
                 divScholarshipRow2Col3Row3Col2.classList.add('text-block');
-                divScholarshipRow2Col3Row3Col2.innerHTML =
-                    selectedScholarship['ScholarshipContactFName'] + " " + selectedScholarship['ScholarshipContactLName'] + "<br>" +
-                    selectedScholarship['ScholarshipContactEmail'] + "<br>" +
-                    selectedScholarship['ScholarshipContactPhone'];
+                divScholarshipRow2Col3Row3Col2.innerHTML = selectedScholarship['ScholarshipContactInfoFormatted'];
 
             divScholarshipRow2Col3Rows.appendChild(divScholarshipRow2Col3Row3Col2);
 

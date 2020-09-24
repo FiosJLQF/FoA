@@ -18,6 +18,15 @@ const ScholarshipsActive = db.define('vwScholarshipsActive', {
     ScholarshipDescription: {
         type: Sequelize.STRING
     },
+    ScholarshipEligibilityReqs: {
+        type: Sequelize.STRING
+    },
+    ScholarshipApplDatesText: {
+        type: Sequelize.STRING
+    },
+    ScholarshipContactInfoFormatted: {
+        type: Sequelize.STRING
+    },
     Criteria_FieldOfStudyText: {
         type: Sequelize.STRING
     },
@@ -26,14 +35,158 @@ const ScholarshipsActive = db.define('vwScholarshipsActive', {
     },
     SponsorID: {
         type: Sequelize.INTEGER
+    },
+    SponsorLogo: {
+        type: Sequelize.INTEGER
+    },
+    SponsorName: {
+        type: Sequelize.INTEGER
     }
 
 }, {
     freezeTableName: true,
-    // don't add the timestamp attributes (updatedAt, createdAt)
-    timestamps: false,
+    timestamps: false,  // don't add the timestamp attributes (updatedAt, createdAt)
 });
 
+///////////////////////////////////////////////////////////////////////////////////
+// a list of all Fields of Study, formatted for the search criteria DDL
+///////////////////////////////////////////////////////////////////////////////////
+const FieldOfStudyCategoriesDDL = db.define('vwFieldOfStudyCategoriesDDL', {
+    optionid: {
+        type: Sequelize.INTEGER,
+        primaryKey: true
+    },
+    optiontext: {
+        type: Sequelize.STRING
+    }
+}, {
+    freezeTableName: true,
+    timestamps: false,  // don't add the timestamp attributes (updatedAt, createdAt)
+});
+
+///////////////////////////////////////////////////////////////////////////////////
+// a list of all Citizenships, formatted for the search criteria DDL
+///////////////////////////////////////////////////////////////////////////////////
+const CitizenshipCategoriesDDL = db.define('vwCitizenshipCategoriesDDL', {
+    optionid: {
+        type: Sequelize.INTEGER,
+        primaryKey: true
+    },
+    optiontext: {
+        type: Sequelize.STRING
+    }
+}, {
+    freezeTableName: true,
+    timestamps: false,  // don't add the timestamp attributes (updatedAt, createdAt)
+});
+
+///////////////////////////////////////////////////////////////////////////////////
+// a list of all Year of Need / Desired Programs, formatted for the search criteria DDL
+///////////////////////////////////////////////////////////////////////////////////
+const YearOfNeedCategoriesDDL = db.define('vwYearOfNeedCategoriesDDL', {
+    optionid: {
+        type: Sequelize.INTEGER,
+        primaryKey: true
+    },
+    optiontext: {
+        type: Sequelize.STRING
+    }
+}, {
+    freezeTableName: true,
+    timestamps: false,  // don't add the timestamp attributes (updatedAt, createdAt)
+});
+
+///////////////////////////////////////////////////////////////////////////////////
+// a list of all Enrollment Statuses, formatted for the search criteria DDL
+///////////////////////////////////////////////////////////////////////////////////
+const EnrollmentStatusCategoriesDDL = db.define('vwEnrollmentStatusCategoriesDDL', {
+    optionid: {
+        type: Sequelize.INTEGER,
+        primaryKey: true
+    },
+    optiontext: {
+        type: Sequelize.STRING
+    }
+}, {
+    freezeTableName: true,
+    timestamps: false,  // don't add the timestamp attributes (updatedAt, createdAt)
+});
+
+///////////////////////////////////////////////////////////////////////////////////
+// a list of all Military Service Types, formatted for the search criteria DDL
+///////////////////////////////////////////////////////////////////////////////////
+const MilitaryServiceCategoriesDDL = db.define('vwMilitaryServiceCategoriesDDL', {
+    optionid: {
+        type: Sequelize.INTEGER,
+        primaryKey: true
+    },
+    optiontext: {
+        type: Sequelize.STRING
+    }
+}, {
+    freezeTableName: true,
+    timestamps: false,  // don't add the timestamp attributes (updatedAt, createdAt)
+});
+
+///////////////////////////////////////////////////////////////////////////////////
+// a list of all FAA Pilot Certificates, formatted for the search criteria DDL
+///////////////////////////////////////////////////////////////////////////////////
+const FAAPilotCertificateCategoriesDDL = db.define('vwFAAPilotCertificateCategoriesDDL', {
+    optionid: {
+        type: Sequelize.INTEGER,
+        primaryKey: true
+    },
+    optiontext: {
+        type: Sequelize.STRING
+    }
+}, {
+    freezeTableName: true,
+    timestamps: false,  // don't add the timestamp attributes (updatedAt, createdAt)
+});
+
+///////////////////////////////////////////////////////////////////////////////////
+// a list of all FAA Pilot Ratings, formatted for the search criteria DDL
+///////////////////////////////////////////////////////////////////////////////////
+const FAAPilotRatingCategoriesDDL = db.define('vwFAAPilotRatingCategoriesDDL', {
+    optionid: {
+        type: Sequelize.INTEGER,
+        primaryKey: true
+    },
+    optiontext: {
+        type: Sequelize.STRING
+    }
+}, {
+    freezeTableName: true,
+    timestamps: false,  // don't add the timestamp attributes (updatedAt, createdAt)
+});
+
+///////////////////////////////////////////////////////////////////////////////////
+// a list of all FAA Mechanic Certificates, formatted for the search criteria DDL
+///////////////////////////////////////////////////////////////////////////////////
+const FAAMechanicCertificateCategoriesDDL = db.define('vwFAAMechanicCertificateCategoriesDDL', {
+    optionid: {
+        type: Sequelize.INTEGER,
+        primaryKey: true
+    },
+    optiontext: {
+        type: Sequelize.STRING
+    }
+}, {
+    freezeTableName: true,
+    timestamps: false,  // don't add the timestamp attributes (updatedAt, createdAt)
+});
+
+///////////////////////////////////////////////////////////////////////////////////
+// export all models
+///////////////////////////////////////////////////////////////////////////////////
 module.exports = {
-    ScholarshipsActive
+    ScholarshipsActive,
+    FieldOfStudyCategoriesDDL,
+    CitizenshipCategoriesDDL,
+    YearOfNeedCategoriesDDL,
+    EnrollmentStatusCategoriesDDL,
+    MilitaryServiceCategoriesDDL,
+    FAAPilotCertificateCategoriesDDL,
+    FAAPilotRatingCategoriesDDL,
+    FAAMechanicCertificateCategoriesDDL
 };

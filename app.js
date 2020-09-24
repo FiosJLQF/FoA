@@ -19,8 +19,8 @@ app.use(express.static(path.join(__dirname, 'public')));  // publicly-accessible
 app.set('views', 'views');  // HTML pages and templates, using EJS for templating
 app.set('view engine', 'ejs');  // Sets the EJS engine
 app.use('/', routes);  // imports the root folder URL endpoint routes from index.js
-app.use('/sponsorsearch', require('./routes/sponsorRoutes'));  // imports the "sponsors" URL endpoint routes from sponsors.js
-//app.use('/scholarshipsearch', require('./routes/scholarshipRoutes'));  // imports the "scholarships" URL endpoint routes from scholarships.js
+app.use('/sponsorsearch', require('./routes/sponsorRoutes'));  // imports the "sponsors" URL endpoint routes from sponsorRoutes.js
+app.use('/scholarshipsearch', require('./routes/scholarshipRoutes'));  // imports the "scholarships" URL endpoint routes from scholarshipRoutes.js
 
 // For local testing only
 app.listen(port, function(err) {

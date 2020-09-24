@@ -1,21 +1,21 @@
 <div>
     <div class="bodylayout1col1title" id="searchCriteriaTitle">Search Criteria</div>
     <hr class="bodycol1break">
-    <div class="searchInstructions">Enter search criteria below and click "search". (TEST #1)
+    <div class="searchInstructions">Enter search criteria below and click "search".</div><br>
 
-    </div><br>
+<!-- <%= scholarships[0]['ScholarshipName'] %><br> -->
 
     <!-- Field(s) of Study -->
     Field(s) of Study: <button type="button" class="btn btn-default button-small"
         onclick="toggleSearchCriteriaInputBlock(
-            document.querySelector('#filterFieldOfStudyCategoriesIcon'),
-            document.querySelector('#filterFieldOfStudyCategoriesInputBlock'),
-            document.querySelector('#filterFieldOfStudyCategoriesInput'), '')">
-        <i id="filterFieldOfStudyCategoriesIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+            document.querySelector('#filterFieldOfStudyIcon'),
+            document.querySelector('#filterFieldOfStudyInputBlock'),
+            document.querySelector('#filterFieldOfStudyInput'), '')">
+        <i id="filterFieldOfStudyIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
     </button><br>
-    <div id="filterFieldOfStudyCategoriesInputBlock" class="filter-input-block">
+    <div id="filterFieldOfStudyInputBlock" class="filter-input-block">
         <div class="searchInstructions">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
-        <select id="filterFieldOfStudyCategoriesInput" class="filter_select" multiple></select><br>
+        <select id="filterFieldOfStudyInput" class="filter_select" multiple></select><br>
     </div>
 
     <!-- Sponsor Name(s) -->
@@ -48,7 +48,7 @@
     </div>
 
     <!-- Age -->
-    Age: <button type="button" class="btn btn-default button-small"
+        Age: <button type="button" class="btn btn-default button-small"
         onclick="toggleSearchCriteriaInputBlock(
             document.querySelector('#filterAgeIcon'),
             document.querySelector('#filterAgeInputBlock'),
@@ -194,14 +194,17 @@
         <div class="searchInstructions">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
         <select id="filterFAAMechanicCertRatingInput" class="filter_select" multiple></select><br>
     </div>
+
 </div>    <!-- end "Advanced Search" section -->
+
 <br>
+
     <div style="text-align:left">
-        <button type="button" class="btn btn-default button-search" onclick="findMatchingScholarships(scholarships, 1);">
-            <img src="/img/imgMagnifyingGlass.png" alt="Magnifying Glass" style="width:35px;"
-                 class="img-responsive">Search
+        <button type="button" class="btn btn-default button-search" onclick="findMatchingScholarships(schRows, 1);">
+            <img src="/img/imgMagnifyingGlass.png" alt="Magnifying Glass" style="width:35px;" class="img-responsive">
+            Search
         </button><br>
-        <button type="button" class="btn btn-default button-small" onclick="buildScholarshipSearchResults(scholarships, 1);">
+        <button type="button" class="btn btn-default button-small" onclick="buildScholarshipSearchResults(schRows, 1);">
             >> Show All Scholarships
         </button><br>
         <button type="button" class="btn btn-default button-small" onclick="clearScholarshipSearchCriteria();">
@@ -210,33 +213,29 @@
     </div>
 
 </div>
+
 <script>
-/*
+
     var fosRows = <%- JSON.stringify(fieldofstudycategories) %>;
-    loadSelectOptionsList("filterFieldOfStudyCategoriesInput", "(Not Selected)", 0, fosRows);
+    loadSelectOptionsList("filterFieldOfStudyInput", "(Not Selected)", 0, fosRows);
     var spnRows = <%- JSON.stringify(sponsors) %>;
     loadSelectOptionsList("filterSponsorNamesInput", "(Not Selected)", 0, spnRows);
     var citRows = <%- JSON.stringify(citizenships) %>;
     loadSelectOptionsList("filterCitizenshipInput", "(Not Selected)", 0, citRows);
     var yonRows = <%- JSON.stringify(yearofneed) %>;
     loadSelectOptionsList("filterYearOfNeedInput", "(Not Selected)", 0, yonRows);
-*/
-/*
     var esRows = <%- JSON.stringify(enrollmentstatuscategories) %>;
     loadSelectOptionsList("filterEnrollmentStatusInput", "(Not Selected)", 0, esRows);
-*/
-//    var msRows = <%- JSON.stringify(militaryservicecategories) %>;
-//    loadSelectOptionsList("filterUSMilitaryServiceInput", "(Not Selected)", 0, msRows);
+    var msRows = <%- JSON.stringify(militaryservicecategories) %>;
+    loadSelectOptionsList("filterUSMilitaryServiceInput", "(Not Selected)", 0, msRows);
+    var fpcRows = <%- JSON.stringify(faapilotcertificatecategories) %>;
+    loadSelectOptionsList("filterFAAPilotCertificateInput", "(Not Selected)", 0, fpcRows);
+    var fprRows = <%- JSON.stringify(faapilotratingcategories) %>;
+    loadSelectOptionsList("filterFAAPilotRatingInput", "(Not Selected)", 0, fprRows);
+    var fmcRows = <%- JSON.stringify(faamechaniccertificatecategories) %>;
+    loadSelectOptionsList("filterFAAMechanicCertRatingInput", "(Not Selected)", 0, fmcRows);
 
-//    alert('test4a');
-//    alert(<%- JSON.stringify(enrollmentstatuses) %>);
-//    var fpcRows = <%- JSON.stringify(faapilotcertificatecategories) %>;
-//    loadSelectOptionsList("filterFAAPilotCertificateInput", "(Not Selected)", 0, fpcRows);
-
-
-    //    loadSelectOptionsList("filterFAAPilotRatingInput", "(Not Selected)", 0, faaPilotRatings);
-//    loadSelectOptionsList("filterFAAMechanicCertRatingInput", "(Not Selected)", 0, faaMechanicCertificates);
-
+    var schRows = <%- JSON.stringify(scholarships) %>;
     // initally load all scholarships  (decision reversed 1/29/20 by KK)
 //    const createResults = buildScholarshipSearchResults(scholarships, 1);
 

@@ -3,30 +3,28 @@ const router = express.Router();
 const path = require('path');
 const db = require('./../db/db_config.js');
 const Sponsors = require(path.join(__dirname, '../models/', 'sponsorModels.js'));
-//const Sponsors = require('./../models/sponsorModels');
 const Scholarships = require(path.join(__dirname, '../models/', 'scholarshipModels.js'));
-//const Scholarships = require('./../models/scholarshipModels');
 
 // All routes that start with "/sponsorsearch"; since this is part of the definition in app.js
 // the "/" implies "/sponsorsearch".
 
 ///////////////////////////////////////////////////////////////////////////////////
-// get all Sponsors (i.e., https://.../sponsorsearch/)
+// Sponsor Search page (no results) (i.e., https://.../sponsorsearch/)
 ///////////////////////////////////////////////////////////////////////////////////
 router.get('/', async (request, response) => {
 
     try {
         // get a distinct list of Sponsors
         const sponsorsAll = await Sponsors.SponsorsAll.findAll();
-        console.log(`Sponsors Count: ${sponsorsAll.length}`);
+//        console.log(`Sponsors Count: ${sponsorsAll.length}`);
 
         // get a distinct list of Sponsors for the Search Criteria DDL
         const sponsorsDDL = await Sponsors.SponsorsDDL.findAll();
-        console.log(`Sponsors Count: ${sponsorsDDL.length}`);
+//        console.log(`Sponsors Count: ${sponsorsDDL.length}`);
 
         // get a distinct list of Sponsor Type(s) for the Search Criteria DDL
         const sponsortypesDDL = await Sponsors.SponsorTypeCategoriesDDL.findAll();
-        console.log(`Sponsors Count: ${sponsortypesDDL.length}`);
+//        console.log(`Sponsors Count: ${sponsortypesDDL.length}`);
 
         // get a distinct list of active Scholarships, ordered by Sponsor Name, Scholarship Name
         const scholarshipsActive = await Scholarships.ScholarshipsActive.findAll(
@@ -37,7 +35,7 @@ router.get('/', async (request, response) => {
 //            ]
 //        }
         );
-        console.log(`Scholarships (Active) Count: ${scholarshipsActive.length}`);
+//        console.log(`Scholarships (Active) Count: ${scholarshipsActive.length}`);
 
         return response.render('sponsorsearch', {
             sponsors:        sponsorsAll,

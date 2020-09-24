@@ -14,7 +14,7 @@ routes.get('/', (request, response) => {
 });
 
 // Get all scholarships, regardless of filters
-routes.get('/scholarshipsearch', (request, response, next) => {
+routes.get('/scholarshipsearchold', (request, response, next) => {
 
     async function queryResults() {
 
@@ -59,7 +59,7 @@ routes.get('/scholarshipsearch', (request, response, next) => {
 
     // Collect all data sets and render the Scholarships Search page
     queryResults().then( (result) => {
-        response.render('scholarshipsearch', { 
+        response.render('scholarshipsearchold', { 
             sponsors:                         result.resSponsorsRows,
             fieldofstudycategories:           result.resFieldOfStudyCategoriesRows,
             citizenships:                     result.resCitizenshipsRows,
