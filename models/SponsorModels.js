@@ -1,7 +1,9 @@
 const Sequelize = require('sequelize');
 const db = require('../db/db_config.js');
 
+///////////////////////////////////////////////////////////////////////////////////
 // a list of all Sponsors, with all data elements
+///////////////////////////////////////////////////////////////////////////////////
 const SponsorsAll = db.define('vwSponsorsAll', {
     SponsorID: {
         type: Sequelize.INTEGER,
@@ -43,7 +45,10 @@ const SponsorsAll = db.define('vwSponsorsAll', {
     timestamps: false,
 });
 
+
+///////////////////////////////////////////////////////////////////////////////////
 // a list of all Sponsors, formatted for the "Sponsor(s)" search criteria DDL
+///////////////////////////////////////////////////////////////////////////////////
 const SponsorsDDL = db.define('vwSponsorsDDL', {
     optionid: {
         type: Sequelize.INTEGER,
@@ -58,7 +63,10 @@ const SponsorsDDL = db.define('vwSponsorsDDL', {
     timestamps: false,
 });
 
+
+///////////////////////////////////////////////////////////////////////////////////
 // a list of all Sponsor Types, formatted for the "Sponsor Type(s)" search criteria DDL
+///////////////////////////////////////////////////////////////////////////////////
 const SponsorTypeCategoriesDDL = db.define('vwSponsorTypeCategoriesDDL', {
     optionid: {
         type: Sequelize.INTEGER,

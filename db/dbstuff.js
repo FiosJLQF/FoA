@@ -1,7 +1,7 @@
 // centralize all database functionality in one file
 
 const { Pool } = require('pg');   // postgress_node
-const { user, host, database, password, port } = require('../db/db_configuration');
+const { user, host, database, password, port } = require('./db_configuration');
 const pool = new Pool({ user, host, database, password, port });
 
 module.exports = {

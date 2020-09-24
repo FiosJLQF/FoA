@@ -10,11 +10,11 @@ const queries = require('../db/sql.js');
 
 // Website "Home"
 routes.get('/', (request, response) => {
-    response.redirect('../scholarships');
+    response.redirect('../scholarshipsearch');
 });
 
 // Get all scholarships, regardless of filters
-routes.get('/scholarships', (request, response, next) => {
+routes.get('/scholarshipsearch', (request, response, next) => {
 
     async function queryResults() {
             let resSponsors = await pool2.query(queries.qrySponsorsAllDDL.text);
@@ -69,7 +69,7 @@ routes.get('/scholarships', (request, response, next) => {
         });
     })
 });
-
+/*
  // Get a specific scholarship
  routes.get('/scholarships/:id', (request, response, next) => {
     const { id } = request.params;
@@ -82,42 +82,7 @@ routes.get('/scholarships', (request, response, next) => {
         console.log('test2');
     })
 });
-/*
-// Get all sponsors, regardless of filters
-routes.get('/sponsors', (request, response, next) => {
-
-    async function queryResults() {
-        let resSponsorsList = await pool2.query(queries.qrySponsorsAllDDL.text);
-        const resSponsorsListRows = resSponsorsList.rows;
-        let resSponsorTypeCategories = await pool2.query(queries.qrySponsorTypeCategoriesAllDDL.text);
-        const resSponsorTypeCategoriesRows = resSponsorTypeCategories.rows;
-//        let resSponsorsAllWithScholarshipInfo = await pool2.query(queries.qrySponsorsAllWithScholarshipInfo.text);
-//        const resSponsorsAllWithScholarshipInfoRows = resSponsorsAllWithScholarshipInfo.rows;
-        let resScholarships = await pool2.query(queries.qryScholarships.text);
-        const resScholarshipsRows = resScholarships.rows;
-        let resSponsorsAll = await pool2.query(queries.qrySponsorsAll.text);
-        const resSponsorsAllRows = resSponsorsAll.rows;
-        // Return all data sets to the calling function
-        return {
-            resSponsorsListRows, 
-            resSponsorTypeCategoriesRows,
-//            resSponsorsAllWithScholarshipInfoRows,
-            resScholarshipsRows,
-            resSponsorsAllRows
-        };
-    }
-
-    // Collect all data sets and render the Scholarships Search page
-    queryResults().then( (result) => {
-        response.render('sponsorsearch', { 
-            sponsorslist:                   result.resSponsorsListRows,
-            sponsortypecategories:          result.resSponsorTypeCategoriesRows,
-//            sponsorsallwithscholarshipinfo: result.resSponsorsAllWithScholarshipInfoRows,
-            scholarshipsactive:             result.resScholarshipsRows,
-            sponsorsall:                    result.resSponsorsAllRows
-        });
-    })
-});
+*/
 
 // take the user to the "My Account / Login" page
 routes.get('/myaccount', (request, response, next) => {
@@ -150,5 +115,5 @@ routes.get('/myaccount', (request, response, next) => {
         });
 //    })
 });
-*/
+
 module.exports = routes;

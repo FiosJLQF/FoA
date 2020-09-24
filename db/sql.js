@@ -12,15 +12,15 @@ module.exports = {
                ORDER BY "FieldOfStudyCategorySortOrder"`,
         rowMode: 'array',
     },
-/*
+
     // SQL: Sponsors for DDL (All)
     qrySponsorsAllDDL: {
-    text: `SELECT   "sponsorid" AS optionid, "sponsorname" AS optiontext
+    text: `SELECT   "SponsorID" AS optionid, "SponsorName" AS optiontext
            FROM     public."vwSponsorsAll"
-           ORDER BY "sponsorname"`,
+           ORDER BY "SponsorName"`,
     rowMode: 'array',
     },
-*/
+
     // SQL: Citizenships
     qryCitizenshipCategoriesAllDDL: {
         text: `SELECT   "CitizenshipCategoryID" AS optionid, "CitizenshipCategory" AS optiontext
@@ -87,7 +87,7 @@ module.exports = {
                ORDER BY  "SponsorName", "ScholarshipName"`,
         rowMode: 'array',  // returns results in an array instead of key/value pairs
     },
- /*  
+  
     // SQL: Sponsors (All)
     qrySponsorsAll: {
        text: `SELECT DISTINCT
@@ -97,7 +97,7 @@ module.exports = {
               ORDER BY "SponsorName"`,
       rowMode: 'array',
    },
- */
+
    // SQL: Sponsors with Scholarship Info (All)
     qrySponsorsAllWithScholarshipInfo: {
         text: `SELECT    "SponsorID", "ScholarshipID", "ScholarshipName", "SponsorName", "SponsorLogo", "SponsorDescription", "SponsorWebsite"

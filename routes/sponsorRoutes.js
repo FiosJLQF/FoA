@@ -1,13 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db/db_config.js');
-const Sponsors = require('../models/SponsorModels.js');
-const Scholarships = require('../models/ScholarshipModels.js');
+const Sponsors = require('../models/sponsorModels.js');
+const Scholarships = require('../models/scholarshipModels.js');
 
-// All routes that start with "/sponsors"; since this is part of the definition in app.js
-// the "/" implies "/sponsors".
+// All routes that start with "/sponsorsearch"; since this is part of the definition in app.js
+// the "/" implies "/sponsorsearch".
 
-// get all Sponsors
+///////////////////////////////////////////////////////////////////////////////////
+// get all Sponsors (i.e., https://.../sponsorsearch/)
+///////////////////////////////////////////////////////////////////////////////////
 router.get('/', async (request, response) => {
 
     try {
@@ -45,23 +47,7 @@ router.get('/', async (request, response) => {
     }
 });
 
-/*
-Sponsors.findAll()
-        .then(sponsors => {
-            async function queryResults() {
-                const sponsorsRows = sponsors.rows;
-                return {
-                    sponsorRows
-                };
-            };
-            queryResults().then( (result) => {
-                response.render('sponsorsearch', {
-                    sponsors: result.sponsorRows
-                })
-            })
-        })
-        .catch(err => console.log(err))
-);
-*/
-
+///////////////////////////////////////////////////////////////////////////////////
+// export all routes
+///////////////////////////////////////////////////////////////////////////////////
 module.exports = router;
