@@ -33,17 +33,14 @@ routes.get('/scholarshipsearch', (request, response, next) => {
             const resMilitaryServiceCategoriesRows = resMilitaryServiceCategories.rows;
             let resFAAPilotCertificateCategories = await pool2.query(queries.qryFAAPilotCertificateCategoriesAlleDDL.text);
             const resFAAPilotCertificateCategoriesRows = resFAAPilotCertificateCategories.rows;
-
+            let resFAAPilotRatingCategories = await pool2.query(queries.qryFAAPilotRatingCategoriesAllDDL.text);
+            const resFAAPilotRatingCategoriesRows = resFAAPilotRatingCategories.rows;
+            let resFAAMechanicCertificateCategories = await pool2.query(queries.qryFAAMechanicCertificateCategoriesAllDDL.text);
+            const resFAAMechanicCertificateCategoriesRows = resFAAMechanicCertificateCategories.rows;
 
             // Load all scholarships
             let resScholarships = await pool2.query(queries.qryScholarships.text);
             const resScholarshipsRows = resScholarships.rows;
-
-            // still on A2 Hosting PostgreSQL
-            let resFAAPilotRatingCategories = await pool.query(queries.qryFAAPilotRatingCategoriesActiveDDL.text);
-            const resFAAPilotRatingCategoriesRows = resFAAPilotRatingCategories.rows;
-            let resFAAMechanicCertificateCategories = await pool.query(queries.qryFAAMechanicCertificateCategoriesActiveDDL.text);
-            const resFAAMechanicCertificateCategoriesRows = resFAAMechanicCertificateCategories.rows;
 
             // Return all data sets to the calling function
             return {

@@ -62,18 +62,18 @@ module.exports = {
    },
 
    // SQL: FAA Pilot Ratings (for active scholarships)
-   qryFAAPilotRatingCategoriesActiveDDL: {
+   qryFAAPilotRatingCategoriesAllDDL: {
        text: `SELECT   "FAAPilotRatingCategoryID" AS optionid, "FAAPilotRatingCategory" AS optiontext
-              FROM     public."vwFAAPilotRatingCategoriesActive"
-              ORDER BY "FAAPilotRatingCategory"`,
+              FROM     public."vwFAAPilotRatingCategoriesAll"
+              ORDER BY "FAAPilotRatingCategorySortOrder"`,
        rowMode: 'array',
    },
 
    // SQL: FAA Mechanic Certificates (for active scholarships)
-   qryFAAMechanicCertificateCategoriesActiveDDL: {
+   qryFAAMechanicCertificateCategoriesAllDDL: {
        text: `SELECT   "FAAMechanicCertificateCategoryID" AS optionid, "FAAMechanicCertificateCategory" AS optiontext
-              FROM     public."vwFAAMechanicCertificateCategoriesActive"
-              ORDER BY "FAAMechanicCertificateCategory"`,
+              FROM     public."vwFAAMechanicCertificateCategoriesAll"
+              ORDER BY "FAAMechanicCertificateCategorySortOrder"`,
        rowMode: 'array',
    },
 
