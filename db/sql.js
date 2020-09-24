@@ -54,10 +54,10 @@ module.exports = {
    },
 
    // SQL: FAA Pilot Certificates (for active scholarships)
-    qryFAAPilotCertificateCategoriesActiveDDL: {
+    qryFAAPilotCertificateCategoriesAlleDDL: {
        text: `SELECT   "FAAPilotCertificateCategoryID" AS optionid, "FAAPilotCertificateCategory" AS optiontext
-              FROM     public."vwFAAPilotCertificateCategoriesActive"
-              ORDER BY "FAAPilotCertificateCategory"`,
+              FROM     public."vwFAAPilotCertificateCategoriesAll"
+              ORDER BY "FAAPilotCertificateCategorySortOrder"`,
        rowMode: 'array',
    },
 
