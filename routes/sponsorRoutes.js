@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const db = require('./../db/db_config.js');
-const Sponsors = require(path.join(__dirname, '../models/', 'sponsorModels.js'));
+const Sponsors = require(path.join(__dirname, '../models/', 'sponsorModels2.js'));
 //const Sponsors = require('./../models/sponsorModels');
 const Scholarships = require('./../models/scholarshipModels');
 
