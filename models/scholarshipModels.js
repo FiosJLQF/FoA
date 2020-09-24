@@ -28,9 +28,6 @@ const ScholarshipsActive = db.define('vwScholarshipsActive', {
         type: Sequelize.INTEGER
     }
 
-// Awards, Type, Description
-
-
 }, {
     freezeTableName: true,
     // don't add the timestamp attributes (updatedAt, createdAt)

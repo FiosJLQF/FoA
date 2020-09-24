@@ -38,18 +38,18 @@ module.exports = {
    },
    
     // SQL: Enrollment Statuses (for active scholarships)
-    qryEnrollmentStatusesActiveDDL: {
-       text: `SELECT   "EnrollmentStatusID" AS optionid, "EnrollmentStatus" AS optiontext
-              FROM     public."vwEnrollmentStatusesActive"
-              ORDER BY "EnrollmentStatus"`,
+    qryEnrollmentStatusCategoriesAllDDL: {
+       text: `SELECT   "EnrollmentStatusCategoryID" AS optionid, "EnrollmentStatusCategory" AS optiontext
+              FROM     public."vwEnrollmentStatusCategoriesAll"
+              ORDER BY "EnrollmentStatusCategorySortOrder"`,
        rowMode: 'array',
    },
 
     // SQL: Military Service Categories (for active scholarships)
-    qryMilitaryServiceCategoriesActiveDDL: {
+    qryMilitaryServiceCategoriesAllDDL: {
        text: `SELECT   "MilitaryServiceCategoryID" AS optionid, "MilitaryServiceCategory" AS optiontext
-              FROM     public."vwMilitaryServiceCategoriesActive"
-              ORDER BY "MilitaryServiceCategory"`,
+              FROM     public."vwMilitaryServiceCategoriesAll"
+              ORDER BY "MilitaryServiceCategorySortOrder"`,
        rowMode: 'array',
    },
 

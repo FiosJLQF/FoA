@@ -17,27 +17,34 @@ routes.get('/', (request, response) => {
 routes.get('/scholarshipsearch', (request, response, next) => {
 
     async function queryResults() {
-            let resSponsors = await pool2.query(queries.qrySponsorsAllDDL.text);
-            const resSponsorsRows = resSponsors.rows;
+
+            // Moved to Heroku PostgreSQL
             let resFieldOfStudyCategories = await pool2.query(queries.qryFieldOfStudyCategoriesAllDDL.text);
             const resFieldOfStudyCategoriesRows = resFieldOfStudyCategories.rows;
+            let resSponsors = await pool2.query(queries.qrySponsorsAllDDL.text);
+            const resSponsorsRows = resSponsors.rows;
             let resCitizenships = await pool2.query(queries.qryCitizenshipCategoriesAllDDL.text);
             const resCitizenshipsRows = resCitizenships.rows;
             let resYearOfNeed = await pool2.query(queries.qryYearOfNeedCategoriesAllDDL.text);
             const resYearOfNeedRows = resYearOfNeed.rows;
-            let resEnrollmentStatuses = await pool.query(queries.qryEnrollmentStatusesActiveDDL.text);
+            let resEnrollmentStatuses = await pool2.query(queries.qryEnrollmentStatusCategoriesAllDDL.text);
             const resEnrollmentStatusesRows = resEnrollmentStatuses.rows;
-            let resMilitaryServiceCategories = await pool.query(queries.qryMilitaryServiceCategoriesActiveDDL.text);
+            let resMilitaryServiceCategories = await pool2.query(queries.qryMilitaryServiceCategoriesAllDDL.text);
             const resMilitaryServiceCategoriesRows = resMilitaryServiceCategories.rows;
+
+
+            // Load all scholarships
+            let resScholarships = await pool2.query(queries.qryScholarships.text);
+            const resScholarshipsRows = resScholarships.rows;
+
+            // still on A2 Hosting PostgreSQL
             let resFAAPilotCertificateCategories = await pool.query(queries.qryFAAPilotCertificateCategoriesActiveDDL.text);
             const resFAAPilotCertificateCategoriesRows = resFAAPilotCertificateCategories.rows;
             let resFAAPilotRatingCategories = await pool.query(queries.qryFAAPilotRatingCategoriesActiveDDL.text);
             const resFAAPilotRatingCategoriesRows = resFAAPilotRatingCategories.rows;
             let resFAAMechanicCertificateCategories = await pool.query(queries.qryFAAMechanicCertificateCategoriesActiveDDL.text);
             const resFAAMechanicCertificateCategoriesRows = resFAAMechanicCertificateCategories.rows;
-            // Load all scholarships
-            let resScholarships = await pool2.query(queries.qryScholarships.text);
-            const resScholarshipsRows = resScholarships.rows;
+
             // Return all data sets to the calling function
             return {
                      resSponsorsRows, 
