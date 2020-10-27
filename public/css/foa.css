@@ -316,15 +316,21 @@ a:link {
   line-height: 1.3;
 }
 
-.scholarshipsearchresultscol3B.text-block.description-short {
-  max-height: 115px; /* default to 6 lines of text */
-/*  white-space: nowrap; */
-/*  overflow: hidden; */
-/*  text-overflow: ellipsis; */
+/* .scholarshipsearchresultscol3B.text-block.description-short {  */
+.description-short {
+  width: 490px;    /* fix this later to take up the remaining screen width */
   overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+/*  max-height: 110px; /* default to 6 lines of text */ 
+/*  white-space: nowrap; */
+/*  -o-text-overflow: ellipsis; */
 }
 
-.scholarshipsearchresultscol3B.description-long {
+/* .scholarshipsearchresultscol3B.description-long { */
+.description-long {
   height: auto; /* expand to fit contents */
   overflow: visible;
 }

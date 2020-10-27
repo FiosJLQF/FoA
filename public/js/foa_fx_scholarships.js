@@ -652,8 +652,29 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber) {
                 const divScholarshipRow1Col3Row4Col2 = document.createElement('div');
                 divScholarshipRow1Col3Row4Col2.classList.add('scholarshipsearchresultscol3B');
                 divScholarshipRow1Col3Row4Col2.classList.add('text-block');
-                divScholarshipRow1Col3Row4Col2.classList.add('description-short');
-                divScholarshipRow1Col3Row4Col2.textContent = selectedScholarship['ScholarshipDescription'];
+
+//                divScholarshipRow1Col3Row4Col2.id = 'divscholarshipdesc_' + selectedScholarship['ScholarshipID'];
+//                divScholarshipRow1Col3Row4Col2.classList.add('description-short');
+//                divScholarshipRow1Col3Row4Col2.textContent = selectedScholarship['ScholarshipDescription'];
+
+                const pScholarshipDescription = document.createElement('span');
+                pScholarshipDescription.id = 'pscholarshipdesc_' + selectedScholarship['ScholarshipID'];
+                pScholarshipDescription.classList.add('description-short');
+                pScholarshipDescription.textContent = selectedScholarship['ScholarshipDescription'];
+
+                divScholarshipRow1Col3Row4Col2.appendChild(pScholarshipDescription);
+
+                    const iconDescExpand = document.createElement('i');
+                    iconDescExpand.id = "iconDescExpand_" + selectedScholarship['ScholarshipID'];
+                    iconDescExpand.classList.add('fas');
+                    iconDescExpand.classList.add('fa-chevron-down');
+                    iconDescExpand.addEventListener('click', function() {
+                        toggleShowScholarshipDescDetails(iconDescExpand.id, pScholarshipDescription.id);
+                    });
+//                    pScholarshipDescription.addEventListener('load', function() {
+//                        scholarshipDescLoaded(iconDescExpand.id, pScholarshipDescription.id)
+//                    });
+                    divScholarshipRow1Col3Row4Col2.appendChild(iconDescExpand);
 
             divScholarshipRow1Col3Rows.appendChild(divScholarshipRow1Col3Row4Col2);
 
@@ -798,7 +819,16 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber) {
         // add all scholarship search results divs to the body
         divSearchResultsColumn.appendChild(divSearchResultsDivs);
 
-    };
+        ///////////////////////////////////////////////////////////////////////////////
+        // post-render scripts
+        ///////////////////////////////////////////////////////////////////////////////
+
+        // if the "Scholarship Description" does not overflow, hide the "show/hide" chevron
+        if ( pScholarshipDescription.clientHeight >= pScholarshipDescription.scrollHeight ) {
+            iconDescExpand.style.display = 'none';
+        };
+
+    };  // loop to the next Scholarship in the array
 
     // add the page navigator bar after the results are built
     const buildPageNavResult = buildPageNavigator(matchingScholarships, pageNumber);
@@ -898,6 +928,32 @@ function toggleShowScholarshipDetails(buttonID, detailsID) {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
+// when a user clicks on the "expand/collapse" button for a scholarship description, show/hide the expanded view
+/////////////////////////////////////////////////////////////////////////////////////////////////
+function toggleShowScholarshipDescDetails(buttonID, detailsID) {
+
+    const enableButton = document.querySelector("#" + buttonID);
+    const divDescription = document.querySelector("#" + detailsID);
+
+//    alert('divDescription: ' + divDescription.id);
+
+    // if the current description is collapsed, then expand it
+    if ( divDescription.classList.contains('description-long') ) {
+//        alert('divDescription is expanded');
+        divDescription.classList.remove('description-long');
+        divDescription.classList.add('description-short');
+        enableButton.classList.add("fa-chevron-down");
+        enableButton.classList.remove("fa-chevron-up");
+    } else {  // if the current description is expanded, then collapse it
+//        alert('divDescription is collapsed');
+        divDescription.classList.add('description-long');
+        divDescription.classList.remove('description-short');
+        enableButton.classList.add("fa-chevron-up");
+        enableButton.classList.remove("fa-chevron-down");
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
 // when a user clicks on "I agreed and understand...", enable the Apply button
 /////////////////////////////////////////////////////////////////////////////////////////////////
 function toggleApplyButton(checkStatus, linkID, linkHref) {
@@ -992,4 +1048,3 @@ function loadCitizenshipList(citizenships) {
 
 }
  */
-
