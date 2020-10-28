@@ -516,7 +516,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
-// build the scholarship divs
+// build the scholarship search results divs
 /////////////////////////////////////////////////////////////////////////////////////////////////
 function buildScholarshipSearchResults(matchingScholarships, pageNumber) {
 
@@ -657,24 +657,22 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber) {
 //                divScholarshipRow1Col3Row4Col2.classList.add('description-short');
 //                divScholarshipRow1Col3Row4Col2.textContent = selectedScholarship['ScholarshipDescription'];
 
-                const pScholarshipDescription = document.createElement('span');
-                pScholarshipDescription.id = 'pscholarshipdesc_' + selectedScholarship['ScholarshipID'];
-                pScholarshipDescription.classList.add('description-short');
-                pScholarshipDescription.textContent = selectedScholarship['ScholarshipDescription'];
+                const spanScholarshipDescription = document.createElement('span');
+                spanScholarshipDescription.id = 'pscholarshipdesc_' + selectedScholarship['ScholarshipID'];
+                spanScholarshipDescription.classList.add('description-short');
+                spanScholarshipDescription.textContent = selectedScholarship['ScholarshipDescription'];
 
-                divScholarshipRow1Col3Row4Col2.appendChild(pScholarshipDescription);
+                divScholarshipRow1Col3Row4Col2.appendChild(spanScholarshipDescription);
 
                     const iconDescExpand = document.createElement('i');
                     iconDescExpand.id = "iconDescExpand_" + selectedScholarship['ScholarshipID'];
                     iconDescExpand.classList.add('fas');
                     iconDescExpand.classList.add('fa-chevron-down');
                     iconDescExpand.addEventListener('click', function() {
-                        toggleShowScholarshipDescDetails(iconDescExpand.id, pScholarshipDescription.id);
+                        toggleShowScholarshipDescDetails(iconDescExpand.id, spanScholarshipDescription.id);
                     });
-//                    pScholarshipDescription.addEventListener('load', function() {
-//                        scholarshipDescLoaded(iconDescExpand.id, pScholarshipDescription.id)
-//                    });
-                    divScholarshipRow1Col3Row4Col2.appendChild(iconDescExpand);
+
+                divScholarshipRow1Col3Row4Col2.appendChild(iconDescExpand);
 
             divScholarshipRow1Col3Rows.appendChild(divScholarshipRow1Col3Row4Col2);
 
@@ -824,7 +822,7 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber) {
         ///////////////////////////////////////////////////////////////////////////////
 
         // if the "Scholarship Description" does not overflow, hide the "show/hide" chevron
-        if ( pScholarshipDescription.clientHeight >= pScholarshipDescription.scrollHeight ) {
+        if ( spanScholarshipDescription.clientHeight >= spanScholarshipDescription.scrollHeight ) {
             iconDescExpand.style.display = 'none';
         };
 
@@ -934,8 +932,6 @@ function toggleShowScholarshipDescDetails(buttonID, detailsID) {
 
     const enableButton = document.querySelector("#" + buttonID);
     const divDescription = document.querySelector("#" + detailsID);
-
-//    alert('divDescription: ' + divDescription.id);
 
     // if the current description is collapsed, then expand it
     if ( divDescription.classList.contains('description-long') ) {

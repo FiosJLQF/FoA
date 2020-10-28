@@ -112,7 +112,14 @@ a:link {
      font-size: 0.85em;
 }
 
- .textbold {
+.scholarshipcount {
+  font-weight: bold;
+  background-color: lightcyan;
+  margin-top: 10px;
+  font-size: 0.85em;
+}
+
+.textbold {
     font-weight: bold;
  }
 
