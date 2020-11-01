@@ -491,7 +491,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
                 matchedOnKeyword += '); ';  // close the list of matching values
             };
         }
-alert(`matchKeyword ${matchKeyword}`);
+//alert(`matchKeyword ${matchKeyword}`);
 
         /*
         // check the Higher Ed Enrollment Status
