@@ -5,11 +5,11 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const pg = require('pg');
+
+// Set up local variables and file locations
 const app = express();
 const port = process.env.PORT || 3000;
 //const eventRouter = express.Router();
-
-// Set up local variables and file locations
 app.use(compression());
 app.use(express.static(path.join(__dirname, 'public')));  // publicly-accessible files (such as images and css)
 

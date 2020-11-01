@@ -1,11 +1,21 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // clear/reset the Scholarship Search Criteria
+
+const { response } = require("express");
+
 /////////////////////////////////////////////////////////////////////////////////////////////////
 function clearScholarshipSearchCriteria() {
 
-    // reset all the search criteria selections
+    // clear all errors
+    const elAgeError = document.querySelector('#filterAgeInputError');
+    elAgeError.textContent = '';
+    elAgeError.classList.remove('input-error');
+    const elGPAError = document.querySelector('#filterGPAInputError');
+    elGPAError.textContent = '';
+    elGPAError.classList.remove('input-error');
 
+    // reset all the search criteria selections
     toggleSearchCriteriaInputBlock(
         document.querySelector('#filterFieldOfStudyIcon'),
         document.querySelector('#filterFieldOfStudyInputBlock'),
@@ -36,7 +46,7 @@ function clearScholarshipSearchCriteria() {
         document.querySelector('#filterYearOfNeedInputBlock'),
         document.querySelector('#filterYearOfNeedInput'), 'hide');
 
-        toggleSearchCriteriaInputBlock(
+    toggleSearchCriteriaInputBlock(
         document.querySelector('#filterKeywordsIcon'),
         document.querySelector('#filterKeywordsInputBlock'),
         document.querySelector('#filterKeywordsInput'), 'hide');
@@ -77,12 +87,13 @@ function clearScholarshipSearchCriteria() {
         document.querySelector('#advancedSearchInputBlock'), '', 'hide')
 
     // reset the search results column (if any results are showing)
-    document.querySelector('#searchResultsTitle').textContent = 'Enter criteria and click "Search"';
-    const searchResults = document.querySelector('#searchResults');
-    if (searchResults !== null) {
-        document.querySelector('#scholarshipsearchresultscolumn').removeChild(searchResults);
-        document.querySelector('#scholarshipsearchresultscolumn').removeChild(pagination);
-    }
+    clearScholarshipSearchResults();
+//    document.querySelector('#searchResultsTitle').textContent = 'Enter criteria and click "Search"';
+//    const searchResults = document.querySelector('#searchResults');
+//    if (searchResults !== null) {
+//        document.querySelector('#scholarshipsearchresultscolumn').removeChild(searchResults);
+//        document.querySelector('#scholarshipsearchresultscolumn').removeChild(pagination);
+//    }
 
     // scroll back to the top of the page
     window.scrollTo(0,0);
@@ -91,45 +102,141 @@ function clearScholarshipSearchCriteria() {
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
+// clear Search Results
+/////////////////////////////////////////////////////////////////////////////////////////////////
+function clearScholarshipSearchResults() {
+
+    document.querySelector('#searchResultsTitle').textContent = 'Enter criteria and click "Search"';
+    const searchResults = document.querySelector('#searchResults');
+    if (searchResults !== null) {
+        document.querySelector('#scholarshipsearchresultscolumn').removeChild(searchResults);
+        document.querySelector('#scholarshipsearchresultscolumn').removeChild(pagination);
+    };
+
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
 // find matching scholarships when the Search button is pressed
 /////////////////////////////////////////////////////////////////////////////////////////////////
 function findMatchingScholarships(scholarships, pageNumber) {
 
+//alert('Starting "findMatchingScholarships"!');
+
+    ////////////////////////////////////////////////////////
     // clear the previous search results
+    ////////////////////////////////////////////////////////
     const searchResults = document.querySelector('#searchResults');
     if (searchResults !== null) {
         document.querySelector('#scholarshipsearchresultscolumn').removeChild(searchResults);
         document.querySelector('#scholarshipsearchresultscolumn').removeChild(pagination);
     }
 
+    ////////////////////////////////////////////////////////
     // variable declarations
+    ////////////////////////////////////////////////////////
     const matchingScholarships = [];
-    let matchResult = false; // the final determination of whether this scholarship matches any search criteria
-    const keywordsList = [];
-    let matchKeywords = false;
-    const sponsorsList = [];
-    let matchSponsors = false;
+    let matchedOn = '';  // what criteria was the matching on, in the format "Field of Study (engineering; maintenance);"
+    let matchResult = false;  // the final determination of whether this scholarship matches any search criteria
+    let matchCount = 0;  // the number of individual search criteria a scholarship matches on
+
+    const fieldOfStudyList = [];
+    let matchFieldOfStudy = false;
+    let matchedOnFieldOfStudy = '';
+
+    const sponsorList = [];
+    let matchSponsor = false;
+    let matchedOnSponsor = '';
+
+    let genderList = '';  // single-value SELECT only
     let matchGender = false;
-    let matchAge = false;
-//    let matchStateProvince = false;
+    let matchedOnGender = '';
+
+    let matchAge = false;  // free text
+    let matchedOnAge = '';
+
+    let citizenshipList = '';  // single-value SELECT only
     let matchCitizenship = false;
-    let matchEducationLevel = false;
+    let matchedOnCitizenship = '';
+
+    let yearOfNeedList = '';  // single-value SELECT only
+    let matchYearOfNeed = false;
+    let matchedOnYearOfNeed = '';
+
+    const keywordList = [];
+    let matchKeyword = false;
+    let matchedOnKeyword = '';
+
+    /*
     let matchHigherEdEnrollmentStatus = false;
-    let matchSchoolType = false;
-    let matchGPA = false;
     let matchUSMilitaryServiceType = false;
-    const areasOfInterestList = [];
-    let matchAreasOfInterest = false;
-//    let matchFAAMedicalCertificate = false;
     const faaPilotCertificatesList = [];
     let matchFAAPilotCertificate = false;
     const faaPilotRatingsList = [];
     let matchFAAPilotRating = false;
     const faaMechanicCertificatesList = [];
     let matchFAAMechanicCertificate = false;
+*/
 
     // scroll to the top of the page
     window.scrollTo(0,0);
+
+    ///////////////////////////////////////////////////////////
+    // Prep: Field of Study
+    ///////////////////////////////////////////////////////////
+    // format the Field of Study for use in the matching logic
+    let filterFieldOfStudyIDs = document.querySelector("#filterFieldOfStudyInput").selectedOptions;
+    [].forEach.call(filterFieldOfStudyIDs, fieldOfStudyID => {
+        if ( fieldOfStudyID.value !== "0" ) {
+            fieldOfStudyList.push('|' + fieldOfStudyID.textContent.toLowerCase() + '|');
+        }
+    })
+
+    ///////////////////////////////////////////////////////////
+    // Prep: Sponsor Names (i.e., the Sponsor IDs)
+    ///////////////////////////////////////////////////////////
+    // format the Sponsor IDs for use in the matching logic
+    let filterSponsorIDs = document.querySelector("#filterSponsorNamesInput").selectedOptions;
+    [].forEach.call(filterSponsorIDs, sponsorID => {
+        if ( sponsorID.value !== "0" ) {
+            sponsorList.push('|' + sponsorID.value + '|');
+        }
+    })
+
+    ///////////////////////////////////////////////////////////
+    // Prep: Gender
+    ///////////////////////////////////////////////////////////
+    // format the Gender for use in the matching logic
+    let filterGendersDDL = document.querySelector("#filterGenderInput");
+    let filterGenders = filterGendersDDL.options[filterGendersDDL.selectedIndex].textContent;
+    if ( filterGenders.toLowerCase() !== '(not selected)' ) {
+        genderList = '|' + filterGenders.toLowerCase() + '|';  // no forEach needed as Gender is single-value SELECT
+    };
+
+    ///////////////////////////////////////////////////////////
+    // Prep: Age
+    ///////////////////////////////////////////////////////////
+    // format the Age for use in the matching logic
+    let filterAge = document.querySelector("#filterAgeInput").value;
+
+    ///////////////////////////////////////////////////////////
+    // Prep: Citizenship
+    ///////////////////////////////////////////////////////////
+    // format the Citizenship for use in the matching logic
+    let filterCitizenshipsDDL = document.querySelector("#filterCitizenshipInput");
+    let filterCitizenships = filterCitizenshipsDDL.options[filterCitizenshipsDDL.selectedIndex].textContent;
+    if ( filterCitizenships.toLowerCase() !== '(not selected)' ) {
+        citizenshipList = '|' + filterCitizenships.toLowerCase() + '|';  // no forEach needed as Gender is single-value SELECT
+    };
+
+    ///////////////////////////////////////////////////////////
+    // Prep: Year of Need
+    ///////////////////////////////////////////////////////////
+    // format the Year Of Need for use in the matching logic
+    let filterYearOfNeedDDL = document.querySelector("#filterYearOfNeedInput");
+    let filterYearOfNeed = filterYearOfNeedDDL.options[filterYearOfNeedDDL.selectedIndex].textContent;
+    if ( filterYearOfNeed.toLowerCase() !== '(not selected)' ) {
+        yearOfNeedList = '|' + filterYearOfNeed.toLowerCase() + '|';  // no forEach needed as Year of Need is single-value SELECT
+    };
 
     ///////////////////////////////////////////////////////////
     // Prep: Keywords
@@ -144,80 +251,16 @@ function findMatchingScholarships(scholarships, pageNumber) {
             const filterKeywordsArr = filterKeywords.split(",")
             // remove whitespace around the keywords
             filterKeywordsArr.forEach( function(keyword, ind, keywords) {
-                keywordsList.push(keyword.trim());
+                keywordList.push(keyword.trim());
             });
         } else {
             // add the single value as the only element in the array
-            keywordsList.push( filterKeywords.trim() );
+            keywordList.push( filterKeywords.trim() );
         }
     }
+//alert(`keyword count: ${keywordList.length}`);
 
-    
-    ///////////////////////////////////////////////////////////
-    // Prep: Sponsor Names (i.e., the Sponsor IDs)
-    ///////////////////////////////////////////////////////////
-
-    // format the Sponsor IDs for use in the matching logic
-    let filterSponsorIDs = document.querySelector("#filterSponsorNamesInput").selectedOptions;
-
-    [].forEach.call(filterSponsorIDs, sponsorID => {
-        if ( sponsorID.value !== "0" ) {
-            sponsorsList.push(sponsorID.value);
-        }
-    })
-
-    ///////////////////////////////////////////////////////////
-    // Prep: Gender
-    ///////////////////////////////////////////////////////////
-
-    // format the Gender for use in the matching logic
-    let filterGenders = document.querySelector("#filterGenderInput"); 
-    let filterGenderText = filterGenders.options[filterGenders.selectedIndex].text;
-    let filterGenderValue = filterGenders.options[filterGenders.selectedIndex].value;
-    filterGenderText = '|' + filterGenderText.toLowerCase() + '|';
-    
-    ///////////////////////////////////////////////////////////
-    // Prep: Age
-    ///////////////////////////////////////////////////////////
-
-    // format the Age for use in the matching logic
-    let filterAge = document.querySelector("#filterAgeInput").value;
-    if ( filterAge.length === 0 ) {
-        filterAge = "";
-    } else {
-        filterAge = parseInt(filterAge);
-    }
-
-    ///////////////////////////////////////////////////////////
-    // Prep: State/Province of Residence
-    ///////////////////////////////////////////////////////////
-
-//    // format the State/Province for use in the matching logic
-//    let filterStateProvinces = document.querySelector("#filterStateProvinceInput"); 
-//    let filterStateProvinceText = filterStateProvinces.options[filterStateProvinces.selectedIndex].text;
-//    let filterStateProvinceValue = filterStateProvinces.options[filterStateProvinces.selectedIndex].value;
-//    filterStateProvinceText = '|' + filterStateProvinceText.toLowerCase() + '|';
-
-    ///////////////////////////////////////////////////////////
-    // Prep: Citizenship
-    ///////////////////////////////////////////////////////////
-
-    // format the Citizenship for use in the matching logic
-    let filterCitizenships = document.querySelector("#filterCitizenshipInput"); 
-    let filterCitizenshipText = filterCitizenships.options[filterCitizenships.selectedIndex].text;
-    let filterCitizenshipValue = filterCitizenships.options[filterCitizenships.selectedIndex].value;
-    filterCitizenshipText = '|' + filterCitizenshipText.toLowerCase() + '|';
-
-    ///////////////////////////////////////////////////////////
-    // Prep: Education Level
-    ///////////////////////////////////////////////////////////
-
-    // format the Education Level for use in the matching logic
-    let filterEducationLevels = document.querySelector("#filterEducationLevelInput"); 
-    let filterEducationLevelText = filterEducationLevels.options[filterEducationLevels.selectedIndex].text;
-    let filterEducationLevelValue = filterEducationLevels.options[filterEducationLevels.selectedIndex].value;
-    filterEducationLevelText = '|' + filterEducationLevelText.toLowerCase() + '|';
-
+/*
     ///////////////////////////////////////////////////////////
     // Prep: Higher Ed Enrollment Status
     ///////////////////////////////////////////////////////////
@@ -229,27 +272,6 @@ function findMatchingScholarships(scholarships, pageNumber) {
     filterHigherEdEnrollmentStatusText = '|' + filterHigherEdEnrollmentStatusText.toLowerCase() + '|';
 
     ///////////////////////////////////////////////////////////
-    // Prep: Type of School Attending
-    ///////////////////////////////////////////////////////////
-    // format the School Type for use in the matching logic
-    let filterSchoolTypes = document.querySelector("#filterTypeOfSchoolAttendingInput"); 
-    let filterSchoolTypeText = filterSchoolTypes.options[filterSchoolTypes.selectedIndex].text;
-    let filterSchoolTypeValue = filterSchoolTypes.options[filterSchoolTypes.selectedIndex].value;
-    filterSchoolTypeText = '|' + filterSchoolTypeText.toLowerCase() + '|';
-
-    ///////////////////////////////////////////////////////////
-    // Prep: GPA
-    ///////////////////////////////////////////////////////////
-
-    // format the GPA for use in the matching logic
-    let filterGPA = document.querySelector("#filterGPAInput").value;
-    if ( filterGPA.length === 0 ) {
-        filterGPA = "";
-    } else {
-        filterGPA = parseFloat(filterGPA);
-    }
-
-    ///////////////////////////////////////////////////////////
     // Prep: U.S. Military Service Type
     ///////////////////////////////////////////////////////////
     // format the U.S. Military Service Type for use in the matching logic
@@ -257,27 +279,6 @@ function findMatchingScholarships(scholarships, pageNumber) {
     let filterUSMilitaryServiceTypeText = filterUSMilitaryServiceTypes.options[filterUSMilitaryServiceTypes.selectedIndex].text;
     let filterUSMilitaryServiceTypeValue = filterUSMilitaryServiceTypes.options[filterUSMilitaryServiceTypes.selectedIndex].value;
     filterUSMilitaryServiceTypeText = '|' + filterUSMilitaryServiceTypeText.toLowerCase() + '|';
-
-    ///////////////////////////////////////////////////////////
-    // Prep: Areas of Interest
-    ///////////////////////////////////////////////////////////
-    // format the Areas of Interest for use in the matching logic
-    let filterAreasOfInterestIDs = document.querySelector("#filterAreasOfInterestInput").selectedOptions;
-
-    [].forEach.call(filterAreasOfInterestIDs, areaOfInterestID => {
-        if ( areaOfInterestID.value !== "0" ) {
-            areasOfInterestList.push('|' + areaOfInterestID.textContent.toLowerCase() + '|');
-        }
-    })
-
-    ///////////////////////////////////////////////////////////
-    // Prep: FAA Medical Certificate
-    ///////////////////////////////////////////////////////////
-//    // format the FAA Medical Certificate for use in the matching logic
-//    let filterFAAMedicalCertificates = document.querySelector("#filterFAAMedicalCertificateInput"); 
-//    let filterFAAMedicalCertificateText = filterFAAMedicalCertificates.options[filterFAAMedicalCertificates.selectedIndex].text;
-//    let filterFAAMedicalCertificateValue = filterFAAMedicalCertificates.options[filterFAAMedicalCertificates.selectedIndex].value;
-//    filterFAAMedicalCertificateText = '|' + filterFAAMedicalCertificateText.toLowerCase() + '|';
 
     ///////////////////////////////////////////////////////////
     // Prep: FAA Pilot Certificate
@@ -317,100 +318,182 @@ function findMatchingScholarships(scholarships, pageNumber) {
             faaMechanicCertificatesList.push('|' + faaAMechanicCertificateID.textContent.toLowerCase() + '|');
         }
     })
-
+*/
 
     ///////////////////////////////////////////////////////////
     // Create an array of matching scholarships
     ///////////////////////////////////////////////////////////
-
     for ( var i = 0; i < scholarships.length; i++ ) {
+
+//        alert('Checking scholarship #' + i + ' of ' + scholarships.length);
 
         // reset the matching variables
         matchResult = false;
-        matchKeywords = false;
-        matchSponsors = false;
+        matchedOn = '';
+        matchCount = 0;
+
+        matchFieldOfStudy = false;
+        matchedOnFieldOfStudy = '';
+
+        matchSponsor = false;
+        matchedOnSponsor = '';
+
         matchGender = false;
+        matchedOnGender = '';
+
         matchAge = false;
-//        matchStateProvince = false;
+        matchedOnAge = '';
+
         matchCitizenship = false;
-        matchEducationLevel = false;
+        matchedOnCitizenship = '';
+
+        matchYearOfNeed = false;
+        matchedOnYearOfNeed = '';
+
+        matchKeyword = false;
+        matchedOnKeyword = '';
+/*
         matchHigherEdEnrollmentStatus = false;
-        matchSchoolType = false;
         matchGPA = false;
         matchUSMilitaryServiceType = false;
-        matchAreasOfInterest = false;
-//        matchFAAMedicalCertificate = false;
         matchFAAPilotCertificate = false;
         matchFAAPilotRating = false;
         matchFAAMechanicCertificate = false;
+*/
 
-        // check the Keyword(s)
-        if ( keywordsList.length === 0 ) {
-            matchKeywords = true;
+        // check the Field of Study
+        if ( fieldOfStudyList.length === 0 || scholarships[i]['Criteria_FieldOfStudyMatchingText'].length === 0 ) {
+            matchFieldOfStudy = true;
+            matchCount++;
+            matchedOnFieldOfStudy = 'Field(s) of Study (Not Specified); ';
         } else {
-            keywordsList.forEach( function(keyword, ind, keywords) {
-                if (keyword.length > 0) {
-                    matchKeywords = matchKeywords || (
-                        scholarships[i].sponsorName.toLowerCase().includes(keyword.toLowerCase())
-                        || scholarships[i].scholarshipName.toLowerCase().includes(keyword.toLowerCase())
-                        || scholarships[i].scholarshipDescription.toLowerCase().includes(keyword.toLowerCase())
-                        || scholarships[i].scholarshipEligibilityReqs.toLowerCase().includes(keyword.toLowerCase())
-                    );
+            fieldOfStudyList.forEach( function(fieldOfStudyText) {
+                if ( scholarships[i]['Criteria_FieldOfStudyMatchingText'].toLowerCase().includes(fieldOfStudyText) ) {
+                    matchFieldOfStudy = true;
+                    matchCount++;
+                    if ( matchedOnFieldOfStudy.length === 0 ) {
+                        matchedOnFieldOfStudy = 'Field(s) of Study (';
+                    };
+                    matchedOnFieldOfStudy += fieldOfStudyText.replaceAll('|','') + '; ';
                 }
             });
+            if ( matchFieldOfStudy ) {
+                matchedOnFieldOfStudy = matchedOnFieldOfStudy.slice(0, -2);  // remove the trailing "; " characters
+                matchedOnFieldOfStudy += '); ';  // close the list of matching values
+            };
         }
 
         // check the Sponsor IDs
-        if ( sponsorsList.length === 0 ) {
-            matchSponsors = true;
+        if ( sponsorList.length === 0 ) { // don't need to check that the scholarship has a Sponsor - it's required
+            matchSponsor = true;
+            matchCount++;
+            matchedOnSponsor = 'Sponsors (Not Specified); ';
         } else {
-            sponsorsList.forEach( function(sponsorID) {
-                matchSponsors = matchSponsors || 
-                    (scholarships[i].sponsorID === sponsorID);
+            sponsorList.forEach( function(sponsorID) {
+                if ( scholarships[i]['SponsorIDMatching'].toLowerCase().includes(sponsorID) ) {
+                    matchSponsor = true;
+                    matchCount++;
+                    if ( matchedOnSponsor.length === 0 ) {
+                        matchedOnSponsor = 'Sponsor(s) (';
+                    };
+                    matchedOnSponsor += scholarships[i]['SponsorName'] + '; ';
+                }
             });
-        }            
+            if ( matchSponsor ) {
+                matchedOnSponsor = matchedOnSponsor.slice(0, -2);  // remove the trailing "; " characters
+                matchedOnSponsor += '); ';  // close the list of matching values
+            };
+        }
 
         // check the Gender
-        if ( filterGenderValue === "0"  || scholarships[i].criteriaGender.length === 0) {
+        if ( genderList.length === 0  || scholarships[i]['Criteria_GenderMatchingText'].length === 0) {
             matchGender = true;
+            matchCount++;
+            matchedOnGender = 'Gender(s) (Not Specified); ';
         } else {
-            matchGender = scholarships[i].criteriaGender.toLowerCase().includes(filterGenderText);
+            matchGender = scholarships[i]['Criteria_GenderMatchingText'].toLowerCase().includes(genderList);
+            if ( matchGender ) {
+                matchCount++;
+                matchedOnGender = 'Gender(s) (' + filterGenders + '); ';
+            };
         }
 
         // check the Age
         if ( filterAge.length === 0 || 
-                ( scholarships[i].criteriaAgeMinimum.length === 0 && scholarships[i].criteriaAgeMaximum === 0 )) {
+            ( scholarships[i]['Criteria_AgeMinimum'].length === 0 && scholarships[i]['Criteria_AgeMaximum'].length === 0 )) {
             matchAge = true;
+            matchCount++;
+            matchedOnAge = 'Age (Not Specified); ';
         } else {
-            if ( scholarships[i].criteriaAgeMaximum.length === 0 ) {
-                matchAge = (parseInt(scholarships[i].criteriaAgeMinimum) <= matchAge);
+            if ( scholarships[i]['Criteria_AgeMaximum'].length == 0 ) {
+                matchAge = (scholarships[i]['Criteria_AgeMinimum'] <= filterAge);
             } else {
-                matchAge = ((filterAge >= parseInt(scholarships[i].criteriaAgeMinimum))
-                            && (filterAge <= parseInt(scholarships[i].criteriaAgeMaximum)));
-            }
+                matchAge = ((filterAge >= scholarships[i]['Criteria_AgeMinimum'])
+                            && (filterAge <= scholarships[i]['Criteria_AgeMaximum']));
+            };
+            if ( matchAge ) {
+                matchCount++;
+                matchedOnAge = 'Age (' + filterAge + '); ';
+            };
         }
 
-//        // check the State/Province
-//        if ( filterStateProvinceValue === "0" || scholarships[i].criteriaStateProvince.length === 0 ) {
-//            matchStateProvince = true;
-//        } else {
-//            matchStateProvince = scholarships[i].criteriaStateProvince.toLowerCase().includes(filterStateProvinceText);
-//        }
-
         // check the Citizenship
-        if ( filterCitizenshipValue === "0"  || scholarships[i].criteriaCitizenship.length === 0 ) {
+        if ( citizenshipList.length === 0  || scholarships[i]['Criteria_CitizenshipMatchingText'].length === 0) {
             matchCitizenship = true;
+            matchCount++;
+            matchedOnCitizenship = 'Citizenship(s) (Not Specified); ';
         } else {
-            matchCitizenship = scholarships[i].criteriaCitizenship.toLowerCase().includes(filterCitizenshipText);
-        }   
+            matchCitizenship = scholarships[i]['Criteria_CitizenshipMatchingText'].toLowerCase().includes(citizenshipList);
+            if ( matchCitizenship ) {
+                matchCount++;
+                matchedOnCitizenship = 'Citizenship(s) (' + filterCitizenships + '); ';
+            };
+        }
 
-        // check the Level of Education
-        if ( filterEducationLevelValue === "0" || scholarships[i].criteriaEducationLevel.length === 0 ) {
-            matchEducationLevel = true;
+        // check the Year of Need
+        if ( yearOfNeedList.length === 0  || scholarships[i]['Criteria_YearOfNeedMatchingText'].length === 0) {
+            matchYearOfNeed = true;
+            matchCount++;
+            matchedOnYearOfNeed = 'Year(s) of Need (Not Specified); ';
         } else {
-            matchEducationLevel = scholarships[i].criteriaEducationLevel.toLowerCase().includes(filterEducationLevelText);
-        }       
+            matchYearOfNeed = scholarships[i]['Criteria_YearOfNeedMatchingText'].toLowerCase().includes(yearOfNeedList);
+            if ( matchYearOfNeed ) {
+                matchCount++;
+                matchedOnYearOfNeed = 'Year(s) of Need (' + filterYearOfNeed + '); ';
+            };
+        }
 
+        // check the Keyword(s)
+        if ( keywordList.length === 0 ) {
+            matchKeyword = true;
+            matchCount++;
+            matchedOnKeyword = 'Keyword(s) (Not Specified); ';
+        } else {
+            keywordList.forEach( function(keyword, ind, keywords) {
+                if (keyword.length > 0) {
+                    matchKeyword = matchKeyword || (
+                        scholarships[i]['SponsorName'].toLowerCase().includes(keyword.toLowerCase())
+                        || scholarships[i]['ScholarshipName'].toLowerCase().includes(keyword.toLowerCase())
+                        || scholarships[i]['ScholarshipDescription'].toLowerCase().includes(keyword.toLowerCase())
+                        || scholarships[i]['ScholarshipEligibilityReqs'].toLowerCase().includes(keyword.toLowerCase())
+                    );
+                    if ( matchKeyword ) {
+                        matchCount++;
+                        if ( matchedOnKeyword.length === 0 ) {
+                            matchedOnKeyword = 'Keyword(s) (';
+                        };
+                        matchedOnKeyword += keyword + '; ';
+                    };
+                };
+            });
+            if ( matchKeyword ) {
+                matchedOnKeyword = matchedOnKeyword.slice(0, -2);  // remove the trailing "; " characters
+                matchedOnKeyword += '); ';  // close the list of matching values
+            };
+        }
+alert(`matchKeyword ${matchKeyword}`);
+
+        /*
         // check the Higher Ed Enrollment Status
         if ( filterHigherEdEnrollmentStatusValue === "0" || scholarships[i].criteriaEducationLevel.length === 0 ) {
             matchHigherEdEnrollmentStatus = true;
@@ -418,12 +501,6 @@ function findMatchingScholarships(scholarships, pageNumber) {
             matchHigherEdEnrollmentStatus = scholarships[i].criteriaHigherEdEnrollmentStatus.toLowerCase().includes(filterHigherEdEnrollmentStatusText);
         }       
 
-        // check the Type of School Attending
-        if ( filterSchoolTypeValue === "0" || scholarships[i].criteriaSchoolType.length === 0 ) {
-            matchSchoolType = true;
-        } else {
-            matchSchoolType = scholarships[i].criteriaSchoolType.toLowerCase().includes(filterSchoolTypeText);
-        }       
 
         // check the GPA
         if ( filterGPA === ""  || scholarships[i].criteriaMinimumGPA.length === 0) {
@@ -438,23 +515,6 @@ function findMatchingScholarships(scholarships, pageNumber) {
         } else {
             matchUSMilitaryServiceType = scholarships[i].criteriaUSMilitaryService.toLowerCase().includes(filterUSMilitaryServiceTypeText);
         }       
-
-        // check the Areas of Interest
-        if ( areasOfInterestList.length === 0 || scholarships[i].criteriaAreasOfInterest.length === 0 ) {
-            matchAreasOfInterest = true;
-        } else {
-            areasOfInterestList.forEach( function(areaOfInterestText) {
-                matchAreasOfInterest = matchAreasOfInterest || 
-                    (scholarships[i].criteriaAreasOfInterest.toLowerCase().includes(areaOfInterestText));
-            });
-        }            
-
-//        // check the FAA Medical Certificates
-//        if ( filterFAAMedicalCertificateValue === "0" || scholarships[i].criteriaFAAMedicalCertificate.length === 0 ) {
-//            matchFAAMedicalCertificate = true;
-//        } else {
-//            matchFAAMedicalCertificate = scholarships[i].criteriaFAAMedicalCertificate.toLowerCase().includes(filterFAAMedicalCertificateText);
-//        }       
 
         // check the FAA Pilot Certificates
         if ( faaPilotCertificatesList.length === 0 || scholarships[i].criteriaFAAPilotCertificate.length === 0 ) {
@@ -487,22 +547,31 @@ function findMatchingScholarships(scholarships, pageNumber) {
         }            
 
 //                alert(`matchfaaMechanicCertificate: ${matchFAAMechanicCertificate}`);
+*/
 
-
-        // Does this scholarship match ALL of the search criteria?
-        matchResult = (matchKeywords && matchSponsors && matchGender && matchAge &&
-                       /* matchStateProvince && */ matchCitizenship && matchEducationLevel &&
-                       matchHigherEdEnrollmentStatus && matchSchoolType && matchGPA &&
-                       matchUSMilitaryServiceType && matchAreasOfInterest && /* matchFAAMedicalCertificate &&  */
-                       matchFAAPilotCertificate && matchFAAPilotRating && matchFAAMechanicCertificate);
-        if ( matchResult ) {
+        ///////////////////////////////////////////////////////////
+        // Does this scholarship match ANY of the search criteria?
+        // Note that "AND" logic is used as blank Search Criteria is set to "True" for matching purposes.
+        ///////////////////////////////////////////////////////////
+        matchedOn = matchedOnFieldOfStudy + matchedOnSponsor + matchedOnGender + matchedOnAge + matchedOnCitizenship +
+                    matchedOnYearOfNeed + matchedOnKeyword;
+        if ( matchedOn.substring(0, 2) === '; ' ) { matchedOn = matchedOn.slice(2); };
+        matchResult = (matchFieldOfStudy && matchSponsor && matchGender && matchAge && matchCitizenship &&
+                       matchYearOfNeed && matchKeyword);
+//        matchResult = ( matchHigherEdEnrollmentStatus && matchUSMilitaryServiceType && matchGPA
+//                        matchFAAPilotCertificate && matchFAAPilotRating && matchFAAMechanicCertificate);
+         if ( matchResult ) {
+            scholarships[i]['matchedOn'] = matchedOn;
+            scholarships[i]['matchCount'] = matchCount;
             matchingScholarships.push(scholarships[i]);
         }
 
     } // end scholarships "for" loop
 
 
+    ///////////////////////////////////////////////////////////
     // if matches found, build the search results; otherwise, show a message
+    ///////////////////////////////////////////////////////////
     if (matchingScholarships.length === 0) {
         document.querySelector('#searchResultsTitle').textContent = 'No results found. Try changing the search criteria for better results.';
         const searchResults = document.querySelector('#searchResults');
@@ -520,9 +589,10 @@ function findMatchingScholarships(scholarships, pageNumber) {
 /////////////////////////////////////////////////////////////////////////////////////////////////
 function buildScholarshipSearchResults(matchingScholarships, pageNumber) {
 
+//alert(`Total Scholarship Volume: ${matchingScholarships.length}`);
+
     // if a specific page number is displayed, extract just the scholarships to be built
-//alert(`Page Number: ${pageNumber}`);
-//alert(`Page Scholarship Volume: ${pageScholarshipVolume}`);
+//alert(`Page Number: ${pageNumber}; scholarships per page: ${pageScholarshipVolume}`);
     document.querySelector('#searchResultsTitle').textContent = 'Search Results:';
 
     const selectedScholarships = matchingScholarships.slice(
@@ -530,7 +600,6 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber) {
         pageNumber * pageScholarshipVolume);
 
 //        alert(`Starting Scholarship to load: ${(pageNumber-1) * pageScholarshipVolume}`);
-//        alert(`Matching Scholarshps: ${matchingScholarships.length}`);
 //        alert(`Selected Scholarshps: ${selectedScholarships.length}`);
 
     // TODO: sort the selected scholarships by "sponsored" and then the rest alphabetically
@@ -544,7 +613,7 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber) {
 
     for (let selectedScholarship of selectedScholarships) {
 
-//        alert(`Scholarship selected: ${selectedScholarship.scholarshipName}!`);
+//        alert(`Scholarship selected: ${selectedScholarship['ScholarshipName']}!`);
 
         // update looping variables
 //        scholarshipCount++;
@@ -801,6 +870,20 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber) {
 
             divScholarshipRow2Col3Rows.appendChild(divScholarshipRow2Col3Row3Col2);
 
+                // Matching Search Criteria
+                const divScholarshipRow2Col3Row4Col1 = document.createElement('div');
+                divScholarshipRow2Col3Row4Col1.classList.add('scholarshipsearchresultscol3A');
+                divScholarshipRow2Col3Row4Col1.textContent = 'Matched On:';
+
+            divScholarshipRow2Col3Rows.appendChild(divScholarshipRow2Col3Row4Col1);
+
+                const divScholarshipRow2Col3Row4Col2 = document.createElement('div');
+                divScholarshipRow2Col3Row4Col2.classList.add('scholarshipsearchresultscol3B');
+                divScholarshipRow2Col3Row4Col2.classList.add('text-block');
+                divScholarshipRow2Col3Row4Col2.innerHTML =  selectedScholarship['matchCount'] + ' Criteria: ' + selectedScholarship['matchedOn'];
+
+            divScholarshipRow2Col3Rows.appendChild(divScholarshipRow2Col3Row4Col2);
+
         divScholarshipRow2Col3.appendChild(divScholarshipRow2Col3Rows);
 
         divScholarshipRow2.appendChild(divScholarshipRow2Col3);
@@ -1044,3 +1127,67 @@ function loadCitizenshipList(citizenships) {
 
 }
  */
+
+ //////////////////////////////////////////////////////////////////////////////////////////
+// process Search Criteria submission
+//////////////////////////////////////////////////////////////////////////////////////////
+function searchScholarships(scholarships) {
+
+    // clear any previous search results
+    clearScholarshipSearchResults();
+
+    // validate the input values
+    const dataAreValidated = validateScholarshipSearchCriteria();
+    if ( dataAreValidated ) {
+        // validation passed => find and display scholarships
+        findMatchingScholarships(scholarships, 1);
+    };
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// validate Search Criteria
+//////////////////////////////////////////////////////////////////////////////////////////
+function validateScholarshipSearchCriteria() {
+
+    let errorCount = 0;
+
+    // Age
+    const elAge = document.querySelector('#filterAgeInput');
+    const elAgeError = document.querySelector('#filterAgeInputError');
+    if ( elAge.value.length == 0 ) {
+        elAgeError.textContent = '';
+        elAgeError.classList.remove('input-error');
+    } else if ( validator.isInt(elAge.value, { min: 16, max: 99}) ) {
+        elAgeError.textContent = '';
+        elAgeError.classList.remove('input-error');
+    } else {
+        errorCount++;
+        elAgeError.textContent = 'Age must be between 16 and 99';
+        elAgeError.classList.add('input-error');
+    }
+
+    // GPA
+    const elGPA = document.querySelector('#filterGPAInput');
+    const elGPAError = document.querySelector('#filterGPAInputError');
+    if ( elGPA.value.length == 0 ) {
+        elGPAError.textContent = '';
+        elGPAError.classList.remove('input-error');
+    } else if ( validator.isFloat(elGPA.value, { min: 0, max: 4}) ) {
+        elGPAError.textContent = '';
+        elGPAError.classList.remove('input-error');
+    } else {
+        errorCount++;
+        elGPAError.textContent = 'GPA must be between 0.00 and 4.00';
+        elGPAError.classList.add('input-error');
+    }
+
+    //    alert('Error Count: ' + errorCount);
+    
+    if ( errorCount == 0 ) {
+        return true;
+    } else {
+        return false;
+    }
+
+}

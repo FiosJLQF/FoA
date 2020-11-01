@@ -17,6 +17,7 @@ router.get('/', async (request, response) => {
 
         // get the options lists for the Search Criteria DDLs
         const fieldsofstudyDDL = await Scholarships.FieldOfStudyCategoriesDDL.findAll();
+        const gendersDDL = await Scholarships.GenderCategoriesDDL.findAll();
         const sponsorsDDL = await Sponsors.SponsorsDDL.findAll();
         const citizenshipsDDL = await Scholarships.CitizenshipCategoriesDDL.findAll();
         const yearsofneedDDL = await Scholarships.YearOfNeedCategoriesDDL.findAll();
@@ -28,10 +29,11 @@ router.get('/', async (request, response) => {
 
         // get a distinct list of active Scholarships, ordered by Sponsor Name, Scholarship Name
         const scholarshipsActive = await Scholarships.ScholarshipsActive.findAll();
-        console.log(`Scholarships (Active) Count: ${scholarshipsActive.length}`);
+//        console.log(`Scholarships (Active) Count: ${scholarshipsActive.length}`);
 
         return response.render('scholarshipsearch', {
             fieldsofstudyddl:           fieldsofstudyDDL,
+            gendersddl:                 gendersDDL,
             sponsorsddl:                sponsorsDDL,
             citizenshipsddl:            citizenshipsDDL,
             yearsofneedddl:             yearsofneedDDL,

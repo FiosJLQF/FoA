@@ -104,6 +104,13 @@ a:link {
  * CLASSES                                                                                    *
  ***********************************************************************************************/
 
+.input-error {
+  font-size: 0.85em;
+  margin-left: 10px;
+  color: red;
+  display: inline-block;
+}
+
  .femaleapplicantsonly {
      font-weight: bold;
      float: right;

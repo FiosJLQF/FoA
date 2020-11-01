@@ -1,8 +1,13 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 // global variables
 //////////////////////////////////////////////////////////////////////////////////////////
+
+//alert('opened foa_fx.js');
+
 const pageScholarshipVolume = 15; // number of scholarships to be displayed on a page
 const pageSponsorVolume = 15; // number of sponsors to be displayed on a page
+
+//alert('pageScholarshipVolume: ' + pageScholarshipVolume);
 
 $(document).ready(function(){
     $('#birth-date').mask('00/00/0000');
@@ -110,3 +115,4 @@ function toggleAdvancedSearchCriteriaInputBlock(elIcon, elBlock, elInput, status
         elIcon.classList.add("fa-angle-double-down");
     }
 }
+

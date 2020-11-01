@@ -30,11 +30,32 @@ const ScholarshipsActive = db.define('vwScholarshipsActive', {
     Criteria_FieldOfStudyText: {
         type: Sequelize.STRING
     },
+    Criteria_FieldOfStudyMatchingText: {
+        type: Sequelize.STRING
+    },
+    Criteria_GenderMatchingText: {
+        type: Sequelize.STRING
+    },
     Criteria_Gender_FemaleOnly: {
+        type: Sequelize.STRING
+    },
+    Criteria_AgeMinimum: {
+        type: Sequelize.INTEGER
+    },
+    Criteria_AgeMaximum: {
+        type: Sequelize.INTEGER
+    },
+    Criteria_CitizenshipMatchingText: {
+        type: Sequelize.STRING
+    },
+    Criteria_YearOfNeedMatchingText: {
         type: Sequelize.STRING
     },
     SponsorID: {
         type: Sequelize.INTEGER
+    },
+    SponsorIDMatching: {
+        type: Sequelize.STRING
     },
     SponsorLogo: {
         type: Sequelize.INTEGER
@@ -52,6 +73,22 @@ const ScholarshipsActive = db.define('vwScholarshipsActive', {
 // a list of all Fields of Study, formatted for the search criteria DDL
 ///////////////////////////////////////////////////////////////////////////////////
 const FieldOfStudyCategoriesDDL = db.define('vwFieldOfStudyCategoriesDDL', {
+    optionid: {
+        type: Sequelize.INTEGER,
+        primaryKey: true
+    },
+    optiontext: {
+        type: Sequelize.STRING
+    }
+}, {
+    freezeTableName: true,
+    timestamps: false,  // don't add the timestamp attributes (updatedAt, createdAt)
+});
+
+///////////////////////////////////////////////////////////////////////////////////
+// a list of all Genders, formatted for the search criteria DDL
+///////////////////////////////////////////////////////////////////////////////////
+const GenderCategoriesDDL = db.define('vwGenderCategoriesDDL', {
     optionid: {
         type: Sequelize.INTEGER,
         primaryKey: true
@@ -182,6 +219,7 @@ const FAAMechanicCertificateCategoriesDDL = db.define('vwFAAMechanicCertificateC
 module.exports = {
     ScholarshipsActive,
     FieldOfStudyCategoriesDDL,
+    GenderCategoriesDDL,
     CitizenshipCategoriesDDL,
     YearOfNeedCategoriesDDL,
     EnrollmentStatusCategoriesDDL,

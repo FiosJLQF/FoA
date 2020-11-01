@@ -40,11 +40,7 @@
         <i id="filterGenderIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
     </button><br>
     <div id="filterGenderInputBlock" class="filter-input-block">
-        <select id="filterGenderInput" class="filter_select">
-            <option value="0" selected>(Not Selected)</option>
-            <option value="9110001">Female</option>
-            <option value="9110002">Male</option>
-        </select><br>
+        <select id="filterGenderInput" class="filter_select"></select><br>
     </div>
 
     <!-- Age -->
@@ -57,6 +53,7 @@
     </button><br>
     <div id="filterAgeInputBlock" class="filter-input-block">
 <!--        <div class="searchInstructions">(Enter an age between 16 and 99)</div>    -->
+        <span id="filterAgeInputError"></span>
         <input type="text" id="filterAgeInput" class="filter-input filter_textbox" placeholder="##"><br>
     </div>
 
@@ -135,6 +132,7 @@
     </button><br>
     <div id="filterGPAInputBlock" class="filter-input-block">
         <div class="searchInstructions">(Enter a number between 0.00 and 4.00)</div>
+        <span id="filterGPAInputError"></span>
         <input type="text" id="filterGPAInput" class="filter-input filter_textbox"><br>
     </div>
 
@@ -200,7 +198,7 @@
 <br>
 
     <div style="text-align:left">
-        <button type="button" class="btn btn-default button-search" onclick="findMatchingScholarships(schRows, 1);">
+        <button type="button" class="btn btn-default button-search" onclick="searchScholarships(schRows);">
             <img src="/img/imgMagnifyingGlass.png" alt="Magnifying Glass" style="width:35px;" class="img-responsive">
             Search
         </button><br>
@@ -216,13 +214,19 @@
 
 <script>
 
-//alert('Test 1');
+//    clearScholarshipSearchCriteria();
+
+    //alert('Test 1');
 
 //alert('Fields of Study count: ' + <%- JSON.stringify(fieldsofstudyddl) %>);
 
     // Load the Field of Study options into the DDL
     var fosRows = <%- JSON.stringify(fieldsofstudyddl) %>;
     loadSelectOptionsList("filterFieldOfStudyInput", "(Not Selected)", 0, fosRows);
+
+    // Load the Gender options into the DDL
+    var genRows = <%- JSON.stringify(gendersddl) %>;
+    loadSelectOptionsList("filterGenderInput", "(Not Selected)", 0, genRows);
 
     // Load the Sponsor List into the DDL
     var splRows = <%- JSON.stringify(sponsorsddl) %>;
