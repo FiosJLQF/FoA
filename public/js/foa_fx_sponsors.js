@@ -1,3 +1,18 @@
+/////////////////////////////////////////////////////////////////////////////////////////////////
+// show all sponsors
+/////////////////////////////////////////////////////////////////////////////////////////////////
+function showAllSponsors(sponsors, scholarships) {
+
+    // clear any previous search results
+    clearSponsorSearchResults();
+
+    // clear any previous search criteria
+    clearSponsorSearchCriteria();
+
+    // load all scholarships
+    buildSponsorSearchResults(sponsors, scholarships, 1);
+}
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // clear/reset the Sponsor Search Criteria
@@ -273,6 +288,9 @@ function findMatchingSponsors(sponsors, scholarships, pageNumber) {
 // build the sponsor search results divs
 /////////////////////////////////////////////////////////////////////////////////////////////////
 function buildSponsorSearchResults(matchingSponsors, scholarships, pageNumber) {
+
+    // clear any previous search results
+    clearSponsorSearchResults();
 
     // get a reference to the Search Results column <div>
     document.querySelector('#searchResultsTitle').textContent = 'Search Results:';

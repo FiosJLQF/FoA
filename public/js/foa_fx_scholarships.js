@@ -1,6 +1,22 @@
 const { response } = require("express");
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
+// show all scholarships
+/////////////////////////////////////////////////////////////////////////////////////////////////
+function showAllScholarships(scholarships) {
+
+    // clear any previous search results
+    clearScholarshipSearchResults();
+
+    // clear any previous search criteria
+    clearScholarshipSearchCriteria();
+
+    // load all scholarships
+    buildScholarshipSearchResults(scholarships, 1);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
 // clear/reset the Scholarship Search Criteria
 /////////////////////////////////////////////////////////////////////////////////////////////////
 function clearScholarshipSearchCriteria() {
@@ -657,6 +673,9 @@ function findMatchingScholarships(scholarships, pageNumber) {
 function buildScholarshipSearchResults(matchingScholarships, pageNumber) {
 
 //alert(`Total Scholarship Volume: ${matchingScholarships.length}`);
+
+    // clear any previous search results
+    clearScholarshipSearchResults();
 
     // if a specific page number is displayed, extract just the scholarships to be built
 //alert(`Page Number: ${pageNumber}; scholarships per page: ${pageScholarshipVolume}`);
