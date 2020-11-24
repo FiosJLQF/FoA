@@ -12,6 +12,9 @@ const ScholarshipsActive = db.define('vwScholarshipsActive', {
     ScholarshipName: {
         type: Sequelize.STRING
     },
+    ScholarshipLink: {
+        type: Sequelize.STRING
+    },
     ScholarshipAward: {
         type: Sequelize.STRING
     },
@@ -51,6 +54,24 @@ const ScholarshipsActive = db.define('vwScholarshipsActive', {
     Criteria_YearOfNeedMatchingText: {
         type: Sequelize.STRING
     },
+    Criteria_EnrollmentStatusMatchingText: {
+        type: Sequelize.STRING
+    },
+    Criteria_GPAMinimum: {
+        type: Sequelize.NUMBER
+    },
+    Criteria_MilitaryServiceMatchingText: {
+        type: Sequelize.STRING
+    },
+    Criteria_FAAPilotCertificateMatchingText: {
+        type: Sequelize.STRING
+    },
+    Criteria_FAAPilotRatingMatchingText: {
+        type: Sequelize.STRING
+    },
+    Criteria_FAAMechanicCertificateMatchingText: {
+        type: Sequelize.STRING
+    },
     SponsorID: {
         type: Sequelize.INTEGER
     },
@@ -62,6 +83,9 @@ const ScholarshipsActive = db.define('vwScholarshipsActive', {
     },
     SponsorName: {
         type: Sequelize.INTEGER
+    },
+    SponsorTypeMatchingText: {
+        type: Sequelize.STRING
     }
 
 }, {
