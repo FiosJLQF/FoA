@@ -102,12 +102,6 @@ function clearScholarshipSearchCriteria() {
 
     // reset the search results column (if any results are showing)
     clearScholarshipSearchResults();
-//    document.querySelector('#searchResultsTitle').textContent = 'Enter criteria and click "Search"';
-//    const searchResults = document.querySelector('#searchResults');
-//    if (searchResults !== null) {
-//        document.querySelector('#scholarshipsearchresultscolumn').removeChild(searchResults);
-//        document.querySelector('#scholarshipsearchresultscolumn').removeChild(pagination);
-//    }
 
     // scroll back to the top of the page
     window.scrollTo(0,0);
@@ -140,11 +134,6 @@ function findMatchingScholarships(scholarships, pageNumber) {
     // clear the previous search results
     ////////////////////////////////////////////////////////
     clearScholarshipSearchResults();
-//    const searchResults = document.querySelector('#searchResults');
-//    if (searchResults !== null) {
-//        document.querySelector('#scholarshipsearchresultscolumn').removeChild(searchResults);
-//        document.querySelector('#scholarshipsearchresultscolumn').removeChild(pagination);
-//    }
 
     ////////////////////////////////////////////////////////
     // variable declarations
@@ -400,7 +389,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
         if ( fieldOfStudyList.length === 0 || scholarships[i]['Criteria_FieldOfStudyMatchingText'].length === 0 ) {
             matchFieldOfStudy = true;
             matchCount++;
-            matchedOnFieldOfStudy = 'Field(s) of Study (Not Specified); ';
+            matchedOnFieldOfStudy = 'Field(s) of Study; ';
         } else {
             fieldOfStudyList.forEach( function(fieldOfStudyText) {
                 if ( scholarships[i]['Criteria_FieldOfStudyMatchingText'].toLowerCase().includes(fieldOfStudyText) ) {
@@ -422,7 +411,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
         if ( sponsorList.length === 0 ) { // don't need to check that the scholarship has a Sponsor - it's required
             matchSponsor = true;
             matchCount++;
-            matchedOnSponsor = 'Sponsors (Not Specified); ';
+            matchedOnSponsor = 'Sponsors; ';
         } else {
             sponsorList.forEach( function(sponsorID) {
                 if ( scholarships[i]['SponsorIDMatching'].toLowerCase().includes(sponsorID) ) {
@@ -444,7 +433,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
         if ( genderList.length === 0  || scholarships[i]['Criteria_GenderMatchingText'].length === 0) {
             matchGender = true;
             matchCount++;
-            matchedOnGender = 'Gender(s) (Not Specified); ';
+            matchedOnGender = 'Gender(s); ';
         } else {
             matchGender = scholarships[i]['Criteria_GenderMatchingText'].toLowerCase().includes(genderList);
             if ( matchGender ) {
@@ -458,7 +447,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
             ( scholarships[i]['Criteria_AgeMinimum'].length === 0 && scholarships[i]['Criteria_AgeMaximum'].length === 0 )) {
             matchAge = true;
             matchCount++;
-            matchedOnAge = 'Age (Not Specified); ';
+            matchedOnAge = 'Age; ';
         } else {
             if ( scholarships[i]['Criteria_AgeMaximum'].length == 0 ) {
                 matchAge = (scholarships[i]['Criteria_AgeMinimum'] <= filterAge);
@@ -476,7 +465,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
         if ( citizenshipList.length === 0  || scholarships[i]['Criteria_CitizenshipMatchingText'].length === 0) {
             matchCitizenship = true;
             matchCount++;
-            matchedOnCitizenship = 'Citizenship(s) (Not Specified); ';
+            matchedOnCitizenship = 'Citizenship(s); ';
         } else {
             matchCitizenship = scholarships[i]['Criteria_CitizenshipMatchingText'].toLowerCase().includes(citizenshipList);
             if ( matchCitizenship ) {
@@ -489,7 +478,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
         if ( yearOfNeedList.length === 0  || scholarships[i]['Criteria_YearOfNeedMatchingText'].length === 0) {
             matchYearOfNeed = true;
             matchCount++;
-            matchedOnYearOfNeed = 'Year(s) of Need (Not Specified); ';
+            matchedOnYearOfNeed = 'Year(s) of Need; ';
         } else {
             matchYearOfNeed = scholarships[i]['Criteria_YearOfNeedMatchingText'].toLowerCase().includes(yearOfNeedList);
             if ( matchYearOfNeed ) {
@@ -502,7 +491,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
         if ( keywordList.length === 0 ) {
             matchKeyword = true;
             matchCount++;
-            matchedOnKeyword = 'Keyword(s) (Not Specified); ';
+            matchedOnKeyword = 'Keyword(s); ';
         } else {
             keywordList.forEach( function(keyword, ind, keywords) {
                 if (keyword.length > 0) {
@@ -531,7 +520,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
         if ( enrollmentStatusList.length === 0  || scholarships[i]['Criteria_EnrollmentStatusMatchingText'].length === 0) {
             matchEnrollmentStatus = true;
             matchCount++;
-            matchedOnEnrollmentStatus = 'Enrollment Status(es) (Not Specified); ';
+            matchedOnEnrollmentStatus = 'Enrollment Status(es); ';
         } else {
             matchEnrollmentStatus = scholarships[i]['Criteria_EnrollmentStatusMatchingText'].toLowerCase().includes(enrollmentStatusList);
             if ( matchEnrollmentStatus ) {
@@ -545,7 +534,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
             ( scholarships[i]['Criteria_GPAMinimum'].length === 0 && scholarships[i]['Criteria_GPAMaximum'].length === 0 )) {
             matchGPA = true;
             matchCount++;
-            matchedOnGPA = 'GPA (Not Specified); ';
+            matchedOnGPA = 'GPA; ';
         } else {
             matchGPA = (filterGPA >= scholarships[i]['Criteria_GPAMinimum']);
             if ( matchGPA ) {
@@ -558,7 +547,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
         if ( militaryServiceList.length === 0  || scholarships[i]['Criteria_MilitaryServiceMatchingText'].length === 0) {
             matchMilitaryService = true;
             matchCount++;
-            matchedOnMilitaryService = 'Military Service (Not Specified); ';
+            matchedOnMilitaryService = 'Military Service; ';
         } else {
             matchMilitaryService = scholarships[i]['Criteria_MilitaryServiceMatchingText'].toLowerCase().includes(militaryServiceList);
             if ( matchMilitaryService ) {
@@ -571,7 +560,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
         if ( faaPilotCertList.length === 0 || scholarships[i]['Criteria_FAAPilotCertificateMatchingText'].length === 0 ) {
             matchFAAPilotCert = true;
             matchCount++;
-            matchedOnFAAPilotCert = 'FAA Pilot Certificate(s) (Not Specified); ';
+            matchedOnFAAPilotCert = 'FAA Pilot Certificate(s); ';
         } else {
             faaPilotCertList.forEach( function(faaPilotCertText) {
                 if ( scholarships[i]['Criteria_FAAPilotCertificateMatchingText'].toLowerCase().includes(faaPilotCertText) ) {
@@ -593,7 +582,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
         if ( faaPilotRatingList.length === 0 || scholarships[i]['Criteria_FAAPilotRatingMatchingText'].length === 0 ) {
             matchFAAPilotRating = true;
             matchCount++;
-            matchedOnFAAPilotRating = 'FAA Pilot Rating(s) (Not Specified); ';
+            matchedOnFAAPilotRating = 'FAA Pilot Rating(s); ';
         } else {
             faaPilotRatingList.forEach( function(faaPilotRatingText) {
                 if ( scholarships[i]['Criteria_FAAPilotRatingMatchingText'].toLowerCase().includes(faaPilotRatingText) ) {
@@ -615,7 +604,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
         if ( faaMechanicCertRatingList.length === 0 || scholarships[i]['Criteria_FAAMechanicCertificateMatchingText'].length === 0 ) {
             matchFAAMechanicCertRating = true;
             matchCount++;
-            matchedOnFAAMechanicCertRating = 'FAA Mechanic Certificate(s)/Rating(s) (Not Specified); ';
+            matchedOnFAAMechanicCertRating = 'FAA Mechanic Certificate(s)/Rating(s); ';
         } else {
             faaMechanicCertRatingList.forEach( function(faaMechanicCertRatingText) {
                 if ( scholarships[i]['Criteria_FAAMechanicCertificateMatchingText'].toLowerCase().includes(faaMechanicCertRatingText) ) {
@@ -678,31 +667,18 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber) {
     clearScholarshipSearchResults();
 
     // if a specific page number is displayed, extract just the scholarships to be built
-//alert(`Page Number: ${pageNumber}; scholarships per page: ${pageScholarshipVolume}`);
     document.querySelector('#searchResultsTitle').textContent = 'Search Results:';
 
     const selectedScholarships = matchingScholarships.slice(
         (pageNumber-1) * pageScholarshipVolume,
         pageNumber * pageScholarshipVolume);
 
-//        alert(`Starting Scholarship to load: ${(pageNumber-1) * pageScholarshipVolume}`);
-//        alert(`Selected Scholarshps: ${selectedScholarships.length}`);
-
-    // TODO: sort the selected scholarships by "sponsored" and then the rest alphabetically
-
     // for each selected scholarship, build the initial display with the details hidden
     const divSearchResultsColumn = document.querySelector('#scholarshipsearchresultscolumn');
     const divSearchResultsDivs = document.createElement('div');
     divSearchResultsDivs.id = 'searchResults';
-//    divSearchResultsDivs.classList.add('container');
-//    divSearchResultsDivs.classList.add('bodylayout1col2');
 
     for (let selectedScholarship of selectedScholarships) {
-
-//        alert(`Scholarship selected: ${selectedScholarship['ScholarshipName']}!`);
-
-        // update looping variables
-//        scholarshipCount++;
 
         // build and add the first row (scholarship summary information)
         const divScholarshipRow1 = document.createElement('div');
@@ -1062,6 +1038,7 @@ function buildPageNavigator(matchingScholarships, pageNumberSelected) {
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // clear/reset the Sponsor/College Search Criteria
 /////////////////////////////////////////////////////////////////////////////////////////////////
+/*
 function clearSponsorCollegeSearchCritera() {
 
     document.getElementById("filter_keyword").value = "";
@@ -1073,6 +1050,8 @@ function clearSponsorCollegeSearchCritera() {
     window.scrollTo(0,0);
     
 }
+*/
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // when a user clicks on the "expand/collapse" button for a scholarship, show/hide the details
@@ -1123,6 +1102,7 @@ function toggleShowScholarshipDescDetails(buttonID, detailsID) {
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // when a user clicks on "I agreed and understand...", enable the Apply button
 /////////////////////////////////////////////////////////////////////////////////////////////////
+/*
 function toggleApplyButton(checkStatus, linkID, linkHref) {
 
     let lnkToChange = document.querySelector("#" + linkID);
@@ -1140,10 +1120,13 @@ function toggleApplyButton(checkStatus, linkID, linkHref) {
         lnkToChange.target = "";
     }
 }
+*/
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // load the list of Sponsors into the Search Criteria option
 /////////////////////////////////////////////////////////////////////////////////////////////////
+/*
 function loadSponsorList(sponsors) {
 
     // get a reference to the SELECT element
@@ -1165,56 +1148,8 @@ function loadSponsorList(sponsors) {
     });
 
 }
+*/
 
-/* // load the list of States/Provinces into the Search Criteria option
-function loadStateProvinceList(statesProvinces) {
-
-    // get a reference to the SELECT element
-    const selStateProvinceList = document.querySelector("#filterStateProvinceInput");
-
-    // create and add the "(Not Selected)" default option
-    const optStateProvinceNotSelected = document.createElement("option");
-    optStateProvinceNotSelected.textContent = "(Not Selected)";
-    optStateProvinceNotSelected.value = 0;
-    optStateProvinceNotSelected.selected = true;
-    selStateProvinceList.appendChild(optStateProvinceNotSelected);
-
-    // add options for each of the StateProvinces in the current data file
-    statesProvinces.forEach( function(stateProvince, ind) {
-        const optStateProvince = document.createElement("option");
-        optStateProvince.textContent = stateProvince.stateProvinceName;
-        optStateProvince.value = stateProvince.stateProvinceID;
-        optStateProvince.classList.add('filter-option');
-        selStateProvinceList.appendChild(optStateProvince);
-    });
-
-}
- */
-
-/*  // load the list of Citizenships into the Search Criteria option
-function loadCitizenshipList(citizenships) {
-
-    // get a reference to the SELECT element
-    const selCitizenshipList = document.querySelector("#filterCitizenshipInput");
-
-    // create and add the "(Not Selected)" default option
-    const optCitizenshipNotSelected = document.createElement("option");
-    optCitizenshipNotSelected.textContent = "(Not Selected)";
-    optCitizenshipNotSelected.value = 0;
-    optCitizenshipNotSelected.selected = true;
-    selCitizenshipList.appendChild(optCitizenshipNotSelected);
-
-    // add options for each of the Citizenships in the current data file
-    citizenships.forEach( function(citizenship, ind) {
-        const optCitizenship = document.createElement("option");
-        optCitizenship.textContent = citizenship.citizenshipName;
-        optCitizenship.value = citizenship.citizenshipID;
-        optCitizenship.classList.add('filter-option');
-        selCitizenshipList.appendChild(optCitizenship);
-    });
-
-}
- */
 
  //////////////////////////////////////////////////////////////////////////////////////////
 // process Search Criteria submission

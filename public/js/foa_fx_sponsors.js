@@ -9,7 +9,7 @@ function showAllSponsors(sponsors, scholarships) {
     // clear any previous search criteria
     clearSponsorSearchCriteria();
 
-    // load all scholarships
+    // load all sponsors
     buildSponsorSearchResults(sponsors, scholarships, 1);
 }
 
@@ -38,12 +38,6 @@ function clearSponsorSearchCriteria() {
 
     // reset the search results column (if any results are showing)
     clearSponsorSearchResults();
-//    document.querySelector('#searchResultsTitle').textContent = 'Enter criteria and click "Search"';
-//    const searchResults = document.querySelector('#searchResults');
-//    if (searchResults !== null) {
-//        document.querySelector('#sponsorsearchresultscolumn').removeChild(searchResults);
-//        document.querySelector('#sponsorsearchresultscolumn').removeChild(pagination);
-//    }
 
     // scroll back to the top of the page
     window.scrollTo(0,0);
@@ -76,31 +70,14 @@ function findMatchingSponsors(sponsors, scholarships, pageNumber) {
     // clear the previous search results
     ////////////////////////////////////////////////////////
     clearSponsorSearchResults();
-//    const searchResults = document.querySelector('#searchResults');
-//    if (searchResults !== null) {
-//        document.querySelector('#scholarshipsearchresultscolumn').removeChild(searchResults);
-//        document.querySelector('#scholarshipsearchresultscolumn').removeChild(pagination);
-//    }
 
     ////////////////////////////////////////////////////////
     // variable declarations
     ////////////////////////////////////////////////////////
-
-
-
-
-
-// START RECODING TO "matchSponsors" DATASET FROM HERE!
-
-    const matchingScholarships = [];
-
-
-
-
-
+    const matchingSponsors = [];
     let matchedOn = '';  // what criteria was the matching on, in the format "Sponsor Type(s) (astronautics, air traffic control);"
-    let matchResult = false; // the final determination of whether this scholarship matches any search criteria
-    let matchCount = 0;   // the number of individual search criteria a scholarship matches on
+    let matchResult = false; // the final determination of whether this sponsor matches any search criteria
+    let matchCount = 0;   // the number of individual search criteria a sponsor matches on
 
     const keywordList = [];  // free text, comma-delimited
     let matchKeyword = false;
@@ -147,7 +124,7 @@ function findMatchingSponsors(sponsors, scholarships, pageNumber) {
 
     [].forEach.call(filterSponsorIDs, sponsorID => {
         if ( sponsorID.value !== "0" ) {
-            sponsorsList.push(sponsorID.value);
+            sponsorList.push(sponsorID.value);
         }
     })
 
@@ -163,9 +140,11 @@ function findMatchingSponsors(sponsors, scholarships, pageNumber) {
     })
 
     ///////////////////////////////////////////////////////////
-    // Create an array of matching scholarships
+    // Create an array of matching sponsors
     ///////////////////////////////////////////////////////////
-    for ( var i = 0; i < scholarships.length; i++ ) {
+    for ( var i = 0; i < sponsors.length; i++ ) {
+
+//        alert('Checking sponsor #' + i + ' of ' + sponsors.length);
 
         // reset the matching variables
         matchResult = false;
@@ -190,10 +169,8 @@ function findMatchingSponsors(sponsors, scholarships, pageNumber) {
             keywordList.forEach( function(keyword, ind, keywords) {
                 if (keyword.length > 0) {
                     matchKeyword = matchKeyword || (
-                        scholarships[i]['SponsorName'].toLowerCase().includes(keyword.toLowerCase())
-                        || scholarships[i]['ScholarshipName'].toLowerCase().includes(keyword.toLowerCase())
-                        || scholarships[i]['ScholarshipDescription'].toLowerCase().includes(keyword.toLowerCase())
-                        || scholarships[i]['ScholarshipEligibilityReqs'].toLowerCase().includes(keyword.toLowerCase())
+                        sponsors[i]['SponsorName'].toLowerCase().includes(keyword.toLowerCase())
+                        || sponsors[i]['SponsorDescription'].toLowerCase().includes(keyword.toLowerCase())
                     );
                     if ( matchKeyword ) {
                         matchCount++;
@@ -217,13 +194,13 @@ function findMatchingSponsors(sponsors, scholarships, pageNumber) {
             matchedOnSponsor = 'Sponsors (Not Specified); ';
         } else {
             sponsorList.forEach( function(sponsorID) {
-                if ( scholarships[i]['SponsorIDMatching'].toLowerCase().includes(sponsorID) ) {
+                if ( sponsors[i]['SponsorIDMatching'].toLowerCase().includes(sponsorID) ) {
                     matchSponsor = true;
                     matchCount++;
                     if ( matchedOnSponsor.length === 0 ) {
                         matchedOnSponsor = 'Sponsor(s) (';
                     };
-                    matchedOnSponsor += scholarships[i]['SponsorName'] + '; ';
+                    matchedOnSponsor += sponsors[i]['SponsorName'] + '; ';
                 }
             });
             if ( matchSponsor ) {
@@ -233,13 +210,13 @@ function findMatchingSponsors(sponsors, scholarships, pageNumber) {
         }
 
         // check the Sponsor Type
-        if ( sponsorTypeList.length === 0 || scholarships[i]['SponsorTypeMatchingText'].length === 0 ) {
+        if ( sponsorTypeList.length === 0 || sponsors[i]['SponsorTypeMatchingText'].length === 0 ) {
             matchSponsorType = true;
             matchCount++;
             matchedOnSponsorType = 'Sponsor Type(s) (Not Specified); ';
         } else {
             sponsorTypeList.forEach( function(sponsorTypeText) {
-                if ( scholarships[i]['SponsorTypeMatchingText'].toLowerCase().includes(sponsorTypeText) ) {
+                if ( sponsors[i]['SponsorTypeMatchingText'].toLowerCase().includes(sponsorTypeText) ) {
                     matchSponsorType = true;
                     matchCount++;
                     if ( matchedOnSponsorType.length === 0 ) {
@@ -262,9 +239,9 @@ function findMatchingSponsors(sponsors, scholarships, pageNumber) {
         if ( matchedOn.substring(0, 2) === '; ' ) { matchedOn = matchedOn.slice(2); };
         matchResult = (matchKeyword && matchSponsor && matchSponsorType);
          if ( matchResult ) {
-            scholarships[i]['matchedOn'] = matchedOn;
-            scholarships[i]['matchCount'] = matchCount;
-            matchingScholarships.push(scholarships[i]);
+            sponsors[i]['matchedOn'] = matchedOn;
+            sponsors[i]['matchCount'] = matchCount;
+            matchingSponsors.push(sponsors[i]);
         }
 
     } // end scholarships "for" loop
@@ -273,13 +250,13 @@ function findMatchingSponsors(sponsors, scholarships, pageNumber) {
     ///////////////////////////////////////////////////////////
     // if matches found, build the search results; otherwise, show a message
     ///////////////////////////////////////////////////////////
-    if (matchingScholarships.length === 0) {
+    if (matchingSponsors.length === 0) {
         document.querySelector('#searchResultsTitle').textContent = 'No results found. Try changing the search criteria for better results.';
         const searchResults = document.querySelector('#searchResults');
-        document.querySelector('#scholarshipsearchresultscolumn').removeChild(searchResults);
+        document.querySelector('#sponsorsearchresultscolumn').removeChild(searchResults);
     } else {
-        // build "scholarship search results"
-        const createResults = buildSponsorSearchResults(matchingScholarships, pageNumber);
+        // build "sponsor search results"
+        const createResults = buildSponsorSearchResults(matchingSponsors, scholarships, pageNumber);
     }
 
 }
@@ -420,6 +397,7 @@ function buildPageNavigator(matchingSponsors, scholarships, pageNumberSelected) 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // clear/reset the Sponsor/College Search Criteria
 /////////////////////////////////////////////////////////////////////////////////////////////////
+/*
 function clearSponsorCollegeSearchCritera() {
 
     document.getElementById("filter_keyword").value = "";
@@ -431,6 +409,8 @@ function clearSponsorCollegeSearchCritera() {
     window.scrollTo(0,0);
     
 }
+*/
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // when a user clicks on the "expand/collapse" button for a sponsor, show/hide the details

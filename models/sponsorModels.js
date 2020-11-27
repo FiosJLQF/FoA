@@ -9,6 +9,9 @@ const SponsorsAll = db.define('vwSponsorsAll', {
         type: Sequelize.INTEGER,
         primaryKey: true
     },
+    SponsorIDMatching: {
+        type: Sequelize.STRING
+    },
     SponsorName: {
         type: Sequelize.STRING
     },
@@ -37,6 +40,9 @@ const SponsorsAll = db.define('vwSponsorsAll', {
         type: Sequelize.STRING
     },
     SponsorTypeText: {
+        type: Sequelize.STRING
+    },
+    SponsorTypeMatchingText: {
         type: Sequelize.STRING
     }
 }, {
