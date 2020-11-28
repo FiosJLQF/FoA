@@ -303,8 +303,9 @@ a:link {
   width: 140px;
   font-size: 0.875em;
   font-variant: normal;
-  padding-top: 3px;
+  padding-top: 6px;
   font-weight: bold;
+  line-height: 1.3;
 }
 
 .scholarshipsearchresultscol3A.text-block {
