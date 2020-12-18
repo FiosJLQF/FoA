@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
-const db = require('./../db/db_config.js');
-const Sponsors = require(path.join(__dirname, '../models/', 'sponsorModels.js'));
-const Scholarships = require(path.join(__dirname, '../models/', 'scholarshipModels.js'));
+//const db = require('./../db/db_config.js');
+//const Sponsors = require(path.join(__dirname, '../models/', 'sponsorModels.js'));
+//const Scholarships = require(path.join(__dirname, '../models/', 'scholarshipModels.js'));
+const { response } = require('../app');
+const { requiresAuth } = require('express-openid-connect');
 
 // All routes that start with "/sponsorsearch"; since this is part of the definition in app.js
 // the "/" implies "/sponsorsearch".
@@ -45,7 +47,7 @@ router.get('/', async (request, response) => {
     }
 });
 
-router.get('/switchboard', async (request, response) => {
+router.get('/switchboard', /* requiresAuth(), */ async (request, response) => {
 
         try {
             // get a distinct list of Sponsors
@@ -78,7 +80,13 @@ router.get('/switchboard', async (request, response) => {
             console.log('Error:' + err);
         }
     });
-    
+
+router.get('/userprofile', /* requiresAuth(), */ (request, response) => {
+//    response.send(`Hello ${req.oidc.user.sub}, this is the admin section.`);
+//    res.send(JSON.stringify(req.oidc.user));
+    return response.render('userprofile', { })
+});    
+
 ///////////////////////////////////////////////////////////////////////////////////
 // export all routes
 ///////////////////////////////////////////////////////////////////////////////////

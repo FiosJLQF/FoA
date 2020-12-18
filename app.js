@@ -1,12 +1,17 @@
+///////////////////////////////////////////////////////////////////////////////////
 // Import and require external libraries/files
+///////////////////////////////////////////////////////////////////////////////////
 const compression = require('compression');
 const express = require('express');
 //const routes = require('./routes');
 const path = require('path');
 const bodyParser = require('body-parser');
 const pg = require('pg');
+require("dotenv").config();
 
+///////////////////////////////////////////////////////////////////////////////////
 // Set up local variables and file locations
+///////////////////////////////////////////////////////////////////////////////////
 const app = express();
 const port = process.env.PORT || 3000;
 //const eventRouter = express.Router();
@@ -16,6 +21,10 @@ app.use(express.static(path.join(__dirname, 'public')));  // publicly-accessible
 // FINISH THIS LATER!
 //app.use(bodyParser.urlencoded({extended: false}));
 
+
+///////////////////////////////////////////////////////////////////////////////////
+// App Configuration
+///////////////////////////////////////////////////////////////////////////////////
 app.set('views', 'views');  // HTML pages and templates, using EJS for templating
 app.set('view engine', 'ejs');  // Sets the EJS engine
 //app.use('/', routes);  // imports the root folder URL endpoint routes from index.js
@@ -25,9 +34,28 @@ app.use('/portal', require('./routes/portalRoutes'));  // imports the "sponsors"
 
 
 ///////////////////////////////////////////////////////////////////////////////////
+// Session Configuration
+///////////////////////////////////////////////////////////////////////////////////
+const session = {
+    secret: process.env.SESSION_SECRET,
+    cookie: {},
+    resave: false,
+    saveUninitialized: false
+};
+if (app.get("env") === "production") {
+    // Serve secure cookies, requires HTTPS
+    session.cookie.secure = true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
 // Auth0 Configuration
 ///////////////////////////////////////////////////////////////////////////////////
-const { auth } = require('express-openid-connect');
+const expressSession = require("express-session");
+const passport = require("passport");
+const Auth0Strategy = require("passport-auth0");
+const { auth, requiresAuth } = require('express-openid-connect');
 const config = {
   authRequired: false,
   auth0Logout: true,
@@ -56,6 +84,22 @@ app.get('/', (req, res) => { // req.isAuthenticated is provided from the auth ro
 //    // app.set('trust proxy', 1);
 //}
 //app.use(session(sess));
+
+
+
+
+app.get('/switchboard', requiresAuth(), async (request, response) => {
+
+    try {
+        return response.render('switchboard', {
+        })
+    } catch(err) {
+        console.log('Error:' + err);
+    }
+});
+
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////
