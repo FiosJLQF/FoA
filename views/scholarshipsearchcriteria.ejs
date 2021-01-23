@@ -3,8 +3,6 @@
     <hr class="bodycol1break">
     <div class="searchInstructions">Enter search criteria below and click "search".</div><br>
 
-<!-- <%= fieldsofstudyddl[0]['optiontext'] %><br> -->
-
     <!-- Field(s) of Study -->
     Field(s) of Study: <button type="button" class="btn btn-default button-small"
         onclick="toggleSearchCriteriaInputBlock(
@@ -214,54 +212,48 @@
 
 <script>
 
-//    clearScholarshipSearchCriteria();
-
-    //alert('Test 1');
-
-//alert('Fields of Study count: ' + <%- JSON.stringify(fieldsofstudyddl) %>);
-
     // Load the Field of Study options into the DDL
-    var fosRows = <%- JSON.stringify(fieldsofstudyddl) %>;
+    var fosRows = <%- JSON.stringify(fieldOfStudyCategoriesDDL.rows) %>;
     loadSelectOptionsList("filterFieldOfStudyInput", "(Not Selected)", 0, fosRows);
 
-    // Load the Gender options into the DDL
-    var genRows = <%- JSON.stringify(gendersddl) %>;
-    loadSelectOptionsList("filterGenderInput", "(Not Selected)", 0, genRows);
-
     // Load the Sponsor List into the DDL
-    var splRows = <%- JSON.stringify(sponsorsddl) %>;
+    var splRows = <%- JSON.stringify(sponsorsDDL.rows) %>;
     loadSelectOptionsList("filterSponsorNamesInput", "(Not Selected)", 0, splRows);
 
+    // Load the Gender options into the DDL
+    var genRows = <%- JSON.stringify(genderCategoriesDDL.rows) %>;
+    loadSelectOptionsList("filterGenderInput", "(Not Selected)", 0, genRows);
+
     // Load the Citizenship options into the DDL
-    var citRows = <%- JSON.stringify(citizenshipsddl) %>;
+    var citRows = <%- JSON.stringify(citizenshipCategoriesDDL.rows) %>;
     loadSelectOptionsList("filterCitizenshipInput", "(Not Selected)", 0, citRows);
 
     // Load the Year of Need options into the DDL
-    var yonRows = <%- JSON.stringify(yearsofneedddl) %>;
+    var yonRows = <%- JSON.stringify(yearOfNeedCategoriesDDL.rows) %>;
     loadSelectOptionsList("filterYearOfNeedInput", "(Not Selected)", 0, yonRows);
 
     // Load the Enrollment Status options into the DDL
-    var esRows = <%- JSON.stringify(enrollmentstatusesddl) %>;
+    var esRows = <%- JSON.stringify(enrollmentStatusCategoriesDDL.rows) %>;
     loadSelectOptionsList("filterEnrollmentStatusInput", "(Not Selected)", 0, esRows);
 
     // Load the Military Service Type options into the DDL
-    var msRows = <%- JSON.stringify(militaryservicetypesddl) %>;
+    var msRows = <%- JSON.stringify(militaryServiceCategoriesDDL.rows) %>;
     loadSelectOptionsList("filterUSMilitaryServiceInput", "(Not Selected)", 0, msRows);
 
     // Load the FAA Pilot Certificate options into the DDL
-    var fpcRows = <%- JSON.stringify(faapilotcertificatesddl) %>;
+    var fpcRows = <%- JSON.stringify(faaPilotCertificateCategoriesDDL.rows) %>;
     loadSelectOptionsList("filterFAAPilotCertificateInput", "(Not Selected)", 0, fpcRows);
 
     // Load the FAA Pilot Rating options into the DDL
-    var fprRows = <%- JSON.stringify(faapilotratingsddl) %>;
+    var fprRows = <%- JSON.stringify(faaPilotRatingCategoriesDDL.rows) %>;
     loadSelectOptionsList("filterFAAPilotRatingInput", "(Not Selected)", 0, fprRows);
 
     // Load the FAA Mechanic Certificate options into the DDL
-    var fmcRows = <%- JSON.stringify(faamechaniccertificatesddl) %>;
+    var fmcRows = <%- JSON.stringify(faaMechanicCertificateCategoriesDDL.rows) %>;
     loadSelectOptionsList("filterFAAMechanicCertRatingInput", "(Not Selected)", 0, fmcRows);
 
     // Load all active scholarships into the "Search" button destinations
-    var schRows = <%- JSON.stringify(scholarships) %>;
+    var schRows = <%- JSON.stringify(scholarshipsActive.rows) %>;
 
 //alert('Test 2');
 

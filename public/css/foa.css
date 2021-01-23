@@ -30,6 +30,12 @@ div.navigationbar {
 
 }
 
+span.span-paragraph {
+  font-size: 1.0em;
+  color: var(--amcg-blue);
+  line-height: 0.75;
+}
+
 hr {
     display: block;
     height: 1px;
@@ -41,8 +47,9 @@ hr {
 
 hr.pagetitlebreak{
     border-top: 2px solid var(--amcg-yellow);
-    height: 40px;
+    height: 20px;
     width: 172px;
+    color: transparent;
 }
 
 hr.bodycol1break{
@@ -77,17 +84,34 @@ a:link {
     color: var(--amcg-blue);
     background-color: transparent;
     text-decoration: none;
-  }
+}
   
-  a:visited {
-    color: var(--amcg-blue);  /* don't change the color of a visited link */
-    background-color: transparent;
-    text-decoration: none;
-  }
+a:visited {
+  color: var(--amcg-blue);  /* don't change the color of a visited link */
+  background-color: transparent;
+  text-decoration: none;
+}
 
-  br.halfBreak {
-    line-height: 0.25;
-  }
+a.a-paragraph {
+  text-decoration: underline;
+}
+
+br.halfBreak {
+  line-height: 0.25;
+}
+
+label.label-paragraph {
+  font-weight: bold;
+  color: var(--amcg-blue);
+}
+
+label.label-paragraph-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: var(--amcg-blue);
+}
+
 
  /***********************************************************************************************
  * IDs                                                                                          *
@@ -220,6 +244,7 @@ a:link {
 .bodylayout1col2title {
   font-size: 1.125em;
   font-weight: bold;
+  line-height: 1.0;
 }
 
 .expand-filter {
