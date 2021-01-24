@@ -31,6 +31,8 @@ sequelize.authenticate().then(() => {
 **************************************************************************************************/
 const ScholarshipsActiveModel = require('./scholarships.model');
 const ScholarshipsActive = ScholarshipsActiveModel(sequelize, DataTypes);
+const ScholarshipsDDLModel = require('./scholarshipnameddl.model');
+const ScholarshipsDDL = ScholarshipsDDLModel(sequelize, DataTypes);
 const FieldOfStudyCategoriesDDLModel = require('./fieldofstudyddl.model');
 const FieldOfStudyCategoriesDDL = FieldOfStudyCategoriesDDLModel(sequelize, DataTypes);
 const SponsorsDDLModel = require('./sponsornameddl.model');
@@ -62,6 +64,7 @@ const SponsorTypeCategoriesDDL = SponsorTypeCategoriesDDLModel(sequelize, DataTy
 **************************************************************************************************/
 module.exports = {
   ScholarshipsActive,
+  ScholarshipsDDL,
   FieldOfStudyCategoriesDDL,
   SponsorsDDL,
   GenderCategoriesDDL,

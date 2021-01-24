@@ -44,7 +44,24 @@
     <!-- Included Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-
+    <script>
+      var navbarLoginLink = document.querySelector('#navbarLogIn');
+      var navbarSwitchboardLink = document.querySelector('#navbarSwitchboard');
+      var userName = <%- JSON.stringify(userName) %>;
+      if ( userName !== '' ) {
+        navbarLoginLink.textContent = "Log Out";
+        navbarLoginLink.href = "/logout/portal";
+        navbarSwitchboardLink.style.display = "block";
+        navbarSwitchboardLink.textContent = "Switchboard";
+        navbarSwitchboardLink.href = "/switchboard";
+      } else {
+        navbarLoginLink.textContent = "Log In / Sign Up";
+        navbarLoginLink.href = "/portal";
+        navbarSwitchboardLink.style.display = "none";
+        navbarSwitchboardLink.textContent = "";
+        navbarSwitchboardLink.href = "";
+      };
+</script>
   </body>
 </html>
 

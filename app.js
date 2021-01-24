@@ -11,9 +11,10 @@ const compression = require('compression');
 const expressSession = require("express-session");
 const { auth, requiresAuth } = require('express-openid-connect');
 const port = process.env.PORT || 3000;
-const { ScholarshipsActive, FieldOfStudyCategoriesDDL, SponsorsDDL, GenderCategoriesDDL, CitizenshipCategoriesDDL,
-        YearOfNeedCategoriesDDL, EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
-        FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, Sponsors, SponsorTypeCategoriesDDL
+const { ScholarshipsActive, ScholarshipsDDL, FieldOfStudyCategoriesDDL, SponsorsDDL, GenderCategoriesDDL,
+        CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL, EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL,
+        FAAPilotCertificateCategoriesDDL, FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, Sponsors,
+        SponsorTypeCategoriesDDL
     } = require('./models/sequelize.js');
 const cors = require('cors');
 
@@ -95,6 +96,7 @@ app.get('/scholarshipsearch', async (req, res) => {
     const faaPilotRatingCategoriesDDL = await FAAPilotRatingCategoriesDDL.findAndCountAll({});
     const faaMechanicCertificateCategoriesDDL = await FAAMechanicCertificateCategoriesDDL.findAndCountAll({});
     res.render('scholarshipsearch', {
+        userName: ( req.oidc.user == null ? '' : req.oidc.user.name ),
         scholarshipsActive, fieldOfStudyCategoriesDDL, sponsorsDDL, genderCategoriesDDL, citizenshipCategoriesDDL,
         yearOfNeedCategoriesDDL, enrollmentStatusCategoriesDDL, militaryServiceCategoriesDDL, faaPilotCertificateCategoriesDDL,
         faaPilotRatingCategoriesDDL, faaMechanicCertificateCategoriesDDL
@@ -103,17 +105,22 @@ app.get('/scholarshipsearch', async (req, res) => {
 
 app.get('/sponsorsearch', async (req, res) => {
     const sponsors = await Sponsors.findAndCountAll({});
-    console.log(sponsors.count);
+//    console.log(sponsors.count);
     const sponsorsDDL = await SponsorsDDL.findAndCountAll({});
     const sponsorTypeCategoriesDDL = await SponsorTypeCategoriesDDL.findAndCountAll({});
     const scholarshipsActive = await ScholarshipsActive.findAndCountAll({});
     console.log(scholarshipsActive.count);
-    res.render('sponsorsearch', { sponsors, sponsorsDDL, sponsorTypeCategoriesDDL, scholarshipsActive });
+    res.render('sponsorsearch', {
+        userName: ( req.oidc.user == null ? '' : req.oidc.user.name ),
+        sponsors, sponsorsDDL, sponsorTypeCategoriesDDL, scholarshipsActive });
 });
 
 app.get('/portal', async (req, res) => {
     try {
-        return res.render('portal')
+        return res.render('portal', {
+            user: req.oidc.user,
+            userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+        } )
     } catch(err) {
         console.log('Error:' + err);
     }
@@ -121,8 +128,13 @@ app.get('/portal', async (req, res) => {
 
 app.get('/switchboard', requiresAuth(), async (req, res) => {
     try {
+        const sponsorsDDL = await SponsorsDDL.findAndCountAll({});
+        const scholarshipsDDL = await ScholarshipsDDL.findAndCountAll({});
         return res.render('switchboard', {
             user: req.oidc.user,
+            userName: ( req.oidc.user == null ? '' : req.oidc.user.name ),
+            sponsorsDDL,
+            scholarshipsDDL
         })
     } catch(err) {
         console.log('Error:' + err);

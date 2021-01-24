@@ -36,6 +36,10 @@ span.span-paragraph {
   line-height: 0.75;
 }
 
+span.float-right {
+  float: right;
+}
+
 hr {
     display: block;
     height: 1px;
@@ -110,6 +114,11 @@ label.label-paragraph-title {
   font-weight: bold;
   text-decoration: underline;
   color: var(--amcg-blue);
+}
+
+select.single-choice {
+  font-size: 0.875em;
+  width: 98%;
 }
 
 
@@ -228,12 +237,20 @@ label.label-paragraph-title {
 
 .searchInstructions {
   font-size: 0.825em;
+  white-space:nowrap;
 }
 
 .button-small {
   font-size: 0.825em;
   padding: 0px;
   margin: 0px 0px 0px 5px;
+  color: var(--amcg-blue);
+}
+
+.button-normal-nomargins {
+  font-size: 1.0em;
+  padding: 0px;
+  margin: 0px;
   color: var(--amcg-blue);
 }
 
