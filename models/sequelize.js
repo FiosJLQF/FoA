@@ -29,10 +29,15 @@ sequelize.authenticate().then(() => {
 /**************************************************************************************************
   Import all models
 **************************************************************************************************/
-const ScholarshipsActiveModel = require('./scholarships.model');
+const ScholarshipsTableModel = require('./scholarshipsTable.model');
+const ScholarshipsTable = ScholarshipsTableModel(sequelize, DataTypes);
+ScholarshipsTable.removeAttribute('id');  // a different, auto-populated primary key is used in the DB
+const ScholarshipsActiveModel = require('./scholarshipsActiveView.model');
 const ScholarshipsActive = ScholarshipsActiveModel(sequelize, DataTypes);
 const ScholarshipsDDLModel = require('./scholarshipnameddl.model');
 const ScholarshipsDDL = ScholarshipsDDLModel(sequelize, DataTypes);
+const ScholarshipsAllDDLModel = require('./scholarshipnameallddl.model');
+const ScholarshipsAllDDL = ScholarshipsAllDDLModel(sequelize, DataTypes);
 const FieldOfStudyCategoriesDDLModel = require('./fieldofstudyddl.model');
 const FieldOfStudyCategoriesDDL = FieldOfStudyCategoriesDDLModel(sequelize, DataTypes);
 const SponsorsDDLModel = require('./sponsornameddl.model');
@@ -63,8 +68,10 @@ const SponsorTypeCategoriesDDL = SponsorTypeCategoriesDDLModel(sequelize, DataTy
   Export objects
 **************************************************************************************************/
 module.exports = {
+  ScholarshipsTable,
   ScholarshipsActive,
   ScholarshipsDDL,
+  ScholarshipsAllDDL,
   FieldOfStudyCategoriesDDL,
   SponsorsDDL,
   GenderCategoriesDDL,

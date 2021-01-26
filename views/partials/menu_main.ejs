@@ -1,0 +1,55 @@
+<div id="switchboardsidemenu" class="col-3 bodylayout1col1">
+  <div class="bodylayout1col1title" id="searchCriteriaTitle">Main Menu</div>
+  <hr class="bodycol1break">
+  <div class="searchInstructions">Select an item from the options below:</div><br>
+
+  <!-- My Account Info -->
+  <div id="myAccount">
+    <button type="button" class="btn btn-default button-normal-nomargins" onclick="">My Account (<%= user.email %>)</button>
+  </div><br>
+
+  <!-- Sponsor Name(s) -->
+  Sponsor(s):
+  <span id="addSponsor" class="float-right">
+    <button type="button" class="btn btn-default button-small" onclick="">Add Sponsor</button>&nbsp;
+  </span>
+  <div id="filterSponsorNamesInputBlock">
+    <select id="filterSponsorNamesInput" class="single-choice" onchange="gotoSponsorDetails(this.value)"></select><br>
+  </div><br>
+
+  <!-- Scholarship(s) -->
+  <div>
+    Scholarship(s):
+      <span id="addSponsor" class="float-right"><a id="addScholarship" class="btn btn-default button-small"
+        href="/scholarshipAdd/<%= SponsorID %>">Add Scholarship</a>&nbsp;</span>
+  </div>
+  <span class="searchInstructions">&nbsp;&nbsp;&nbsp;(Filtered to the Sponsor selected above.)</span>
+  <div id="filterScholarshipsInputBlock">
+    <select id="filterScholarshipsInput" class="single-choice" onchange="gotoScholarshipEdit(this.value)"></select><br>
+  </div><br>
+
+</div>  <!-- End column 1 DIV -->
+
+<script>
+
+  // Load the Sponsor List into the DDL
+  var splRows = <%- JSON.stringify(sponsorsDDL.rows) %>;
+  loadSelectOptionsList("filterSponsorNamesInput", "(Not Selected)", 0, splRows, '<%= SponsorID %>');
+
+  // Load the Scholarships List into the DDL
+  var schRows = <%- JSON.stringify(scholarshipsAllDDL.rows) %>;
+  loadSelectOptionsList("filterScholarshipsInput", "(Not Selected)", 0, schRows, '<%= ScholarshipID %>');
+
+  // Redirect the user to the Sponsor Details page
+  function gotoSponsorDetails(selectedSponsorID) {
+    var newURL = '/sponsordetails/' + selectedSponsorID;
+    location.href=newURL;
+  }
+
+  // Redirect the user to the Scholarship Details page
+  function gotoScholarshipEdit(selectedScholarshipID) {
+    var newURL = '/scholarshipedit/' + selectedScholarshipID;
+    location.href=newURL;
+  }
+
+</script>

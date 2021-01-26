@@ -18,41 +18,27 @@ $(document).ready(function(){
 //////////////////////////////////////////////////////////////////////////////////////////
  // load the options into a SELECT element
 //////////////////////////////////////////////////////////////////////////////////////////
-function loadSelectOptionsList(selectEl, notSelectedText, notSelectedValue, optionsArr) {
+function loadSelectOptionsList(selectEl, notSelectedText, notSelectedValue, optionsArr, selectedValue = '') {
 
     // get a reference to the SELECT element
     const selectElement = document.querySelector("#" + selectEl);
     
-//    alert("1");
-//    alert("1: " + selectElement.size);
-    
     // create and add the "(Not Selected)" default option
     const optNotSelected = document.createElement("option");
-//    alert("2A");
     optNotSelected.textContent = notSelectedText;
-//    alert("2B");
     optNotSelected.value = notSelectedValue;
-//    alert("2C");
     selectElement.appendChild(optNotSelected);
     optNotSelected.selected = true;
-//    alert("2D");
-    
-//    alert("3");
-//alert(`Options length: ${optionsArr.length}`);
-//alert(`Options Array: ${optionsArr}`);
-//console.log(optionsArr);
-//alert(`SponsorID[0]: ${optionsArr[0]['SponsorID']}`);
-//alert(`sponsorname[0]: ${optionsArr[0]['sponsorname']}`);
 
     // add options
     optionsArr.forEach( function(option, ind) {
         const optionEl = document.createElement("option");
-//alert(`Option Text1: ${option['optiontext']}`);
         optionEl.textContent = option['optiontext'];
-//alert(`Option Value: ${option['optionid']}`);
         optionEl.value = option['optionid'];
-//        optionEl.textContent = option.selectText;
-//        optionEl.value = option.selectValue;
+        if (optionEl.value === selectedValue) {
+//            alert(`optionEl.value: (${option['optionid']}); selectedValue: (${selectedValue})`);
+            optionEl.selected = true;
+        };
         optionEl.classList.add('filter-option');
         selectElement.appendChild(optionEl);
     });
@@ -115,4 +101,3 @@ function toggleAdvancedSearchCriteriaInputBlock(elIcon, elBlock, elInput, status
         elIcon.classList.add("fa-angle-double-down");
     }
 }
-

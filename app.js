@@ -11,10 +11,11 @@ const compression = require('compression');
 const expressSession = require("express-session");
 const { auth, requiresAuth } = require('express-openid-connect');
 const port = process.env.PORT || 3000;
-const { ScholarshipsActive, ScholarshipsDDL, FieldOfStudyCategoriesDDL, SponsorsDDL, GenderCategoriesDDL,
-        CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL, EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL,
-        FAAPilotCertificateCategoriesDDL, FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, Sponsors,
-        SponsorTypeCategoriesDDL
+const { ScholarshipsTable, ScholarshipsActive, ScholarshipsDDL, ScholarshipsAllDDL,
+        Sponsors, SponsorsDDL,
+        GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
+        EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
+        FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL
     } = require('./models/sequelize.js');
 const cors = require('cors');
 
@@ -82,6 +83,10 @@ app.get('/', (req, res) => { // req.isAuthenticated is provided from the auth ro
 ///////////////////////////////////////////////////////////////////////////////////
 // Routes
 ///////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////
+// "GET" Routes (retrieve data)
+///////////////////////////////////////////
 app.get('/scholarshipsearch', async (req, res) => {
     const scholarshipsActive = await ScholarshipsActive.findAndCountAll({});
 //    console.log(scholarshipsActive.count);
@@ -129,18 +134,19 @@ app.get('/portal', async (req, res) => {
 app.get('/switchboard', requiresAuth(), async (req, res) => {
     try {
         const sponsorsDDL = await SponsorsDDL.findAndCountAll({});
-        const scholarshipsDDL = await ScholarshipsDDL.findAndCountAll({});
+        const scholarshipsAllDDL = await ScholarshipsAllDDL.findAndCountAll({});
         return res.render('switchboard', {
             user: req.oidc.user,
             userName: ( req.oidc.user == null ? '' : req.oidc.user.name ),
             sponsorsDDL,
-            scholarshipsDDL
+            scholarshipsAllDDL,
+            SponsorID: '',
+            ScholarshipID: ''
         })
     } catch(err) {
         console.log('Error:' + err);
     }
 });
-
 app.get("/sign-up/:page", (req, res) => {
     const { page } = req.params;
     res.oidc.login({
@@ -165,7 +171,72 @@ app.get("/logout/:page", (req, res) => {
 app.get('/profile', requiresAuth(), (req, res) => {
     res.send(JSON.stringify(req.oidc.user));
   });
+app.get('/sponsordetails/:id', requiresAuth(), async (req, res) => {
+    const sponsorsDDL = await SponsorsDDL.findAndCountAll({});
+    const scholarshipsAllDDL = await ScholarshipsAllDDL.findAndCountAll({ where: { SponsorID: req.params.id }});
+    console.log(scholarshipsAllDDL.count);
+    const sponsorDetails = await Sponsors.findAll({ where: { SponsorID: req.params.id }});
+    res.render('sponsordetails', {
+        user: req.oidc.user,
+        userName: ( req.oidc.user == null ? '' : req.oidc.user.name ),
+        sponsorsDDL,
+        scholarshipsAllDDL,
+        sponsorDetails,
+        SponsorID: req.params.id,
+        ScholarshipID: ''
+     } );
+});
+app.get('/scholarshipadd/:id', requiresAuth(), async (req, res) => {
+    const sponsorsDDL = await SponsorsDDL.findAndCountAll({});
+    const scholarshipsAllDDL = await ScholarshipsAllDDL.findAndCountAll({ where: { SponsorID: req.params.id }});
+    res.render('scholarshipadd', {
+        user: req.oidc.user,
+        userName: ( req.oidc.user == null ? '' : req.oidc.user.name ),
+        sponsorsDDL,
+        scholarshipsAllDDL,
+        SponsorID: req.params.id,
+        ScholarshipID: ""
+     } );
+});
+app.get('/scholarshipedit/:id', requiresAuth(), async (req, res) => {
+    const scholarshipDetails = await ScholarshipsTable.findAll({ where: { ScholarshipID: req.params.id }});
+    const sponsorsDDL = await SponsorsDDL.findAndCountAll({});
+    const scholarshipsAllDDL = await ScholarshipsAllDDL.findAndCountAll({ where: { SponsorID: scholarshipDetails[0].SponsorID }});
+    res.render('scholarshipedit', {
+        user: req.oidc.user,
+        userName: ( req.oidc.user == null ? '' : req.oidc.user.name ),
+        sponsorsDDL,
+        scholarshipsAllDDL,
+        SponsorID: scholarshipDetails[0].SponsorID,
+        scholarshipDetails,
+        ScholarshipID: req.params.id
 
+// how to pass querystring values into the render ("Scholarship Saved!")?
+
+     } );
+});
+
+///////////////////////////////////////////
+// "POST" Routes (insert new data)
+///////////////////////////////////////////
+app.post('/scholarshipadd', async (req, res) => {
+    const scholarship = new ScholarshipsTable( {
+        ScholarshipName: req.body.ScholarshipName,
+        ScholarshipDescription: req.body.ScholarshipDescription,
+        ScholarshipLink: req.body.ScholarshipLink
+    });
+    await scholarship.save();
+    res.redirect(`scholarshipedit/${scholarship.ScholarshipID}?mode=newscholarship`);
+/*
+console.log(req.body.ScholarshipName);
+    await ScholarshipsTable.create( {
+        ScholarshipName: req.body.ScholarshipName,
+        ScholarshipDescription: req.body.ScholarshipDescription,
+        ScholarshipLink: req.body.ScholarshipLink
+    });
+    res.redirect(`scholarshipdetails/${scholarship.ScholarshipID}`);
+*/
+});
 
 ///////////////////////////////////////////////////////////////////////////////////
 // For local testing only

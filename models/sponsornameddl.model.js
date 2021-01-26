@@ -3,7 +3,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 
 module.exports = (sequelize, DataTypes) => {
-    const SponsorsDDL = sequelize.define('vwSponsorsDDL', {
+    const SponsorsDDL = sequelize.define('vwSponsorsDDLTest', {
         optionid: {
             type: DataTypes.INTEGER,
             primaryKey: true

@@ -3,7 +3,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 
 module.exports = (sequelize, DataTypes) => {
-    const ScholarshipsActive = sequelize.define('vwScholarshipsActive', {
+    const ScholarshipsActive = sequelize.define('vwScholarshipsActiveTest', {
         ScholarshipID: {
             type: DataTypes.INTEGER,
             primaryKey: true
