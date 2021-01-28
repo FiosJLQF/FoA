@@ -12,6 +12,7 @@ function showAllScholarships(scholarships) {
     clearScholarshipSearchCriteria();
 
     // load all scholarships
+    console.log(scholarships.count);
     buildScholarshipSearchResults(scholarships, 1, false);
 }
 
