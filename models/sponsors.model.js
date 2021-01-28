@@ -3,7 +3,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 
 module.exports = (sequelize, DataTypes) => {
-    const Sponsors = sequelize.define('vwSponsorsAllTest', {
+    const Sponsors = sequelize.define('vwSponsorsAll', {
         SponsorID: {
             type: DataTypes.INTEGER,
             primaryKey: true

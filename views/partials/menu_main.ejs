@@ -28,6 +28,16 @@
     <select id="filterScholarshipsInput" class="single-choice" onchange="gotoScholarshipEdit(this.value)"></select><br>
   </div><br>
 
+  <!-- User(s) -->
+  <div>
+    Users(s):
+      <span id="addUser" class="float-right"><a id="addUser" class="btn btn-default button-small"
+        href="/userAdd">Add User</a>&nbsp;</span>
+  </div>
+  <div id="filterUsersInputBlock">
+    <select id="filterUsersInput" class="single-choice" onchange="gotoUserEdit(this.value)"></select><br>
+  </div><br>
+  
 </div>  <!-- End column 1 DIV -->
 
 <script>
@@ -36,19 +46,29 @@
   var splRows = <%- JSON.stringify(sponsorsDDL.rows) %>;
   loadSelectOptionsList("filterSponsorNamesInput", "(Not Selected)", 0, splRows, '<%= SponsorID %>');
 
-  // Load the Scholarships List into the DDL
-  var schRows = <%- JSON.stringify(scholarshipsAllDDL.rows) %>;
-  loadSelectOptionsList("filterScholarshipsInput", "(Not Selected)", 0, schRows, '<%= ScholarshipID %>');
-
   // Redirect the user to the Sponsor Details page
   function gotoSponsorDetails(selectedSponsorID) {
     var newURL = '/sponsordetails/' + selectedSponsorID;
     location.href=newURL;
   }
 
+  // Load the Scholarships List into the DDL
+  var schRows = <%- JSON.stringify(scholarshipsAllDDL.rows) %>;
+  loadSelectOptionsList("filterScholarshipsInput", "(Not Selected)", 0, schRows, '<%= ScholarshipID %>');
+
   // Redirect the user to the Scholarship Details page
   function gotoScholarshipEdit(selectedScholarshipID) {
     var newURL = '/scholarshipedit/' + selectedScholarshipID;
+    location.href=newURL;
+  }
+
+  // Load the Users List into the DDL
+  var usrRows = <%- JSON.stringify(usersAllDDL.rows) %>;
+  loadSelectOptionsList("filterUsersInput", "(Not Selected)", 0, usrRows, '<%= UserID %>');
+
+  // Redirect the user to the User Details page
+  function gotoUserEdit(selectedUserID) {
+    var newURL = '/userdetails/' + selectedUserID;
     location.href=newURL;
   }
 

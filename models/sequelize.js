@@ -3,6 +3,7 @@
 **************************************************************************************************/
 require("dotenv").config();  // load all ".env" variables into "process.env" for use
 
+
 /**************************************************************************************************
   Create the database connection and test
 **************************************************************************************************/
@@ -62,6 +63,13 @@ const SponsorsModel = require('./sponsors.model');
 const Sponsors = SponsorsModel(sequelize, DataTypes);
 const SponsorTypeCategoriesDDLModel = require('./sponsortypeddl.model');
 const SponsorTypeCategoriesDDL = SponsorTypeCategoriesDDLModel(sequelize, DataTypes);
+const UsersAllDDLModel = require('./usersAllDLL.model');
+const UsersAllDDL = UsersAllDDLModel(sequelize, DataTypes);
+const UserPermissionsActiveModel = require('./userPermissionsActive.model');
+const UserPermissionsActive = UserPermissionsActiveModel(sequelize, DataTypes);
+const UserProfilesModel = require('./userProfiles.model');
+const UserProfiles = UserProfilesModel(sequelize, DataTypes);
+UserProfiles.removeAttribute('id');  // this is an non-updatable view and does not have a PK defined
 
 
 /**************************************************************************************************
@@ -83,5 +91,8 @@ module.exports = {
   FAAPilotRatingCategoriesDDL,
   FAAMechanicCertificateCategoriesDDL,
   Sponsors,
-  SponsorTypeCategoriesDDL
+  SponsorTypeCategoriesDDL,
+  UsersAllDDL,
+  UserPermissionsActive,
+  UserProfiles
 };

@@ -15,7 +15,8 @@ const { ScholarshipsTable, ScholarshipsActive, ScholarshipsDDL, ScholarshipsAllD
         Sponsors, SponsorsDDL,
         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
-        FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL
+        FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
+        UsersAllDDL, UserPermissionsActive, UserProfiles
     } = require('./models/sequelize.js');
 const cors = require('cors');
 
@@ -135,13 +136,20 @@ app.get('/switchboard', requiresAuth(), async (req, res) => {
     try {
         const sponsorsDDL = await SponsorsDDL.findAndCountAll({});
         const scholarshipsAllDDL = await ScholarshipsAllDDL.findAndCountAll({});
+        const usersAllDDL = await UsersAllDDL.findAndCountAll({});
+        const userProfiles = await UserProfiles.findAll( { where: { UserName: req.oidc.user.email }});
+        console.log(userProfiles[0].UserID);
+//        const userPermissionsActive = await UserPermissionsActive.findAndCountAll({});
+//        const testUP = userPermissions(userPermissionsActive, req.oidc.user.email)
         return res.render('switchboard', {
             user: req.oidc.user,
             userName: ( req.oidc.user == null ? '' : req.oidc.user.name ),
             sponsorsDDL,
             scholarshipsAllDDL,
             SponsorID: '',
-            ScholarshipID: ''
+            ScholarshipID: '',
+            usersAllDDL,
+            UserID: ''
         })
     } catch(err) {
         console.log('Error:' + err);
