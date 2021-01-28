@@ -90,7 +90,7 @@ app.get('/', (req, res) => { // req.isAuthenticated is provided from the auth ro
 ///////////////////////////////////////////
 app.get('/scholarshipsearch', async (req, res) => {
     const scholarshipsActive = await ScholarshipsActive.findAndCountAll({});
-//    console.log(scholarshipsActive.count);
+    console.log(scholarshipsActive.count);
     const fieldOfStudyCategoriesDDL = await FieldOfStudyCategoriesDDL.findAndCountAll({});
     const sponsorsDDL = await SponsorsDDL.findAndCountAll({});
     const genderCategoriesDDL = await GenderCategoriesDDL.findAndCountAll({});
