@@ -9,11 +9,13 @@ const pageSponsorVolume = 15; // number of sponsors to be displayed on a page
 
 //alert('pageScholarshipVolume: ' + pageScholarshipVolume);
 
+/*
 $(document).ready(function(){
     $('#birth-date').mask('00/00/0000');
     $('#phone-number').mask('0000-0000');
     $('#filterAgeInput').mask('00');
   });
+*/
 
 //////////////////////////////////////////////////////////////////////////////////////////
  // load the options into a SELECT element

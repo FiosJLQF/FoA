@@ -1062,7 +1062,7 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber, showMat
     };  // loop to the next Scholarship in the array
 
     // add the page navigator bar after the results are built
-    const buildPageNavResult = buildPageNavigator(matchingScholarships, pageNumber, showMatchingCriteria);
+    const buildPageNavResult = buildScholarshipPageNavigator(matchingScholarships, pageNumber, showMatchingCriteria);
 
     // scroll back to the top of the page
     window.scrollTo(0,0);
@@ -1073,7 +1073,7 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber, showMat
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // build the pagination div
 /////////////////////////////////////////////////////////////////////////////////////////////////
-function buildPageNavigator(matchingScholarships, pageNumberSelected, showMatchingCriteria) {
+function buildScholarshipPageNavigator(matchingScholarships, pageNumberSelected, showMatchingCriteria) {
 
 //    let pageNumberToLoad = 0;
     const numberOfPages = Math.ceil(matchingScholarships.length / pageScholarshipVolume);
