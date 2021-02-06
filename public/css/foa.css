@@ -81,6 +81,7 @@ hr.pagetitlebreak{
     height: 20px;
     width: 172px;
     color: transparent;
+    opacity: 1;
 }
 
 hr.bodycol1break{
@@ -88,6 +89,7 @@ hr.bodycol1break{
   margin: 0px;
   padding: 0px;
   width: 50%;
+  opacity: 1;
 }
 
 hr.bodycol2break{
@@ -95,6 +97,7 @@ hr.bodycol2break{
   margin: 0px 0px 0px 0px;
   padding: 0px;
   width: 100%;
+  opacity: 1;
 }
 
 hr.bodycol2scholarshipbreak{
@@ -102,6 +105,7 @@ hr.bodycol2scholarshipbreak{
   margin: 10px 0px 0px 0px;
   padding: 0px;
   width: 100%;
+  opacity: 1;
 }
 
 hr.bodycol2sponsorbreak{
@@ -109,6 +113,7 @@ hr.bodycol2sponsorbreak{
   margin: 10px 0px 0px 0px;
   padding: 0px;
   width: 100%;
+  opacity: 1;
 }
 
 a:link {

@@ -411,7 +411,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
             matchFieldOfStudy = true;
             matchCount++;
             matchCountBlank++;
-            matchedOnTextFieldOfStudy = 'Field(s) of Study; ';
+            matchedOnTextFieldOfStudy = 'Field of Study; ';
             matchedOnTextBlankFieldOfStudy = '';
         } else {
             fieldOfStudyList.forEach( function(fieldOfStudyText) {
@@ -420,8 +420,8 @@ function findMatchingScholarships(scholarships, pageNumber) {
                     matchCount++;
                     matchCountExact++;
                     if ( matchedOnTextFieldOfStudy.length === 0 ) {
-                        matchedOnTextFieldOfStudy = 'Field(s) of Study (';
-                        matchedOnTextExactFieldOfStudy = 'Field(s) of Study (';
+                        matchedOnTextFieldOfStudy = 'Field of Study (';
+                        matchedOnTextExactFieldOfStudy = 'Field of Study (';
                     };
                     matchedOnTextFieldOfStudy += fieldOfStudyText.replaceAll('|','') + '; ';
                     matchedOnTextExactFieldOfStudy += fieldOfStudyText.replaceAll('|','') + '; ';
@@ -440,8 +440,8 @@ function findMatchingScholarships(scholarships, pageNumber) {
             matchSponsor = true;
             matchCount++;
             matchCountBlank++
-            matchedOnTextSponsor = 'Sponsors; ';
-            matchedOnTextBlankSponsor = 'Sponsors; ';
+            matchedOnTextSponsor = 'Sponsor; ';
+            matchedOnTextBlankSponsor = 'Sponsor; ';
         } else {
             sponsorList.forEach( function(sponsorID) {
                 if ( scholarships[i]['SponsorIDMatching'].toLowerCase().includes(sponsorID) ) {
@@ -449,8 +449,8 @@ function findMatchingScholarships(scholarships, pageNumber) {
                     matchCount++;
                     matchCountExact++;
                     if ( matchedOnTextSponsor.length === 0 ) {
-                        matchedOnTextSponsor = 'Sponsor(s) (';
-                        matchedOnTextExactSponsor = 'Sponsor(s) (';
+                        matchedOnTextSponsor = 'Sponsor (';
+                        matchedOnTextExactSponsor = 'Sponsor (';
                     };
                     matchedOnTextSponsor += scholarships[i]['SponsorName'] + '; ';
                     matchedOnTextExactSponsor += scholarships[i]['SponsorName'] + '; ';
@@ -469,15 +469,15 @@ function findMatchingScholarships(scholarships, pageNumber) {
             matchGender = true;
             matchCount++;
             matchCountBlank++;
-            matchedOnTextGender = 'Gender(s); ';
-            matchedOnTextBlankGender = 'Gender(s); ';
+            matchedOnTextGender = 'Gender; ';
+            matchedOnTextBlankGender = 'Gender; ';
         } else {
             matchGender = scholarships[i]['Criteria_GenderMatchingText'].toLowerCase().includes(genderList);
             if ( matchGender ) {
                 matchCount++;
                 matchCountExact++;
-                matchedOnTextGender = 'Gender(s) (' + filterGenders + '); ';
-                matchedOnTextExactGender = 'Gender(s) (' + filterGenders + '); ';
+                matchedOnTextGender = 'Gender (' + filterGenders + '); ';
+                matchedOnTextExactGender = 'Gender (' + filterGenders + '); ';
             };
         }
 
@@ -507,13 +507,13 @@ function findMatchingScholarships(scholarships, pageNumber) {
             matchCitizenship = true;
             matchCount++;
             matchCountBlank++;
-            matchedOnCitizenship = 'Citizenship(s); ';
+            matchedOnCitizenship = 'Citizenship; ';
         } else {
             matchCitizenship = scholarships[i]['Criteria_CitizenshipMatchingText'].toLowerCase().includes(citizenshipList);
             if ( matchCitizenship ) {
                 matchCount++;
                 matchCountExact++;
-                matchedOnCitizenship = 'Citizenship(s) (' + filterCitizenships + '); ';
+                matchedOnCitizenship = 'Citizenship (' + filterCitizenships + '); ';
             };
         }
 
@@ -522,13 +522,13 @@ function findMatchingScholarships(scholarships, pageNumber) {
             matchYearOfNeed = true;
             matchCount++;
             matchCountBlank++;
-            matchedOnYearOfNeed = 'Year(s) of Need; ';
+            matchedOnYearOfNeed = 'Year of Need; ';
         } else {
             matchYearOfNeed = scholarships[i]['Criteria_YearOfNeedMatchingText'].toLowerCase().includes(yearOfNeedList);
             if ( matchYearOfNeed ) {
                 matchCount++;
                 matchCountExact++;
-                matchedOnYearOfNeed = 'Year(s) of Need (' + filterYearOfNeed + '); ';
+                matchedOnYearOfNeed = 'Year of Need (' + filterYearOfNeed + '); ';
             };
         }
 
@@ -537,7 +537,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
             matchKeyword = true;
             matchCount++;
             matchCountBlank++;
-            matchedOnKeyword = 'Keyword(s); ';
+            matchedOnKeyword = 'Keywords; ';
         } else {
             keywordList.forEach( function(keyword, ind, keywords) {
                 if (keyword.length > 0) {
@@ -551,7 +551,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
                         matchCount++;
                         matchCountExact++;
                         if ( matchedOnKeyword.length === 0 ) {
-                            matchedOnKeyword = 'Keyword(s) (';
+                            matchedOnKeyword = 'Keywords (';
                         };
                         matchedOnKeyword += keyword + '; ';
                     };
@@ -568,13 +568,13 @@ function findMatchingScholarships(scholarships, pageNumber) {
             matchEnrollmentStatus = true;
             matchCount++;
             matchCountBlank++;
-            matchedOnEnrollmentStatus = 'Enrollment Status(es); ';
+            matchedOnEnrollmentStatus = 'Enrollment Status; ';
         } else {
             matchEnrollmentStatus = scholarships[i]['Criteria_EnrollmentStatusMatchingText'].toLowerCase().includes(enrollmentStatusList);
             if ( matchEnrollmentStatus ) {
                 matchCount++;
                 matchCountExact++;
-                matchedOnEnrollmentStatus = 'Enrollment Status(es) (' + filterEnrollmentStatus + '); ';
+                matchedOnEnrollmentStatus = 'Enrollment Status (' + filterEnrollmentStatus + '); ';
             };
         }
 
@@ -614,7 +614,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
             matchFAAPilotCert = true;
             matchCount++;
             matchCountBlank++;
-            matchedOnFAAPilotCert = 'FAA Pilot Certificate(s); ';
+            matchedOnFAAPilotCert = 'FAA Pilot Certificate; ';
         } else {
             faaPilotCertList.forEach( function(faaPilotCertText) {
                 if ( scholarships[i]['Criteria_FAAPilotCertificateMatchingText'].toLowerCase().includes(faaPilotCertText) ) {
@@ -622,7 +622,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
                     matchCount++;
                     matchCountExact++;
                     if ( matchedOnFAAPilotCert.length === 0 ) {
-                        matchedOnFAAPilotCert = 'FAA Pilot Certificate(s) (';
+                        matchedOnFAAPilotCert = 'FAA Pilot Certificate (';
                     };
                     matchedOnFAAPilotCert += faaPilotCertText.replaceAll('|','') + '; ';
                 }
@@ -638,7 +638,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
             matchFAAPilotRating = true;
             matchCount++;
             matchCountBlank++;
-            matchedOnFAAPilotRating = 'FAA Pilot Rating(s); ';
+            matchedOnFAAPilotRating = 'FAA Pilot Rating; ';
         } else {
             faaPilotRatingList.forEach( function(faaPilotRatingText) {
                 if ( scholarships[i]['Criteria_FAAPilotRatingMatchingText'].toLowerCase().includes(faaPilotRatingText) ) {
@@ -646,7 +646,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
                     matchCount++;
                     matchCountExact++;
                     if ( matchedOnFAAPilotRating.length === 0 ) {
-                        matchedOnFAAPilotRating = 'FAA Pilot Rating(s) (';
+                        matchedOnFAAPilotRating = 'FAA Pilot Rating (';
                     };
                     matchedOnFAAPilotRating += faaPilotRatingText.replaceAll('|','') + '; ';
                 }
@@ -662,7 +662,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
             matchFAAMechanicCertRating = true;
             matchCount++;
             matchCountBlank++;
-            matchedOnFAAMechanicCertRating = 'FAA Mechanic Certificate(s)/Rating(s); ';
+            matchedOnFAAMechanicCertRating = 'FAA Mechanic Certificate/Rating; ';
         } else {
             faaMechanicCertRatingList.forEach( function(faaMechanicCertRatingText) {
                 if ( scholarships[i]['Criteria_FAAMechanicCertificateMatchingText'].toLowerCase().includes(faaMechanicCertRatingText) ) {
@@ -670,7 +670,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
                     matchCount++;
                     matchCountExact++;
                     if ( matchedOnFAAMechanicCertRating.length === 0 ) {
-                        matchedOnFAAMechanicCertRating = 'FAA Mechanic Certificate(s)/Rating(s) (';
+                        matchedOnFAAMechanicCertRating = 'FAA Mechanic Certificate/Rating (';
                     };
                     matchedOnFAAMechanicCertRating += faaMechanicCertRatingText.replaceAll('|','') + '; ';
                 }
@@ -691,18 +691,18 @@ function findMatchingScholarships(scholarships, pageNumber) {
         if ( matchedOn.substring(0, 2) === '; ' ) { matchedOn = matchedOn.slice(2); };
         matchedOnTextExact = matchedOnTextExactFieldOfStudy + matchedOnTextExactSponsor + matchedOnTextExactGender;
         if ( matchedOnTextExact.substring(0, 2) === '; ' ) { matchedOnTextExact = matchedOnTextExact.slice(2); };
-        matchedOnTextBlank = matchedOnTextBlankFieldOfStudy + matchedOnTextBlankSponsor + matchedOnTextBlankGender;
-        if ( matchedOnTextExact.substring(0, 2) === '; ' ) { matchedOnTextExact = matchedOnTextExact.slice(2); };
+//        matchedOnTextBlank = matchedOnTextBlankFieldOfStudy + matchedOnTextBlankSponsor + matchedOnTextBlankGender;
+//        if ( matchedOnTextBlank.substring(0, 2) === '; ' ) { matchedOnTextBlank = matchedOnTextBlank.slice(2); };
         matchResult = (matchFieldOfStudy && matchSponsor && matchGender && matchAge && matchCitizenship &&
                        matchYearOfNeed && matchKeyword && matchEnrollmentStatus && matchGPA && matchMilitaryService &&
                        matchFAAPilotCert && matchFAAPilotRating && matchFAAMechanicCertRating);
          if ( matchResult ) {
             scholarships[i]['matchedOn'] = matchedOn;
             scholarships[i]['matchedOnTextExact'] = matchedOnTextExact;
-            scholarships[i]['matchedOnTextBlank'] = matchedOnTextBlank;
+//            scholarships[i]['matchedOnTextBlank'] = matchedOnTextBlank;
             scholarships[i]['matchCount'] = matchCount;
             scholarships[i]['matchCountExact'] = matchCountExact;
-            scholarships[i]['matchCountBlank'] = matchCountBlank;
+//            scholarships[i]['matchCountBlank'] = matchCountBlank;
             matchingScholarships.push(scholarships[i]);
         }
 
@@ -774,8 +774,6 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber, showMat
             // change all appendChild to append??
             divScholarshipRow1.appendChild(divScholarshipRow1Col1);
 
-//alert('Row1Col1 addeded to div.');
-
             // build and add the second column to the first row
             const divScholarshipRow1Col2 = document.createElement('div');
             divScholarshipRow1Col2.classList.add('scholarshipsearchresultscol2');
@@ -791,8 +789,6 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber, showMat
 
             divScholarshipRow1Col2.appendChild(iconExpand);
             divScholarshipRow1.appendChild(divScholarshipRow1Col2);
-
-//alert('Row1Col2 addeded to div.');
 
             // build and add the third column to the first row
             const divScholarshipRow1Col3 = document.createElement('div');
@@ -1007,7 +1003,7 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber, showMat
                     // Matching Search Criteria (Exact)
                     const divScholarshipRow2Col3Row4Col1 = document.createElement('div');
                     divScholarshipRow2Col3Row4Col1.classList.add('scholarshipsearchresultscol3A');
-                    divScholarshipRow2Col3Row4Col1.innerText = 'Matched On (Exact):';
+                    divScholarshipRow2Col3Row4Col1.innerText = 'Criteria Match:';
 
                 divScholarshipRow2Col3Rows.appendChild(divScholarshipRow2Col3Row4Col1);
 
@@ -1018,19 +1014,19 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber, showMat
 
                 divScholarshipRow2Col3Rows.appendChild(divScholarshipRow2Col3Row4Col2);
 
-                    // Matching Search Criteria (No Preference)
-                    const divScholarshipRow2Col3Row5Col1 = document.createElement('div');
-                    divScholarshipRow2Col3Row5Col1.classList.add('scholarshipsearchresultscol3A');
-                    divScholarshipRow2Col3Row5Col1.innerHTML = 'Matched On<br>&nbsp;&nbsp;&nbsp;(No Preference):';
-
-                divScholarshipRow2Col3Rows.appendChild(divScholarshipRow2Col3Row5Col1);
-
-                    const divScholarshipRow2Col3Row5Col2 = document.createElement('div');
-                    divScholarshipRow2Col3Row5Col2.classList.add('scholarshipsearchresultscol3B');
-                    divScholarshipRow2Col3Row5Col2.classList.add('text-block');
-                    divScholarshipRow2Col3Row5Col2.innerHTML =  selectedScholarship['matchCountBlank'] + ' Criteria: ' + selectedScholarship['matchedOnTextBlank'];
-
-                divScholarshipRow2Col3Rows.appendChild(divScholarshipRow2Col3Row5Col2);
+//                    // Matching Search Criteria (No Preference)
+//                    const divScholarshipRow2Col3Row5Col1 = document.createElement('div');
+//                    divScholarshipRow2Col3Row5Col1.classList.add('scholarshipsearchresultscol3A');
+//                    divScholarshipRow2Col3Row5Col1.innerHTML = 'Matched On<br>&nbsp;&nbsp;&nbsp;(No Preference):';
+//
+//                divScholarshipRow2Col3Rows.appendChild(divScholarshipRow2Col3Row5Col1);
+//
+//                    const divScholarshipRow2Col3Row5Col2 = document.createElement('div');
+//                    divScholarshipRow2Col3Row5Col2.classList.add('scholarshipsearchresultscol3B');
+//                    divScholarshipRow2Col3Row5Col2.classList.add('text-block');
+//                    divScholarshipRow2Col3Row5Col2.innerHTML =  selectedScholarship['matchCountBlank'] + ' Criteria: ' + selectedScholarship['matchedOnTextBlank'];
+//
+//                divScholarshipRow2Col3Rows.appendChild(divScholarshipRow2Col3Row5Col2);
 
             };
 

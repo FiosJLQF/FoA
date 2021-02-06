@@ -4,7 +4,7 @@
     <div class="searchInstructions">Enter search criteria below and click "search".</div><br>
 
     <!-- Field(s) of Study -->
-    Field(s) of Study: <button type="button" class="btn btn-default button-small"
+    Field of Study: <button type="button" class="btn btn-default button-small"
         onclick="toggleSearchCriteriaInputBlock(
             document.querySelector('#filterFieldOfStudyIcon'),
             document.querySelector('#filterFieldOfStudyInputBlock'),
@@ -17,7 +17,7 @@
     </div>
 
     <!-- Sponsor Name(s) -->
-    Sponsor(s): <button type="button" class="btn btn-default button-small"
+    Sponsor: <button type="button" class="btn btn-default button-small"
         onclick="toggleSearchCriteriaInputBlock(
             document.querySelector('#filterSponsorNamesIcon'),
             document.querySelector('#filterSponsorNamesInputBlock'),
@@ -30,6 +30,7 @@
     </div>
 
     <!-- Gender -->
+<!--
     Gender: <button type="button" class="btn btn-default button-small"
         onclick="toggleSearchCriteriaInputBlock(
             document.querySelector('#filterGenderIcon'),
@@ -40,7 +41,7 @@
     <div id="filterGenderInputBlock" class="filter-input-block">
         <select id="filterGenderInput" class="filter_select"></select><br>
     </div>
-
+-->
     <!-- Age -->
         Age: <button type="button" class="btn btn-default button-small"
         onclick="toggleSearchCriteriaInputBlock(
@@ -80,7 +81,7 @@
     </div>  
 
     <!-- Keyword(s) -->
-    Keyword(s): <button type="button" class="btn btn-default button-small"
+    Keywords: <button type="button" class="btn btn-default button-small"
         onclick="toggleSearchCriteriaInputBlock(
             document.querySelector('#filterKeywordsIcon'),
             document.querySelector('#filterKeywordsInputBlock'),
@@ -107,6 +108,17 @@
 </span><br>
 
 <div id="advancedSearchInputBlock" class="filter-input-block advanced-search-criteria">
+
+    Gender: <button type="button" class="btn btn-default button-small"
+        onclick="toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterGenderIcon'),
+            document.querySelector('#filterGenderInputBlock'),
+            document.querySelector('#filterGenderInput'), '')">
+        <i id="filterGenderIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+    </button><br>
+    <div id="filterGenderInputBlock" class="filter-input-block">
+        <select id="filterGenderInput" class="filter_select"></select><br>
+    </div>
 
     <!-- Enrollment Status -->
     College Enrollment Status: <button type="button" class="btn btn-default button-small"

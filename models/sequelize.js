@@ -67,9 +67,9 @@ const UsersAllDDLModel = require('./usersAllDLL.model');
 const UsersAllDDL = UsersAllDDLModel(sequelize, DataTypes);
 const UserPermissionsActiveModel = require('./userPermissionsActive.model');
 const UserPermissionsActive = UserPermissionsActiveModel(sequelize, DataTypes);
-const UserProfilesModel = require('./userProfiles.model');
-const UserProfiles = UserProfilesModel(sequelize, DataTypes);
-UserProfiles.removeAttribute('id');  // this is an non-updatable view and does not have a PK defined
+//const UserProfilesModel = require('./userProfiles.model');
+//const UserProfiles = UserProfilesModel(sequelize, DataTypes);
+//UserProfiles.removeAttribute('id');  // this is an non-updatable view and does not have a PK defined
 
 
 /**************************************************************************************************
@@ -93,6 +93,7 @@ module.exports = {
   Sponsors,
   SponsorTypeCategoriesDDL,
   UsersAllDDL,
-  UserPermissionsActive,
-  UserProfiles
+  
+  UserPermissionsActive//,
+//  UserProfiles
 };

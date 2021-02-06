@@ -16,7 +16,7 @@ const { ScholarshipsTable, ScholarshipsActive, ScholarshipsDDL, ScholarshipsAllD
         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
         FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
-        UsersAllDDL, UserPermissionsActive, UserProfiles
+        UsersAllDDL, UserPermissionsActive //, UserProfiles
     } = require('./models/sequelize.js');
 const cors = require('cors');
 
@@ -137,11 +137,13 @@ app.get('/switchboard', requiresAuth(), async (req, res) => {
         const sponsorsDDL = await SponsorsDDL.findAndCountAll({});
         const scholarshipsAllDDL = await ScholarshipsAllDDL.findAndCountAll({});
         const usersAllDDL = await UsersAllDDL.findAndCountAll({});
-        const userProfiles = await UserProfiles.findAll( { where: { UserName: req.oidc.user.email }});
-        console.log(userProfiles[0].UserID);
+//        const userProfiles = await UserProfiles.findAll( { where: { UserName: req.oidc.user.email }});
+//        console.log(userProfiles[0].UserID);
+
 //        const userPermissionsActive = await UserPermissionsActive.findAndCountAll({});
 //        const testUP = userPermissions(userPermissionsActive, req.oidc.user.email)
-        return res.render('switchboard', {
+
+return res.render('switchboard', {
             user: req.oidc.user,
             userName: ( req.oidc.user == null ? '' : req.oidc.user.name ),
             sponsorsDDL,
