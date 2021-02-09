@@ -378,33 +378,43 @@ function findMatchingScholarships(scholarships, pageNumber) {
 
         matchAge = false;
         matchedOnAge = '';
+        matchedOnTextExactAge = '';
 
         matchCitizenship = false;
         matchedOnCitizenship = '';
+        matchedOnTextExactCitizenship = '';
 
         matchYearOfNeed = false;
         matchedOnYearOfNeed = '';
+        matchedOnTextExactYearOfNeed = '';
 
         matchKeyword = false;
         matchedOnKeyword = '';
+        matchedOnTextExactKeyword = '';
 
         matchEnrollmentStatus = false;
         matchedOnEnrollmentStatus = '';
+        matchedOnTextExactEnrollmentStatus = '';
 
         matchGPA = false;
         matchedOnGPA = '';
+        matchedOnTextExactGPA = '';
 
         matchMilitaryService = false;
         matchedOnMilitaryService = '';
+        matchedOnTextExactMilitaryService = '';
 
         matchFAAPilotCert = false;
         matchedOnFAAPilotCert = '';
+        matchedOnTextExactFAAPilotCert = '';
 
         matchFAAPilotRating = false;
         matchedOnFAAPilotRating = '';
+        matchedOnTextExactFAAPilotRating = '';
 
         matchFAAMechanicCertRating = false;
         matchedOnFAAMechanicCertRating = '';
+        matchedOnTextExactFAAMechanicCertRating = '';
 
         // check the Field of Study
         if ( fieldOfStudyList.length === 0 || scholarships[i]['Criteria_FieldOfStudyMatchingText'].length === 0 ) {
@@ -419,19 +429,20 @@ function findMatchingScholarships(scholarships, pageNumber) {
                     matchFieldOfStudy = true;
                     matchCount++;
                     matchCountExact++;
-                    if ( matchedOnTextFieldOfStudy.length === 0 ) {
-                        matchedOnTextFieldOfStudy = 'Field of Study (';
-                        matchedOnTextExactFieldOfStudy = 'Field of Study (';
-                    };
-                    matchedOnTextFieldOfStudy += fieldOfStudyText.replaceAll('|','') + '; ';
-                    matchedOnTextExactFieldOfStudy += fieldOfStudyText.replaceAll('|','') + '; ';
+//                    if ( matchedOnTextFieldOfStudy.length === 0 ) {
+//                        matchedOnTextFieldOfStudy = 'Field of Study (';
+//                        matchedOnTextExactFieldOfStudy = 'Field of Study (';
+//                    };
+//                    matchedOnTextFieldOfStudy += fieldOfStudyText.replaceAll('|','') + '; ';
+//                    matchedOnTextExactFieldOfStudy += fieldOfStudyText.replaceAll('|','') + '; ';
                 }
             });
             if ( matchFieldOfStudy ) {
-                matchedOnTextFieldOfStudy = matchedOnTextFieldOfStudy.slice(0, -2);  // remove the trailing "; " characters
-                matchedOnTextFieldOfStudy += '); ';  // close the list of matching values
-                matchedOnTextExactFieldOfStudy = matchedOnTextExactFieldOfStudy.slice(0, -2);  // remove the trailing "; " characters
-                matchedOnTextExactFieldOfStudy += '); ';  // close the list of matching values
+//                matchedOnTextFieldOfStudy = matchedOnTextFieldOfStudy.slice(0, -2);  // remove the trailing "; " characters
+//                matchedOnTextFieldOfStudy += '); ';  // close the list of matching values
+//                matchedOnTextExactFieldOfStudy = matchedOnTextExactFieldOfStudy.slice(0, -2);  // remove the trailing "; " characters
+//                matchedOnTextExactFieldOfStudy += '); ';  // close the list of matching values
+                matchedOnTextExactFieldOfStudy += "Field of Study; ";
             };
         }
 
@@ -448,19 +459,20 @@ function findMatchingScholarships(scholarships, pageNumber) {
                     matchSponsor = true;
                     matchCount++;
                     matchCountExact++;
-                    if ( matchedOnTextSponsor.length === 0 ) {
-                        matchedOnTextSponsor = 'Sponsor (';
-                        matchedOnTextExactSponsor = 'Sponsor (';
-                    };
-                    matchedOnTextSponsor += scholarships[i]['SponsorName'] + '; ';
-                    matchedOnTextExactSponsor += scholarships[i]['SponsorName'] + '; ';
+//                    if ( matchedOnTextSponsor.length === 0 ) {
+//                        matchedOnTextSponsor = 'Sponsor (';
+//                        matchedOnTextExactSponsor = 'Sponsor (';
+//                    };
+//                    matchedOnTextSponsor += scholarships[i]['SponsorName'] + '; ';
+//                    matchedOnTextExactSponsor += scholarships[i]['SponsorName'] + '; ';
                 }
             });
             if ( matchSponsor ) {
-                matchedOnTextSponsor = matchedOnTextSponsor.slice(0, -2);  // remove the trailing "; " characters
-                matchedOnTextSponsor += '); ';  // close the list of matching values
-                matchedOnTextExactSponsor = matchedOnTextExactSponsor.slice(0, -2);  // remove the trailing "; " characters
-                matchedOnTextExactSponsor += '); ';  // close the list of matching values
+//                matchedOnTextSponsor = matchedOnTextSponsor.slice(0, -2);  // remove the trailing "; " characters
+//                matchedOnTextSponsor += '); ';  // close the list of matching values
+//                matchedOnTextExactSponsor = matchedOnTextExactSponsor.slice(0, -2);  // remove the trailing "; " characters
+//                matchedOnTextExactSponsor += '); ';  // close the list of matching values
+                matchedOnTextExactSponsor = 'Sponsor; ';
             };
         }
 
@@ -476,8 +488,9 @@ function findMatchingScholarships(scholarships, pageNumber) {
             if ( matchGender ) {
                 matchCount++;
                 matchCountExact++;
-                matchedOnTextGender = 'Gender (' + filterGenders + '); ';
-                matchedOnTextExactGender = 'Gender (' + filterGenders + '); ';
+//                matchedOnTextGender = 'Gender (' + filterGenders + '); ';
+//                matchedOnTextExactGender = 'Gender (' + filterGenders + '); ';
+                matchedOnTextExactGender = 'Gender; ';
             };
         }
 
@@ -498,7 +511,8 @@ function findMatchingScholarships(scholarships, pageNumber) {
             if ( matchAge ) {
                 matchCount++;
                 matchCountExact++;
-                matchedOnAge = 'Age (' + filterAge + '); ';
+//                matchedOnAge = 'Age (' + filterAge + '); ';
+                matchedOnTextExactAge = 'Age; ';
             };
         }
 
@@ -513,7 +527,8 @@ function findMatchingScholarships(scholarships, pageNumber) {
             if ( matchCitizenship ) {
                 matchCount++;
                 matchCountExact++;
-                matchedOnCitizenship = 'Citizenship (' + filterCitizenships + '); ';
+//                matchedOnCitizenship = 'Citizenship (' + filterCitizenships + '); ';
+                matchedOnTextExactCitizenship = 'Citizenship; ';
             };
         }
 
@@ -528,7 +543,8 @@ function findMatchingScholarships(scholarships, pageNumber) {
             if ( matchYearOfNeed ) {
                 matchCount++;
                 matchCountExact++;
-                matchedOnYearOfNeed = 'Year of Need (' + filterYearOfNeed + '); ';
+//                matchedOnYearOfNeed = 'Year of Need (' + filterYearOfNeed + '); ';
+                matchedOnTextExactYearOfNeed = 'Year of Need; ';
             };
         }
 
@@ -550,17 +566,18 @@ function findMatchingScholarships(scholarships, pageNumber) {
                     if ( matchKeyword ) {
                         matchCount++;
                         matchCountExact++;
-                        if ( matchedOnKeyword.length === 0 ) {
-                            matchedOnKeyword = 'Keywords (';
-                        };
-                        matchedOnKeyword += keyword + '; ';
+//                        if ( matchedOnKeyword.length === 0 ) {
+//                            matchedOnKeyword = 'Keywords (';
+//                        };
+//                        matchedOnKeyword += keyword + '; ';
                     };
                 };
             });
             if ( matchKeyword ) {
-                matchedOnKeyword = matchedOnKeyword.slice(0, -2);  // remove the trailing "; " characters
-                matchedOnKeyword += '); ';  // close the list of matching values
-            };
+//                matchedOnKeyword = matchedOnKeyword.slice(0, -2);  // remove the trailing "; " characters
+//                matchedOnKeyword += '); ';  // close the list of matching values
+                matchedOnTextExactKeyword = 'Keyword; ';
+            };  
         }
 
         // check the Enrollment Status
@@ -574,7 +591,8 @@ function findMatchingScholarships(scholarships, pageNumber) {
             if ( matchEnrollmentStatus ) {
                 matchCount++;
                 matchCountExact++;
-                matchedOnEnrollmentStatus = 'Enrollment Status (' + filterEnrollmentStatus + '); ';
+//                matchedOnEnrollmentStatus = 'Enrollment Status (' + filterEnrollmentStatus + '); ';
+                matchedOnTextExactEnrollmentStatus = 'Enrollment Status; ';
             };
         }
 
@@ -590,7 +608,8 @@ function findMatchingScholarships(scholarships, pageNumber) {
             if ( matchGPA ) {
                 matchCount++;
                 matchCountExact++;
-                matchedOnGPA = 'GPA (' + filterGPA + '); ';
+//                matchedOnGPA = 'GPA (' + filterGPA + '); ';
+                matchedOnTextExactGPA = 'GPA; ';
             };
         }
 
@@ -605,7 +624,8 @@ function findMatchingScholarships(scholarships, pageNumber) {
             if ( matchMilitaryService ) {
                 matchCount++;
                 matchCountExact++;
-                matchedOnMilitaryService = 'Military Service (' + filterMilitaryService + '); ';
+//                matchedOnMilitaryService = 'Military Service (' + filterMilitaryService + '); ';
+                matchedOnTextExactMilitaryService = 'Military Service; ';
             };
         }
 
@@ -621,15 +641,16 @@ function findMatchingScholarships(scholarships, pageNumber) {
                     matchFAAPilotCert = true;
                     matchCount++;
                     matchCountExact++;
-                    if ( matchedOnFAAPilotCert.length === 0 ) {
-                        matchedOnFAAPilotCert = 'FAA Pilot Certificate (';
-                    };
-                    matchedOnFAAPilotCert += faaPilotCertText.replaceAll('|','') + '; ';
+//                    if ( matchedOnFAAPilotCert.length === 0 ) {
+//                        matchedOnFAAPilotCert = 'FAA Pilot Certificate (';
+//                    };
+//                    matchedOnFAAPilotCert += faaPilotCertText.replaceAll('|','') + '; ';
                 }
             });
             if ( matchFAAPilotCert ) {
-                matchedOnFAAPilotCert = matchedOnFAAPilotCert.slice(0, -2);  // remove the trailing "; " characters
-                matchedOnFAAPilotCert += '); ';  // close the list of matching values
+//                matchedOnFAAPilotCert = matchedOnFAAPilotCert.slice(0, -2);  // remove the trailing "; " characters
+//                matchedOnFAAPilotCert += '); ';  // close the list of matching values
+                matchedOnTextExactFAAPilotCert = 'FAA Pilot Airman Certificate; ';
             };
         }
 
@@ -640,20 +661,23 @@ function findMatchingScholarships(scholarships, pageNumber) {
             matchCountBlank++;
             matchedOnFAAPilotRating = 'FAA Pilot Rating; ';
         } else {
+// alert(scholarships[i]['Criteria_FAAPilotRatingMatchingText'].toLowerCase());
             faaPilotRatingList.forEach( function(faaPilotRatingText) {
+// alert(faaPilotRatingText);
                 if ( scholarships[i]['Criteria_FAAPilotRatingMatchingText'].toLowerCase().includes(faaPilotRatingText) ) {
                     matchFAAPilotRating = true;
                     matchCount++;
                     matchCountExact++;
-                    if ( matchedOnFAAPilotRating.length === 0 ) {
-                        matchedOnFAAPilotRating = 'FAA Pilot Rating (';
-                    };
-                    matchedOnFAAPilotRating += faaPilotRatingText.replaceAll('|','') + '; ';
+//                    if ( matchedOnFAAPilotRating.length === 0 ) {
+//                        matchedOnFAAPilotRating = 'FAA Pilot Rating (';
+//                    };
+//                    matchedOnFAAPilotRating += faaPilotRatingText.replaceAll('|','') + '; ';
                 }
             });
             if ( matchFAAPilotRating ) {
-                matchedOnFAAPilotRating = matchedOnFAAPilotRating.slice(0, -2);  // remove the trailing "; " characters
-                matchedOnFAAPilotRating += '); ';  // close the list of matching values
+//                matchedOnFAAPilotRating = matchedOnFAAPilotRating.slice(0, -2);  // remove the trailing "; " characters
+//                matchedOnFAAPilotRating += '); ';  // close the list of matching values
+                matchedOnTextExactFAAPilotRating = 'FAA Pilot Rating; ';
             };
         }
 
@@ -669,15 +693,16 @@ function findMatchingScholarships(scholarships, pageNumber) {
                     matchFAAMechanicCertRating = true;
                     matchCount++;
                     matchCountExact++;
-                    if ( matchedOnFAAMechanicCertRating.length === 0 ) {
-                        matchedOnFAAMechanicCertRating = 'FAA Mechanic Certificate/Rating (';
-                    };
-                    matchedOnFAAMechanicCertRating += faaMechanicCertRatingText.replaceAll('|','') + '; ';
+//                    if ( matchedOnFAAMechanicCertRating.length === 0 ) {
+//                        matchedOnFAAMechanicCertRating = 'FAA Mechanic Certificate/Rating (';
+//                    };
+//                    matchedOnFAAMechanicCertRating += faaMechanicCertRatingText.replaceAll('|','') + '; ';
                 }
             });
             if ( matchFAAMechanicCertRating ) {
-                matchedOnFAAMechanicCertRating = matchedOnFAAMechanicCertRating.slice(0, -2);  // remove the trailing "; " characters
-                matchedOnFAAMechanicCertRating += '); ';  // close the list of matching values
+//                matchedOnFAAMechanicCertRating = matchedOnFAAMechanicCertRating.slice(0, -2);  // remove the trailing "; " characters
+//                matchedOnFAAMechanicCertRating += '); ';  // close the list of matching values
+                matchedOnTextExactFAAMechanicCertRating = 'FAA Mechanic Certificate/Rating; ';
             };
         }
 
@@ -689,7 +714,10 @@ function findMatchingScholarships(scholarships, pageNumber) {
                     matchedOnYearOfNeed + matchedOnKeyword + matchedOnEnrollmentStatus + matchedOnGPA +
                     matchedOnMilitaryService + matchedOnFAAPilotCert + matchedOnFAAPilotRating + matchedOnFAAMechanicCertRating;
         if ( matchedOn.substring(0, 2) === '; ' ) { matchedOn = matchedOn.slice(2); };
-        matchedOnTextExact = matchedOnTextExactFieldOfStudy + matchedOnTextExactSponsor + matchedOnTextExactGender;
+        matchedOnTextExact = matchedOnTextExactFieldOfStudy + matchedOnTextExactSponsor + matchedOnTextExactGender + matchedOnTextExactAge +
+                             matchedOnTextExactCitizenship + matchedOnTextExactYearOfNeed + matchedOnTextExactKeyword +
+                             matchedOnTextExactEnrollmentStatus + matchedOnTextExactGPA + matchedOnTextExactMilitaryService + 
+                             matchedOnTextExactFAAPilotCert + matchedOnTextExactFAAPilotRating + matchedOnTextExactFAAMechanicCertRating;
         if ( matchedOnTextExact.substring(0, 2) === '; ' ) { matchedOnTextExact = matchedOnTextExact.slice(2); };
 //        matchedOnTextBlank = matchedOnTextBlankFieldOfStudy + matchedOnTextBlankSponsor + matchedOnTextBlankGender;
 //        if ( matchedOnTextBlank.substring(0, 2) === '; ' ) { matchedOnTextBlank = matchedOnTextBlank.slice(2); };
@@ -1010,7 +1038,12 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber, showMat
                     const divScholarshipRow2Col3Row4Col2 = document.createElement('div');
                     divScholarshipRow2Col3Row4Col2.classList.add('scholarshipsearchresultscol3B');
                     divScholarshipRow2Col3Row4Col2.classList.add('text-block');
-                    divScholarshipRow2Col3Row4Col2.innerHTML =  selectedScholarship['matchCountExact'] + ' Criteria: ' + selectedScholarship['matchedOnTextExact'];
+//                    divScholarshipRow2Col3Row4Col2.innerHTML =  selectedScholarship['matchCountExact'] + ' Criteria: ' + selectedScholarship['matchedOnTextExact'];
+                    if ( selectedScholarship['matchCountExact'] === 0 ) {
+                        divScholarshipRow2Col3Row4Col2.innerHTML = 'No exact criteria was matched; however, this scholarship is being shown based on general criteria.';
+                    } else {
+                        divScholarshipRow2Col3Row4Col2.innerHTML =  selectedScholarship['matchCountExact'] + ' Criteria: ' + selectedScholarship['matchedOnTextExact'];
+                    }
 
                 divScholarshipRow2Col3Rows.appendChild(divScholarshipRow2Col3Row4Col2);
 

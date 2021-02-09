@@ -5,6 +5,7 @@
 
 :root {
   --amcg-blue: rgb(0,73,140);
+  --amcg-blue-50: rgb(0,73,140,.5);
   --amcg-blue-25: rgb(0,73,140,.25);
   --amcg-yellow: rgb(253,185,19);
 }
@@ -13,21 +14,13 @@
  * ELEMENTS                                                                                    *
  ***********************************************************************************************/
 
-body {
+ body {
   font-family: 'Julius Sans One', sans-serif;
   font-size: 1.125em;
   color: var(--amcg-blue);
 /*  background: #616161;  /* fallback for old browsers */  
 /*  background: -webkit-linear-gradient(to right, #9bc5c3, #616161);  /* Chrome 10-25, Safari 5.1-6 */
 /*  background: linear-gradient(to right, #9bc5c3, #616161); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-}
-
-div.navigationbar {
-  width: 100%;
-  text-align: center;
-  color: var(--amcg-blue);
-  vertical-align: middle;
-
 }
 
 span.span-paragraph {
@@ -158,13 +151,6 @@ select.single-choice {
  * IDs                                                                                          *
  ***********************************************************************************************/
 
-#logoandnavbar {
-  text-align: center;
-  justify-content: center;
-  vertical-align: middle;
-/*  margin-top: 25px; */
-}
-
 /***********************************************************************************************
  * CLASSES                                                                                    *
  ***********************************************************************************************/
@@ -203,28 +189,18 @@ select.single-choice {
     padding: 0px 5px 0px 0px;
  }
 
- .navbar-nav.navbar-center {
-    position: absolute;
-    left: 50%;
-    transform: translatex(-50%);
-    vertical-align: middle;
-}
-
-.navbar-nav .nav-link {
-    display: table-cell;
-/*    margin-right: 5px; */
-/*    margin-left: 5px; */
-    vertical-align: middle;
-    line-height: normal;
-    white-space: nowrap;
-}
-
 .custom-toggler.navbar-toggler {
     border-color: var(--amcg-blue);
 }
 
 .custom-toggler .navbar-toggler-icon {
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0, 73, 140, 0.7)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+.nav-link-dropdown {
+  font-size: 0.3em;
+  width: 175px;
+  font-weight: normal;
 }
 
 .chevrons {
@@ -573,10 +549,6 @@ a.text-link {
   font-family: 'Lato', sans-serif;
   font-size: 0.6em;
   color: var(--amcg-blue);
-}
-
-.navbar-logo {
-  width: 200px;
 }
 
 .footer-logo {

@@ -1,0 +1,103 @@
+
+/***********************************************************************************************
+ * VARIABLES                                                                                   *
+ ***********************************************************************************************/
+
+:root {
+  --amcg-blue: rgb(0,73,140);
+  --amcg-blue-50: rgb(0,73,140,.5);
+  --amcg-blue-25: rgb(0,73,140,.25);
+  --amcg-yellow: rgb(253,185,19);
+}
+
+/***********************************************************************************************
+ * Nav Bar                                                                                     *
+ ***********************************************************************************************/
+
+ .flexcontainer-nav {
+  display: flex;
+  width: 95%;
+  flex-direction: row;
+  margin-left: 5px;
+  margin-top: 10px;
+}
+
+.column {
+   flex-basis: 100%;
+   flex: 1;
+}
+
+#divLogo {
+  width: 200px;
+}
+
+.navbar-logo {
+  width: 175px;
+  align-self: flex-start;
+}
+
+.navbars-wrapper {
+  flex-direction: column;
+}
+
+.navbar-login {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  height: 30px;
+  vertical-align: middle;
+  align-items: center;
+}
+
+.navitem-login {
+  font-family: 'Lato', sans-serif;
+  font-weight: normal;
+  font-size: .75em;
+}
+
+.navbar-main {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 1em;
+  width: 100%;
+}
+
+/***************************************************
+ * The "More" dropdown menu item                   *
+ ***************************************************/
+
+ .nav-dropdown-button {
+  background-color: white;
+  color: var(--amcg-blue);
+  border: none;
+  white-space: nowrap;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+/* Show the dropdown menu on hover */
+.nav-dropdown:hover .nav-dropdown-content {display: block;}
+
+/* Dropdown Content (Hidden by Default) */
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  line-height: 0.0;
+  z-index: 1;
+  text-align: center;
+}
+
+/* Links inside the dropdown */
+.nav-dropdown-content a {
+  background-color: var(--amcg-blue);
+  padding: 20px 0px 20px 0px;
+  color: white;
+  display: block;
+  font-size: 0.90em;
+  width: 140px;
+}
+
+/* Change color of dropdown links on hover */
+.nav-dropdown-content a:hover {background-color: #0052bf;}

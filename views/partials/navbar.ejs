@@ -1,26 +1,30 @@
-<div class="container" id="logoandnavbar">
-    <nav class="navbar navbar-expand-sm navbar-default" >
-        <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" 
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse navigationbar navbar-center">
-            <img src="/img/imgFofALogo_Cropped.png" alt="Logo for Future of Aviation Website" class="img-responsive navbar-logo">
-            <div id="navbar-items" class="navbar-nav">
-                <a class="nav-item nav-link" href="http://futureofaviation.aero/">Home</a>
-                <a class="nav-item nav-link" href="http://futureofaviation.aero/about/">About</a>
-                <a class="nav-item nav-link" href="http://futureofaviation.aero/sponsors/">Sponsors</a>
-                <a class="nav-item nav-link" href="http://futureofaviation.aero/scholarships/">Scholarships</a>
-                <a class="nav-item nav-link" href="http://futureofaviation.aero/grants/">Grants</a>
-                <a class="nav-item nav-link" href="http://futureofaviation.aero/internships/">Internships</a>
-                <a class="nav-item nav-link" href="http://futureofaviation.aero/supporters/">Supporters</a>
-                <a class="nav-item nav-link" href="http://futureofaviation.aero/contact/">Contact</a>
-                <a class="nav-item nav-link" href="http://futureofaviation.aero/donate/">Donate</a>
-                <a class="nav-item nav-link" href="../switchboard" id="navbarSwitchboard">Switchboard</a>
-                <a class="nav-item nav-link" href="../portal" id="navbarLogIn">Log In / Sign Up</a>
-            </div>
+<div class="flexcontainer-nav" id="logoandnavbar">
+    <div id="divLogo">
+        <img src="/img/imgFofALogo_Small_Cropped.png" alt="Logo for Future of Aviation Website"
+            class="navbar-logo">
+    </div>
+    <div class="column navbars-wrapper">
+        <div class="navbar-login">
+            <a class="navitem-login" href="../switchboard" id="navbarSwitchboard">Switchboard</a>
+            <a class="navitem-login" href="../portal" id="navbarLogIn">Log in / Sign up</a>
         </div>
-    </nav>
+        <div class="navbar-main">
+            <a href="http://futureofaviation.aero/">home</a>
+            <a href="http://futureofaviation.aero/about/">about</a>
+            <a href="http://futureofaviation.aero/scholarships/">scholarships</a>
+            <a href="http://futureofaviation.aero/sponsors/">sponsors</a>
+            <a href="http://futureofaviation.aero/supporters/">supporters</a>
+            <a href="http://futureofaviation.aero/contact/">contact</a>
+            <span class="nav-dropdown">
+                <button class="nav-dropdown-button">more <i id="navMoreChevron" class="fas fa-chevron-down"></i></button>
+                <div class="nav-dropdown-content">
+                    <a class="nav-link-dropdown" href="http://futureofaviation.aero/grants/">grants</a><br>
+                    <a class="nav-link-dropdown" href="http://futureofaviation.aero/internships/">internships</a><br>
+                    <a class="nav-link-dropdown" href="http://futureofaviation.aero/donate/">donate</a>
+                </div>
+            </span>
+        </div>
+    </div>
 </div>
 <div align="center">
     <!--  <img src="images/imgFofALogo_Cropped.png" alt="Logo for Future of Aviation Website" style="width:200px;" class="img-responsive"><br> -->
