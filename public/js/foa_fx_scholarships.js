@@ -731,6 +731,7 @@ function findMatchingScholarships(scholarships, pageNumber) {
             scholarships[i]['matchCount'] = matchCount;
             scholarships[i]['matchCountExact'] = matchCountExact;
 //            scholarships[i]['matchCountBlank'] = matchCountBlank;
+//            scholarships[i]['sponsorsCriteriaCount'] = sponsorList.length;
             matchingScholarships.push(scholarships[i]);
         }
 
@@ -741,7 +742,11 @@ function findMatchingScholarships(scholarships, pageNumber) {
     // if matches found, build the search results; otherwise, show a message
     ///////////////////////////////////////////////////////////
     if (matchingScholarships.length === 0) {
-        document.querySelector('#searchResultsTitle').textContent = 'No results found. Try changing the search criteria for better results.';
+        if (sponsorList.length != 0) {
+            document.querySelector('#searchResultsTitle').textContent = 'No active scholarships found for the selected Sponsor. Try changing the search criteria for better results.';
+        } else {
+            document.querySelector('#searchResultsTitle').textContent = 'No results found. Try changing the search criteria for better results.';
+        }
         const searchResults = document.querySelector('#searchResults');
         document.querySelector('#scholarshipsearchresultscolumn').removeChild(searchResults);
     } else {
