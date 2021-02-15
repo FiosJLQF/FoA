@@ -16,7 +16,7 @@ const { ScholarshipsTable, ScholarshipsActive, ScholarshipsDDL, ScholarshipsAllD
         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
         FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
-        UsersAllDDL, UserPermissionsActive //, UserProfiles
+        UsersAllDDL, UserPermissionsActive, UserProfiles
     } = require('./models/sequelize.js');
 const cors = require('cors');
 
@@ -75,10 +75,10 @@ app.use(
       auth0Logout: true,
     })
 );
-app.get('/', (req, res) => { // req.isAuthenticated is provided from the auth router
-    // the object "user" will be available on the destination page with user metadata
-    res.redirect(req.oidc.isAuthenticated() ? '/portal/switchboard' : '/portal');
-});
+//app.get('/', (req, res) => { // req.isAuthenticated is provided from the auth router
+//    // the object "user" will be available on the destination page with user metadata
+//    res.redirect(req.oidc.isAuthenticated() ? '/portal/switchboard' : '/portal');
+//});
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -88,6 +88,11 @@ app.get('/', (req, res) => { // req.isAuthenticated is provided from the auth ro
 ///////////////////////////////////////////
 // "GET" Routes (retrieve data)
 ///////////////////////////////////////////
+
+app.get('/', (req, res) => {
+    res.redirect('/scholarshipsearch');
+});
+
 app.get('/scholarshipsearch', async (req, res) => {
     const scholarshipsActive = await ScholarshipsActive.findAndCountAll({});
     console.log(scholarshipsActive.count);
@@ -134,22 +139,77 @@ app.get('/portal', async (req, res) => {
 
 app.get('/switchboard', requiresAuth(), async (req, res) => {
     try {
-        const sponsorsDDL = await SponsorsDDL.findAndCountAll({});
-        const scholarshipsAllDDL = await ScholarshipsAllDDL.findAndCountAll({});
-        const usersAllDDL = await UsersAllDDL.findAndCountAll({});
-//        const userProfiles = await UserProfiles.findAll( { where: { UserName: req.oidc.user.email }});
-//        console.log(userProfiles[0].UserID);
 
-//        const userPermissionsActive = await UserPermissionsActive.findAndCountAll({});
-//        const testUP = userPermissions(userPermissionsActive, req.oidc.user.email)
+        // Get the current user's profile
+        const userProfiles = await UserProfiles.findAll( { where: { Username: req.oidc.user.email }});
 
-return res.render('switchboard', {
+        // Get the list of Permissions for the user
+        const userPermissionsActive = await UserPermissionsActive.findAndCountAll( { where: { UserID: userProfiles[0].UserID }});
+
+        // Can the user see the sponsors select object?  If so, load the Sponsors available to the current user.
+        const userPermissionsSponsorDDL = userPermissionsActive.rows.filter( permission => permission.ObjectName === 'switchboard-sponsors');
+        let userCanReadSponsors = false;
+        let userPermissionsSponsors = [];
+        let sponsorsDDL = [];
+        if ( userPermissionsSponsorDDL.length > 0 && userPermissionsSponsorDDL[0].CanRead ) {
+            userCanReadSponsors = true;
+//            console.log('User can read Sponsors DDL');
+            userPermissionsSponsors = userPermissionsActive.rows.filter( permission => permission.ObjectName === 'sponsors');
+//            console.log(`User has sponsors permissions: ${userPermissionsSponsors.length}`);
+            if ( userPermissionsSponsors.length > 0 && userPermissionsSponsors[0].CanRead ) {
+                if ( userPermissionsSponsors[0].ObjectValues === '*' ) {
+                    sponsorsDDL = await SponsorsDDL.findAndCountAll({});
+                } else {
+                    sponsorsDDL = await SponsorsDDL.findAndCountAll({ where: { optionid: userPermissionsSponsors[0].ObjectValues } });
+                };
+            } else {  // The user can see the Sponsors DDL, but has no Sponsors assigned to them - hide the DDL
+                userCanReadSponsors = false;
+            };
+        };
+        console.log(`userCanReadSponsors: ${userCanReadSponsors}`);
+
+        // Can the user see the scholarships select object?  If so, load the Scholarships available to the current user.
+        let userCanReadScholarships = false;
+        let userPermissionsScholarshipDDL = [];
+        let scholarshipsDDL = [];
+        if (userPermissionsSponsorDDL.length > 0 && userPermissionsSponsorDDL[0].CanRead ) { // Only load scholarships if the user can see Sponsors
+            userPermissionsScholarshipDDL = userPermissionsActive.rows.filter( permission => permission.ObjectName === 'switchboard-scholarships');
+            if ( userPermissionsScholarshipDDL.length > 0 && userPermissionsScholarshipDDL[0].CanRead ) {
+                userCanReadScholarships = true;
+                if ( userPermissionsSponsors.length > 0 ) {  // if a Sponsor permission was listed at all (i.e., what Sponsors can be viewed)
+                    if ( userPermissionsSponsors[0].ObjectValues === '*') {  // If the user can see all Sponsors, show all Scholarships
+                        scholarshipsDDL = await ScholarshipsDDL.findAndCountAll({});
+                    } else {  // Only show scholarships for the allowed sponsors
+                        scholarshipsDDL = await ScholarshipsDDL.findAndCountAll({ where: { SponsorID: userPermissionsSponsors[0].ObjectValues } });
+                    };
+                };
+            };
+        };
+        console.log(`userCanReadScholarships: ${userCanReadScholarships}`);
+
+        // Can the user see the users select object?  If so, load the Users available to the current user
+        const userPermissionsUserDDL = userPermissionsActive.rows.filter( permission => permission.ObjectName === 'switchboard-users');
+        let userCanReadUsers = false;
+        let usersAllDDL = [];
+//        console.log(userPermissionsUserDDL.length);
+//        console.log(userPermissionsUserDDL[0].CanRead);
+        if ( userPermissionsUserDDL.length > 0 && userPermissionsUserDDL[0].CanRead ) {
+            userCanReadUsers = true;
+            usersAllDDL = await UsersAllDDL.findAndCountAll({});
+            console.log(`usersAllDDL: ${usersAllDDL.length}`);
+        };
+        console.log(`userCanReadUsers: ${userCanReadUsers}`);
+
+    return res.render('switchboard', {
             user: req.oidc.user,
             userName: ( req.oidc.user == null ? '' : req.oidc.user.name ),
+            userCanReadSponsors,
             sponsorsDDL,
-            scholarshipsAllDDL,
+            userCanReadScholarships,
+            scholarshipsDDL,
             SponsorID: '',
             ScholarshipID: '',
+            userCanReadUsers,
             usersAllDDL,
             UserID: ''
         })
@@ -157,6 +217,7 @@ return res.render('switchboard', {
         console.log('Error:' + err);
     }
 });
+
 app.get("/sign-up/:page", (req, res) => {
     const { page } = req.params;
     res.oidc.login({
