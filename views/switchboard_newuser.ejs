@@ -1,7 +1,7 @@
 <% layout('layouts/boilerplate') %>
 
 <div class="container pagetitle" align="center">
-  Switchboard
+  Switchboard - New User Account
   <hr class="pagetitlebreak">
 </div>
 
@@ -11,21 +11,19 @@
   <!-- 1st Row of Main Body -->
   <div class="row">
 
-    <!-- Left-hand Panel: Main Content Menu -->
-    <%- include('partials/menu_main') %>
+    <!-- Left-hand Panel: Main Content Menu (No Content) -->
+    <div id="switchboardsidemenu" class="col-3 bodylayout1col1">
+    </div>  <!-- End column 1 DIV -->
 
     <!-- Right-hand Panel: Content -->
-    <% if ( errorCode !== 0 ) { %>
-      <%- include('partials/switchboard_error') %>
-    <% } else if ( actionRequested === 'addsponsor' ) { %>
-        <%- include('partials/sponsor_add') %>
-    <% } else if ( sponsorID !== '' ) { %>
-      <%- include('partials/sponsor_details') %>
-    <% } else if  ( scholarshipID !== '' ) { %>
-      scholarshipID
-    <% } else { %>
-      <%- include('partials/switchboard_home') %>
-    <% } %>
+    <div class="col-9 bodylayout1col2" id="scholarshipsearchresultscolumn">
+      <span class="bodylayout1col2title" id="userName">Welcome, <%= user.name %>!</span><br><br><br><br>
+
+      Your account is under review, and a member of our team will contact you when you have been granted
+      access to content such as Sponsors and/or Scholarships.<br><br><br><br><br><br>
+
+    </div>  <!-- End column 2 DIV  -->
+
   </div>    <!-- End row 1 DIV     -->
 
   <!-- 2nd Row of Main Body -->

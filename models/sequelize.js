@@ -39,10 +39,17 @@ const ScholarshipsDDLModel = require('./scholarshipnameddl.model');
 const ScholarshipsDDL = ScholarshipsDDLModel(sequelize, DataTypes);
 const ScholarshipsAllDDLModel = require('./scholarshipnameallddl.model');
 const ScholarshipsAllDDL = ScholarshipsAllDDLModel(sequelize, DataTypes);
+const ScholarshipsAllDDLTestModel = require('./scholarshipsAllDDL_Test.model');
+const ScholarshipsAllDDLTest = ScholarshipsAllDDLTestModel(sequelize, DataTypes);
 const FieldOfStudyCategoriesDDLModel = require('./fieldofstudyddl.model');
 const FieldOfStudyCategoriesDDL = FieldOfStudyCategoriesDDLModel(sequelize, DataTypes);
-const SponsorsDDLModel = require('./sponsornameddl.model');
-const SponsorsDDL = SponsorsDDLModel(sequelize, DataTypes);
+const SponsorsTableTestModel = require('./sponsorsTableTest.model');
+const SponsorsTableTest = SponsorsTableTestModel(sequelize, DataTypes);
+SponsorsTableTest.removeAttribute('id');  // The default [id] column is not used in this table
+const SponsorsAllDDLModel = require('./sponsorsAllDDL.model');
+const SponsorsAllDDL = SponsorsAllDDLModel(sequelize, DataTypes);
+const SponsorsAllDDLTestModel = require('./sponsorsAllDDL_Test.model');
+const SponsorsAllDDLTest = SponsorsAllDDLTestModel(sequelize, DataTypes);
 const GenderCategoriesDDLModel = require('./genderddl.model');
 const GenderCategoriesDDL = GenderCategoriesDDLModel(sequelize, DataTypes);
 const CitizenshipCategoriesDDLModel = require('./citizenshipddl.model');
@@ -81,8 +88,11 @@ module.exports = {
   ScholarshipsActive,
   ScholarshipsDDL,
   ScholarshipsAllDDL,
+  ScholarshipsAllDDLTest,
   FieldOfStudyCategoriesDDL,
-  SponsorsDDL,
+  SponsorsTableTest,
+  SponsorsAllDDL,
+  SponsorsAllDDLTest,
   GenderCategoriesDDL,
   CitizenshipCategoriesDDL,
   YearOfNeedCategoriesDDL,

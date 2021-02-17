@@ -1,0 +1,40 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container pagetitle" align="center">
+  An Error Has Occurred
+  <hr class="pagetitlebreak">
+</div>
+
+<!-- Flex Grid for Body -->
+<div class="container">
+
+  <!-- 1st Row of Main Body -->
+  <div class="row">
+
+    <!-- Left-hand Panel: Main Content Menu -->
+    <div id="switchboardsidemenu" class="col-3 bodylayout1col1">
+    </div>  <!-- End column 1 DIV -->
+
+    <!-- Right-hand Panel: Content -->
+    <div class="col-9 bodylayout1col2" id="scholarshipsearchresultscolumn">
+      <br><br>
+      <% if ( errorCode === 908 ) { %>
+        The selected Sponsor does not exist.  Return to the Switchboard and select another Sponsor from the list. (908)
+      <% } else if ( errorCode === 909 ) { %>
+        You do not have permission to view the requested data.  Please contact [some email] if you feel you should have access to this data. (909)
+      <% } else { %>
+        An unknown error has occurred.
+        <% } %><br><br><br>
+    </div>  <!-- End column 2 DIV  -->
+  
+  </div>    <!-- End row 1 DIV     -->
+
+  <!-- 2nd Row of Main Body -->
+  <div class="row">
+    <div id="switchboardsidemenu_footer" class="col-3 bodylayout1col1"></div>
+    <div id="scholarshipsearchresultscolumn_footer" class="col-9 bodylayout1col2">
+      <hr class="bodycol2break">
+    </div>
+  </div>    <!-- End row 2 DIV     -->
+
+</div>      <!-- End container DIV -->

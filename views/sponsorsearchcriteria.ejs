@@ -62,7 +62,7 @@
 <script>
 
     // Load the Sponsor List into the DDL
-    var splRows = <%- JSON.stringify(sponsorsDDL.rows) %>;
+    var splRows = <%- JSON.stringify(sponsorsAllDDL.rows) %>;
     loadSelectOptionsList("filterSponsorNamesInput", "(Not Selected)", 0, splRows);
 
     // Load the Sponsor Type options into the DDL

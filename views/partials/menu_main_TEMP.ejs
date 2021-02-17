@@ -14,9 +14,7 @@
     Sponsor(s): <span id="testText"></span>
     <% if ( userCanCreateSponsors ) { %>  <!-- If a user cannot create sponsors, hide the link. -->
     <span class="float-right">
-      <span id="addSponsor" class="float-right"><a id="addSponsor" class="btn btn-default button-small"
-        href="/switchboard?actionRequested=addsponsor">Add Sponsor</a>&nbsp;</span>
-<!--      <button type="button" id="addSponsorLink" class="btn btn-default button-small" onclick="">Add Sponsor</button>&nbsp; -->
+      <button type="button" id="addSponsorLink" class="btn btn-default button-small" onclick="">Add Sponsor</button>&nbsp;
     </span>
     <% } %>
     <div id="filterSponsorNamesInputBlock">
@@ -33,7 +31,7 @@
         <button type="button" id="addScholarshipLink" class="btn btn-default button-small" onclick="">Add Scholarship</button>&nbsp;
       </span>
 <!--      <span class="float-right"><a id="addScholarshipLink" class="btn btn-default button-small"
-      href="/scholarshipAdd/<%= sponsorID %>">Add Scholarship</a>&nbsp;</span>   -->
+      href="/scholarshipAdd/<%= SponsorID %>">Add Scholarship</a>&nbsp;</span>   -->
     <% } %>
   </div>
   <span class="searchInstructions">&nbsp;&nbsp;&nbsp;(Filtered to the Sponsor selected above.)</span>
@@ -61,28 +59,22 @@
 
 <script>
 
-  var splRows = <%- JSON.stringify(sponsorsAllDDL.rows) %>;
+  var splRows = <%- JSON.stringify(sponsorsDDL.rows) %>;
   loadSelectOptionsList("filterSponsorNamesInput", "(Not Selected)", 0, splRows, '<%= sponsorID %>');
 
   // Redirect the user to the Sponsor Details page
   function gotoSponsorDetails(selectedSponsorID) {
-    var newURL = '';
-    if ( selectedSponsorID == 0 ) {
-      newURL = '/switchboard';
-    } else {
-      newURL = 'switchboard?sponsorid=' + selectedSponsorID;
-    }
+    var newURL = '/sponsordetails/' + selectedSponsorID;
     location.href=newURL;
   }
 
-  // If a Sponsor is selected, enable the "Add Scholarship" link and load the Scholarships DDL
+  // Load the Scholarships List into the DDL
+  var schRows = <%- JSON.stringify(scholarshipsDDL.rows) %>;
+  loadSelectOptionsList("filterScholarshipsInput", "(Not Selected)", 0, schRows, '<%= scholarshipID %>');
   var ddlSponsors = document.getElementById("filterSponsorNamesInput");
-  if ( ddlSponsors.value === '0' ) {
+  if ( ddlSponsors.value == 0 ) {
     document.getElementById('addScholarshipLink').disabled = true;
     document.getElementById('filterScholarshipsInput').disabled = true;
-  } else {
-    var schRows = <%- JSON.stringify(scholarshipsDDL.rows) %>;
-    loadSelectOptionsList("filterScholarshipsInput", "(Not Selected)", 0, schRows, '');
   };
 
   // Redirect the user to the Scholarship Details page
@@ -93,7 +85,7 @@
 
   // Load the Users List into the DDL
   var usrRows = <%- JSON.stringify(usersAllDDL.rows) %>;
-  loadSelectOptionsList("filterUsersInput", "(Not Selected)", 0, usrRows, '<%= userID %>');
+  loadSelectOptionsList("filterUsersInput", "(Not Selected)", 0, usrRows, '<%= UserID %>');
 
   // Redirect the user to the User Details page
   function gotoUserEdit(selectedUserID) {

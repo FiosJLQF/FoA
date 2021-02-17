@@ -1,0 +1,41 @@
+<div class="col-9 bodylayout1col2-datamgmt" id="scholarshipsearchresultscolumn">
+    <span class="bodylayout1col2title" id="sponsorInstructions"><label>
+      Edit the entries below, and click "Save Changes"</label></span><br>
+    <hr class="bodycol2break"><br>
+    <form form action="/sponsorupdate" method="POST" id="sponsorData">
+      <div>
+          <label for="sponsorName" class="data-mgmt">Sponsor Name:</label>
+          <input type="text" id="sponsorName" name="sponsorName" class="data-mgmt-text"
+            value="<%= sponsorDetails[0].SponsorName %>">
+      </div><br>
+      <div>
+          <label for="sponsorDescription" class="data-mgmt">Description:</label>
+          <textarea id="sponsorDescription" name="sponsorDescription]" class="data-mgmt"><%= sponsorDetails[0].SponsorDescription %></textarea> 
+      </div><br>
+      <div>
+        <label for="sponsorWebsite" class="data-mgmt">Website:</label>
+        <input type="text" id="sponsorWebsite" name="sponsorWebsite]" class="data-mgmt-text" 
+          value="<%= sponsorDetails[0].SponsorWebsite %>">
+      </div><br>
+      <div>
+        <label for="sponsorNEXT" class="data-mgmt">...more items...</label>
+        <input type="text" id="sponsorNEXT" name="sponsor[SponsorNEXT]" class="data-mgmt" 
+          value="">
+      </div><br>
+      <% if ( userCanUpdateSponsor ) { %>
+      <button class="data-mgmt" form="sponsorData">Save Changes</button>&nbsp;&nbsp;&nbsp;&nbsp;
+      <% } %>
+      <% if ( userCanDeleteSponsor ) { %>
+<!--        <button class="data-mgmt">Delete This Sponsor</button>  -->
+        [Delete This Sponsor]
+      <% } %>
+    </form><br>
+
+    <script>
+      if ( <%- !userCanUpdateSponsor %> ) {
+        document.getElementById('sponsorName').disabled = true;
+        document.getElementById('sponsorDescription').disabled = true;
+        document.getElementById('sponsorWebsite').disabled = true;
+
+      };
+    </script>
