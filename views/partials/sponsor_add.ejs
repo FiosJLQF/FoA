@@ -16,8 +16,44 @@
         <input type="text" id="sponsorWebsite" name="sponsorWebsite" class="data-mgmt-text">
       </div><br>
       <div>
-        <label for="sponsorNEXT" class="data-mgmt">...more items...</label>
-        <input type="text" id="sponsorNEXT" name="sponsorNEXT" class="data-mgmt">
+        <label for="sponsorLogo" class="data-mgmt">Logo:</label>
+        <input type="text" id="sponsorLogo" name="sponsorLogo" class="data-mgmt-text">
+      </div><br>
+      <div>
+        <label for="sponsorContactFName" class="data-mgmt">Contact First Name:</label>
+        <input type="text" id="sponsorContactFName" name="sponsorContactFName" class="data-mgmt-text">
+      </div><br>
+      <div>
+        <label for="sponsorContactLName" class="data-mgmt">Contact Last Name:</label>
+        <input type="text" id="sponsorContactLName" name="sponsorContactLName" class="data-mgmt-text">
+      </div><br>
+      <div>
+        <label for="sponsorContactEmail" class="data-mgmt">Contact Email:</label>
+        <input type="text" id="sponsorContactEmail" name="sponsorContactEmail" class="data-mgmt-text">
+      </div><br>
+      <div>
+        <label for="sponsorContactTelephone" class="data-mgmt">Contact Telephone:</label>
+        <input type="text" id="sponsorContactTelephone" name="sponsorContactTelephone" class="data-mgmt-text">
+      </div><br>
+      <div class="flexcontainer-datamgmt">
+        <div class="row">
+          <div class="col-3 data-mgmt-label">
+            <label for="sponsorType" class="data-mgmt">Sponsor Type(s):</label><br>
+            <label class="data-mgmt-instruction">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</label>
+          </div>
+          <div class="col-9">
+            <select id="sponsorTypes" name="sponsorTypes" class="data-mgmt-multiple" multiple></select><br>
+          </div>
+        </div>
       </div><br>
       <button class="data-mgmt">Add Sponsor</button>
     </form><br>
+</div>
+
+<script>
+
+// Load the Sponsor Types into the DDL
+    var sptRows = <%- JSON.stringify(sponsorTypeCategoriesDDL.rows) %>;
+    loadSelectOptionsList("sponsorTypes", "(Not Selected)", 0, sptRows);
+
+</script>

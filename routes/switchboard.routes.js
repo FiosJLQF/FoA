@@ -6,7 +6,7 @@ const router = express.Router();
 const { auth, requiresAuth } = require('express-openid-connect');
 require("dotenv").config();  // load all ".env" variables into "process.env" for use
 const { ScholarshipsTable, ScholarshipsActive, ScholarshipsDDL, ScholarshipsAllDDL, ScholarshipsAllDDLTest,
-        SponsorsTableTest, Sponsors, SponsorsDDL, SponsorsAllDDLTest,
+        SponsorsTableTest, Sponsors, SponsorsDDL, SponsorsAllDDLTest, 
         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
         FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
@@ -141,6 +141,8 @@ router.get('/', requiresAuth(), async (req, res) => {
             userCanCreateSponsors = true;
         };
 
+        // Retrieve options for DDLs
+        const sponsorTypeCategoriesDDL = await SponsorTypeCategoriesDDL.findAndCountAll({});
 
         ////////////////////////////////////////////////////
         //  Scholarships Information (DDL, Add Scholarship, etc.)
@@ -226,6 +228,7 @@ router.get('/', requiresAuth(), async (req, res) => {
             userCanReadSponsors,
             sponsorsAllDDL,
             userCanCreateSponsors,
+            sponsorTypeCategoriesDDL,
             userCanReadScholarships,
             scholarshipsDDL,
             userCanCreateScholarships,
@@ -251,10 +254,35 @@ router.get('/', requiresAuth(), async (req, res) => {
 ////////////////////////////////////////
 
 router.post('/sponsoradd', requiresAuth(), async (req, res) => {
+
+    // Reformat the SELECT options into a pipe-delimited array for storage
+    let sponsorTypesOrig = req.body.sponsorTypes;
+    let sponsorTypesFormatted = [];
+//    console.log(`sponsorTypesOrig: ${sponsorTypesOrig}`);
+//    console.log(`sponsorTypesOrig.indexOf(0): ${sponsorTypesOrig.indexOf('0')}`);
+    if ( sponsorTypesOrig.length > 1 ) {
+        sponsorTypesOrig.splice(sponsorTypesOrig.indexOf('0'), 1);
+        sponsorTypesFormatted = '|' + sponsorTypesOrig.join('|') + '|';
+    } else {
+        if ( sponsorTypesOrig[0] === '0' ) {  // 'Not Selected' was the only option selected
+            sponsorTypesFormatted = '';    
+        } else {
+            sponsorTypesFormatted = '|' + sponsorTypesOrig[0] + '|';
+        };
+    };
+//    console.log(`sponsorTypesTrimmed: ${sponsorTypesOrig}`);
+//    console.log(`sponsorTypesFormatted: ${sponsorTypesFormatted}`);
+
     const newSponsor = new SponsorsTableTest( {
         SponsorName: req.body.sponsorName,
         SponsorDescription: req.body.sponsorDescription,
-        SponsorWebsite: req.body.sponsorWebsite
+        SponsorWebsite: req.body.sponsorWebsite,
+        SponsorLogo: req.body.sponsorLogo,
+        SponsorContactFName: req.body.sponsorContactFName,
+        SponsorContactLName: req.body.sponsorContactLName,
+        SponsorContactEmail: req.body.sponsorContactEmail,
+        SponsorContactTelephone: req.body.sponsorContactTelephone,
+        SponsorType: sponsorTypesFormatted
     });
     await newSponsor.save();
     res.redirect(`/switchboard?sponsorid=${newSponsor.SponsorID}`);

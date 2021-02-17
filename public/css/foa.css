@@ -33,33 +33,6 @@ span.float-right {
   float: right;
 }
 
-span.data-mgmt-label {
-  display: block;
-  width: 300px;
-}
-
-label.data-mgmt {
-  display: inline-block;
-  width: 150px;
-  vertical-align: top;
-  padding-top: 5px;
-}
-
-input.data-mgmt-text {
-  width: 680px;
-  line-height: 1.00;
-}
-
-textarea.data-mgmt {
-  width: 680px;
-  height: 80px;
-  line-height: 1.1;
-}
-
-button.data-mgmt {
-  line-height: 1.5;
-}
-
 hr {
     display: block;
     height: 1px;

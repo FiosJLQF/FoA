@@ -1,0 +1,63 @@
+
+/***********************************************************************************************
+ * VARIABLES                                                                                   *
+ ***********************************************************************************************/
+
+:root {
+  --amcg-blue: rgb(0,73,140);
+  --amcg-blue-50: rgb(0,73,140,.5);
+  --amcg-blue-25: rgb(0,73,140,.25);
+  --amcg-yellow: rgb(253,185,19);
+}
+
+/***********************************************************************************************
+ * Data Input/Mgmt Controls                                                                    *
+ ***********************************************************************************************/
+
+ .flexcontainer-datamgmt {
+  display: flex;
+  width: 95%;
+  flex-direction: row;
+}
+
+div.data-mgmt-label {
+  width: 200px;
+  margin-right: 2px;
+}
+
+label.data-mgmt {
+  display: inline-block;
+  width: 200px;
+  vertical-align: top;
+  padding-top: 5px;
+}
+
+label.data-mgmt-instruction {
+  display: inline-block;
+  width: 200px;
+  vertical-align: top;
+  padding-top: 5px;
+  font-size: 0.825em;
+  white-space:nowrap;
+}
+
+input.data-mgmt-text {
+  width: 680px;
+  line-height: 1.00;
+}
+
+textarea.data-mgmt {
+  width: 680px;
+  height: 80px;
+  line-height: 1.1;
+}
+
+button.data-mgmt {
+  line-height: 1.5;
+}
+
+select.data-mgmt-multiple {
+  font-size: 0.875em;
+  width: 680px;
+}
+

@@ -10,17 +10,48 @@
       </div><br>
       <div>
           <label for="sponsorDescription" class="data-mgmt">Description:</label>
-          <textarea id="sponsorDescription" name="sponsorDescription]" class="data-mgmt"><%= sponsorDetails[0].SponsorDescription %></textarea> 
+          <textarea id="sponsorDescription" name="sponsorDescription" class="data-mgmt"><%= sponsorDetails[0].SponsorDescription %></textarea> 
       </div><br>
       <div>
         <label for="sponsorWebsite" class="data-mgmt">Website:</label>
-        <input type="text" id="sponsorWebsite" name="sponsorWebsite]" class="data-mgmt-text" 
+        <input type="text" id="sponsorWebsite" name="sponsorWebsite" class="data-mgmt-text" 
           value="<%= sponsorDetails[0].SponsorWebsite %>">
       </div><br>
       <div>
-        <label for="sponsorNEXT" class="data-mgmt">...more items...</label>
-        <input type="text" id="sponsorNEXT" name="sponsor[SponsorNEXT]" class="data-mgmt" 
-          value="">
+        <label for="sponsorLogo" class="data-mgmt">Logo:</label>
+        <input type="text" id="sponsorLogo" name="sponsorLogo" class="data-mgmt-text" 
+        value="<%= sponsorDetails[0].SponsorLogo %>">
+      </div><br>
+      <div>
+        <label for="sponsorContactFName" class="data-mgmt">Contact First Name:</label>
+        <input type="text" id="sponsorContactFName" name="sponsorContactFName" class="data-mgmt-text" 
+        value="<%= sponsorDetails[0].SponsorContactFName %>">
+      </div><br>
+      <div>
+        <label for="sponsorContactLName" class="data-mgmt">Contact Last Name:</label>
+        <input type="text" id="sponsorContactLName" name="sponsorContactLName" class="data-mgmt-text" 
+        value="<%= sponsorDetails[0].SponsorContactLName %>">
+      </div><br>
+      <div>
+        <label for="sponsorContactEmail" class="data-mgmt">Contact Email:</label>
+        <input type="text" id="sponsorContactEmail" name="sponsorContactEmail" class="data-mgmt-text" 
+        value="<%= sponsorDetails[0].SponsorContactEmail %>">
+      </div><br>
+      <div>
+        <label for="sponsorContactTelephone" class="data-mgmt">Contact Telephone:</label>
+        <input type="text" id="sponsorContactTelephone" name="sponsorContactTelephone" class="data-mgmt-text" 
+        value="<%= sponsorDetails[0].SponsorContactTelephone %>">
+      </div><br>
+      <div class="flexcontainer-datamgmt">
+        <div class="row">
+          <div class="col-3 data-mgmt-label">
+            <label for="sponsorType" class="data-mgmt">Sponsor Type(s):</label><br>
+            <label class="data-mgmt-instruction">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</label>
+          </div>
+          <div class="col-9">
+            <select id="sponsorTypes" name="sponsorTypes" class="data-mgmt-multiple" multiple></select><br>
+          </div>
+        </div>
       </div><br>
       <% if ( userCanUpdateSponsor ) { %>
       <button class="data-mgmt" form="sponsorData">Save Changes</button>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -30,12 +61,38 @@
         [Delete This Sponsor]
       <% } %>
     </form><br>
+</div>
 
-    <script>
-      if ( <%- !userCanUpdateSponsor %> ) {
-        document.getElementById('sponsorName').disabled = true;
-        document.getElementById('sponsorDescription').disabled = true;
-        document.getElementById('sponsorWebsite').disabled = true;
+<script>
 
-      };
-    </script>
+  // Disable the controls if the user does not have permission to update Sponsors.
+  if ( <%- !userCanUpdateSponsor %> ) {
+    document.getElementById('sponsorName').disabled = true;
+    document.getElementById('sponsorDescription').disabled = true;
+    document.getElementById('sponsorWebsite').disabled = true;
+    document.getElementById('sponsorLogo').disabled = true;
+    document.getElementById('sponsorContactFName').disabled = true;
+    document.getElementById('sponsorContactLName').disabled = true;
+    document.getElementById('sponsorContactEmail').disabled = true;
+    document.getElementById('sponsorContactTelephone').disabled = true;
+    document.getElementById('sponsorTypes').disabled = true;
+  };
+
+  // Load the Sponsor Types into the DDL
+  var sptRows = <%- JSON.stringify(sponsorTypeCategoriesDDL.rows) %>;
+  loadSelectOptionsList("sponsorTypes", "(Not Selected)", 0, sptRows);
+
+  // Select Sponsor Types from the Sponsor's data
+  var sponsorTypes = "<%- sponsorDetails[0].SponsorType %>";
+  var sponsorTypesArrTrimmed = sponsorTypes.split('|').slice(1, -1);
+  var sponsorTypesSelectObject = document.getElementById('sponsorTypes');
+  sponsorTypesSelectObject.options[0].selected = '';  // Remove the default 'Not Selected' option
+  sponsorTypesArrTrimmed.forEach( function(sponsorType) {
+    for ( i=0; i < sponsorTypesSelectObject.length; i++ ) {
+      if ( sponsorTypesSelectObject.options[i].value === sponsorType ) {
+        sponsorTypesSelectObject.options[i].selected = 'selected';
+      }
+    }
+  });
+
+</script>
