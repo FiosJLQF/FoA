@@ -3,15 +3,17 @@
   <hr class="bodycol1break">
   <div class="searchInstructions">Select an item from the options below:</div><br>
 
-  <!-- My Account Info -->
+  <!-- My Account Info (A placeholder for future enhancements)-->
+  <!--
   <div id="myAccount">
     <button type="button" class="btn btn-default button-normal-nomargins" onclick="">My Account (<%= user.email %>)</button>
   </div><br>
+-->
 
-  <!-- Sponsor Name(s) -->
+<!-- Sponsor Name(s) -->
   <% if ( userCanReadSponsors ) { %>  <!-- If a user cannot read the sponsors list, hide it and the scholarships list. -->
   <div id="sponsorBlock">
-    Sponsor(s): <span id="testText"></span>
+    Sponsor: <span id="testText"></span>
     <% if ( userCanCreateSponsors ) { %>  <!-- If a user cannot create sponsors, hide the link. -->
     <span class="float-right">
       <span id="addSponsor" class="float-right"><a id="addSponsor" class="btn btn-default button-small"
@@ -27,7 +29,7 @@
   <!-- Scholarship(s) -->
   <% if ( userCanReadScholarships ) { %>  <!-- If a user cannot read the sponsors list, hide it and the scholarships list. -->
   <div>
-    Scholarship(s):
+    Scholarship:
     <% if ( userCanCreateScholarships ) { %>  <!-- If a user cannot create scholarships, hide the link. -->
       <span class="float-right">
         <button type="button" id="addScholarshipLink" class="btn btn-default button-small" onclick="">Add Scholarship</button>&nbsp;
@@ -46,7 +48,7 @@
   <!-- User(s) -->
   <% if ( userCanReadUsers ) { %>  <!-- If a user cannot read the users list, hide it. -->
   <div>
-    Users(s):
+    User:
     <% if ( userCanCreateUsers ) { %>  <!-- If a user cannot create users, hide the link. -->
       <span id="addUser" class="float-right"><a id="addUser" class="btn btn-default button-small"
         href="/userAdd">Add User</a>&nbsp;</span>
