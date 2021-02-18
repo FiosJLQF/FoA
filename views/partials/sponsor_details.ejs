@@ -2,7 +2,13 @@
     <span class="bodylayout1col2title" id="sponsorInstructions"><label>
       Edit the entries below, and click "Save Changes"</label></span><br>
     <hr class="bodycol2break"><br>
-    <form form action="/sponsorupdate" method="POST" id="sponsorData">
+    <% if ( statusMessage !== '' ) { %>
+    <div>
+      <label id="statusMessage" class="form-status"><%= statusMessage %></label>
+    </div>
+    <% } %>
+    <form form action="/switchboard/sponsorupdate?_method=PUT" method="POST" id="sponsorData">
+      <input type="hidden" id="spondorID" name="sponsorID" value="<%- sponsorDetails[0].SponsorID %>">
       <div>
           <label for="sponsorName" class="data-mgmt">Sponsor Name:</label>
           <input type="text" id="sponsorName" name="sponsorName" class="data-mgmt-text"

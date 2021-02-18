@@ -13,7 +13,7 @@
 <!-- Sponsor Name(s) -->
   <% if ( userCanReadSponsors ) { %>  <!-- If a user cannot read the sponsors list, hide it and the scholarships list. -->
   <div id="sponsorBlock">
-    Sponsor: <span id="testText"></span>
+    Sponsors: <span id="testText"></span>
     <% if ( userCanCreateSponsors ) { %>  <!-- If a user cannot create sponsors, hide the link. -->
     <span class="float-right">
       <span id="addSponsor" class="float-right"><a id="addSponsor" class="btn btn-default button-small"
@@ -21,15 +21,15 @@
 <!--      <button type="button" id="addSponsorLink" class="btn btn-default button-small" onclick="">Add Sponsor</button>&nbsp; -->
     </span>
     <% } %>
-    <div id="filterSponsorNamesInputBlock">
-      <select id="filterSponsorNamesInput" class="single-choice" onchange="gotoSponsorDetails(this.value)"></select><br>
+    <div id="filterSponsorsInputBlock">
+      <select id="filterSponsorsInput" class="single-choice" onchange="gotoSponsorDetails(this.value)"></select><br>
     </div><br>
   </div>
 
   <!-- Scholarship(s) -->
   <% if ( userCanReadScholarships ) { %>  <!-- If a user cannot read the sponsors list, hide it and the scholarships list. -->
   <div>
-    Scholarship:
+    Scholarships:
     <% if ( userCanCreateScholarships ) { %>  <!-- If a user cannot create scholarships, hide the link. -->
       <span class="float-right">
         <button type="button" id="addScholarshipLink" class="btn btn-default button-small" onclick="">Add Scholarship</button>&nbsp;
@@ -48,7 +48,7 @@
   <!-- User(s) -->
   <% if ( userCanReadUsers ) { %>  <!-- If a user cannot read the users list, hide it. -->
   <div>
-    User:
+    Users:
     <% if ( userCanCreateUsers ) { %>  <!-- If a user cannot create users, hide the link. -->
       <span id="addUser" class="float-right"><a id="addUser" class="btn btn-default button-small"
         href="/userAdd">Add User</a>&nbsp;</span>
@@ -63,8 +63,13 @@
 
 <script>
 
+  // Load the allowed Sponsors into the DDL, and lock the DDL if the User only has access to a single Sponsor
   var splRows = <%- JSON.stringify(sponsorsAllDDL.rows) %>;
-  loadSelectOptionsList("filterSponsorNamesInput", "(Not Selected)", 0, splRows, '<%= sponsorID %>');
+  var splCount = <%- JSON.stringify(sponsorsAllDDL.count) %>;
+  loadSelectOptionsList("filterSponsorsInput", "(Not Selected)", 0, splRows, '<%= sponsorID %>');
+  if ( splCount === 1 ) {
+    document.getElementById('filterSponsorsInput').disabled = true;
+  }
 
   // Redirect the user to the Sponsor Details page
   function gotoSponsorDetails(selectedSponsorID) {
@@ -78,7 +83,7 @@
   }
 
   // If a Sponsor is selected, enable the "Add Scholarship" link and load the Scholarships DDL
-  var ddlSponsors = document.getElementById("filterSponsorNamesInput");
+  var ddlSponsors = document.getElementById("filterSponsorsInput");
   if ( ddlSponsors.value === '0' ) {
     document.getElementById('addScholarshipLink').disabled = true;
     document.getElementById('filterScholarshipsInput').disabled = true;

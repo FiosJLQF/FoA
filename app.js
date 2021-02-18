@@ -5,7 +5,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 require("dotenv").config();  // load all ".env" variables into "process.env" for use
-const methodOverride = require('method-override');
+const methodOverride = require('method-override');  // allows PUT and other non-standard methods
 const ejsMate = require('ejs-mate');  // allows use of EJS templates to compartmentalize code
 const compression = require('compression');
 const expressSession = require("express-session");
@@ -31,7 +31,7 @@ app.use(compression());
 app.use(express.static(path.join(__dirname, 'public')));  // publicly-accessible files (such as images and css)
 app.use(bodyParser.urlencoded( { extended: true } ));
 app.use(express.urlencoded( { extended: true })); // allows for parsing "body" object
-app.use(methodOverride('_method'));
+app.use(methodOverride('_method')); // allows use of the PUT/DELETE method extensions
 app.use(cors({origin: '*'}));
 
 

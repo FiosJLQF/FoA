@@ -12,7 +12,8 @@ const { ScholarshipsTable, ScholarshipsActive, ScholarshipsDDL, ScholarshipsAllD
         FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
         UsersAllDDL, UserPermissionsActive, UserProfiles
     } = require('../models/sequelize.js');
-
+const methodOverride = require('method-override');  // allows PUT and other non-standard methods
+router.use(methodOverride('_method')); // allows use of the PUT/DELETE method extensions
 
 ///////////////////////////////////////////////////////////////////////////////////
 // Auth0 Configuration
@@ -36,7 +37,7 @@ router.use(
 ///////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////
-// "GET" Routes
+// "GET" Routes (Read data)
 ////////////////////////////////////////
 
 router.get('/newuser', requiresAuth(), async (req, res) => {
@@ -55,6 +56,7 @@ router.get('/', requiresAuth(), async (req, res) => {
 
         let errorCode = 0;
         let actionRequested = '';
+        let statusMessage = '';
 
         // Get the current user's profile
         const userProfiles = await UserProfiles.findAll( { where: { Username: req.oidc.user.email }});
@@ -216,11 +218,23 @@ router.get('/', requiresAuth(), async (req, res) => {
             };
         };
 
+        ////////////////////////////////////////////////////
+        // Process any querystring "status message"
+        ////////////////////////////////////////////////////
+        if ( req.query['status'] === 'sponsorupdatesuccess' ) {
+            statusMessage = 'Sponsor was updated.';
+        } else {
+            statusMessage = '';
+        };
+
+        ////////////////////////////////////////////////////
         // Render the page
+        ////////////////////////////////////////////////////
         return res.render('switchboard', {
             // Admin data
             errorCode,
             actionRequested,
+            statusMessage,
             // User data
             user: req.oidc.user,
             userName: ( req.oidc.user == null ? '' : req.oidc.user.name ),
@@ -250,7 +264,7 @@ router.get('/', requiresAuth(), async (req, res) => {
 
 
 ////////////////////////////////////////
-// "POST" Routes
+// "POST" Routes (Add new data recordes)
 ////////////////////////////////////////
 
 router.post('/sponsoradd', requiresAuth(), async (req, res) => {
@@ -287,6 +301,55 @@ router.post('/sponsoradd', requiresAuth(), async (req, res) => {
     await newSponsor.save();
     res.redirect(`/switchboard?sponsorid=${newSponsor.SponsorID}`);
 });
+
+
+////////////////////////////////////////
+// "PUT" Routes (Update data)
+////////////////////////////////////////
+
+router.put('/sponsorupdate', requiresAuth(), async (req, res) => {
+
+    // Reformat the SELECT options into a pipe-delimited array for storage
+    let sponsorTypesOrig = req.body.sponsorTypes;
+    console.log(`sponsorTypesOrig: ${sponsorTypesOrig}`);
+    console.log(`sponsorTypesOrig.length: ${sponsorTypesOrig.length}`);
+    let sponsorTypesFormatted = [];
+    if ( Array.isArray(sponsorTypesOrig) ) { // More than one options was selected
+        if ( sponsorTypesOrig.indexOf('0') >= 0 ) { // Remove 'Not Selected'
+            sponsorTypesOrig.splice(sponsorTypesOrig.indexOf('0'), 1);
+        };
+        sponsorTypesFormatted = '|' + sponsorTypesOrig.join('|') + '|';
+    } else { // One or no options were selected
+        if ( sponsorTypesOrig === '0' ) {  // 'Not Selected' was the only option selected
+            sponsorTypesFormatted = '';    
+        } else {
+            sponsorTypesFormatted = '|' + sponsorTypesOrig + '|';
+        };
+    };
+    console.log(`sponsorTypesFormatted: ${sponsorTypesFormatted}`);
+
+    // Get a pointer to the current record
+    console.log(`body.SponsorID: ${req.body.sponsorID}`);
+    const sponsorRecord = await SponsorsTableTest.findOne( {
+        where: { SponsorID: req.body.sponsorID }
+    });
+    console.log(`sponsorRecord: ${sponsorRecord.SponsorID}`);
+
+    await sponsorRecord.update( {
+        SponsorName: req.body.sponsorName,
+        SponsorDescription: req.body.sponsorDescription,
+        SponsorWebsite: req.body.sponsorWebsite,
+        SponsorLogo: req.body.sponsorLogo,
+        SponsorContactFName: req.body.sponsorContactFName,
+        SponsorContactLName: req.body.sponsorContactLName,
+        SponsorContactEmail: req.body.sponsorContactEmail,
+        SponsorContactTelephone: req.body.sponsorContactTelephone,
+        SponsorType: sponsorTypesFormatted
+    }).then( () => {
+        res.redirect(`/switchboard?sponsorid=${sponsorRecord.SponsorID}&status=sponsorupdatesuccess`);
+    });
+});
+
 
 ////////////////////////////////////////
 // Return all routes

@@ -8,6 +8,7 @@
   --amcg-blue-50: rgb(0,73,140,.5);
   --amcg-blue-25: rgb(0,73,140,.25);
   --amcg-yellow: rgb(253,185,19);
+  --amcg-red: rgb(120,37,31);
 }
 
 /***********************************************************************************************
@@ -23,6 +24,18 @@
 div.data-mgmt-label {
   width: 200px;
   margin-right: 2px;
+}
+
+label.form-status {
+  display: inline-block;
+/*  width: 600px; */
+  vertical-align: top;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 1.0em;
+  color: var(--amcg-red);
+  font-weight: bold;
+
 }
 
 label.data-mgmt {
