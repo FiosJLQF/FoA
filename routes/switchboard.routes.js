@@ -14,6 +14,7 @@ const { ScholarshipsTable, ScholarshipsActive, ScholarshipsDDL, ScholarshipsAllD
     } = require('../models/sequelize.js');
 const methodOverride = require('method-override');  // allows PUT and other non-standard methods
 router.use(methodOverride('_method')); // allows use of the PUT/DELETE method extensions
+const jsFx = require('../public/js/foa_node_fx');
 
 ///////////////////////////////////////////////////////////////////////////////////
 // Auth0 Configuration
@@ -223,6 +224,10 @@ router.get('/', requiresAuth(), async (req, res) => {
         ////////////////////////////////////////////////////
         if ( req.query['status'] === 'sponsorupdatesuccess' ) {
             statusMessage = 'Sponsor was updated.';
+        } else if ( req.query['status'] === 'sponsordeletesuccess' ) {
+            statusMessage = 'Sponsor was deleted.';
+        } else if ( req.query['status'] === 'sponsorcreatesuccess' ) {
+            statusMessage = 'Sponsor was added.';
         } else {
             statusMessage = '';
         };
@@ -270,23 +275,9 @@ router.get('/', requiresAuth(), async (req, res) => {
 router.post('/sponsoradd', requiresAuth(), async (req, res) => {
 
     // Reformat the SELECT options into a pipe-delimited array for storage
-    let sponsorTypesOrig = req.body.sponsorTypes;
-    let sponsorTypesFormatted = [];
-//    console.log(`sponsorTypesOrig: ${sponsorTypesOrig}`);
-//    console.log(`sponsorTypesOrig.indexOf(0): ${sponsorTypesOrig.indexOf('0')}`);
-    if ( sponsorTypesOrig.length > 1 ) {
-        sponsorTypesOrig.splice(sponsorTypesOrig.indexOf('0'), 1);
-        sponsorTypesFormatted = '|' + sponsorTypesOrig.join('|') + '|';
-    } else {
-        if ( sponsorTypesOrig[0] === '0' ) {  // 'Not Selected' was the only option selected
-            sponsorTypesFormatted = '';    
-        } else {
-            sponsorTypesFormatted = '|' + sponsorTypesOrig[0] + '|';
-        };
-    };
-//    console.log(`sponsorTypesTrimmed: ${sponsorTypesOrig}`);
-//    console.log(`sponsorTypesFormatted: ${sponsorTypesFormatted}`);
+    const sponsorTypesFormatted = jsFx.convertOptionsToDelimitedString(req.body.sponsorTypes, "|", "0");
 
+    // Add the new data to the database in a new record, and return the newly-generated [SponsorID] value
     const newSponsor = new SponsorsTableTest( {
         SponsorName: req.body.sponsorName,
         SponsorDescription: req.body.sponsorDescription,
@@ -299,7 +290,7 @@ router.post('/sponsoradd', requiresAuth(), async (req, res) => {
         SponsorType: sponsorTypesFormatted
     });
     await newSponsor.save();
-    res.redirect(`/switchboard?sponsorid=${newSponsor.SponsorID}`);
+    res.redirect(`/switchboard?sponsorid=${newSponsor.SponsorID}&status=sponsorcreatesuccess`);
 });
 
 
@@ -310,31 +301,16 @@ router.post('/sponsoradd', requiresAuth(), async (req, res) => {
 router.put('/sponsorupdate', requiresAuth(), async (req, res) => {
 
     // Reformat the SELECT options into a pipe-delimited array for storage
-    let sponsorTypesOrig = req.body.sponsorTypes;
-    console.log(`sponsorTypesOrig: ${sponsorTypesOrig}`);
-    console.log(`sponsorTypesOrig.length: ${sponsorTypesOrig.length}`);
-    let sponsorTypesFormatted = [];
-    if ( Array.isArray(sponsorTypesOrig) ) { // More than one options was selected
-        if ( sponsorTypesOrig.indexOf('0') >= 0 ) { // Remove 'Not Selected'
-            sponsorTypesOrig.splice(sponsorTypesOrig.indexOf('0'), 1);
-        };
-        sponsorTypesFormatted = '|' + sponsorTypesOrig.join('|') + '|';
-    } else { // One or no options were selected
-        if ( sponsorTypesOrig === '0' ) {  // 'Not Selected' was the only option selected
-            sponsorTypesFormatted = '';    
-        } else {
-            sponsorTypesFormatted = '|' + sponsorTypesOrig + '|';
-        };
-    };
-    console.log(`sponsorTypesFormatted: ${sponsorTypesFormatted}`);
+    const sponsorTypesFormatted = jsFx.convertOptionsToDelimitedString(req.body.sponsorTypes, "|", "0");
+//    console.log(`sponsorTypesFormattedUDF: ${sponsorTypesFormatted}`);
 
     // Get a pointer to the current record
-    console.log(`body.SponsorID: ${req.body.sponsorID}`);
     const sponsorRecord = await SponsorsTableTest.findOne( {
-        where: { SponsorID: req.body.sponsorID }
+        where: { SponsorID: req.body.sponsorIDToUpdate }
     });
-    console.log(`sponsorRecord: ${sponsorRecord.SponsorID}`);
+//    console.log(`sponsorRecordToUpdate: ${sponsorRecord.SponsorID}`);
 
+    // Update the database record with the new data
     await sponsorRecord.update( {
         SponsorName: req.body.sponsorName,
         SponsorDescription: req.body.sponsorDescription,
@@ -347,6 +323,26 @@ router.put('/sponsorupdate', requiresAuth(), async (req, res) => {
         SponsorType: sponsorTypesFormatted
     }).then( () => {
         res.redirect(`/switchboard?sponsorid=${sponsorRecord.SponsorID}&status=sponsorupdatesuccess`);
+    });
+});
+
+
+////////////////////////////////////////
+// "DELETE" Routes (Delete data)
+////////////////////////////////////////
+
+router.delete('/sponsordelete', requiresAuth(), async (req, res) => {
+
+    // Get a pointer to the current record
+//    console.log(`body.SponsorID: ${req.body.sponsorIDToDelete}`);
+    const sponsorRecord = await SponsorsTableTest.findOne( {
+        where: { SponsorID: req.body.sponsorIDToDelete }
+    });
+//    console.log(`sponsorRecord: ${sponsorRecord.SponsorID}`);
+
+    // Delete the record, based on the Sponsor ID
+    await sponsorRecord.destroy().then( () => {
+        res.redirect(`/switchboard?status=sponsordeletesuccess`);
     });
 });
 

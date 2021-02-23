@@ -908,7 +908,7 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber, showMat
                 // Award Amount / Quantity
                 const divScholarshipRow1Col3Row5Col1 = document.createElement('div');
                 divScholarshipRow1Col3Row5Col1.classList.add('scholarshipsearchresultscol3A');
-                divScholarshipRow1Col3Row5Col1.textContent = 'Award(s):';
+                divScholarshipRow1Col3Row5Col1.textContent = 'Award:';
 
             divScholarshipRow1Col3Rows.appendChild(divScholarshipRow1Col3Row5Col1);
 
@@ -1045,7 +1045,7 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber, showMat
                     divScholarshipRow2Col3Row4Col2.classList.add('text-block');
 //                    divScholarshipRow2Col3Row4Col2.innerHTML =  selectedScholarship['matchCountExact'] + ' Criteria: ' + selectedScholarship['matchedOnTextExact'];
                     if ( selectedScholarship['matchCountExact'] === 0 ) {
-                        divScholarshipRow2Col3Row4Col2.innerHTML = 'No exact criteria was matched; however, this scholarship is being shown based on general criteria.';
+                        divScholarshipRow2Col3Row4Col2.innerHTML = 'No exact criteria was selected.';
                     } else {
                         divScholarshipRow2Col3Row4Col2.innerHTML =  selectedScholarship['matchCountExact'] + ' Criteria: ' + selectedScholarship['matchedOnTextExact'];
                     }

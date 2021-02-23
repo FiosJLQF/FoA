@@ -124,3 +124,4 @@ function userPermissions(permissionsList, userID, objectName, objectValue = '') 
     };
 
 }
+

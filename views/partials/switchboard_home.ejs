@@ -1,3 +1,11 @@
 <div class="col-9 bodylayout1col2" id="scholarshipsearchresultscolumn">
     <span class="bodylayout1col2title" id="userName">Welcome, <%= user.name %>!</span><br>
+    <hr class="bodycol2break"><br>
+
+    <% if ( statusMessage !== '' ) { %>
+      <div>
+        <label id="statusMessage" class="form-status"><%= statusMessage %></label>
+      </div>
+      <% } %>
+      
   </div>  <!-- End column 2 DIV  -->
