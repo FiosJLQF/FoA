@@ -61,6 +61,19 @@ function convertOptionsToDelimitedString(optionsToConvert, delimiterToUse = "|",
     
 }
 
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// Create a log entry
+//////////////////////////////////////////////////////////////////////////////////////////
+function createLogEntry(activityCode, activityUser, activityPage, sendEmail) {
+
+    let createLogEntryResult = false;
+
+    return createLogEntryResult;
+    
+}
+
+
 module.exports = {
     convertOptionsToDelimitedString
 };

@@ -43,6 +43,10 @@ router.use(
 
 router.get('/newuser', requiresAuth(), async (req, res) => {
     try {
+
+        // Log the request (10001 = "New User Page Redirect")
+//        const logResult = jsFx.createLogEntry(10001, req.oidc.user.name);
+
         return res.render('switchboard_newuser', {
             user: req.oidc.user,
             userName: ( req.oidc.user == null ? '' : req.oidc.user.name )

@@ -21,9 +21,33 @@
   flex-direction: row;
 }
 
+.bodylayout1col2-datamgmt {
+  margin: 0px;
+  padding: 0px 0px 0px 15px;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.80em;
+  color: var(--amcg-blue);
+  line-height: 0.9;
+}
+
 div.data-mgmt-label {
   width: 200px;
   margin-right: 2px;
+}
+
+div.data-mgmt-required {
+  width: 5px;
+  margin: 0px;
+  padding: 0px;
+}
+
+div.data-mgmt-value {
+  margin-left: 5px;
+  padding: 0px;
+}
+
+label.data-mgmt-col-title {
+  margin-bottom: 5px;
 }
 
 label.form-status {
@@ -54,8 +78,30 @@ label.data-mgmt-instruction {
   white-space:nowrap;
 }
 
-input.data-mgmt-text {
+label.data-mgmt-required {
+/*  display: inline-block; */
+/*  width: 10px; */
+  vertical-align: top;
+  padding-top: 5px;
+  color: red;
+}
+
+span.data-mgmt-error {
+  display: none;
+  width: 600px;
+  height: 20px;
+  vertical-align: top;
+  margin-top: 5px;
+  color: red;
+}
+  
+  input.data-mgmt-text {
   width: 680px;
+  line-height: 1.00;
+}
+
+input.data-mgmt-text-short {
+  width: 450px;
   line-height: 1.00;
 }
 
@@ -72,5 +118,6 @@ button.data-mgmt {
 select.data-mgmt-multiple {
   font-size: 0.875em;
   width: 680px;
+  padding: 0px;
 }
 
