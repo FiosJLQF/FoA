@@ -152,6 +152,9 @@
 
 <script>
 
+  // Set the browser tab name (i.e., title)
+  document.title = "Future of Aviation - Add Sponsor";
+
   // Load the Sponsor Types into the DDL
   var sptRows = <%- JSON.stringify(sponsorTypeCategoriesDDL.rows) %>;
   loadSelectOptionsList("sponsorTypes", "(Not Selected)", 0, sptRows);

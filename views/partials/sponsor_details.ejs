@@ -79,6 +79,9 @@
 
 <script>
 
+  // Set the browser tab name (i.e., title)
+  document.title = "Future of Aviation - View/Edit Sponsor";
+
   // Disable the controls if the user does not have permission to update Sponsors.
   if ( <%- !userCanUpdateSponsor %> ) {
     document.getElementById('sponsorName').disabled = true;

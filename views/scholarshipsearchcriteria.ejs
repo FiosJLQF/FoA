@@ -225,6 +225,9 @@
 
 <script>
 
+    // Set the browser tab name (i.e., title)
+    document.title = "Future of Aviation - Scholarship Search";
+
     // Load the Field of Study options into the DDL
     var fosRows = <%- JSON.stringify(fieldOfStudyCategoriesDDL.rows) %>;
     loadSelectOptionsList("filterFieldOfStudyInput", "(Not Selected)", 0, fosRows);

@@ -45,9 +45,10 @@
   display: flex;
   justify-content: flex-end;
   width: 100%;
-  height: 30px;
+  height: 25px;
   vertical-align: middle;
   align-items: center;
+  margin-bottom: 10px;
 }
 
 .navitem-login {
@@ -102,3 +103,18 @@
 
 /* Change color of dropdown links on hover */
 .nav-dropdown-content a:hover {background-color: #0052bf;}
+
+/***********************************************************************************************
+ * Splash Bar                                                                                  *
+ ***********************************************************************************************/
+
+.splashbar {
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+img.splashbar {
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+}

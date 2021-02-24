@@ -63,8 +63,8 @@ router.get('/sponsors', async (req, res) => {
     const scholarshipsActive = await ScholarshipsActive.findAndCountAll({});
     console.log(scholarshipsActive.count);
     res.render('sponsorsearch', {
-        userName: ( req.oidc.user == null ? '' : req.oidc.user.name ),
-        sponsors, sponsorsAllDDL, sponsorTypeCategoriesDDL, scholarshipsActive });
+        userName: ( req.oidc.user == null ? '' : req.oidc.user.name ), pageTitle: "Scholarship Search",
+        sponsors,sponsorsAllDDL, sponsorTypeCategoriesDDL, scholarshipsActive });
 });
 
 module.exports = router;

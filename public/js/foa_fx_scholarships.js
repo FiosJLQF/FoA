@@ -1,4 +1,3 @@
-//const { response } = require("express");
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // show all scholarships
@@ -965,7 +964,7 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber, showMat
 //                lnkApply.classList.add('button-disabled');
 
                 const imgApply = document.createElement('img');
-                imgApply.src = "img/imgApplyButton.png";
+                imgApply.src = "../img/imgApplyButton.png";
                 imgApply.classList.add('button-apply');
 
                 lnkApply.appendChild(imgApply);
