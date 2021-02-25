@@ -11,6 +11,7 @@ const compression = require('compression');
 const expressSession = require("express-session");
 const { auth, requiresAuth } = require('express-openid-connect');
 const port = process.env.PORT || 3000;
+/*
 const { ScholarshipsTable, ScholarshipsActive, ScholarshipsDDL, ScholarshipsAllDDL, ScholarshipsAllDDTest,
         Sponsors, SponsorsDDL, SponsorsAllDDLTest,
         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
@@ -18,9 +19,9 @@ const { ScholarshipsTable, ScholarshipsActive, ScholarshipsDDL, ScholarshipsAllD
         FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
         UsersAllDDL, UserPermissionsActive, UserProfiles
     } = require('./models/sequelize.js');
+*/
 const cors = require('cors');
 const switchboardRoutes = require('./routes/switchboard.routes.js');
-const searchRoutes = require('./routes/search.routes.js');
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -57,7 +58,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');  // Sets the EJS engine
 app.engine('ejs', ejsMate);
 app.use('/switchboard', switchboardRoutes);  // sets the base URL for all "switchboard" routes
-app.use('/search', searchRoutes);  // sets the base URL for all "search" routes (e.g., "/sponsorsearch")
 app.use(expressSession(session));  // uses the Session environment create above
 
 
@@ -87,7 +87,7 @@ app.use(
 ///////////////////////////////////////////
 
 app.get('/', (req, res) => {
-    res.redirect('/scholarshipsearch');
+    res.redirect('/portal');
 });
 
 app.get('/error', async (req, res) => {
@@ -130,48 +130,11 @@ app.get('/profile', requiresAuth(), (req, res) => {
     res.send(JSON.stringify(req.oidc.user));
   });
 
-app.get('/scholarshipadd/:id', requiresAuth(), async (req, res) => {
-    const sponsorsDDL = await SponsorsAllDDL.findAndCountAll({});
-    const scholarshipsAllDDL = await ScholarshipsAllDDL.findAndCountAll({ where: { SponsorID: req.params.id }});
-    res.render('scholarshipadd', {
-        user: req.oidc.user,
-        userName: ( req.oidc.user == null ? '' : req.oidc.user.name ),
-        sponsorsDDL,
-        scholarshipsAllDDL,
-        SponsorID: req.params.id,
-        ScholarshipID: ""
-     } );
-});
-app.get('/scholarshipedit/:id', requiresAuth(), async (req, res) => {
-    const scholarshipDetails = await ScholarshipsTable.findAll({ where: { ScholarshipID: req.params.id }});
-    const sponsorsDDL = await SponsorsAllDDL.findAndCountAll({});
-    const scholarshipsAllDDL = await ScholarshipsAllDDL.findAndCountAll({ where: { SponsorID: scholarshipDetails[0].SponsorID }});
-    res.render('scholarshipedit', {
-        user: req.oidc.user,
-        userName: ( req.oidc.user == null ? '' : req.oidc.user.name ),
-        sponsorsDDL,
-        scholarshipsAllDDL,
-        SponsorID: scholarshipDetails[0].SponsorID,
-        scholarshipDetails,
-        ScholarshipID: req.params.id
-
-// how to pass querystring values into the render ("Scholarship Saved!")?
-
-     } );
-});
 
 ///////////////////////////////////////////
 // "POST" Routes (insert new data)
 ///////////////////////////////////////////
-app.post('/scholarshipadd', async (req, res) => {
-    const scholarship = new ScholarshipsTable( {
-        ScholarshipName: req.body.ScholarshipName,
-        ScholarshipDescription: req.body.ScholarshipDescription,
-        ScholarshipLink: req.body.ScholarshipLink
-    });
-    await scholarship.save();
-    res.redirect(`scholarshipedit/${scholarship.ScholarshipID}?mode=newscholarship`);
-});
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 // For local testing only
