@@ -87,7 +87,7 @@ app.use(
 ///////////////////////////////////////////
 
 app.get('/', (req, res) => {
-    res.redirect('/scholarshipsearch');
+    res.redirect('/search/scholarships');
 });
 
 app.get('/error', async (req, res) => {

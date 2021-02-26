@@ -34,6 +34,7 @@ router.use(
 ///////////////////////////////////////////////////////////////////////////////////
 // Routes Definitions
 ///////////////////////////////////////////////////////////////////////////////////
+
 router.get('/scholarships', async (req, res) => {
     const scholarshipsActive = await ScholarshipsActive.findAndCountAll({});
 //    console.log(scholarshipsActive.count);
@@ -48,7 +49,7 @@ router.get('/scholarships', async (req, res) => {
     const faaPilotRatingCategoriesDDL = await FAAPilotRatingCategoriesDDL.findAndCountAll({});
     const faaMechanicCertificateCategoriesDDL = await FAAMechanicCertificateCategoriesDDL.findAndCountAll({});
     res.render('scholarshipsearch', {
-        userName: ( req.oidc.user == null ? '' : req.oidc.user.name ),
+        userName: ( req.oidc.user == null ? '' : req.oidc.user.name ), pageTitle: "Scholarship Search",
         scholarshipsActive, fieldOfStudyCategoriesDDL, sponsorsAllDDL, genderCategoriesDDL, citizenshipCategoriesDDL,
         yearOfNeedCategoriesDDL, enrollmentStatusCategoriesDDL, militaryServiceCategoriesDDL, faaPilotCertificateCategoriesDDL,
         faaPilotRatingCategoriesDDL, faaMechanicCertificateCategoriesDDL
@@ -63,7 +64,7 @@ router.get('/sponsors', async (req, res) => {
     const scholarshipsActive = await ScholarshipsActive.findAndCountAll({});
     console.log(scholarshipsActive.count);
     res.render('sponsorsearch', {
-        userName: ( req.oidc.user == null ? '' : req.oidc.user.name ), pageTitle: "Scholarship Search",
+        userName: ( req.oidc.user == null ? '' : req.oidc.user.name ), pageTitle: "Sponsor Search",
         sponsors,sponsorsAllDDL, sponsorTypeCategoriesDDL, scholarshipsActive });
 });
 
