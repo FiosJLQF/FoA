@@ -96,7 +96,7 @@ function clearScholarshipSearchCriteria() {
         document.querySelector('#filterFAAMechanicCertRatingInput'), 'hide');
 
     // hide the Advanced Search section
-    toggleSearchCriteriaInputBlock(
+    toggleAdvancedSearchCriteriaInputBlock(
         document.querySelector('#advancedSearchIcon'),
         document.querySelector('#advancedSearchInputBlock'), '', 'hide')
 
