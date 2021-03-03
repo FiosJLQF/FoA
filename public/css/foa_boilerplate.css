@@ -16,9 +16,11 @@
 
  .flexcontainer-nav {
   display: flex;
-  width: 95%;
+/*  width: 95%;  */ /* for full-width */
+  width: 1144px; /* to match FatCow */
+  margin: 0 auto; /* to match FatCow */
   flex-direction: row;
-  margin-left: 5px;
+/*  margin-left: 5px; */
   margin-top: 10px;
   margin-bottom: 10px;
 }
@@ -29,11 +31,11 @@
 }
 
 #divLogo {
-  width: 200px;
+  width: 144px;  /* 200px */
 }
 
 .navbar-logo {
-  width: 175px;
+  width: 144px;  /* 175px */
   align-self: flex-start;
 }
 
@@ -60,10 +62,15 @@
 .navbar-main {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+/*  justify-content: space-between;  */ /* for full-width */
   font-weight: bold;
   font-size: 1em;
   width: 100%;
+}
+
+.navbar-item {
+  text-align: center;
+  width: 137px;
 }
 
 /***************************************************
