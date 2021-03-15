@@ -26,6 +26,7 @@
 
     <!-- Custom Script Libraries -->
     <script src="/js/foa_fx.js"></script>
+    <script src="/js/foa_node_fx.js"></script>
     <script src="/js/foa_fx_scholarships.js"></script>
     <script src="/js/foa_fx_sponsors.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/validator/13.1.17/validator.min.js"></script>
@@ -61,13 +62,14 @@
       if ( userName !== '' ) {
         navbarLoginLink.textContent = "Log Out";
         navbarLoginLink.href = "/logout/portal";
-        navbarSwitchboardLink.style.display = "block";
+        navbarSwitchboardLink.style.display = "inline-flex";
         navbarSwitchboardLink.textContent = "Switchboard";
         navbarSwitchboardLink.href = "/switchboard";
+        navbarSwitchboardLink.classList.add('');
       } else {
         navbarLoginLink.textContent = "Log In / Sign Up";
         navbarLoginLink.href = "/portal";
-        navbarSwitchboardLink.style.display = "none";
+//        navbarSwitchboardLink.style.display = "none";
         navbarSwitchboardLink.textContent = "";
         navbarSwitchboardLink.href = "";
       };

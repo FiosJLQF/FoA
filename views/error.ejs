@@ -19,10 +19,16 @@
     <!-- Right-hand Panel: Content -->
     <div class="col-9 bodylayout1col2" id="scholarshipsearchresultscolumn">
       <br><br>
-      <% if ( errorCode === 908 ) { %>
-        The selected Sponsor does not exist.  Return to the Switchboard and select another Sponsor from the list. (908)
+      <% if ( errorCode === 901 ) { %>
+        This page cannot be found. (901)<br><br>
+        The Webmaster has been notified.
+      <% } else if ( errorCode === 908 ) { %>
+        The selected Sponsor does not exist. (908)<br><br>
+        Return to the Switchboard and select another Sponsor from the list.
       <% } else if ( errorCode === 909 ) { %>
-        You do not have permission to view the requested data.  Please contact scholarships@futureofaviation.aero if you feel you should have access to this data. (909)
+        You do not have permission to view the requested data. (909)<br><br>
+        Please contact scholarships@futureofaviation.aero if you feel you should have access to this data.<br><br>
+        Return to the Switchboard and select another Sponsor from the list.
       <% } else { %>
         An unknown error has occurred.
         <% } %><br><br><br>

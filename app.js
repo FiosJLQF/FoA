@@ -2,7 +2,7 @@
 // Import external libraries/files/modules, and config global variables
 ///////////////////////////////////////////////////////////////////////////////////
 const express = require('express');
-const bodyParser = require('body-parser');
+//const { check, validationResult } = require('express-validator');
 const path = require('path');
 require("dotenv").config();  // load all ".env" variables into "process.env" for use
 const methodOverride = require('method-override');  // allows PUT and other non-standard methods
@@ -29,10 +29,11 @@ const searchRoutes = require('./routes/search.routes.js');
 const app = express();
 app.use(compression());
 app.use(express.static(path.join(__dirname, 'public')));  // publicly-accessible files (such as images and css)
-app.use(bodyParser.urlencoded( { extended: true } ));
 app.use(express.urlencoded( { extended: true })); // allows for parsing "body" object
+app.use(express.json());
 app.use(methodOverride('_method')); // allows use of the PUT/DELETE method extensions
 app.use(cors({origin: '*'}));
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -172,6 +173,17 @@ app.post('/scholarshipadd', async (req, res) => {
     await scholarship.save();
     res.redirect(`scholarshipedit/${scholarship.ScholarshipID}?mode=newscholarship`);
 });
+
+///////////////////////////////////////////
+// Invalid Routes
+///////////////////////////////////////////
+app.get('*', async (req, res) => {
+    return res.render('error', {
+        userName: '',
+        errorCode: 901  // invalid route
+    });
+});
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 // For local testing only

@@ -35,6 +35,10 @@ router.use(
 // Routes Definitions
 ///////////////////////////////////////////////////////////////////////////////////
 
+router.get('/', (req, res) => {
+    res.redirect('/search/scholarships');
+});
+
 router.get('/scholarships', async (req, res) => {
     const scholarshipsActive = await ScholarshipsActive.findAndCountAll({});
 //    console.log(scholarshipsActive.count);
@@ -66,6 +70,16 @@ router.get('/sponsors', async (req, res) => {
     res.render('sponsorsearch', {
         userName: ( req.oidc.user == null ? '' : req.oidc.user.name ), pageTitle: "Sponsor Search",
         sponsors,sponsorsAllDDL, sponsorTypeCategoriesDDL, scholarshipsActive });
+});
+
+///////////////////////////////////////////
+// Invalid Routes
+///////////////////////////////////////////
+router.get('*', async (req, res) => {
+    return res.render('error', {
+        userName: '',
+        errorCode: 901  // invalid route
+    });
 });
 
 module.exports = router;

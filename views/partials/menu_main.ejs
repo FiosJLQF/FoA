@@ -64,8 +64,8 @@
 <script>
 
   // Load the allowed Sponsors into the DDL, and lock the DDL if the User only has access to a single Sponsor
-  var splRows = <%- JSON.stringify(sponsorsAllDDL.rows) %>;
-  var splCount = <%- JSON.stringify(sponsorsAllDDL.count) %>;
+  var splRows = <%- JSON.stringify(sponsorsAllowedDDL.rows) %>;
+  var splCount = <%- JSON.stringify(sponsorsAllowedDDL.count) %>;
   loadSelectOptionsList("filterSponsorsInput", "(Not Selected)", 0, splRows, '<%= sponsorID %>');
   if ( splCount === 1 ) {
     document.getElementById('filterSponsorsInput').disabled = true;

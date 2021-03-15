@@ -3,19 +3,39 @@
       <label class="data-mgmt-col-title">
         Edit the entries below, and click "Save Changes"
       </label></span><br>
-    <hr class="bodycol2break"><br>
+    <hr class="bodycol2break">
+    <label class="data-mgmt-instruction">&nbsp;&nbsp;&nbsp;<span style="color: red;">*</span> indicates a required entry</label><br><br>
+
     <% if ( statusMessage !== '' ) { %>
     <div>
       <label id="statusMessage" class="form-status"><%= statusMessage %></label>
     </div>
     <% } %>
+
+    <!-- The data entry form container -->
     <form form action="/switchboard/sponsorupdate?_method=PUT" method="POST" id="sponsorDataUpdate">
       <input type="hidden" id="sponsorIDToUpdate" name="sponsorIDToUpdate" value="<%- sponsorDetails[0].SponsorID %>">
-      <div>
-          <label for="sponsorName" class="data-mgmt">Sponsor Name:</label>
-          <input type="text" id="sponsorName" name="sponsorName" class="data-mgmt-text"
-            value="<%= sponsorDetails[0].SponsorName %>">
+
+      <!-- Sponsor Name -->
+      <div class="flexcontainer-datamgmt">
+        <div class="row">
+          <div class="col-3 data-mgmt-label">
+            <label for="sponsorName" class="data-mgmt">Sponsor Name:</label>
+          </div>
+          <div class="col-1 data-mgmt-required">
+            <label for="sponsorType" class="data-mgmt-required">*</label>
+          </div>
+          <div class="col-8 data-mgmt-value">
+            <input type="text" id="sponsorName" name="sponsorName" class="data-mgmt-text"
+              value="<%= sponsorDetails[0].SponsorName %>"><br>
+            <span class="data-mgmt-error" id="sponsorNameErrors"></span>
+          </div>
+        </div>
       </div><br>
+
+
+
+
       <div>
           <label for="sponsorDescription" class="data-mgmt">Description:</label>
           <textarea id="sponsorDescription" name="sponsorDescription" class="data-mgmt"><%= sponsorDetails[0].SponsorDescription %></textarea> 

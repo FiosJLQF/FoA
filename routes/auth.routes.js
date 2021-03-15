@@ -60,6 +60,16 @@ router.get("/logout", (req, res) => {
     res.redirect(logoutURL);
   });
 
+///////////////////////////////////////////
+// Invalid Routes
+///////////////////////////////////////////
+router.get('*', async (req, res) => {
+  return res.render('error', {
+      userName: '',
+      errorCode: 901  // invalid route
+  });
+});
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 // Module Exports
