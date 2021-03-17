@@ -88,7 +88,7 @@
     document.getElementById('addScholarshipLink').disabled = true;
     document.getElementById('filterScholarshipsInput').disabled = true;
   } else {
-    var schRows = <%- JSON.stringify(scholarshipsDDL.rows) %>;
+    var schRows = <%- JSON.stringify(scholarshipsAllowedDDL.rows) %>;
     loadSelectOptionsList("filterScholarshipsInput", "(Not Selected)", 0, schRows, '');
   };
 

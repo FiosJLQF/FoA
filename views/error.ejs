@@ -29,7 +29,14 @@
         You do not have permission to view the requested data. (909)<br><br>
         Please contact scholarships@futureofaviation.aero if you feel you should have access to this data.<br><br>
         Return to the Switchboard and select another Sponsor from the list.
-      <% } else { %>
+        <% } else if ( errorCode === 918 ) { %>
+          The selected Scholarship does not exist. (918)<br><br>
+          Return to the Switchboard and select another Scholarship from the list.
+        <% } else if ( errorCode === 919 ) { %>
+          You do not have permission to view the requested data. (919)<br><br>
+          Please contact scholarships@futureofaviation.aero if you feel you should have access to this data.<br><br>
+          Return to the Switchboard and select another Scholarship from the list.
+        <% } else { %>
         An unknown error has occurred.
         <% } %><br><br><br>
     </div>  <!-- End column 2 DIV  -->

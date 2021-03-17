@@ -5,7 +5,7 @@ const express = require("express");
 const router = express.Router();
 const { auth, requiresAuth } = require('express-openid-connect');
 require("dotenv").config();  // load all ".env" variables into "process.env" for use
-const { ScholarshipsTableTest, ScholarshipsActive, ScholarshipsDDL, ScholarshipsAllDDL, ScholarshipsAllDDLTest,
+const { ScholarshipsTable, ScholarshipsActive, ScholarshipsDDL, ScholarshipsAllDDL, ScholarshipsAllDDLTest,
         SponsorsTableTest, Sponsors, SponsorsDDL, SponsorsAllDDLTest, 
         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
@@ -64,30 +64,21 @@ router.get('/', requiresAuth(), async (req, res) => {
         let actionRequested = '';
         let statusMessage = '';
 
-        ////////////////////////////////////////////////////
-        // Validate query string values
-        ////////////////////////////////////////////////////
+        // Create a "Current User" profile object
+//        var currentUser = new jsFx.CurrentUser(req.oidc.user.email);
+//        console.log(`CurrentUser.email: ${currentUser.email}`);
+//        console.log(`CurrentUser.userID: ${currentUser.userID}`);
 
         // If a requested "sponsorid" is blank, zero or not a number, redirect to the generic Switchboard page
         const sponsorIDRequested = Number(req.query['sponsorid']);
         if ( sponsorIDRequested == 0 || sponsorIDRequested === '' ) {
-// ToDo:  Log the error
+            console.log('sponsorid redirected');
             res.redirect('/switchboard');
         };
 
-        // If a requested "scholarshipid" is blank, zero or not a number, redirect to the generic Switchboard page
-        const scholarshipIDRequested = Number(req.query['scholarshipid']);
-        if ( scholarshipIDRequested == 0 || scholarshipIDRequested === '' ) {
-// ToDo:  Log the error
-            res.redirect('/switchboard');
-        };
-        
-        ////////////////////////////////////////////////////
-        // Get the current user's profile and permissions
-        ////////////////////////////////////////////////////
+        // Get the current user's profile
         const userProfiles = await UserProfiles.findAll( { where: { Username: req.oidc.user.email }});
         if ( userProfiles.length === 0 ) {
-// ToDo:  Log the error
             res.redirect(`/switchboard/newuser`);
         };
 
@@ -95,60 +86,105 @@ router.get('/', requiresAuth(), async (req, res) => {
         const userPermissionsActive = await UserPermissionsActive.findAndCountAll( { where: { UserID: userProfiles[0].UserID }});
 
         ////////////////////////////////////////////////////
-        //  Sponsor Permissions / Details (DDL, Add Sponsor, Default Sponsor, etc.)
+        //  Sponsors Information/Permissions (DDL, Add Sponsor, Default Sponsor, etc.)
         ////////////////////////////////////////////////////
-        const { userCanReadSponsors, userCanCreateSponsors, sponsorsAllowedDDL, sponsorID, sponsorDetails, doesSponsorExist,
+        const { userPermissionsSponsorDDL, userCanReadSponsors, userCanCreateSponsors,
+                userPermissionsSponsors, sponsorsAllowedDDL,
+                sponsorID, sponsorDetails, doesSponsorExist,
                 userCanReadSponsor, userCanUpdateSponsor, userCanDeleteSponsor
-        } = await jsFx.getSponsorPermissionsForUser( userPermissionsActive, sponsorIDRequested );
+              } = await jsFx.getUserPermissions( userPermissionsActive, sponsorIDRequested );
 
-        // Does the requested Sponsor exist (if requested)?
-        console.log(`doesSponsorExist: (${doesSponsorExist})`);
-        if ( !doesSponsorExist ) {  // Sponsor ID does not exist
-// ToDo:  Log the error
-            errorCode = 908;  // Unknown Sponsor
-            return res.render( 'error', {
-                errorCode: errorCode,
-                userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
-            });
-        };
+        // If a SponsorID was provided in the querystring, or the User only has access to one Sponsor, find the Sponsor's details
+//        let sponsorDetails = [];
+//        let userCanReadSponsor = false;
+//        let userCanUpdateSponsor = false;
+//        let userCanDeleteSponsor = false;
+//        if ( sponsorID !== '' ) {
 
-        // Does the User have permission to see/edit/delete this Sponsor?
-        if ( !userCanReadSponsor ) { // User does not have permission to read Sponsor's data - trap and log error
-// ToDo:  Log the error
-            errorCode = 909;  // Unknown Sponsor
-            return res.render( 'error', {
-                errorCode: errorCode,
-                userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
-            });
-        };
+            // Does the requested Sponsor exist? Retrieve the Sponsor's details from the database.
+//            sponsorDetails = await SponsorsTableTest.findAll({ where: { SponsorID: sponsorID }});
+//            if ( typeof sponsorDetails[0] === 'undefined' ) {  // Sponsor ID does not exist
+//                console.log('908');
+//                errorCode = 908;  // Unknown Sponsor
+//                console.log(`errorcode = ${errorCode}`);
+//                return res.render( 'error', {
+//                    errorCode: errorCode,
+//                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+//                });
+//            };
+            console.log(`doesSponsorExist: (${doesSponsorExist})`);
+            if ( !doesSponsorExist ) {  // Sponsor ID does not exist
+                errorCode = 908;  // Unknown Sponsor
+                return res.render( 'error', {
+                    errorCode: errorCode,
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                });
+            };
+
+            // Does the User have permission to see/edit/delete this Sponsor?
+//            if ( sponsorID === userPermissionsSponsors[0].ObjectValues || userPermissionsSponsors[0].ObjectValues === '*' ) {
+//                userCanReadSponsor = userPermissionsSponsors[0].CanRead;
+//                console.log(`userCanReadSponsor: ${userCanReadSponsor}`);
+//                userCanUpdateSponsor = userPermissionsSponsors[0].CanUpdate;
+//                console.log(`userCanUpdateSponsor: ${userCanUpdateSponsor}`);
+//                userCanDeleteSponsor = userPermissionsSponsors[0].CanDelete;
+//                console.log(`userCanDeleteSponsor: ${userCanDeleteSponsor}`);
+//            } else {  // User does not have permission to read Sponsor's data - trap and log error
+//                console.log('909');
+//                errorCode = 909;  // Unknown Sponsor
+//                console.log(`errorcode = ${errorCode}`);
+//                return res.render( 'error', {
+//                        errorCode: errorCode,
+//                        userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+//                });
+//            };
+            if ( !userCanReadSponsor ) { // User does not have permission to read Sponsor's data - trap and log error
+                console.log('909');
+                errorCode = 909;  // Unknown Sponsor
+                console.log(`errorcode = ${errorCode}`);
+                return res.render( 'error', {
+                        errorCode: errorCode,
+                        userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                });
+            };
+//        };
+
+        // Can the user create new sponsors?
+//        let userCanCreateSponsors = false;
+//        if ( userCanReadSponsors && userPermissionsSponsorDDL[0].CanCreate ) {
+//            userCanCreateSponsors = true;
+//        };
+
+        // Retrieve options for add/edit form DDLs
+       let sponsorTypeCategoriesDDL = await SponsorTypeCategoriesDDL.findAndCountAll({});
 
         ////////////////////////////////////////////////////
-        //  Scholarships Information/Permissions (DDL, Add Scholarship, Default Scholarship, etc.)
+        //  Scholarships Information (DDL, Add Scholarship, etc.)
         ////////////////////////////////////////////////////
 
-        const { userCanReadScholarships, userCanCreateScholarships, scholarshipsAllowedDDL, scholarshipID, scholarshipDetails,
-                doesScholarshipExist, userCanReadScholarship, userCanUpdateScholarship, userCanDeleteScholarship
-        } = await jsFx.getScholarshipPermissionsForUser( userPermissionsActive, sponsorID, scholarshipIDRequested );
-
-        // Does the requested Scholarship exist (if requested)?
-        console.log(`doesScholarshipExist: (${doesScholarshipExist})`);
-        if ( !doesScholarshipExist ) {  // Scholarship ID does not exist
-// ToDo:  Log the error
-            errorCode = 918;  // Unknown Scholarship
-            return res.render( 'error', {
-                errorCode: errorCode,
-                userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
-            });
+        // Can the user see the scholarships select object?  If so, load the Scholarships available to the current user.
+        let userCanReadScholarships = false;
+        let userPermissionsScholarshipDDL = [];
+        let scholarshipsDDL = [];
+        if (userPermissionsSponsorDDL.length > 0 && userPermissionsSponsorDDL[0].CanRead ) { // Only load scholarships if the user can see Sponsors
+            userPermissionsScholarshipDDL = userPermissionsActive.rows.filter( permission => permission.ObjectName === 'switchboard-scholarships');
+            if ( userPermissionsScholarshipDDL.length > 0 && userPermissionsScholarshipDDL[0].CanRead ) {  // If the User can see the Scholarships DDL, show it
+                userCanReadScholarships = true;
+//                console.log(`sponsorID for scholarships DDL: ${sponsorID}`);
+                if ( sponsorID !== '' ) {  // If a single Sponsor ID is assigned, load the Scholarships for that Sponsor
+                    scholarshipsDDL = await ScholarshipsAllDDLTest.findAndCountAll({ where: { SponsorID: sponsorID } });
+                } else {  // Load a blank row of data
+                    scholarshipsDDL = await ScholarshipsAllDDLTest.findAndCountAll({ where: { SponsorID: -1 } });
+                };
+            };
         };
+//        console.log(`userCanReadScholarships: ${userCanReadScholarships}`);
+//        console.log(`active scholarships for the Sponsor: ${scholarshipsDDL.count}`);
 
-        // Does the User have permission to see/edit/delete this Scholarship?
-        if ( !userCanReadScholarship ) { // User does not have permission to read Scholarship's data - trap and log error
-// ToDo:  Log the error
-            errorCode = 919;  // Unknown Scholarship
-            return res.render( 'error', {
-                errorCode: errorCode,
-                userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
-            });
+        // Can the user create new scholarships?
+        let userCanCreateScholarships = false;
+        if ( userCanReadScholarships && userPermissionsScholarshipDDL[0].CanCreate ) {
+            userCanCreateScholarships = true;
         };
 
         ////////////////////////////////////////////////////
@@ -172,10 +208,13 @@ router.get('/', requiresAuth(), async (req, res) => {
             userCanCreateUsers = true;
         };
 
-        ////////////////////////////////////////////////////
-        // Retrieve options for add/edit form DDLs
-        ////////////////////////////////////////////////////
-        let sponsorTypeCategoriesDDL = await SponsorTypeCategoriesDDL.findAndCountAll({});
+        // If a ScholarshipID was provided in the querystring, find the Scholarship's details
+        let scholarshipDetails = [];
+        let scholarshipID = '';
+        if ( req.query['scholarshipid'] ) {
+            scholarshipID = req.query['scholarshipid'];
+//            scholarshipDetails = await ScholarshipsTable.findAll({ where: { ScholarshipID: scholarshipID }});
+        };
 
         ////////////////////////////////////////////////////
         //  Process any querystring "actions requested"
@@ -222,7 +261,7 @@ router.get('/', requiresAuth(), async (req, res) => {
             userCanCreateSponsors,
             sponsorTypeCategoriesDDL,
             userCanReadScholarships,
-            scholarshipsAllowedDDL,
+            scholarshipsDDL,
             userCanCreateScholarships,
             userCanReadUsers,
             usersAllDDL,
@@ -234,11 +273,8 @@ router.get('/', requiresAuth(), async (req, res) => {
             userCanReadSponsor, userCanUpdateSponsor, userCanDeleteSponsor,
             // Scholarship Details data
             scholarshipID,
-            scholarshipDetails,
-            userCanReadScholarship, userCanUpdateScholarship, userCanDeleteScholarship
         })
     } catch(err) {
-// ToDo:  Log the error
         console.log('Error:' + err);
     }
 });
@@ -248,7 +284,8 @@ router.get('/', requiresAuth(), async (req, res) => {
 // "POST" Routes (Add new data recordes)
 ////////////////////////////////////////
 
-router.post('/sponsoradd', requiresAuth(),
+router.post('/sponsoradd',     requiresAuth(),
+
     [
         check('sponsorName')
             .isLength( { min: 3, max: 100 } ).withMessage('Sponsor Name should be 3 to 100 characters.')
@@ -264,18 +301,7 @@ router.post('/sponsoradd', requiresAuth(),
 
     // If invalid data, return errors to client
     if ( !validationErrors.isEmpty() ) {
-
-// ToDo:  Replicate the GET render code above, including parameters prep work
-
-
         return res.status(400).json(validationErrors.array());
-
-
-
-
-
-
-
     } else {
         // Add the new data to the database in a new record, and return the newly-generated [SponsorID] value
         const newSponsor = new SponsorsTableTest( {

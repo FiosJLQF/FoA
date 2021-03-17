@@ -30,9 +30,9 @@ sequelize.authenticate().then(() => {
 /**************************************************************************************************
   Import all models
 **************************************************************************************************/
-const ScholarshipsTableModel = require('./scholarshipsTable.model');
-const ScholarshipsTable = ScholarshipsTableModel(sequelize, DataTypes);
-ScholarshipsTable.removeAttribute('id');  // a different, auto-populated primary key is used in the DB
+const ScholarshipsTableTestModel = require('./scholarshipsTableTest.model');
+const ScholarshipsTableTest = ScholarshipsTableTestModel(sequelize, DataTypes);
+ScholarshipsTableTest.removeAttribute('id');  // a different, auto-populated primary key is used in the DB
 const ScholarshipsActiveModel = require('./scholarshipsActiveView.model');
 const ScholarshipsActive = ScholarshipsActiveModel(sequelize, DataTypes);
 const ScholarshipsDDLModel = require('./scholarshipnameddl.model');
@@ -84,7 +84,7 @@ UserProfiles.removeAttribute('id');  // this is an non-updatable view and does n
   Export objects
 **************************************************************************************************/
 module.exports = {
-  ScholarshipsTable,
+  ScholarshipsTableTest,
   ScholarshipsActive,
   ScholarshipsDDL,
   ScholarshipsAllDDL,

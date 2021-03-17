@@ -125,3 +125,39 @@ function userPermissions(permissionsList, userID, objectName, objectValue = '') 
 
 }
 
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// Format selected options in a SELECT control into a delimited string for database storage
+// => client-side version (see scripts/foa_fx.js for server-side version)
+//////////////////////////////////////////////////////////////////////////////////////////
+function convertOptionsToDelimitedString(optionsToConvert, delimiterToUse = "|", notSelectedValue) {
+
+    let optionsOrig = optionsToConvert;
+    let optionsFormatted = '';
+
+    // If the SELECT control has a "Not Selected" option, and it should be removed
+    if ( Array.isArray(optionsOrig) ) { // More than one options was selected
+        if ( optionsOrig.indexOf(notSelectedValue) >= 0 ) { // Remove 'Not Selected'
+            optionsOrig.splice(optionsOrig.indexOf(notSelectedValue), 1);
+        };
+    } else { // One or no options were selected
+        if ( optionsOrig === notSelectedValue ) {  // 'Not Selected' was the only option selected
+            optionsOrig = '';
+        };
+    };
+
+    // Reformat the input Options list to a delimited string
+    if ( Array.isArray(optionsOrig) ) { // More than one options was selected
+        optionsFormatted = delimiterToUse + optionsOrig.join(delimiterToUse) + delimiterToUse;
+    } else { // One or no options were selected
+        if ( optionsOrig === '' ) {  // 'Not Selected' was the only option selected, or no options were selected
+            optionsFormatted = '';    
+        } else {
+            optionsFormatted = delimiterToUse + optionsOrig + delimiterToUse;
+        };
+    };
+
+    return optionsFormatted;
+    
+};
+

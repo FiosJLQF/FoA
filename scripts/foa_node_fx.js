@@ -4,13 +4,13 @@
 
 //const pageScholarshipVolume = 15; // number of scholarships to be displayed on a page
 //const pageSponsorVolume = 15; // number of sponsors to be displayed on a page
-const { ScholarshipsTable, ScholarshipsActive, ScholarshipsDDL, ScholarshipsAllDDL, ScholarshipsAllDDLTest,
+const { ScholarshipsTableTest, ScholarshipsActive, ScholarshipsDDL, ScholarshipsAllDDL, ScholarshipsAllDDLTest,
     SponsorsTableTest, Sponsors, SponsorsDDL, SponsorsAllDDLTest, 
     GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
     EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
     FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
     UsersAllDDL, UserPermissionsActive, UserProfiles
-} = require('../../models/sequelize.js');
+} = require('../models/sequelize.js');
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -35,7 +35,20 @@ function userPermissions(permissionsList, userID, objectName, objectValue = '') 
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
+// Create a log entry
+//////////////////////////////////////////////////////////////////////////////////////////
+function createLogEntry(activityCode, activityUser, activityPage, sendEmail) {
+
+    let createLogEntryResult = false;
+
+    return createLogEntryResult;
+    
+};
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
 // Format selected options in a SELECT control into a delimited string for database storage
+// => server-side version (see public/js/foa_fx.js for client-side version)
 //////////////////////////////////////////////////////////////////////////////////////////
 function convertOptionsToDelimitedString(optionsToConvert, delimiterToUse = "|", notSelectedValue) {
 
@@ -70,40 +83,9 @@ function convertOptionsToDelimitedString(optionsToConvert, delimiterToUse = "|",
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
-// Create a log entry
+// Get the Current User's Sponsor permissions
 //////////////////////////////////////////////////////////////////////////////////////////
-function createLogEntry(activityCode, activityUser, activityPage, sendEmail) {
-
-    let createLogEntryResult = false;
-
-    return createLogEntryResult;
-    
-};
-
-
-//////////////////////////////////////////////////////////////////////////////////////////
-// Define a "Current User Profile" object
-//////////////////////////////////////////////////////////////////////////////////////////
-function CurrentUser( emailAddress ) {
-
-    this.email = emailAddress;
-    this.userID = 0;
-
-    // Get the current user's profile
-    async () => {
-        const userProfiles = await UserProfiles.findAll( { where: { Username: emailAddress }});
-        console.log(`userProfiles[0].UserID #1: ${userProfiles[0].UserID}`);
-        this.userID = userProfiles[0].UserID;
-        // Get the list of active permissions for the user
-        //    const userPermissionsActive = await UserPermissionsActive.findAndCountAll( { where: { UserID: userProfiles[0].UserID }});
-    };
-
-};
-
-//////////////////////////////////////////////////////////////////////////////////////////
-// Get the Current User's permissions
-//////////////////////////////////////////////////////////////////////////////////////////
-async function getUserPermissions( userPermissionsActive, sponsorIDRequested ) {
+async function getSponsorPermissionsForUser( userPermissionsActive, sponsorIDRequested ) {
 
     // declare and set local variables
     let userCanReadSponsors = false;
@@ -118,7 +100,6 @@ async function getUserPermissions( userPermissionsActive, sponsorIDRequested ) {
     let userCanUpdateSponsor = false;
     let userCanDeleteSponsor = false;
 
-
     // Get the list of sponsor-related permissions for the current user
     const userPermissionsSponsorDDL = userPermissionsActive.rows.filter( permission => permission.ObjectName === 'switchboard-sponsors');
 
@@ -131,6 +112,7 @@ async function getUserPermissions( userPermissionsActive, sponsorIDRequested ) {
         if ( userPermissionsSponsors.length > 0 && userPermissionsSponsors[0].CanRead ) {
             if ( userPermissionsSponsors[0].ObjectValues === '*' ) {
                 sponsorsAllowedDDL = await SponsorsAllDDLTest.findAndCountAll({});
+                sponsorIDDefault = 999999;
             } else {  // Current user can only see specific Sponsor(s)
                 sponsorsAllowedDDL = await SponsorsAllDDLTest.findAndCountAll({ where: { optionid: userPermissionsSponsors[0].ObjectValues } });
 // ToDo: expand for multiple Sponsors (eventually)
@@ -169,7 +151,7 @@ async function getUserPermissions( userPermissionsActive, sponsorIDRequested ) {
             sponsorID = sponsorIDRequested;
         };
 
-    } else { // Requested Sponsor ID does not exist - check for a default Sponsor ID for the current user
+    } else if ( sponsorIDDefault !== 999999) { // Requested Sponsor ID does not exist - if there a default Sponsor ID
         console.log(`sponsorIDRequested does not exist - process default Sponsor ID: ${sponsorIDDefault}`);
         // Does the default Sponsor exist? Retrieve the Sponsor's details from the database.
         sponsorDetails = await SponsorsTableTest.findAll({ where: { SponsorID: sponsorIDDefault }});
@@ -177,7 +159,6 @@ async function getUserPermissions( userPermissionsActive, sponsorIDRequested ) {
             doesSponsorExist = false;
         } else {
             doesSponsorExist = true;
-            // Can current user view requested sponsor?
             // Can current user view requested sponsor (or permission to view all sponsors)?
             if ( sponsorIDDefault === userPermissionsSponsors[0].ObjectValues
                 || userPermissionsSponsors[0].ObjectValues === '*' ) {
@@ -191,18 +172,130 @@ async function getUserPermissions( userPermissionsActive, sponsorIDRequested ) {
            sponsorID = sponsorIDDefault;
         };
 
+    } else { // Current user can view all Sponsors
+        doesSponsorExist = true;
+        userCanReadSponsor = true;
+        sponsorID = '';
     };
     console.log(`sponsorID returned: ${sponsorID}`);
 
-
-    return { userPermissionsSponsorDDL, userCanReadSponsors, userCanCreateSponsors,
-             userPermissionsSponsors, sponsorsAllowedDDL,
+    return { /* userPermissionsSponsorDDL, */ userCanReadSponsors, userCanCreateSponsors,
+             /* userPermissionsSponsors, */ sponsorsAllowedDDL,
              sponsorID, sponsorDetails, doesSponsorExist,
              userCanReadSponsor, userCanUpdateSponsor, userCanDeleteSponsor };
 };
 
+//////////////////////////////////////////////////////////////////////////////////////////
+// Get the Current User's Scholarship permissions
+//////////////////////////////////////////////////////////////////////////////////////////
+async function getScholarshipPermissionsForUser( userPermissionsActive, sponsorID, scholarshipIDRequested ) {
+
+    // declare and set local variables
+    let userCanReadScholarships = false;
+    let userCanCreateScholarships = false;
+    let userPermissionsScholarships = []; // used??
+    let scholarshipsAllowedDDL = [];
+    let scholarshipIDDefault = 0; // used??
+    let scholarshipID = 0;
+    let scholarshipDetails = [];
+    let doesScholarshipExist = false;
+    let userCanReadScholarship = false;
+    let userCanUpdateScholarship = false;
+    let userCanDeleteScholarship = false;
+
+    // Get the list of scholarship-related permissions for the current user
+    const userPermissionsScholarshipDDL = userPermissionsActive.rows.filter( permission => permission.ObjectName === 'switchboard-scholarships');
+
+    // Can the current user view the Scholarships DDL?  What Scholarships can the current user see?
+    if ( userPermissionsScholarshipDDL.length > 0 && userPermissionsScholarshipDDL[0].CanRead ) {
+        userCanReadScholarships = true;
+        console.log(`userCanReadScholarships: ${userCanReadScholarships}`);
+        // What CRUD operations can the current user perform?
+        userPermissionsScholarships = userPermissionsActive.rows.filter( permission => permission.ObjectName === 'scholarships');
+        // Find the list of Scholarships the current user can see (for loading into the "Scholarships:" dropdown list)
+        if ( userPermissionsScholarships.length > 0 && userPermissionsScholarships[0].CanRead ) {
+            if ( sponsorID !== '' ) { // A specific Sponsor was requested - load Scholarships for that Sponsor
+                if ( userPermissionsScholarships[0].ObjectValues === '*' ) { // wildcard is limited to a specific Sponsor only
+                    scholarshipsAllowedDDL = await ScholarshipsAllDDLTest.findAndCountAll({ where: { SponsorID: sponsorID } });
+                    scholarshipIDDefault = 999999; // used ???
+                } else {  // Current user can only see specific Scholarship(s)
+// ToDo: expand for multiple specific Scholarships (eventually)
+                    scholarshipsAllowedDDL = await ScholarshipsAllDDLTest.findAndCountAll({ where: { optionid: userPermissionsScholarships[0].ObjectValues } });
+                    // Assign the default ScholarshipID to be the sole Scholarship allowed (only one permitted at the moment)
+                    scholarshipIDDefault = userPermissionsScholarships[0].ObjectValues; // Set the Scholarship ID to the only one Scholarship the User has permission to see
+                };
+            } else {  // Load a blank row of data
+                scholarshipsAllowedDDL = await ScholarshipsAllDDLTest.findAndCountAll({ where: { SponsorID: -1 } });
+                scholarshipIDDefault = 999999; // used ???
+            };
+        } else {  // The user can see the Scholarships DDL, but has no Scholarships assigned to them - hide the DDL
+            userCanReadScholarships = false;
+        };
+    };
+
+    // Can the current user create new Scholarships?
+    if ( userPermissionsScholarshipDDL.length > 0 && userPermissionsScholarshipDDL[0].CanCreate ) {
+        userCanCreateScholarships = true;
+    };
+    
+    // If a querystring request was made for a specific Scholarship
+    if ( scholarshipIDRequested ) {
+        console.log(`scholarshipIDRequested: ${scholarshipIDRequested}`);
+        // Does the requested Scholarship exist? Retrieve the Scholarship's details from the database.
+        scholarshipDetails = await ScholarshipTableTest.findAll({ where: { ScholarshipID: scholarshipIDRequested }});
+        if ( typeof scholarshipDetails[0] === 'undefined' ) {  // Scholarship ID does not exist
+            doesScholarshipExist = false;
+        } else { // Scholarship ID does exist
+            doesScholarshipExist = true;
+            // Can current user view requested Scholarship (or permission to view all Scholarships)?
+            if ( scholarshipIDRequested === userPermissionsScholarships[0].ObjectValues
+                 || userPermissionsScholarships[0].ObjectValues === '*' ) {
+                userCanReadScholarship = userPermissionsScholarships[0].CanRead;
+                console.log(`userCanReadScholarship: ${userCanReadScholarship}`);
+                userCanUpdateScholarship = userPermissionsScholarships[0].CanUpdate;
+                console.log(`userCanUpdateScholarship: ${userCanUpdateScholarship}`);
+                userCanDeleteScholarship = userPermissionsScholarships[0].CanDelete;
+                console.log(`userCanDeleteScholarship: ${userCanDeleteScholarship}`);
+            };
+            scholarshipID = scholarshipIDRequested;
+        };
+
+    } else if ( scholarshipIDDefault !== 999999) { // Requested Scholarship ID does not exist - if there a default Scholarship ID
+        console.log(`scholarshipIDRequested does not exist - process default Scholarship ID: ${scholarshipIDDefault}`);
+        // Does the default Scholarship exist? Retrieve the Scholarship's details from the database.
+        scholarshipDetails = await ScholarshipsTableTest.findAll({ where: { ScholarshipID: scholarshipIDDefault }});
+        if ( typeof scholarshipDetails[0] === 'undefined' ) {  // Scholarship ID does not exist
+            doesScholarshipExist = false;
+        } else {
+            doesScholarshipExist = true;
+            // Can current user view requested Scholarship (or permission to view all Scholarships)?
+            if ( scholarshipIDDefault === userPermissionsScholarships[0].ObjectValues
+                || userPermissionsScholarships[0].ObjectValues === '*' ) {
+               userCanReadScholarship = userPermissionsScholarships[0].CanRead;
+               console.log(`userCanReadScholarship: ${userCanReadScholarship}`);
+               userCanUpdateScholarship = userPermissionsScholarships[0].CanUpdate;
+               console.log(`userCanUpdateScholarship: ${userCanUpdateScholarship}`);
+               userCanDeleteScholarship = userPermissionsScholarships[0].CanDelete;
+               console.log(`userCanDeleteScholarship: ${userCanDeleteScholarship}`);
+           };
+           scholarshipID = scholarshipIDDefault;
+        };
+
+    } else { // Current user can view all Scholarships (or no Scholarships exist for the Sponsor)
+        doesScholarshipExist = true;
+        userCanReadScholarship = true;
+        scholarshipID = '';
+    };
+    console.log(`scholarshipID returned: ${scholarshipID}`);
+
+    return { userPermissionsScholarshipDDL, userCanReadScholarships, userCanCreateScholarships,
+             userPermissionsScholarships, scholarshipsAllowedDDL,
+             scholarshipID, scholarshipDetails, doesScholarshipExist,
+             userCanReadScholarship, userCanUpdateScholarship, userCanDeleteScholarship };
+};
+
 module.exports = {
     convertOptionsToDelimitedString,
-    CurrentUser,
-    getUserPermissions
+    getSponsorPermissionsForUser,
+    getScholarshipPermissionsForUser
 };

@@ -3,7 +3,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 
 module.exports = (sequelize, DataTypes) => {
-    const ScholarshipsTable = sequelize.define('tblScholarshipsTest', {
+    const ScholarshipsTableTest = sequelize.define('tblScholarshipsTest', {
         ScholarshipID: {
             type: DataTypes.INTEGER//,
 //            primaryKey: true
@@ -41,5 +41,5 @@ module.exports = (sequelize, DataTypes) => {
         freezeTableName: true,  // don't have Sequelize automatically pluralize the table name
         timestamps: false,  // don't add the timestamp attributes (updatedAt, createdAt)
     });
-    return ScholarshipsTable;
+    return ScholarshipsTableTest;
 };

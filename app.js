@@ -11,7 +11,7 @@ const compression = require('compression');
 const expressSession = require("express-session");
 const { auth, requiresAuth } = require('express-openid-connect');
 const port = process.env.PORT || 3000;
-const { ScholarshipsTable, ScholarshipsActive, ScholarshipsDDL, ScholarshipsAllDDL, ScholarshipsAllDDTest,
+const { ScholarshipsTableTest, ScholarshipsActive, ScholarshipsDDL, ScholarshipsAllDDL, ScholarshipsAllDDTest,
         Sponsors, SponsorsDDL, SponsorsAllDDLTest,
         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
@@ -144,7 +144,7 @@ app.get('/scholarshipadd/:id', requiresAuth(), async (req, res) => {
      } );
 });
 app.get('/scholarshipedit/:id', requiresAuth(), async (req, res) => {
-    const scholarshipDetails = await ScholarshipsTable.findAll({ where: { ScholarshipID: req.params.id }});
+    const scholarshipDetails = await ScholarshipsTableTest.findAll({ where: { ScholarshipID: req.params.id }});
     const sponsorsDDL = await SponsorsAllDDL.findAndCountAll({});
     const scholarshipsAllDDL = await ScholarshipsAllDDL.findAndCountAll({ where: { SponsorID: scholarshipDetails[0].SponsorID }});
     res.render('scholarshipedit', {
@@ -165,7 +165,7 @@ app.get('/scholarshipedit/:id', requiresAuth(), async (req, res) => {
 // "POST" Routes (insert new data)
 ///////////////////////////////////////////
 app.post('/scholarshipadd', async (req, res) => {
-    const scholarship = new ScholarshipsTable( {
+    const scholarship = new ScholarshipsTableTest( {
         ScholarshipName: req.body.ScholarshipName,
         ScholarshipDescription: req.body.ScholarshipDescription,
         ScholarshipLink: req.body.ScholarshipLink
