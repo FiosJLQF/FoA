@@ -160,6 +160,7 @@ select.single-choice {
     color: var(--amcg-blue);
     font-weight: bold;
     padding: 0px 5px 0px 0px;
+    text-align: center;
  }
 
 .custom-toggler.navbar-toggler {

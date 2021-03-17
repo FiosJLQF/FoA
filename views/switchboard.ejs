@@ -1,8 +1,8 @@
 <% layout('layouts/boilerplate') %>
 <%- include('partials/splashbar_switchboard') %>
 
-<div class="container pagetitle" align="center">
-  Switchboard
+<div class="container pagetitle">
+  <div id="pageTitle">Switchboard</div>
   <hr class="pagetitlebreak">
 </div>
 
@@ -19,9 +19,9 @@
     <% if ( errorCode !== 0 ) { %>
       <%- include('partials/switchboard_error') %>
     <% } else if ( actionRequested === 'addsponsor' ) { %>
-        <%- include('partials/sponsor_add') %>
+        <%- include('partials/sponsor_crud') %>
     <% } else if ( sponsorID !== '' ) { %>
-      <%- include('partials/sponsor_details') %>
+      <%- include('partials/sponsor_crud') %>
     <% } else if  ( scholarshipID !== '' ) { %>
       scholarshipID
     <% } else { %>

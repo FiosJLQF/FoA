@@ -290,6 +290,9 @@ router.post('/sponsoradd', requiresAuth(),
             SponsorType: sponsorTypesFormatted
         });
         await newSponsor.save();
+
+// ToDo:  If insert successful, add permission for Current User to new Sponsor
+
         res.redirect(`/switchboard?sponsorid=${newSponsor.SponsorID}&status=sponsorcreatesuccess`);
     };
 });
