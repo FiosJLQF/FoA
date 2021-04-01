@@ -38,10 +38,13 @@ router.use(
 // Routes Definitions
 ///////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////
+////////////////////////////////////////////////////////////
 // "GET" Routes (Read data)
-////////////////////////////////////////
+////////////////////////////////////////////////////////////
 
+////////////////////////////////////////
+// If the user has not yet been granted any permissions
+////////////////////////////////////////
 router.get('/newuser', requiresAuth(), async (req, res) => {
     try {
 
@@ -57,6 +60,9 @@ router.get('/newuser', requiresAuth(), async (req, res) => {
     }
 });
 
+////////////////////////////////////////
+// The main switchboard
+////////////////////////////////////////
 router.get('/', requiresAuth(), async (req, res) => {
     try {
 
@@ -86,11 +92,10 @@ router.get('/', requiresAuth(), async (req, res) => {
         // Get the current user's profile and permissions
         ////////////////////////////////////////////////////
         const userProfiles = await UserProfiles.findAll( { where: { Username: req.oidc.user.email }});
-        if ( userProfiles.length === 0 ) {
+        if ( userProfiles.length === 0 ) {  // The new user has not yet been set up
 // ToDo:  Log the error
             res.redirect(`/switchboard/newuser`);
         };
-
         // Get the list of active permissions for the user
         const userPermissionsActive = await UserPermissionsActive.findAndCountAll( { where: { UserID: userProfiles[0].UserID }});
 
@@ -123,9 +128,8 @@ router.get('/', requiresAuth(), async (req, res) => {
         };
 
         ////////////////////////////////////////////////////
-        //  Scholarships Information/Permissions (DDL, Add Scholarship, Default Scholarship, etc.)
+        //  Scholarships Permissions / Details (DDL, Add Scholarship, Default Scholarship, etc.)
         ////////////////////////////////////////////////////
-
         const { userCanReadScholarships, userCanCreateScholarships, scholarshipsAllowedDDL, scholarshipID, scholarshipDetails,
                 doesScholarshipExist, userCanReadScholarship, userCanUpdateScholarship, userCanDeleteScholarship
         } = await jsFx.getScholarshipPermissionsForUser( userPermissionsActive, sponsorID, scholarshipIDRequested );
@@ -176,18 +180,27 @@ router.get('/', requiresAuth(), async (req, res) => {
         // Retrieve options for add/edit form DDLs
         ////////////////////////////////////////////////////
         let sponsorTypeCategoriesDDL = await SponsorTypeCategoriesDDL.findAndCountAll({});
+        let criteriaCitizenshipCategories = await CitizenshipCategoriesDDL.findAndCountAll({});
 
         ////////////////////////////////////////////////////
-        //  Process any querystring "actions requested"
+        //  Process any querystring "actions requested" (this will tell the form how to render for the user)
         ////////////////////////////////////////////////////
 
-        if ( req.query['actionRequested'] === 'addsponsor' ) {
+        if ( req.query['actionrequested'] === 'addsponsor' ) {
             if ( userCanCreateSponsors ) {
                 actionRequested = 'addsponsor';
             };
-        } else if ( req.query['actionRequested'] === 'addscholarships' ) {
+        } else if ( req.query['actionrequested'] === 'addscholarship' ) {
             if ( userCanCreateScholarships ) {
                 actionRequested = 'addscholarship';
+            };
+        } else if ( req.query['actionrequested'] === 'editsponsor' ) {
+            if ( userCanReadSponsor ) {
+                actionRequested = 'editsponsor';
+            };
+        } else if ( req.query['actionrequested'] === 'editscholarship' ) {
+            if ( userCanReadScholarship ) {
+                actionRequested = 'editscholarship';
             };
         };
 
@@ -200,7 +213,13 @@ router.get('/', requiresAuth(), async (req, res) => {
             statusMessage = 'Sponsor was deleted.';
         } else if ( req.query['status'] === 'sponsorcreatesuccess' ) {
             statusMessage = 'Sponsor was added.';
-        } else {
+        } else if ( req.query['status'] === 'scholarshipupdatesuccess' ) {
+            statusMessage = 'Scholarship was updated.';
+        } else if ( req.query['status'] === 'scholarshipdeletesuccess' ) {
+            statusMessage = 'Scholarship was deleted.';
+        } else if ( req.query['status'] === 'scholarshipcreatesuccess' ) {
+            statusMessage = 'Scholarship was added.';
+        } else{
             statusMessage = '';
         };
 
@@ -217,25 +236,32 @@ router.get('/', requiresAuth(), async (req, res) => {
             user: req.oidc.user,
             userName: ( req.oidc.user == null ? '' : req.oidc.user.name ),
             // Main Menu Data
+            // Sponsor Information
             userCanReadSponsors,
             sponsorsAllowedDDL,
             userCanCreateSponsors,
             sponsorTypeCategoriesDDL,
+            // Scholarship Information
             userCanReadScholarships,
             scholarshipsAllowedDDL,
             userCanCreateScholarships,
+            criteriaCitizenshipCategories,
+            // User Information
             userCanReadUsers,
             usersAllDDL,
             userCanCreateUsers,
             userID: '',
-            // Sponsor Details data
+            // Sponsor CRUD Information
             sponsorID,
             sponsorDetails,
             userCanReadSponsor, userCanUpdateSponsor, userCanDeleteSponsor,
-            // Scholarship Details data
+            // Scholarship CRUD Information
             scholarshipID,
             scholarshipDetails,
             userCanReadScholarship, userCanUpdateScholarship, userCanDeleteScholarship
+// ToDo: Copy "Scholarship CRUD Information" to here for "User CRUD Information" block
+
+
         })
     } catch(err) {
 // ToDo:  Log the error
@@ -244,9 +270,9 @@ router.get('/', requiresAuth(), async (req, res) => {
 });
 
 
-////////////////////////////////////////
-// "POST" Routes (Add new data recordes)
-////////////////////////////////////////
+////////////////////////////////////////////////////////////
+// "POST" Routes (Add new data records)
+////////////////////////////////////////////////////////////
 
 router.post('/sponsoradd', requiresAuth(),
     [
@@ -297,10 +323,60 @@ router.post('/sponsoradd', requiresAuth(),
     };
 });
 
+router.post('/scholarshipadd', requiresAuth(),
+    [
+        check('scholarshipName')
+            .isLength( { min: 3, max: 100 } ).withMessage('Scholarship Name should be 3 to 100 characters.')
+    ],
 
-////////////////////////////////////////
+    async (req, res) => {
+
+    // Reformat the SELECT options into a pipe-delimited array for storage
+    const criteriaCitizenshipFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaCitizenship, "|", "0");
+
+    // Validate the input
+    const validationErrors = validationResult(req);
+
+    // If invalid data, return errors to client
+    if ( !validationErrors.isEmpty() ) {
+
+// ToDo:  Replicate the GET render code above, including parameters prep work
+
+
+        return res.status(400).json(validationErrors.array());
+
+
+
+
+
+
+
+    } else {
+        // Add the new data to the database in a new record, and return the newly-generated [ScholarshipID] value
+        console.log(`sponsorID to save scholarship: ${req.body.sponsorID}`);
+        const newScholarship = new ScholarshipsTableTest( {
+            SponsorID: req.body.sponsorID,
+            ScholarshipName: req.body.scholarshipName,
+            ScholarshipDescription: req.body.scholarshipDescription,
+            ScholarshipLink: req.body.scholarshipLink,
+            ScholarshipAward: req.body.scholarshipAward,
+            ScholarshipContactFName: req.body.scholarshipContactFName,
+            ScholarshipContactLName: req.body.scholarshipContactLName,
+            ScholarshipContactEmail: req.body.scholarshipContactEmail,
+            ScholarshipContactTelephone: req.body.scholarshipContactTelephone,
+            Criteria_Citizenship: criteriaCitizenshipFormatted
+        });
+        await newScholarship.save();
+
+// ToDo:  If insert successful, add permission for Current User to new Scholarship
+
+        res.redirect(`/switchboard?scholarshipid=${newScholarship.ScholarshipID}&status=scholarshipcreatesuccess`);
+    };
+});
+
+////////////////////////////////////////////////////////////
 // "PUT" Routes (Update data)
-////////////////////////////////////////
+////////////////////////////////////////////////////////////
 
 router.put('/sponsorupdate', requiresAuth(), async (req, res) => {
 
@@ -331,9 +407,9 @@ router.put('/sponsorupdate', requiresAuth(), async (req, res) => {
 });
 
 
-////////////////////////////////////////
+////////////////////////////////////////////////////////////
 // "DELETE" Routes (Delete data)
-////////////////////////////////////////
+////////////////////////////////////////////////////////////
 
 router.delete('/sponsordelete', requiresAuth(), async (req, res) => {
 
@@ -350,9 +426,25 @@ router.delete('/sponsordelete', requiresAuth(), async (req, res) => {
     });
 });
 
-///////////////////////////////////////////
+router.delete('/scholarshipdelete', requiresAuth(), async (req, res) => {
+
+    // Get a pointer to the current record
+    console.log(`body.ScholarshipIDToDelete: ${req.body.scholarshipIDToDelete}`);
+    const scholarshipRecord = await ScholarshipsTableTest.findOne( {
+        where: { ScholarshipID: req.body.scholarshipIDToDelete }
+    });
+    console.log(`scholarshipRecord: ${scholarshipRecord.ScholarshipID}`);
+
+    // Delete the record, based on the Sponsor ID
+    await scholarshipRecord.destroy().then( () => {
+        res.redirect(`/switchboard?status=scholarshipdeletesuccess`);
+    });
+});
+
+
+////////////////////////////////////////////////////////////
 // Invalid Routes
-///////////////////////////////////////////
+////////////////////////////////////////////////////////////
 router.get('*', async (req, res) => {
     return res.render('error', {
         userName: '',
@@ -361,8 +453,7 @@ router.get('*', async (req, res) => {
 });
 
 
-////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
 // Return all routes
-////////////////////////////////////////
-
+///////////////////////////////////////////////////////////////////////////////////
 module.exports = router;

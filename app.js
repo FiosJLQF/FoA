@@ -11,13 +11,13 @@ const compression = require('compression');
 const expressSession = require("express-session");
 const { auth, requiresAuth } = require('express-openid-connect');
 const port = process.env.PORT || 3000;
-const { ScholarshipsTableTest, ScholarshipsActive, ScholarshipsDDL, ScholarshipsAllDDL, ScholarshipsAllDDTest,
-        Sponsors, SponsorsDDL, SponsorsAllDDLTest,
-        GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
-        EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
-        FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
-        UsersAllDDL, UserPermissionsActive, UserProfiles
-    } = require('./models/sequelize.js');
+// const { ScholarshipsTableTest, ScholarshipsActive, ScholarshipsDDL, ScholarshipsAllDDL, ScholarshipsAllDDTest,
+//         Sponsors, SponsorsDDL, SponsorsAllDDLTest,
+//         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
+//         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
+//         FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
+//         UsersAllDDL, UserPermissionsActive, UserProfiles
+//     } = require('./models/sequelize.js');
 const cors = require('cors');
 const switchboardRoutes = require('./routes/switchboard.routes.js');
 const searchRoutes = require('./routes/search.routes.js');
@@ -131,48 +131,48 @@ app.get('/profile', requiresAuth(), (req, res) => {
     res.send(JSON.stringify(req.oidc.user));
   });
 
-app.get('/scholarshipadd/:id', requiresAuth(), async (req, res) => {
-    const sponsorsDDL = await SponsorsAllDDL.findAndCountAll({});
-    const scholarshipsAllDDL = await ScholarshipsAllDDL.findAndCountAll({ where: { SponsorID: req.params.id }});
-    res.render('scholarshipadd', {
-        user: req.oidc.user,
-        userName: ( req.oidc.user == null ? '' : req.oidc.user.name ),
-        sponsorsDDL,
-        scholarshipsAllDDL,
-        SponsorID: req.params.id,
-        ScholarshipID: ""
-     } );
-});
-app.get('/scholarshipedit/:id', requiresAuth(), async (req, res) => {
-    const scholarshipDetails = await ScholarshipsTableTest.findAll({ where: { ScholarshipID: req.params.id }});
-    const sponsorsDDL = await SponsorsAllDDL.findAndCountAll({});
-    const scholarshipsAllDDL = await ScholarshipsAllDDL.findAndCountAll({ where: { SponsorID: scholarshipDetails[0].SponsorID }});
-    res.render('scholarshipedit', {
-        user: req.oidc.user,
-        userName: ( req.oidc.user == null ? '' : req.oidc.user.name ),
-        sponsorsDDL,
-        scholarshipsAllDDL,
-        SponsorID: scholarshipDetails[0].SponsorID,
-        scholarshipDetails,
-        ScholarshipID: req.params.id
+// app.get('/scholarshipadd/:id', requiresAuth(), async (req, res) => {
+//     const sponsorsDDL = await SponsorsAllDDL.findAndCountAll({});
+//     const scholarshipsAllDDL = await ScholarshipsAllDDL.findAndCountAll({ where: { SponsorID: req.params.id }});
+//     res.render('scholarshipadd', {
+//         user: req.oidc.user,
+//         userName: ( req.oidc.user == null ? '' : req.oidc.user.name ),
+//         sponsorsDDL,
+//         scholarshipsAllDDL,
+//         SponsorID: req.params.id,
+//         ScholarshipID: ""
+//      } );
+// });
+// app.get('/scholarshipedit/:id', requiresAuth(), async (req, res) => {
+//     const scholarshipDetails = await ScholarshipsTableTest.findAll({ where: { ScholarshipID: req.params.id }});
+//     const sponsorsDDL = await SponsorsAllDDL.findAndCountAll({});
+//     const scholarshipsAllDDL = await ScholarshipsAllDDL.findAndCountAll({ where: { SponsorID: scholarshipDetails[0].SponsorID }});
+//     res.render('scholarshipedit', {
+//         user: req.oidc.user,
+//         userName: ( req.oidc.user == null ? '' : req.oidc.user.name ),
+//         sponsorsDDL,
+//         scholarshipsAllDDL,
+//         SponsorID: scholarshipDetails[0].SponsorID,
+//         scholarshipDetails,
+//         ScholarshipID: req.params.id
 
-// how to pass querystring values into the render ("Scholarship Saved!")?
+// // how to pass querystring values into the render ("Scholarship Saved!")?
 
-     } );
-});
+//      } );
+// });
 
 ///////////////////////////////////////////
 // "POST" Routes (insert new data)
 ///////////////////////////////////////////
-app.post('/scholarshipadd', async (req, res) => {
-    const scholarship = new ScholarshipsTableTest( {
-        ScholarshipName: req.body.ScholarshipName,
-        ScholarshipDescription: req.body.ScholarshipDescription,
-        ScholarshipLink: req.body.ScholarshipLink
-    });
-    await scholarship.save();
-    res.redirect(`scholarshipedit/${scholarship.ScholarshipID}?mode=newscholarship`);
-});
+// app.post('/scholarshipadd', async (req, res) => {
+//     const scholarship = new ScholarshipsTableTest( {
+//         ScholarshipName: req.body.ScholarshipName,
+//         ScholarshipDescription: req.body.ScholarshipDescription,
+//         ScholarshipLink: req.body.ScholarshipLink
+//     });
+//     await scholarship.save();
+//     res.redirect(`scholarshipedit/${scholarship.ScholarshipID}?mode=newscholarship`);
+// });
 
 ///////////////////////////////////////////
 // Invalid Routes

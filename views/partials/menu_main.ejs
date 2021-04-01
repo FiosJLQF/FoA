@@ -17,7 +17,7 @@
     <% if ( userCanCreateSponsors ) { %>  <!-- If a user cannot create sponsors, hide the link. -->
     <span class="float-right">
       <span id="addSponsor" class="float-right"><a id="addSponsor" class="btn btn-default button-small"
-        href="/switchboard?actionRequested=addsponsor">Add Sponsor</a>&nbsp;</span>
+        href="/switchboard?actionrequested=addsponsor">Add Sponsor</a>&nbsp;</span>
 <!--      <button type="button" id="addSponsorLink" class="btn btn-default button-small" onclick="">Add Sponsor</button>&nbsp; -->
     </span>
     <% } %>
@@ -30,17 +30,18 @@
   <% if ( userCanReadScholarships ) { %>  <!-- If a user cannot read the sponsors list, hide it and the scholarships list. -->
   <div>
     Scholarships:
-    <% if ( userCanCreateScholarships ) { %>  <!-- If a user cannot create scholarships, hide the link. -->
+    <% if ( userCanCreateScholarships && sponsorID !== '' ) { %>  <!-- If the user can create scholarships, and a Sponsor is selected, show the link. -->
+    <span class="float-right">
       <span class="float-right">
-        <button type="button" id="addScholarshipLink" class="btn btn-default button-small" onclick="">Add Scholarship</button>&nbsp;
+        <a id="addScholarship" class="btn btn-default button-small" 
+            href="/switchboard?actionrequested=addscholarship&sponsorid=<%= sponsorID %>">Add Scholarship</a>&nbsp;
       </span>
-<!--      <span class="float-right"><a id="addScholarshipLink" class="btn btn-default button-small"
-      href="/scholarshipAdd/<%= sponsorID %>">Add Scholarship</a>&nbsp;</span>   -->
+    </span>
     <% } %>
   </div>
   <span class="searchInstructions">&nbsp;&nbsp;&nbsp;(Filtered to the Sponsor selected above.)</span>
   <div id="filterScholarshipsInputBlock">
-    <select id="filterScholarshipsInput" class="single-choice" onchange="gotoScholarshipEdit(this.value)"></select><br>
+    <select id="filterScholarshipsInput" class="single-choice" onchange="gotoScholarshipDetails(this.value)"></select><br>
   </div><br>
   <% } %>
   <% } %>
@@ -77,24 +78,33 @@
     if ( selectedSponsorID == 0 ) {
       newURL = '/switchboard';
     } else {
-      newURL = 'switchboard?sponsorid=' + selectedSponsorID;
+      newURL = 'switchboard?actionrequested=editsponsor&sponsorid=' + selectedSponsorID;
     }
     location.href=newURL;
   }
 
   // If a Sponsor is selected, enable the "Add Scholarship" link and load the Scholarships DDL
   var ddlSponsors = document.getElementById("filterSponsorsInput");
-  if ( ddlSponsors.value === '0' ) {
-    document.getElementById('addScholarshipLink').disabled = true;
-    document.getElementById('filterScholarshipsInput').disabled = true;
-  } else {
+  if ( ddlSponsors.value !== '0' ) {
     var schRows = <%- JSON.stringify(scholarshipsAllowedDDL.rows) %>;
-    loadSelectOptionsList("filterScholarshipsInput", "(Not Selected)", 0, schRows, '');
+    var schCount = <%- JSON.stringify(scholarshipsAllowedDDL.count) %>;
+    if ( schCount === 0 ) {
+      loadSelectOptionsList("filterScholarshipsInput", "(None)", 0, schRows, '');
+    } else {
+      loadSelectOptionsList("filterScholarshipsInput", "(Not Selected)", 0, schRows, '');
+    };
+  } else {
+    document.getElementById('filterScholarshipsInput').disabled = true;
   };
 
   // Redirect the user to the Scholarship Details page
-  function gotoScholarshipEdit(selectedScholarshipID) {
-    var newURL = '/scholarshipedit/' + selectedScholarshipID;
+  function gotoScholarshipDetails(selectedScholarshipID) {
+    var newURL = '';
+    if ( selectedScholarshipID == 0 ) {
+      newURL = '/switchboard';
+    } else {
+      newURL = 'switchboard?actionrequested=editscholarship&scholarshipid=' + selectedScholarshipID;
+    }
     location.href=newURL;
   }
 
@@ -102,9 +112,14 @@
   var usrRows = <%- JSON.stringify(usersAllDDL.rows) %>;
   loadSelectOptionsList("filterUsersInput", "(Not Selected)", 0, usrRows, '<%= userID %>');
 
-  // Redirect the user to the User Details page
-  function gotoUserEdit(selectedUserID) {
-    var newURL = '/userdetails/' + selectedUserID;
+  // Redirect the user to the Users Details page
+  function gotoUserDetails(selectedUserID) {
+    var newURL = '';
+    if ( selectedUserID == 0 ) {
+      newURL = '/switchboard';
+    } else {
+      newURL = 'switchboard?actionrequested=edituser&userid=' + selectedUserID;
+    }
     location.href=newURL;
   }
 

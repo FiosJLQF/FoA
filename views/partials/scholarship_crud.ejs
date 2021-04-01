@@ -1,0 +1,415 @@
+<div class="col-9 bodylayout1col2-datamgmt" id="scholarshipsearchresultscolumn">
+    <span class="bodylayout1col2title">
+      <label class="data-mgmt-col-title" id="scholarshipInstructions"></label></span><br>
+    <hr class="bodycol2break">
+    <label class="data-mgmt-instruction">&nbsp;&nbsp;&nbsp;<span style="color: red;">*</span> indicates a required entry</label><br><br>
+
+    <% if ( statusMessage !== '' ) { %>
+      <div>
+        <label id="statusMessage" class="form-status"><%= statusMessage %></label>
+      </div>
+      <% } %>
+  
+    <!-- The data entry form container -->
+    <form action="/switchboard/scholarshipadd" method="POST" id="scholarshipData">
+
+      <!-- If the form context is "Manage Scholarship" then provide the scholarshipID for reference -->
+      <input type="hidden" id="sponsorID" name="sponsorID">
+      <input type="hidden" id="scholarshipIDToUpdate" name="scholarshipIDToUpdate">
+
+      <!-- Scholarship Name -->
+      <div class="flexcontainer-datamgmt">
+        <div class="row">
+          <div class="col-3 data-mgmt-label">
+            <label for="scholarshipName" class="data-mgmt">Scholarship Name:</label>
+          </div>
+          <div class="col-1 data-mgmt-required">
+            <label for="scholarshipName" class="data-mgmt-required">*</label>
+          </div>
+          <div class="col-8 data-mgmt-value">
+            <input type="text" id="scholarshipName" name="scholarshipName" class="data-mgmt-text"><br>
+            <span class="data-mgmt-error" id="scholarshipNameErrors"></span>
+          </div>
+        </div>
+      </div><br>
+
+      <!-- Scholarship Description -->
+      <div class="flexcontainer-datamgmt">
+        <div class="row">
+          <div class="col-3 data-mgmt-label">
+            <label for="scholarshipDescription" class="data-mgmt">Description:</label>
+          </div>
+          <div class="col-1 data-mgmt-required">
+            <label for="scholarshipName" class="data-mgmt-required">*</label>
+          </div>
+          <div class="col-8 data-mgmt-value">
+            <textarea id="scholarshipDescription" name="scholarshipDescription" class="data-mgmt"></textarea><br>
+            <span class="data-mgmt-error" id="scholarshipDescriptionErrors"></span>
+          </div>
+        </div>
+      </div><br>
+
+      <!-- Scholarship Link -->
+      <div class="flexcontainer-datamgmt">
+        <div class="row">
+          <div class="col-3 data-mgmt-label">
+            <label for="scholarshipLink" class="data-mgmt">Link to Scholarship:</label>
+          </div>
+          <div class="col-1 data-mgmt-required">
+            <label for="scholarshipLink" class="data-mgmt-required">*</label>
+          </div>
+          <div class="col-8 data-mgmt-value">
+            <input type="text" id="scholarshipLink" name="scholarshipLink" class="data-mgmt-text"><br>
+            <span class="data-mgmt-error" id="scholarshipLinkErrors"></span>
+          </div>
+        </div>
+      </div><br>
+
+      <!-- Scholarship Award -->
+      <div class="flexcontainer-datamgmt">
+        <div class="row">
+          <div class="col-3 data-mgmt-label">
+            <label for="scholarshipAward" class="data-mgmt">Award:</label>
+          </div>
+          <div class="col-1 data-mgmt-required">
+            <label for="scholarshipAward" class="data-mgmt-required">*</label>
+          </div>
+          <div class="col-8 data-mgmt-value">
+            <input type="text" id="scholarshipAward" name="scholarshipAward" class="data-mgmt-text"><br>
+            <span class="data-mgmt-error" id="scholarshipAwardErrors"></span>
+          </div>
+        </div>
+      </div><br>
+
+      <!-- Scholarship Contact First Name -->
+      <div class="flexcontainer-datamgmt">
+        <div class="row">
+          <div class="col-3 data-mgmt-label">
+            <label for="scholarshipContactFName" class="data-mgmt">Contact First Name:</label>
+          </div>
+          <div class="col-1 data-mgmt-required">
+            <label for="scholarshipContactFName" class="data-mgmt-required">*</label>
+          </div>
+          <div class="col-8 data-mgmt-value">
+            <input type="text" id="scholarshipContactFName" name="scholarshipContactFName" class="data-mgmt-text-short"><br>
+            <span class="data-mgmt-error" id="scholarshipContactFNameErrors"></span>
+          </div>
+        </div>
+      </div><br>
+
+      <!-- Scholarship Contact Last Name -->
+      <div class="flexcontainer-datamgmt">
+        <div class="row">
+          <div class="col-3 data-mgmt-label">
+            <label for="scholarshipContactLName" class="data-mgmt">Contact Last Name:</label>
+          </div>
+          <div class="col-1 data-mgmt-required">
+            <label for="scholarshipContactLName" class="data-mgmt-required">*</label>
+          </div>
+          <div class="col-8 data-mgmt-value">
+            <input type="text" id="scholarshipContactLName" name="scholarshipContactLName" class="data-mgmt-text-short"><br>
+            <span class="data-mgmt-error" id="scholarshipContactLNameErrors"></span>
+          </div>
+        </div>
+      </div><br>
+
+      <!-- Scholarship Contact Email -->
+      <div class="flexcontainer-datamgmt">
+        <div class="row">
+          <div class="col-3 data-mgmt-label">
+            <label for="scholarshipContactEmail" class="data-mgmt">Contact Email:</label>
+          </div>
+          <div class="col-1 data-mgmt-required">
+            <label for="scholarshipContactEmail" class="data-mgmt-required">*</label>
+          </div>
+          <div class="col-8 data-mgmt-value">
+            <input type="text" id="scholarshipContactEmail" name="scholarshipContactEmail" class="data-mgmt-text-short"><br>
+            <span class="data-mgmt-error" id="scholarshipContactEmailErrors"></span>
+          </div>
+        </div>
+      </div><br>
+
+      <!-- Scholarship Contact Telephone -->
+      <div class="flexcontainer-datamgmt">
+        <div class="row">
+          <div class="col-3 data-mgmt-label">
+            <label for="scholarshipContactTelephone" class="data-mgmt">Contact Telephone:</label>
+          </div>
+          <div class="col-1 data-mgmt-required">
+            <label for="scholarshipContactTelephone" class="data-mgmt-required"></label>
+          </div>
+          <div class="col-8 data-mgmt-value">
+            <input type="text" id="scholarshipContactTelephone" name="scholarshipContactTelephone" class="data-mgmt-text-short">
+          </div>
+        </div>
+      </div><br>
+
+      <!-- Criteria - Citizenship -->
+      <div class="flexcontainer-datamgmt">
+        <div class="row">
+          <div class="col-3 data-mgmt-label">
+            <label for="criteriaCitizenship" class="data-mgmt">Citizenship(s):</label><br>
+            <label class="data-mgmt-instruction">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</label>
+          </div>
+          <div class="col-1 data-mgmt-required">
+            <label for="criteriaCitizenship" class="data-mgmt-required"></label>
+          </div>
+          <div class="col-8 data-mgmt-value">
+            <select id="criteriaCitizenship" name="criteriaCitizenship" class="data-mgmt-multiple" multiple></select><br>
+            <span class="data-mgmt-error" id="criteriaCitizenshipErrors"></span>
+          </div>
+        </div>
+      </div><br>
+    </form>
+    <div><br>
+      <% if ( actionRequested === 'addscholarship' ) { %>
+        <button class="data-mgmt" form="scholarshipData" onclick="return validateData();">Add Scholarship</button>
+      <% } %>
+      <% if ( scholarshipID !== '' && userCanDeleteScholarship ) { %>
+        <form form action="/switchboard/scholarshipdelete?_method=DELETE" method="POST" id="scholarshipDataDelete">
+          <input type="hidden" id="scholarshipIDToDelete" name="scholarshipIDToDelete" value="<%= scholarshipID %>">
+        </form>
+      <% } %>
+      <% if ( scholarshipID !== '' && userCanUpdateScholarship ) { %>
+        <button class="data-mgmt" form="scholarshipData" onclick="return validateData();">Save Changes</button>&nbsp;&nbsp;&nbsp;&nbsp;
+      <% } %>
+      <% if ( scholarshipID !== '' && userCanDeleteScholarship ) { %>
+        <button class="data-mgmt" form="scholarshipDataDelete" onclick=" return deleteScholarship();">Delete This Scholarship</button>
+      <% } %>
+    </div><br><br>
+
+<script>
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  // Load the Search Criteria options into the DDLs
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
+  var criteriaCitizenshipRows = <%- JSON.stringify(criteriaCitizenshipCategories.rows) %>;
+  loadSelectOptionsList("criteriaCitizenship", "(Not Selected)", 0, criteriaCitizenshipRows);
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  // Customize the page based on the context ("Add Scholarship" v. "Manage Scholarship")
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  <% if ( actionRequested === 'addscholarship' ) { %>  // "Add Scholarship"
+
+    // Set the browser tab name (i.e., title)
+    document.title = "Future of Aviation - Add Scholarship";
+    // Set the page title
+    document.getElementById("pageTitle").innerText = "Switchboard - Add Scholarship";
+    // Set the instructions
+    document.getElementById('scholarshipInstructions').innerText = "Add the information for the new Scholarship below, and click 'Add Scholarship'.";
+    // Set the Sponsor ID for this new Scholarship
+    document.getElementById('sponsorID').value = "<%= sponsorID %>";
+
+  <% } else if ( scholarshipID !== '' ) { %>  // "Read/Update/Delete Scholarship"
+
+    // Set the browser tab name (i.e., title)
+    document.title = "Future of Aviation - Manage Scholarship";
+    // Set the page title
+    document.getElementById("pageTitle").innerText = "Switchboard - Manage Scholarship";
+    // Set the instructions
+    document.getElementById('scholarshipInstructions').innerText = "Edit the entries below, and click 'Save Changes'.";
+    // Set the form submittal configuration
+    document.getElementById('scholarshipData').action = "/switchboard/scholarshipupdate?_method=PUT";
+    document.getElementById('scholarshipData').method = "POST";
+    // Set the current values for the Scholarship data elements
+    document.getElementById('scholarshipIDToUpdate').value = "<%- scholarshipDetails[0].ScholarshipID %>";
+    document.getElementById('sponsorID').value = "<%- sponsorID %>";
+    document.getElementById('scholarshipName').value = "<%= scholarshipDetails[0].ScholarshipName %>";
+    document.getElementById('scholarshipDescription').value = "<%= scholarshipDetails[0].ScholarshipDescription %>";
+    document.getElementById('scholarshipLink').value = "<%= scholarshipDetails[0].ScholarshipLink %>";
+    document.getElementById('scholarshipAward').value = "<%= scholarshipDetails[0].ScholarshipAward %>";
+    document.getElementById('scholarshipContactFName').value = "<%= scholarshipDetails[0].ScholarshipContactFName %>";
+    document.getElementById('scholarshipContactLName').value = "<%= scholarshipDetails[0].ScholarshipContactLName %>";
+    document.getElementById('scholarshipContactEmail').value = "<%= scholarshipDetails[0].ScholarshipContactEmail %>";
+    document.getElementById('scholarshipContactTelephone').value = "<%= scholarshipDetails[0].ScholarshipContactTelephone %>";
+    // Select Citizenship Criteria
+    var criteriaCitizenship = "<%- scholarshipDetails[0].Criteria_Citizenship %>";
+    var criteriaCitizenshipArrTrimmed = criteriaCitizenship.split('|').slice(1, -1);
+    var criteriaCitizenshipSelectObject = document.getElementById('criteriaCitizenship');
+//    criteriaCitizenshipSelectObject.options[0].selected = '';  // Remove the default 'Not Selected' option
+    criteriaCitizenshipArrTrimmed.forEach( function(criteriaCitizenship) {
+      for ( i=0; i < criteriaCitizenshipSelectObject.length; i++ ) {
+        if ( criteriaCitizenshipSelectObject.options[i].value === criteriaCitizenship ) {
+          criteriaCitizenshipSelectObject.options[i].selected = 'selected';
+        }
+      }
+    });
+    // Disable the controls (and change the instruction) if the user does not have permission to update Scholarships.
+    if ( <%- !userCanUpdateScholarship %> ) {
+      document.getElementById('scholarshipInstructions').innerText = "Review the entries below.";
+      document.getElementById('scholarshipName').disabled = true;
+      document.getElementById('scholarshipDescription').disabled = true;
+      document.getElementById('scholarshipLink').disabled = true;
+      document.getElementById('scholarshipAward').disabled = true;
+      document.getElementById('scholarshipContactFName').disabled = true;
+      document.getElementById('scholarshipContactLName').disabled = true;
+      document.getElementById('scholarshipContactEmail').disabled = true;
+      document.getElementById('scholarshipContactTelephone').disabled = true;
+      document.getElementById('criteriaCitizenship').disabled = true;
+    };
+
+  <% } %>
+
+
+  //////////////////////////////////////////////////////////////////////
+  // Validate the data before submitting the form
+  //////////////////////////////////////////////////////////////////////
+  function validateData() {
+    var dataAreValid = true;  // test for errors below
+
+    //////////////////////////////////////////////////
+    // Scholarship Name
+    //////////////////////////////////////////////////
+    var scholarshipName = document.getElementById("scholarshipName").value;
+    var scholarshipNameErrors = document.getElementById("scholarshipNameErrors");
+    scholarshipNameErrors.innerText = '';  // reset value
+    if ( scholarshipName.length === 0 ) {
+      scholarshipNameErrors.innerText = "Scholarship Name cannot be blank.";
+    };
+    if ( scholarshipNameErrors.innerText.length === 0 ) {  // if no errors, hide the error text
+      scholarshipNameErrors.style.display = "none";
+    } else {
+      scholarshipNameErrors.style.display = "block";
+      dataAreValid = false;
+    };
+
+    //////////////////////////////////////////////////
+    // Scholarship Description
+    //////////////////////////////////////////////////
+    var scholarshipDescription = document.getElementById("scholarshipDescription").value;
+    var scholarshipDescriptionErrors = document.getElementById("scholarshipDescriptionErrors");
+    scholarshipDescriptionErrors.innerText = '';  // reset value
+    if ( scholarshipDescription.length === 0 ) {
+      scholarshipDescriptionErrors.innerText = "Scholarship Description cannot be blank.";
+    };
+    if ( scholarshipDescriptionErrors.innerText.length === 0 ) {  // if no errors, hide the error text
+      scholarshipDescriptionErrors.style.display = "none";
+    } else {
+      scholarshipDescriptionErrors.style.display = "block";
+      dataAreValid = false;
+    };
+
+    //////////////////////////////////////////////////
+    // Scholarship Link
+    //////////////////////////////////////////////////
+    var scholarshipLink = document.getElementById("scholarshipLink").value;
+    var scholarshipLinkErrors = document.getElementById("scholarshipLinkErrors");
+    scholarshipLinkErrors.innerText = '';  // reset value
+    if ( scholarshipLink.length === 0 ) {
+      scholarshipLinkErrors.innerText = "Scholarship Link cannot be blank.";
+    };
+    if ( scholarshipLinkErrors.innerText.length === 0 ) {  // if no errors, hide the error text
+      scholarshipLinkErrors.style.display = "none";
+    } else {
+      scholarshipLinkErrors.style.display = "block";
+      dataAreValid = false;
+    };
+
+    //////////////////////////////////////////////////
+    // Scholarship Award
+    //////////////////////////////////////////////////
+    var scholarshipAward = document.getElementById("scholarshipAward").value;
+    var scholarshipAwardErrors = document.getElementById("scholarshipAwardErrors");
+    scholarshipAwardErrors.innerText = '';  // reset value
+    if ( scholarshipAward.length === 0 ) {
+      scholarshipAwardErrors.innerText = "Scholarship Award cannot be blank.";
+    };
+    if ( scholarshipAwardErrors.innerText.length === 0 ) {  // if no errors, hide the error text
+      scholarshipAwardErrors.style.display = "none";
+    } else {
+      scholarshipAwardErrors.style.display = "block";
+      dataAreValid = false;
+    };
+
+    //////////////////////////////////////////////////
+    // Scholarship Contact First Name
+    //////////////////////////////////////////////////
+    var scholarshipContactFName = document.getElementById("scholarshipContactFName").value;
+    var scholarshipContactFNameErrors = document.getElementById("scholarshipContactFNameErrors");
+    scholarshipContactFNameErrors.innerText = '';  // reset value
+    if ( scholarshipContactFName.length === 0 ) {
+      scholarshipContactFNameErrors.innerText = "Scholarship Contact First Name cannot be blank.";
+    };
+    if ( scholarshipContactFNameErrors.innerText.length === 0 ) {  // if no errors, hide the error text
+      scholarshipContactFNameErrors.style.display = "none";
+    } else {
+      scholarshipContactFNameErrors.style.display = "block";
+      dataAreValid = false;
+    };
+
+    //////////////////////////////////////////////////
+    // Scholarship Contact Last Name
+    //////////////////////////////////////////////////
+    var scholarshipContactLName = document.getElementById("scholarshipContactLName").value;
+    var scholarshipContactLNameErrors = document.getElementById("scholarshipContactLNameErrors");
+    scholarshipContactLNameErrors.innerText = '';  // reset value
+    if ( scholarshipContactLName.length === 0 ) {
+      scholarshipContactLNameErrors.innerText = "Scholarship Contact Last Name cannot be blank.";
+    };
+    if ( scholarshipContactLNameErrors.innerText.length === 0 ) {  // if no errors, hide the error text
+      scholarshipContactLNameErrors.style.display = "none";
+    } else {
+      scholarshipContactLNameErrors.style.display = "block";
+      dataAreValid = false;
+    };
+
+    //////////////////////////////////////////////////
+    // Scholarship Contact Email
+    //////////////////////////////////////////////////
+    var scholarshipContactEmail = document.getElementById("scholarshipContactEmail").value;
+    var scholarshipContactEmailErrors = document.getElementById("scholarshipContactEmailErrors");
+    scholarshipContactEmailErrors.innerText = '';  // reset value
+    // Email cannot be blank
+    if ( scholarshipContactEmail.length === 0 ) {
+      scholarshipContactEmailErrors.innerText += "Scholarship Contact Email cannot be blank. ";
+    } else
+      // Email must be properly formatted
+      if ( !/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(scholarshipContactEmail) ) {
+        scholarshipContactEmailErrors.innerText += "Scholarship Contact Email must be a proper email address. ";
+      };
+    // Were errors found?
+    if ( scholarshipContactEmailErrors.innerText.length === 0 ) {  // if no errors, hide the error text
+      scholarshipContactEmailErrors.style.display = "none";
+    } else {
+      scholarshipContactEmailErrors.style.display = "block";
+      dataAreValid = false;
+    };
+
+     //////////////////////////////////////////////////
+     // Criteria - Citizenship
+     //////////////////////////////////////////////////
+     var criteriaCitizenship = Array.from(document.getElementById("criteriaCitizenship").selectedOptions).map(v=>v.value);
+     var criteriaCitizenshipFormatted = convertOptionsToDelimitedString(criteriaCitizenship, "|", "0");
+// //    alert(sponsorTypesFormatted);
+     var criteriaCitizenshipErrors = document.getElementById("criteriaCitizenshipErrors");
+     criteriaCitizenshipErrors.innerText = '';  // reset value
+//     if ( criteriaCitizenshipFormatted === '||' ) {
+//       criteriaCitizenshipErrors.innerText = "At least one Citizenship Criteria must be selected.";
+//     };
+     if ( criteriaCitizenshipErrors.innerText.length === 0 ) {  // if no errors, hide the error text
+       criteriaCitizenshipErrors.style.display = "none";
+     } else {
+       criteriaCitizenshipErrors.style.display = "block";
+       dataAreValid = false;
+     };
+
+    //////////////////////////////////////////////////
+    // If no errors, add the Scholarship
+    //////////////////////////////////////////////////
+    return dataAreValid;
+
+  }
+
+
+  //////////////////////////////////////////////////////////////////////
+  // Confirm the user wants to delete this Scholarship, and process accordingly
+  //////////////////////////////////////////////////////////////////////
+  function deleteScholarship() {
+    var answer = confirm('Are you sure you want to delete this Scholarship? (' + document.getElementById('scholarshipIDToDelete').value + ')');
+    if (answer !== true) {
+      return false;
+    };
+  };
+
+</script>

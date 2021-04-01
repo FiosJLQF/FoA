@@ -242,7 +242,7 @@ async function getScholarshipPermissionsForUser( userPermissionsActive, sponsorI
     if ( scholarshipIDRequested ) {
         console.log(`scholarshipIDRequested: ${scholarshipIDRequested}`);
         // Does the requested Scholarship exist? Retrieve the Scholarship's details from the database.
-        scholarshipDetails = await ScholarshipTableTest.findAll({ where: { ScholarshipID: scholarshipIDRequested }});
+        scholarshipDetails = await ScholarshipsTableTest.findAll({ where: { ScholarshipID: scholarshipIDRequested }});
         if ( typeof scholarshipDetails[0] === 'undefined' ) {  // Scholarship ID does not exist
             doesScholarshipExist = false;
         } else { // Scholarship ID does exist
