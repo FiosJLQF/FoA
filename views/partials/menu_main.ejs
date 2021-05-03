@@ -1,4 +1,4 @@
-<div id="switchboardsidemenu" class="col-3 bodylayout1col1">
+<div id="switchboardsidemenu" class="col-3 bodylayout1col1-datamgmt">
   <div class="bodylayout1col1title" id="searchCriteriaTitle">Main Menu</div>
   <hr class="bodycol1break">
   <div class="searchInstructions">Select an item from the options below:</div><br>
@@ -39,7 +39,7 @@
     </span>
     <% } %>
   </div>
-  <span class="searchInstructions">&nbsp;&nbsp;&nbsp;(Filtered to the Sponsor selected above.)</span>
+  <span class="searchInstructions">&nbsp;&nbsp;&nbsp;(Filtered to the Sponsor above.)</span>
   <div id="filterScholarshipsInputBlock">
     <select id="filterScholarshipsInput" class="single-choice" onchange="gotoScholarshipDetails(this.value)"></select><br>
   </div><br>
@@ -92,6 +92,9 @@
       loadSelectOptionsList("filterScholarshipsInput", "(None)", 0, schRows, '');
     } else {
       loadSelectOptionsList("filterScholarshipsInput", "(Not Selected)", 0, schRows, '');
+      if ( '<%= scholarshipID %>' !== '' ) {
+        document.getElementById("filterScholarshipsInput").value = '<%= scholarshipID %>';
+      };
     };
   } else {
     document.getElementById('filterScholarshipsInput').disabled = true;
@@ -103,7 +106,7 @@
     if ( selectedScholarshipID == 0 ) {
       newURL = '/switchboard';
     } else {
-      newURL = 'switchboard?actionrequested=editscholarship&scholarshipid=' + selectedScholarshipID;
+      newURL = 'switchboard?actionrequested=editscholarship&scholarshipid=' + selectedScholarshipID + '&sponsorid=<%= sponsorID %>';
     }
     location.href=newURL;
   }

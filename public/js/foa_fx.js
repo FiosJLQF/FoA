@@ -161,3 +161,28 @@ function convertOptionsToDelimitedString(optionsToConvert, delimiterToUse = "|",
     
 };
 
+//////////////////////////////////////////////////////////////////////////////////////////
+// parse the formatted SELECT object's "selected values"
+//////////////////////////////////////////////////////////////////////////////////////////
+function loadSelectedValues(selectEl, selectedValuesString) {
+
+    // get the SELECT object
+    var selectObject = document.getElementById(selectEl);
+
+    // convert the "selected values" delimited string to an array
+    var selectedValuesArray = selectedValuesString.split('|').slice(1, -1);
+
+    // for each "selected value" find and mark it in the SELECT object
+    if ( selectedValuesArray.length !== 0 ) {
+      selectObject.options[0].selected = '';  // Remove the default 'Not Selected' option
+      selectedValuesArray.forEach( function(selectedValue) {
+        for ( i=0; i < selectObject.length; i++ ) {
+          if ( selectObject.options[i].value === selectedValue ) {
+            selectObject.options[i].selected = 'selected';
+          }
+        }
+      });
+    };
+    
+}
+

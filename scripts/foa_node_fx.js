@@ -9,7 +9,7 @@ const { ScholarshipsTableTest, ScholarshipsActive, ScholarshipsDDL, Scholarships
     GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
     EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
     FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
-    UsersAllDDL, UserPermissionsActive, UserProfiles
+    UsersAllDDL, UserPermissionsActive, UserProfiles, ScholarshipRecurrenceCategoriesDDL, ScholarshipsAllMgmtViewTest
 } = require('../models/sequelize.js');
 
 
@@ -172,7 +172,7 @@ async function getSponsorPermissionsForUser( userPermissionsActive, sponsorIDReq
            sponsorID = sponsorIDDefault;
         };
 
-    } else { // Current user can view all Sponsors
+    } else { // No specific Sponsor was requested, or user can read all Sponsors
         doesSponsorExist = true;
         userCanReadSponsor = true;
         sponsorID = '';
@@ -242,7 +242,7 @@ async function getScholarshipPermissionsForUser( userPermissionsActive, sponsorI
     if ( scholarshipIDRequested ) {
         console.log(`scholarshipIDRequested: ${scholarshipIDRequested}`);
         // Does the requested Scholarship exist? Retrieve the Scholarship's details from the database.
-        scholarshipDetails = await ScholarshipsTableTest.findAll({ where: { ScholarshipID: scholarshipIDRequested }});
+        scholarshipDetails = await ScholarshipsAllMgmtViewTest.findAll({ where: { ScholarshipID: scholarshipIDRequested }});
         if ( typeof scholarshipDetails[0] === 'undefined' ) {  // Scholarship ID does not exist
             doesScholarshipExist = false;
         } else { // Scholarship ID does exist
@@ -263,7 +263,7 @@ async function getScholarshipPermissionsForUser( userPermissionsActive, sponsorI
     } else if ( scholarshipIDDefault !== 999999) { // Requested Scholarship ID does not exist - if there a default Scholarship ID
         console.log(`scholarshipIDRequested does not exist - process default Scholarship ID: ${scholarshipIDDefault}`);
         // Does the default Scholarship exist? Retrieve the Scholarship's details from the database.
-        scholarshipDetails = await ScholarshipsTableTest.findAll({ where: { ScholarshipID: scholarshipIDDefault }});
+        scholarshipDetails = await ScholarshipsAllMgmtViewTest.findAll({ where: { ScholarshipID: scholarshipIDDefault }});
         if ( typeof scholarshipDetails[0] === 'undefined' ) {  // Scholarship ID does not exist
             doesScholarshipExist = false;
         } else {

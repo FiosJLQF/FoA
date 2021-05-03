@@ -33,6 +33,8 @@ sequelize.authenticate().then(() => {
 const ScholarshipsTableTestModel = require('./scholarshipsTableTest.model');
 const ScholarshipsTableTest = ScholarshipsTableTestModel(sequelize, DataTypes);
 ScholarshipsTableTest.removeAttribute('id');  // a different, auto-populated primary key is used in the DB
+const ScholarshipsAllMgmtViewTestModel = require('./scholarshipsAllMgmtView_Test.model');
+const ScholarshipsAllMgmtViewTest = ScholarshipsAllMgmtViewTestModel(sequelize, DataTypes);
 const ScholarshipsActiveModel = require('./scholarshipsActiveView.model');
 const ScholarshipsActive = ScholarshipsActiveModel(sequelize, DataTypes);
 const ScholarshipsDDLModel = require('./scholarshipnameddl.model');
@@ -78,6 +80,10 @@ UserPermissionsActive.removeAttribute('id');  // this is an non-updatable view a
 const UserProfilesModel = require('./userProfiles.model');
 const UserProfiles = UserProfilesModel(sequelize, DataTypes);
 UserProfiles.removeAttribute('id');  // this is an non-updatable view and does not have a PK defined
+const ScholarshipRecurrenceCategoriesDDLModel = require('./scholarshipRecurrenceDDL.model');
+const ScholarshipRecurrenceCategoriesDDL = ScholarshipRecurrenceCategoriesDDLModel(sequelize, DataTypes);
+const ScholarshipStatusCategoriesDDLModel = require('./scholarshipStatusDDL.model');
+const ScholarshipStatusCategoriesDDL = ScholarshipStatusCategoriesDDLModel(sequelize, DataTypes);
 
 
 /**************************************************************************************************
@@ -85,6 +91,7 @@ UserProfiles.removeAttribute('id');  // this is an non-updatable view and does n
 **************************************************************************************************/
 module.exports = {
   ScholarshipsTableTest,
+  ScholarshipsAllMgmtViewTest,
   ScholarshipsActive,
   ScholarshipsDDL,
   ScholarshipsAllDDL,
@@ -105,5 +112,7 @@ module.exports = {
   SponsorTypeCategoriesDDL,
   UsersAllDDL,
   UserPermissionsActive,
-  UserProfiles
+  UserProfiles,
+  ScholarshipRecurrenceCategoriesDDL,
+  ScholarshipStatusCategoriesDDL
 };

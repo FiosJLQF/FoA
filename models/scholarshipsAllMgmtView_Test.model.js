@@ -3,10 +3,10 @@
 ///////////////////////////////////////////////////////////////////////////////////
 
 module.exports = (sequelize, DataTypes) => {
-    const ScholarshipsTableTest = sequelize.define('tblScholarshipsTest', {
+    const ScholarshipsAllMgmtViewTest = sequelize.define('vwScholarshipsAllMgmt_Test', {
         ScholarshipID: {
-            type: DataTypes.INTEGER//,
-//            primaryKey: true
+            type: DataTypes.INTEGER,
+            primaryKey: true
         },
         SponsorID:                                   DataTypes.INTEGER,
         ScholarshipName:                             DataTypes.STRING,
@@ -23,15 +23,15 @@ module.exports = (sequelize, DataTypes) => {
         ScholarshipApplListDate:                     DataTypes.STRING,
         ScholarshipApplStartDate:                    DataTypes.STRING,
         ScholarshipApplEndDate:                      DataTypes.STRING,
-        Criteria_FemaleApplicantsOnly:               DataTypes.STRING,
+        Criteria_FieldOfStudy:                       DataTypes.STRING,
+        Criteria_Citizenship:                        DataTypes.STRING,
         Criteria_AgeMinimum:                         DataTypes.STRING,
         Criteria_AgeMaximum:                         DataTypes.STRING,
-        Criteria_Citizenship:                        DataTypes.STRING,
         Criteria_YearOfNeed:                         DataTypes.STRING,
+        Criteria_FemaleApplicantsOnly:               DataTypes.STRING,
         Criteria_EnrollmentStatus:                   DataTypes.STRING,
         Criteria_GPAMinimum:                         DataTypes.STRING,
         Criteria_USMilitaryService:                  DataTypes.STRING,
-        Criteria_FieldOfStudy:                       DataTypes.STRING,
         Criteria_FAAPilotCertificate:                DataTypes.STRING,
         Criteria_FAAPilotRating:                     DataTypes.STRING,
         Criteria_FAAMechanicCertificate:             DataTypes.STRING,
@@ -41,5 +41,5 @@ module.exports = (sequelize, DataTypes) => {
         freezeTableName: true,  // don't have Sequelize automatically pluralize the table name
         timestamps: false,  // don't add the timestamp attributes (updatedAt, createdAt)
     });
-    return ScholarshipsTableTest;
+    return ScholarshipsAllMgmtViewTest;
 };

@@ -10,12 +10,13 @@ const { ScholarshipsTableTest, ScholarshipsActive, ScholarshipsDDL, Scholarships
         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
         FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
-        UsersAllDDL, UserPermissionsActive, UserProfiles
+        UsersAllDDL, UserPermissionsActive, UserProfiles, ScholarshipRecurrenceCategoriesDDL, ScholarshipStatusCategoriesDDL
     } = require('../models/sequelize.js');
 const methodOverride = require('method-override');  // allows PUT and other non-standard methods
 router.use(methodOverride('_method')); // allows use of the PUT/DELETE method extensions
 const jsFx = require('../scripts/foa_node_fx');
 const { check, validationResult } = require('express-validator');
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 // Auth0 Configuration
@@ -179,8 +180,18 @@ router.get('/', requiresAuth(), async (req, res) => {
         ////////////////////////////////////////////////////
         // Retrieve options for add/edit form DDLs
         ////////////////////////////////////////////////////
+        let scholarshipStatusCategories = await ScholarshipStatusCategoriesDDL.findAndCountAll({});
         let sponsorTypeCategoriesDDL = await SponsorTypeCategoriesDDL.findAndCountAll({});
+        let scholarshipRecurrenceCategories = await ScholarshipRecurrenceCategoriesDDL.findAndCountAll({});
+        let criteriaFieldOfStudyCategories = await FieldOfStudyCategoriesDDL.findAndCountAll({});
         let criteriaCitizenshipCategories = await CitizenshipCategoriesDDL.findAndCountAll({});
+        let criteriaYearOfNeedCategories = await YearOfNeedCategoriesDDL.findAndCountAll({});
+        let criteriaGenderCategories = await GenderCategoriesDDL.findAndCountAll({});
+        let criteriaEnrollmentStatusCategories = await EnrollmentStatusCategoriesDDL.findAndCountAll({});
+        let criteriaMilitaryServiceCategories = await MilitaryServiceCategoriesDDL.findAndCountAll({});
+        let criteriaFAAPilotCertificateCategories = await FAAPilotCertificateCategoriesDDL.findAndCountAll({});
+        let criteriaFAAPilotRatingCategories = await FAAPilotRatingCategoriesDDL.findAndCountAll({});
+        let criteriaFAAMechanicCertificateCategories = await FAAMechanicCertificateCategoriesDDL.findAndCountAll({});
 
         ////////////////////////////////////////////////////
         //  Process any querystring "actions requested" (this will tell the form how to render for the user)
@@ -245,7 +256,16 @@ router.get('/', requiresAuth(), async (req, res) => {
             userCanReadScholarships,
             scholarshipsAllowedDDL,
             userCanCreateScholarships,
+            scholarshipStatusCategories,
+            criteriaFieldOfStudyCategories,
             criteriaCitizenshipCategories,
+            criteriaYearOfNeedCategories,
+            criteriaGenderCategories,
+            criteriaEnrollmentStatusCategories,
+            criteriaMilitaryServiceCategories,
+            criteriaFAAPilotCertificateCategories,
+            criteriaFAAPilotRatingCategories,
+            criteriaFAAMechanicCertificateCategories,
             // User Information
             userCanReadUsers,
             usersAllDDL,
@@ -258,9 +278,9 @@ router.get('/', requiresAuth(), async (req, res) => {
             // Scholarship CRUD Information
             scholarshipID,
             scholarshipDetails,
-            userCanReadScholarship, userCanUpdateScholarship, userCanDeleteScholarship
+            userCanReadScholarship, userCanUpdateScholarship, userCanDeleteScholarship,
+            scholarshipRecurrenceCategories
 // ToDo: Copy "Scholarship CRUD Information" to here for "User CRUD Information" block
-
 
         })
     } catch(err) {
@@ -274,6 +294,9 @@ router.get('/', requiresAuth(), async (req, res) => {
 // "POST" Routes (Add new data records)
 ////////////////////////////////////////////////////////////
 
+///////////////////////////////
+// Sponsor (Insert)
+///////////////////////////////
 router.post('/sponsoradd', requiresAuth(),
     [
         check('sponsorName')
@@ -323,6 +346,9 @@ router.post('/sponsoradd', requiresAuth(),
     };
 });
 
+///////////////////////////////
+// Scholarship (Insert)
+///////////////////////////////
 router.post('/scholarshipadd', requiresAuth(),
     [
         check('scholarshipName')
@@ -331,8 +357,23 @@ router.post('/scholarshipadd', requiresAuth(),
 
     async (req, res) => {
 
-    // Reformat the SELECT options into a pipe-delimited array for storage
+    // Reformat the multiple-option SELECT values into a pipe-delimited array for storage
+    const criteriaFieldOfStudyFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFieldOfStudy, "|", "0");
     const criteriaCitizenshipFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaCitizenship, "|", "0");
+    const criteriaYearOfNeedFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaYearOfNeed, "|", "0");
+    const criteriaEnrollmentStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaEnrollmentStatus, "|", "0");
+    const criteriaMilitaryServiceFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaMilitaryService, "|", "0");
+    const criteriaFAAPilotCertificateFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAPilotCertificate, "|", "0");
+    const criteriaFAAPilotRatingFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAPilotRating, "|", "0");
+    const criteriaFAAMechanicCertificateFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAMechanicCertificate, "|", "0");
+
+    // Reformat blank dates and numbers to NULL values to be updated into Postgres
+    let ApplListDate = (req.body.scholarshipApplListDate === "") ? null : req.body.scholarshipApplListDate;
+    let ApplStartDate = (req.body.scholarshipApplStartDate === "") ? null : req.body.scholarshipApplStartDate;
+    let ApplEndDate = (req.body.scholarshipApplEndDate === "") ? null : req.body.scholarshipApplEndDate;
+    let MinimumAge = (req.body.criteriaMinimumAge === "") ? null : req.body.criteriaMinimumAge;
+    let MaximumAge = (req.body.criteriaMaximumAge === "") ? null : req.body.criteriaMaximumAge;
+    let MinimumGPA = (req.body.criteriaMinimumGPA === "") ? null : req.body.criteriaMinimumGPA;
 
     // Validate the input
     const validationErrors = validationResult(req);
@@ -356,6 +397,7 @@ router.post('/scholarshipadd', requiresAuth(),
         console.log(`sponsorID to save scholarship: ${req.body.sponsorID}`);
         const newScholarship = new ScholarshipsTableTest( {
             SponsorID: req.body.sponsorID,
+            ScholarshipStatus: req.body.scholarshipStatus,
             ScholarshipName: req.body.scholarshipName,
             ScholarshipDescription: req.body.scholarshipDescription,
             ScholarshipLink: req.body.scholarshipLink,
@@ -364,13 +406,34 @@ router.post('/scholarshipadd', requiresAuth(),
             ScholarshipContactLName: req.body.scholarshipContactLName,
             ScholarshipContactEmail: req.body.scholarshipContactEmail,
             ScholarshipContactTelephone: req.body.scholarshipContactTelephone,
-            Criteria_Citizenship: criteriaCitizenshipFormatted
-        });
+            Notes_Admin: req.body.notesAdmin,
+            ScholarshipEligibilityReqs: req.body.scholarshipEligReqsPrimary,
+            ScholarshipEligibilityReqsOther: req.body.scholarshipEligReqsOther,
+            ScholarshipRecurrence: req.body.scholarshipRecurrence,
+            ScholarshipApplListDate: ApplListDate,
+            ScholarshipApplStartDate: ApplStartDate,
+            ScholarshipApplEndDate: ApplEndDate,
+            Criteria_FieldOfStudy: criteriaFieldOfStudyFormatted,
+            Criteria_AgeMinimum: MinimumAge,
+            Criteria_AgeMaximum: MaximumAge,
+            Criteria_Citizenship: criteriaCitizenshipFormatted,
+            Criteria_YearOfNeed: criteriaYearOfNeedFormatted,
+            Criteria_FemaleApplicantsOnly: req.body.criteriaFemaleApplicantsOnly,
+            Criteria_EnrollmentStatus: criteriaEnrollmentStatusFormatted,
+            Criteria_GPAMinimum: MinimumGPA,
+            Criteria_USMilitaryService: criteriaMilitaryServiceFormatted,
+            Criteria_FAAPilotCertificate: criteriaFAAPilotCertificateFormatted,
+            Criteria_FAAPilotRating: criteriaFAAPilotRatingFormatted,
+            Criteria_FAAMechanicCertificate: criteriaFAAMechanicCertificateFormatted
+            });
         await newScholarship.save();
 
 // ToDo:  If insert successful, add permission for Current User to new Scholarship
 
-        res.redirect(`/switchboard?scholarshipid=${newScholarship.ScholarshipID}&status=scholarshipcreatesuccess`);
+        res.redirect(`/switchboard?scholarshipid=${newScholarship.ScholarshipID}` +
+                     `&status=scholarshipcreatesuccess` +
+                     `&actionrequested=editscholarship` +
+                     `&sponsorid=${req.body.sponsorID}`);
     };
 });
 
@@ -378,6 +441,9 @@ router.post('/scholarshipadd', requiresAuth(),
 // "PUT" Routes (Update data)
 ////////////////////////////////////////////////////////////
 
+///////////////////////////////
+// Sponsor (Update)
+///////////////////////////////
 router.put('/sponsorupdate', requiresAuth(), async (req, res) => {
 
     // Reformat the SELECT options into a pipe-delimited array for storage
@@ -406,6 +472,71 @@ router.put('/sponsorupdate', requiresAuth(), async (req, res) => {
     });
 });
 
+///////////////////////////////
+// Scholarship (Update)
+///////////////////////////////
+router.put('/scholarshipupdate', requiresAuth(), async (req, res) => {
+
+    // Reformat the multiple-option SELECT values into a pipe-delimited array for storage
+    const criteriaFieldOfStudyFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFieldOfStudy, "|", "0");
+    const criteriaCitizenshipFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaCitizenship, "|", "0");
+    const criteriaYearOfNeedFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaYearOfNeed, "|", "0");
+    const criteriaEnrollmentStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaEnrollmentStatus, "|", "0");
+    const criteriaMilitaryServiceFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaMilitaryService, "|", "0");
+    const criteriaFAAPilotCertificateFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAPilotCertificate, "|", "0");
+    const criteriaFAAPilotRatingFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAPilotRating, "|", "0");
+    const criteriaFAAMechanicCertificateFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAMechanicCertificate, "|", "0");
+
+    // Reformat blank dates and numbers to NULL values to be updated into Postgres
+    let ApplListDate = (req.body.scholarshipApplListDate === "") ? null : req.body.scholarshipApplListDate;
+    let ApplStartDate = (req.body.scholarshipApplStartDate === "") ? null : req.body.scholarshipApplStartDate;
+    let ApplEndDate = (req.body.scholarshipApplEndDate === "") ? null : req.body.scholarshipApplEndDate;
+    let MinimumAge = (req.body.criteriaMinimumAge === "") ? null : req.body.criteriaMinimumAge;
+    let MaximumAge = (req.body.criteriaMaximumAge === "") ? null : req.body.criteriaMaximumAge;
+    let MinimumGPA = (req.body.criteriaMinimumGPA === "") ? null : req.body.criteriaMinimumGPA;
+
+    // Get a pointer to the current record
+    const scholarshipRecord = await ScholarshipsTableTest.findOne( {
+        where: { ScholarshipID: req.body.scholarshipIDToUpdate }
+    });
+
+    // Update the database record with the new data
+    await scholarshipRecord.update( {
+        ScholarshipStatus: req.body.scholarshipStatus,
+        ScholarshipName: req.body.scholarshipName,
+        ScholarshipDescription: req.body.scholarshipDescription,
+        ScholarshipLink: req.body.scholarshipLink,
+        ScholarshipAward: req.body.scholarshipAward,
+        ScholarshipContactFName: req.body.scholarshipContactFName,
+        ScholarshipContactLName: req.body.scholarshipContactLName,
+        ScholarshipContactEmail: req.body.scholarshipContactEmail,
+        ScholarshipContactTelephone: req.body.scholarshipContactTelephone,
+        Notes_Admin: req.body.notesAdmin,
+        ScholarshipEligibilityReqs: req.body.scholarshipEligReqsPrimary,
+        ScholarshipEligibilityReqsOther: req.body.scholarshipEligReqsOther,
+        ScholarshipRecurrence: req.body.scholarshipRecurrence,
+        ScholarshipApplListDate: ApplListDate,
+        ScholarshipApplStartDate: ApplStartDate,
+        ScholarshipApplEndDate: ApplEndDate,
+        Criteria_FieldOfStudy: criteriaFieldOfStudyFormatted,
+        Criteria_AgeMinimum: MinimumAge,
+        Criteria_AgeMaximum: MaximumAge,
+        Criteria_Citizenship: criteriaCitizenshipFormatted,
+        Criteria_YearOfNeed: criteriaYearOfNeedFormatted,
+        Criteria_FemaleApplicantsOnly: req.body.criteriaFemaleApplicantsOnly,
+        Criteria_EnrollmentStatus: criteriaEnrollmentStatusFormatted,
+        Criteria_GPAMinimum: MinimumGPA,
+        Criteria_USMilitaryService: criteriaMilitaryServiceFormatted,
+        Criteria_FAAPilotCertificate: criteriaFAAPilotCertificateFormatted,
+        Criteria_FAAPilotRating: criteriaFAAPilotRatingFormatted,
+        Criteria_FAAMechanicCertificate: criteriaFAAMechanicCertificateFormatted
+    }).then( () => {
+        res.redirect(`/switchboard?scholarshipid=${scholarshipRecord.ScholarshipID}` +
+                     `&status=scholarshipupdatesuccess` +
+                     `&actionrequested=editscholarship` +
+                     `&sponsorid=${req.body.sponsorID}`);
+    });
+});
 
 ////////////////////////////////////////////////////////////
 // "DELETE" Routes (Delete data)
@@ -437,7 +568,7 @@ router.delete('/scholarshipdelete', requiresAuth(), async (req, res) => {
 
     // Delete the record, based on the Sponsor ID
     await scholarshipRecord.destroy().then( () => {
-        res.redirect(`/switchboard?status=scholarshipdeletesuccess`);
+        res.redirect(`/switchboard?status=scholarshipdeletesuccess&sponsorid=${req.body.sponsorIDOfScholarship}`);
     });
 });
 

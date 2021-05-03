@@ -15,10 +15,17 @@
  * Data Input/Mgmt Controls                                                                    *
  ***********************************************************************************************/
 
- .flexcontainer-datamgmt {
-  display: flex;
-  width: 95%;
-  flex-direction: row;
+.bodylayout1col1-datamgmt {
+  margin: 0px;
+  padding: 0px 10px 0px 0px;
+  border-style: solid;
+  border-width: 0px 2px 0px 0px;
+  border-color: var(--amcg-yellow);
+  font-family: 'Lato', sans-serif;
+  font-size: 0.875em;
+  color: var(--amcg-blue);
+  line-height: 1.4;
+  width: 20%;
 }
 
 .bodylayout1col2-datamgmt {
@@ -28,6 +35,14 @@
   font-size: 0.80em;
   color: var(--amcg-blue);
   line-height: 0.9;
+  width: 80%;
+}
+
+.flexcontainer-datamgmt {
+  display: flex;
+/*  width: 900px; */
+  width: 100%;
+  flex-direction: row;
 }
 
 div.data-mgmt-label {
@@ -44,6 +59,7 @@ div.data-mgmt-required {
 div.data-mgmt-value {
   margin-left: 5px;
   padding: 0px;
+  width: 699px;
 }
 
 label.data-mgmt-col-title {
@@ -95,8 +111,8 @@ span.data-mgmt-error {
   color: red;
 }
   
-  input.data-mgmt-text {
-  width: 680px;
+input.data-mgmt-text {
+  width: 590px;
   line-height: 1.00;
 }
 
@@ -105,9 +121,18 @@ input.data-mgmt-text-short {
   line-height: 1.00;
 }
 
+input.data-mgmt-text-half {
+  width: 295px;
+  line-height: 1.00;
+}
+
+input.data-mgmt-text-third {
+  width: 195px;
+  line-height: 1.00;
+}
 textarea.data-mgmt {
-  width: 680px;
-  height: 80px;
+  width: 590px;
+  height: 85px;
   line-height: 1.1;
 }
 
@@ -116,8 +141,27 @@ button.data-mgmt {
 }
 
 select.data-mgmt-multiple {
-  font-size: 0.875em;
-  width: 680px;
+/*  font-size: 0.875em; */
+  width: 585px;
   padding: 0px;
+  height: 91px;
 }
 
+select.data-mgmt-single {
+/*  font-size: 0.875em; */
+  line-height: 1.00;
+  width: 450px;
+  height: 23px;
+}
+
+select.data-mgmt-single-half {
+  line-height: 1.00;
+  width: 295px;
+  height: 23px;
+}
+  
+select.data-mgmt-single-third {
+  line-height: 1.00;
+  width: 195px;
+  height: 23px;
+}

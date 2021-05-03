@@ -20,7 +20,7 @@
       <div class="flexcontainer-datamgmt">
         <div class="row">
           <div class="col-3 data-mgmt-label">
-            <label for="sponsorName" class="data-mgmt">Sponsor Name:</label>
+            <label for="sponsorName" class="data-mgmt">Sponsor/Owner Name:</label>
           </div>
           <div class="col-1 data-mgmt-required">
             <label for="sponsorName" class="data-mgmt-required">*</label>
@@ -146,7 +146,7 @@
       <div class="flexcontainer-datamgmt">
         <div class="row">
           <div class="col-3 data-mgmt-label">
-            <label for="sponsorType" class="data-mgmt">Sponsor Type(s):</label><br>
+            <label for="sponsorType" class="data-mgmt">Sponsor/Owner Type(s):</label><br>
             <label class="data-mgmt-instruction">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</label>
           </div>
           <div class="col-1 data-mgmt-required">
@@ -217,14 +217,16 @@
     var sponsorTypes = "<%- sponsorDetails[0].SponsorType %>";
     var sponsorTypesArrTrimmed = sponsorTypes.split('|').slice(1, -1);
     var sponsorTypesSelectObject = document.getElementById('sponsorTypes');
-    sponsorTypesSelectObject.options[0].selected = '';  // Remove the default 'Not Selected' option
-    sponsorTypesArrTrimmed.forEach( function(sponsorType) {
-      for ( i=0; i < sponsorTypesSelectObject.length; i++ ) {
-        if ( sponsorTypesSelectObject.options[i].value === sponsorType ) {
-          sponsorTypesSelectObject.options[i].selected = 'selected';
+    if ( sponsorTypesArrTrimmed.length !== 0 ) {
+      sponsorTypesSelectObject.options[0].selected = '';  // Remove the default 'Not Selected' option
+      sponsorTypesArrTrimmed.forEach( function(sponsorType) {
+        for ( i=0; i < sponsorTypesSelectObject.length; i++ ) {
+          if ( sponsorTypesSelectObject.options[i].value === sponsorType ) {
+            sponsorTypesSelectObject.options[i].selected = 'selected';
+          }
         }
-      }
-    });
+      });
+    };
     // Disable the controls (and change the instruction) if the user does not have permission to update Sponsors.
     if ( <%- !userCanUpdateSponsor %> ) {
       document.getElementById('sponsorInstructions').innerText = "Review the entries below.";
