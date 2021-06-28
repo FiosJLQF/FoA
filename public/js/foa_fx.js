@@ -2,20 +2,11 @@
 // global variables
 //////////////////////////////////////////////////////////////////////////////////////////
 
-//alert('opened foa_fx.js');
-
+const { eventNames } = require("../../app");
 const pageScholarshipVolume = 15; // number of scholarships to be displayed on a page
 const pageSponsorVolume = 15; // number of sponsors to be displayed on a page
+const nodemailer = require('nodemailer');  // allows SMPT push emails to be sent
 
-//alert('pageScholarshipVolume: ' + pageScholarshipVolume);
-
-/*
-$(document).ready(function(){
-    $('#birth-date').mask('00/00/0000');
-    $('#phone-number').mask('0000-0000');
-    $('#filterAgeInput').mask('00');
-  });
-*/
 
 //////////////////////////////////////////////////////////////////////////////////////////
  // load the options into a SELECT element

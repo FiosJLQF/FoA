@@ -11,10 +11,10 @@
 -->
 
 <!-- Sponsor Name(s) -->
-  <% if ( userCanReadSponsors ) { %>  <!-- If a user cannot read the sponsors list, hide it and the scholarships list. -->
+  <% if ( userCanReadSponsors ) { %>  <!-- If a user can read the sponsors list, show it and the scholarships list. -->
   <div id="sponsorBlock">
     Sponsors: <span id="testText"></span>
-    <% if ( userCanCreateSponsors ) { %>  <!-- If a user cannot create sponsors, hide the link. -->
+    <% if ( userCanCreateSponsors ) { %>  <!-- If a user can create sponsors, show the link. -->
     <span class="float-right">
       <span id="addSponsor" class="float-right"><a id="addSponsor" class="btn btn-default button-small"
         href="/switchboard?actionrequested=addsponsor">Add Sponsor</a>&nbsp;</span>
@@ -27,7 +27,7 @@
   </div>
 
   <!-- Scholarship(s) -->
-  <% if ( userCanReadScholarships ) { %>  <!-- If a user cannot read the sponsors list, hide it and the scholarships list. -->
+  <% if ( userCanReadScholarships ) { %>  <!-- If a user can read the sponsors list, show it and the scholarships list. -->
   <div>
     Scholarships:
     <% if ( userCanCreateScholarships && sponsorID !== '' ) { %>  <!-- If the user can create scholarships, and a Sponsor is selected, show the link. -->
@@ -47,16 +47,17 @@
   <% } %>
 
   <!-- User(s) -->
-  <% if ( userCanReadUsers ) { %>  <!-- If a user cannot read the users list, hide it. -->
+  <% if ( userCanReadUsers ) { %>  <!-- If a user can read the users list, show it. -->
   <div>
     Users:
-    <% if ( userCanCreateUsers ) { %>  <!-- If a user cannot create users, hide the link. -->
-      <span id="addUser" class="float-right"><a id="addUser" class="btn btn-default button-small"
-        href="/userAdd">Add User</a>&nbsp;</span>
+    <% if ( userCanCreateUsers ) { %>  <!-- If a user can create users, show the link. -->
+      <span id="addUser" class="float-right">
+        <a id="addUser" class="btn btn-default button-small"
+          href="/switchboard?actionrequested=adduser">Add User</a>&nbsp;</span>
     <% } %>
   </div>
   <div id="filterUsersInputBlock">
-    <select id="filterUsersInput" class="single-choice" onchange="gotoUserEdit(this.value)"></select><br>
+    <select id="filterUsersInput" class="single-choice" onchange="gotoUserDetails(this.value)"></select><br>
   </div><br>
   <% } %>
   
@@ -109,11 +110,13 @@
       newURL = 'switchboard?actionrequested=editscholarship&scholarshipid=' + selectedScholarshipID + '&sponsorid=<%= sponsorID %>';
     }
     location.href=newURL;
-  }
+  };
 
-  // Load the Users List into the DDL
-  var usrRows = <%- JSON.stringify(usersAllDDL.rows) %>;
-  loadSelectOptionsList("filterUsersInput", "(Not Selected)", 0, usrRows, '<%= userID %>');
+  // Loa'd the Users List into the DDL, if the user has permission to use the DDL
+  if ( '<%= userCanReadUsers %>' === 'true' ) {
+    var usrRows = <%- JSON.stringify(usersAllowedDDL.rows) %>;
+    loadSelectOptionsList("filterUsersInput", "(Not Selected)", 0, usrRows, '<%= userID %>');
+  };
 
   // Redirect the user to the Users Details page
   function gotoUserDetails(selectedUserID) {
@@ -124,6 +127,6 @@
       newURL = 'switchboard?actionrequested=edituser&userid=' + selectedUserID;
     }
     location.href=newURL;
-  }
+  };
 
 </script>

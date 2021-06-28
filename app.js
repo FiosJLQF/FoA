@@ -11,13 +11,6 @@ const compression = require('compression');
 const expressSession = require("express-session");
 const { auth, requiresAuth } = require('express-openid-connect');
 const port = process.env.PORT || 3000;
-// const { ScholarshipsTableTest, ScholarshipsActive, ScholarshipsDDL, ScholarshipsAllDDL, ScholarshipsAllDDTest,
-//         Sponsors, SponsorsDDL, SponsorsAllDDLTest,
-//         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
-//         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
-//         FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
-//         UsersAllDDL, UserPermissionsActive, UserProfiles
-//     } = require('./models/sequelize.js');
 const cors = require('cors');
 const switchboardRoutes = require('./routes/switchboard.routes.js');
 const searchRoutes = require('./routes/search.routes.js');
@@ -33,7 +26,6 @@ app.use(express.urlencoded( { extended: true })); // allows for parsing "body" o
 app.use(express.json());
 app.use(methodOverride('_method')); // allows use of the PUT/DELETE method extensions
 app.use(cors({origin: '*'}));
-
 
 
 ///////////////////////////////////////////////////////////////////////////////////

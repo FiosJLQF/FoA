@@ -4,14 +4,16 @@
 
 //const pageScholarshipVolume = 15; // number of scholarships to be displayed on a page
 //const pageSponsorVolume = 15; // number of sponsors to be displayed on a page
-const { ScholarshipsTableTest, ScholarshipsActive, ScholarshipsDDL, ScholarshipsAllDDL, ScholarshipsAllDDLTest,
-    SponsorsTableTest, Sponsors, SponsorsDDL, SponsorsAllDDLTest, 
-    GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
-    EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
-    FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
-    UsersAllDDL, UserPermissionsActive, UserProfiles, ScholarshipRecurrenceCategoriesDDL, ScholarshipsAllMgmtViewTest
-} = require('../models/sequelize.js');
-
+const { EventLogsTable, ScholarshipsTableTest, ScholarshipsActive, ScholarshipsActiveDDL, ScholarshipsAllDDL,
+        ScholarshipsAllDDLTest, SponsorsTableTest, Sponsors, SponsorsDDL, SponsorsAllDDLTest, 
+        GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
+        EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
+        FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
+        UsersAllDDLTest, UsersTableTest, UserPermissionsActive, UserProfiles,
+        ScholarshipRecurrenceCategoriesDDL, ScholarshipsAllMgmtViewTest
+    } = require('../models/sequelize.js');
+require("dotenv").config();  // load all ".env" variables into "process.env" for use
+const nodemailer = require('nodemailer');  // allows SMPT push emails to be sent
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // Does the user have permission to access the page?
@@ -37,11 +39,43 @@ function userPermissions(permissionsList, userID, objectName, objectValue = '') 
 //////////////////////////////////////////////////////////////////////////////////////////
 // Create a log entry
 //////////////////////////////////////////////////////////////////////////////////////////
-function createLogEntry(activityCode, activityUser, activityPage, sendEmail) {
+async function logEvent(processName, eventObject, eventCode, eventStatus, eventDescription, eventDuration,
+                        eventRows, eventUserID, sendEmailTo) {
 
-    let createLogEntryResult = false;
+    let logEventResult = false;
+    console.log('Logging event now...');
 
-    return createLogEntryResult;
+//    async (req, res) => {
+        try {
+            console.log('Writing event to log...');
+            const newEventLog = new EventLogsTable( {
+                EventDate: Date().toString(),
+                ProcessName: processName,
+                EventObject: eventObject,
+                EventStatus: eventStatus,
+                EventDescription: eventDescription,
+                EventDuration: eventDuration,
+                EventRows: eventRows,
+                EventUserID: eventUserID,
+                EventCode: eventCode
+                });
+            await newEventLog.save();
+            console.log('Event written to log...');
+            logEventResult = true;
+            console.log('Event logged.');
+            if ( sendEmailTo.length !== 0 ) {
+                let emailResultLogSuccess = sendEmail(sendEmailTo, `Event Logged (${eventStatus})`,
+                `An event was logged for ${processName}:  ${eventDescription}`);
+            };
+        } catch (error) {
+            let emailResultError = sendEmail(process.env.EMAIL_WEBMASTER_LIST, 'Event Log Error',
+            `An error occurred logging an event: ${error}`);
+            console.log(`Event not logged (${error})`);
+        };
+//    };
+//    console.log(`Event Log Error (${error})`);
+
+    return logEventResult;
     
 };
 
@@ -294,8 +328,171 @@ async function getScholarshipPermissionsForUser( userPermissionsActive, sponsorI
              userCanReadScholarship, userCanUpdateScholarship, userCanDeleteScholarship };
 };
 
+//////////////////////////////////////////////////////////////////////////////////////////
+// Get the Current User's User permissions (permissions to let the Current User manage other website Users)
+//////////////////////////////////////////////////////////////////////////////////////////
+async function getUserPermissionsForUser( userPermissionsActive, userIDRequested ) {
+
+    // declare and set local variables
+    let userCanReadUsers = false;
+    let userCanCreateUsers = false;
+    let userPermissionsUsers = [];
+    let usersAllowedDDL = [];
+    let userIDDefault = 0;
+    let userID = 0;
+    let userDetails = [];
+    let doesUserExist = false;
+    let userCanReadUser = false;
+    let userCanUpdateUser = false;
+    let userCanDeleteUser = false;
+
+    // Get the list of user-related permissions for the current user
+    const userPermissionsUserDDL = userPermissionsActive.rows.filter( permission => permission.ObjectName === 'switchboard-users');
+
+    // Can the current user view the Users DDL?  What Users can the current user see?
+    if ( userPermissionsUserDDL.length > 0 && userPermissionsUserDDL[0].CanRead ) {
+        userCanReadUsers = true;
+        // What CRUD operations can the current user perform?
+        userPermissionsUsers = userPermissionsActive.rows.filter( permission => permission.ObjectName === 'users');
+        // Find the list of Users the current user can see (for loading into the "User:" dropdown list)
+        if ( userPermissionsUsers.length > 0 && userPermissionsUsers[0].CanRead ) {
+            if ( userPermissionsUsers[0].ObjectValues === '*' ) {
+                usersAllowedDDL = await UsersAllDDLTest.findAndCountAll({});
+                userIDDefault = 999999;
+            } else {  // Current user can only see specific User(s)
+                usersAllowedDDL = await UsersAllDDLTest.findAndCountAll({ where: { optionid: userPermissionsUsers[0].ObjectValues } });
+// ToDo: expand for multiple Users (eventually)
+                // Assign the default UserID to be the sole User allowed
+                userIDDefault = userPermissionsUsers[0].ObjectValues; // Set the User ID to the only one User the User has permission to see
+            };
+        } else {  // The user can see the Users DDL, but has no Users assigned to them - hide the DDL
+            userCanReadUsers = false;
+        };
+    };
+    console.log(`userPermissionsUserDDL.length: ${userPermissionsUserDDL.length}`);
+    console.log(`userPermissionsUserDDL[0].CanRead: ${userPermissionsUserDDL[0].CanRead}`);
+    console.log(`userCanReadUsers: ${userCanReadUsers}`);
+
+    // Can the current user create new Users?
+    if ( userPermissionsUserDDL.length > 0 && userPermissionsUserDDL[0].CanCreate ) {
+        userCanCreateUsers = true;
+    };
+    
+    // If a querystring request was made for a specific User 
+    if ( userIDRequested ) {
+        console.log(`userIDRequested: ${userIDRequested}`);
+        // Does the requested User exist? Retrieve the User's details from the database.
+        userDetails = await UsersTableTest.findAll({ where: { UserID: userIDRequested }});
+        if ( typeof userDetails[0] === 'undefined' ) {  // User ID does not exist
+            doesUserExist = false;
+        } else { // User ID does exist
+            doesUserExist = true;
+            // Can current user view requested User (or permission to view all Users)?
+            if ( userIDRequested === userPermissionsUsers[0].ObjectValues
+                 || userPermissionsUsers[0].ObjectValues === '*' ) {
+                userCanReadUser = userPermissionsUsers[0].CanRead;
+                console.log(`userCanReadUser: ${userCanReadUser}`);
+                userCanUpdateUser = userPermissionsUsers[0].CanUpdate;
+                console.log(`userCanUpdateUser: ${userCanUpdateUser}`);
+                userCanDeleteUser = userPermissionsUsers[0].CanDelete;
+                console.log(`userCanDeleteUser: ${userCanDeleteUser}`);
+            };
+            userID = userIDRequested;
+        };
+
+    } else if ( userIDDefault !== 999999) { // Requested User ID does not exist - if there a default User ID
+        console.log(`userIDRequested does not exist - process default User ID: ${userIDDefault}`);
+        // Does the default User exist? Retrieve the User's details from the database.
+        userDetails = await UsersTableTest.findAll({ where: { UserID: userIDDefault }});
+        if ( typeof userDetails[0] === 'undefined' ) {  // User ID does not exist
+            doesUserExist = false;
+        } else {
+            doesUserExist = true;
+            // Can current user view requested User (or permission to view all Users)?
+            if ( userIDDefault === userPermissionsUsers[0].ObjectValues
+                || userPermissionsUsers[0].ObjectValues === '*' ) {
+               userCanReadUser = userPermissionsUsers[0].CanRead;
+               console.log(`userCanReadUser: ${userCanReadUser}`);
+               userCanUpdateUser = userPermissionsUsers[0].CanUpdate;
+               console.log(`userCanUpdateUser: ${userCanUpdateUser}`);
+               userCanDeleteUser = userPermissionsUsers[0].CanDelete;
+               console.log(`userCanDeleteUser: ${userCanDeleteUser}`);
+           };
+           userID = userIDDefault;
+        };
+
+    } else { // No specific User was requested, or user can read all Users
+        doesUserExist = true;
+        userCanReadUser = true;
+        userID = '';
+    };
+    console.log(`userID returned: ${userID}`);
+
+    return { /* userPermissionsUserDDL, */ userCanReadUsers, userCanCreateUsers,
+             /* userPermissionsUsers, */ usersAllowedDDL,
+             userID, userDetails, doesUserExist,
+             userCanReadUser, userCanUpdateUser, userCanDeleteUser };
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// Send email
+//////////////////////////////////////////////////////////////////////////////////////////
+function sendEmail(emailRecipient, emailSubject, emailBody) {
+
+    // create message
+    var msg = {
+        to: emailRecipient,
+        from: process.env.EMAIL_SENDER,
+        subject: emailSubject,
+        text: emailBody // change to HTML once content is pre-checked
+    };
+
+    // send the message
+    // nodemailer example
+    var transporter = nodemailer.createTransport( {  // the email account to send SMTP emails
+//        service: 'smtp.fatcow.com',
+        host: 'smtp.gmail.com',
+        port: 465, // 587 without SSL
+        secure: true,
+        auth: {
+            type: 'OAuth2',
+            user: process.env.EMAIL_SENDER,
+            clientId: process.env.EMAIL_OAUTH_CLIENTID,
+            clientSecret: process.env.EMAIL_OAUTH_CLIENTSECRET,
+            refreshToken: process.env.EMAIL_OAUTH_REFRESHTOKEN
+        },
+    });
+    transporter.sendMail( msg, function (error, info) {
+        if (error) {
+            console.log(error);
+            // ToDo: log error in "events" table
+        } else {
+            console.log('Email sent: ' + info.response);
+            // ToDo: log event in "events" table
+        }
+    });
+/*
+    // sendGrid example
+    sendgrid
+      .send(msg)
+      .then((resp) => {
+        console.log('Email sent\n', resp)
+        // ToDo: log event in "events" table
+        })
+      .catch((error) => {
+        console.error(error)
+        // ToDo: log error in "events" table
+        });
+*/
+
+}; // end "sendEmail"
+
+
 module.exports = {
     convertOptionsToDelimitedString,
     getSponsorPermissionsForUser,
-    getScholarshipPermissionsForUser
+    getScholarshipPermissionsForUser,
+    getUserPermissionsForUser,
+    sendEmail,
+    logEvent
 };

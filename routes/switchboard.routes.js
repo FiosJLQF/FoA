@@ -5,12 +5,13 @@ const express = require("express");
 const router = express.Router();
 const { auth, requiresAuth } = require('express-openid-connect');
 require("dotenv").config();  // load all ".env" variables into "process.env" for use
-const { ScholarshipsTableTest, ScholarshipsActive, ScholarshipsDDL, ScholarshipsAllDDL, ScholarshipsAllDDLTest,
+const { ScholarshipsTableTest, ScholarshipsActive, ScholarshipsActiveDDL, ScholarshipsAllDDL, ScholarshipsAllDDLTest,
         SponsorsTableTest, Sponsors, SponsorsDDL, SponsorsAllDDLTest, 
         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
         FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
-        UsersAllDDL, UserPermissionsActive, UserProfiles, ScholarshipRecurrenceCategoriesDDL, ScholarshipStatusCategoriesDDL
+        UsersAllDDL, UsersTableTest, UserPermissionsActive, UserProfiles,
+        ScholarshipRecurrenceCategoriesDDL, ScholarshipStatusCategoriesDDL
     } = require('../models/sequelize.js');
 const methodOverride = require('method-override');  // allows PUT and other non-standard methods
 router.use(methodOverride('_method')); // allows use of the PUT/DELETE method extensions
@@ -67,39 +68,81 @@ router.get('/newuser', requiresAuth(), async (req, res) => {
 router.get('/', requiresAuth(), async (req, res) => {
     try {
 
+        ////////////////////////////////////////////////////
+        // Set local variables
+        ////////////////////////////////////////////////////
         let errorCode = 0;
         let actionRequested = '';
         let statusMessage = '';
+
+
+        ////////////////////////////////////////////////////
+        // Get the current user's profile and permissions
+        ////////////////////////////////////////////////////
+        const userProfiles = await UserProfiles.findAll( { where: { Username: req.oidc.user.email }});
+        if ( userProfiles.length === 0 ) {  // The new user has not yet been set up
+            // Log the event
+            let logEventResult = await jsFx.logEvent('User Profiles', 'Get Current User', 0, 'Failure', 'No such user',
+                0, 0, 0, '');
+            // Redirect the user to the "New User" screen
+            res.redirect(`/switchboard/newuser`);
+        };
+        // Get the list of active permissions for the user
+        const userPermissionsActive = await UserPermissionsActive.findAndCountAll( { where: { UserID: userProfiles[0].UserID }});
+
 
         ////////////////////////////////////////////////////
         // Validate query string values
         ////////////////////////////////////////////////////
 
         // If a requested "sponsorid" is blank, zero or not a number, redirect to the generic Switchboard page
-        const sponsorIDRequested = Number(req.query['sponsorid']);
-        if ( sponsorIDRequested == 0 || sponsorIDRequested === '' ) {
-// ToDo:  Log the error
-            res.redirect('/switchboard');
+        console.log(`sponsorid = ${req.query['sponsorid']}`);
+        let sponsorIDRequested = '';
+        if ( req.query['sponsorid'] != undefined ) {  // if the querystring variable exists, check its format
+            sponsorIDRequested = Number(req.query['sponsorid']);
+            console.log(`sponsorIDRequested = ${sponsorIDRequested}`);
+            if ( sponsorIDRequested == 0 || sponsorIDRequested === '' || Number.isNaN(sponsorIDRequested)) {
+                // Log the event
+                let logEventResult = await jsFx.logEvent('SponsorID Validation', '', 0, 'Failure',
+                    `SponsorID is not valid (${req.query['sponsorid']})`,
+                    0, 0, userProfiles[0].UserID, process.env.EMAIL_WEBMASTER_LIST);
+                // Redirect the user to the main switchboard
+                res.redirect('/switchboard');
+            };
         };
 
         // If a requested "scholarshipid" is blank, zero or not a number, redirect to the generic Switchboard page
-        const scholarshipIDRequested = Number(req.query['scholarshipid']);
-        if ( scholarshipIDRequested == 0 || scholarshipIDRequested === '' ) {
-// ToDo:  Log the error
-            res.redirect('/switchboard');
+        console.log(`scholarshipid = ${req.query['scholarshipid']}`);
+        let scholarshipIDRequested = '';
+        if ( req.query['scholarshipid'] != undefined ) {  // if the querystring variable exists, check its format
+            scholarshipIDRequested = Number(req.query['scholarshipid']);
+            console.log(`scholarshipIDRequested = ${scholarshipIDRequested}`);
+            if ( scholarshipIDRequested == 0 || scholarshipIDRequested === '' || Number.isNaN(scholarshipIDRequested)) {
+                // Log the event
+                let logEventResult = await jsFx.logEvent('ScholarshipID Validation', '', 0, 'Failure',
+                    `ScholarshipID is not valid (${req.query['scholarshipid']})`,
+                    0, 0, userProfiles[0].UserID, process.env.EMAIL_WEBMASTER_LIST);
+                // Redirect the user to the main switchboard
+                res.redirect('/switchboard');
+            };
         };
         
-        ////////////////////////////////////////////////////
-        // Get the current user's profile and permissions
-        ////////////////////////////////////////////////////
-        const userProfiles = await UserProfiles.findAll( { where: { Username: req.oidc.user.email }});
-        if ( userProfiles.length === 0 ) {  // The new user has not yet been set up
-// ToDo:  Log the error
-            res.redirect(`/switchboard/newuser`);
+        // If a requested "userid" is blank, zero or not a number, redirect to the generic Switchboard page
+        console.log(`userid = ${req.query['userid']}`);
+        let userIDRequested = '';
+        if ( req.query['userid'] != undefined ) {  // if the querystring variable exists, check its format
+            userIDRequested = Number(req.query['userid']);
+            console.log(`userIDRequested = ${userIDRequested}`);
+            if ( userIDRequested == 0 || userIDRequested === '' || Number.isNaN(userIDRequested)) {
+                // Log the event
+                let logEventResult = await jsFx.logEvent('UserID Validation', '', 0, 'Failure',
+                    `UserID is not valid (${req.query['userid']})`,
+                    0, 0, userProfiles[0].UserID, process.env.EMAIL_WEBMASTER_LIST);
+                // Redirect the user to the main switchboard
+                res.redirect('/switchboard');
+            };
         };
-        // Get the list of active permissions for the user
-        const userPermissionsActive = await UserPermissionsActive.findAndCountAll( { where: { UserID: userProfiles[0].UserID }});
-
+        
         ////////////////////////////////////////////////////
         //  Sponsor Permissions / Details (DDL, Add Sponsor, Default Sponsor, etc.)
         ////////////////////////////////////////////////////
@@ -110,8 +153,12 @@ router.get('/', requiresAuth(), async (req, res) => {
         // Does the requested Sponsor exist (if requested)?
         console.log(`doesSponsorExist: (${doesSponsorExist})`);
         if ( !doesSponsorExist ) {  // Sponsor ID does not exist
-// ToDo:  Log the error
-            errorCode = 908;  // Unknown Sponsor
+            errorCode = 908;
+            // Log the event
+            let logEventResult = await jsFx.logEvent('SponsorID Validation', '', 908, 'Failure',
+                `SponsorID does not exist (${sponsorIDRequested})`,
+                0, 0, userProfiles[0].UserID, process.env.EMAIL_WEBMASTER_LIST);
+            // redirect the user to the error screen
             return res.render( 'error', {
                 errorCode: errorCode,
                 userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
@@ -121,7 +168,7 @@ router.get('/', requiresAuth(), async (req, res) => {
         // Does the User have permission to see/edit/delete this Sponsor?
         if ( !userCanReadSponsor ) { // User does not have permission to read Sponsor's data - trap and log error
 // ToDo:  Log the error
-            errorCode = 909;  // Unknown Sponsor
+            errorCode = 909;
             return res.render( 'error', {
                 errorCode: errorCode,
                 userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
@@ -156,26 +203,39 @@ router.get('/', requiresAuth(), async (req, res) => {
             });
         };
 
-        ////////////////////////////////////////////////////
-        //  Users Information (DDL, Add User, etc.)
-        ////////////////////////////////////////////////////
 
-        // Can the user see the users select object?  If so, load the Users available to the current user
-        const userPermissionsUserDDL = userPermissionsActive.rows.filter( permission => permission.ObjectName === 'switchboard-users');
-        let userCanReadUsers = false;
-        let usersAllDDL = [];
-        if ( userPermissionsUserDDL.length > 0 && userPermissionsUserDDL[0].CanRead ) {
-            userCanReadUsers = true;
-            usersAllDDL = await UsersAllDDL.findAndCountAll({});
-            console.log(`usersAllDDL: ${usersAllDDL.count}`);
-        };
-        console.log(`userCanReadUsers: ${userCanReadUsers}`);
+        ////////////////////////////////////////////////////
+        //  Website User Permissions / Details (DDL, Add User, Default User, etc.)
+        ////////////////////////////////////////////////////
+        const { userCanReadUsers, userCanCreateUsers, usersAllowedDDL, userID, userDetails, doesUserExist,
+                userCanReadUser, userCanUpdateUser, userCanDeleteUser
+        } = await jsFx.getUserPermissionsForUser( userPermissionsActive, userIDRequested );
 
-        // Can the user create new users?
-        let userCanCreateUsers = false;
-        if ( userCanReadUsers && userPermissionsUserDDL[0].CanCreate ) {
-            userCanCreateUsers = true;
+        // Does the User have access to the Users DDL?
+        if ( userCanReadUsers ) {
+
+            // Does the requested User exist (if requested)?  If not, skip error processing
+            console.log(`doesUserExist: (${doesUserExist})`);
+            if ( !doesUserExist ) {  // User ID does not exist
+// ToDo:  Log the error
+                errorCode = 928;  // Unknown User
+                return res.render( 'error', {
+                    errorCode: errorCode,
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                });
+            };
+
+            // Does the User have permission to see/edit/delete this User?
+            if ( !userCanReadUser ) { // User does not have permission to read User's data - trap and log error
+// ToDo:  Log the error
+                errorCode = 929;  // Unknown User
+                return res.render( 'error', {
+                    errorCode: errorCode,
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                });
+            };
         };
+
 
         ////////////////////////////////////////////////////
         // Retrieve options for add/edit form DDLs
@@ -201,17 +261,25 @@ router.get('/', requiresAuth(), async (req, res) => {
             if ( userCanCreateSponsors ) {
                 actionRequested = 'addsponsor';
             };
-        } else if ( req.query['actionrequested'] === 'addscholarship' ) {
-            if ( userCanCreateScholarships ) {
-                actionRequested = 'addscholarship';
-            };
         } else if ( req.query['actionrequested'] === 'editsponsor' ) {
             if ( userCanReadSponsor ) {
                 actionRequested = 'editsponsor';
             };
+        } else if ( req.query['actionrequested'] === 'addscholarship' ) {
+            if ( userCanCreateScholarships ) {
+                actionRequested = 'addscholarship';
+            };
         } else if ( req.query['actionrequested'] === 'editscholarship' ) {
             if ( userCanReadScholarship ) {
                 actionRequested = 'editscholarship';
+            };
+        } else if ( req.query['actionrequested'] === 'adduser' ) {
+            if ( userCanCreateUsers ) {
+                actionRequested = 'adduser';
+            };
+        } else if ( req.query['actionrequested'] === 'edituser' ) {
+            if ( userCanReadUser ) {
+                actionRequested = 'edituser';
             };
         };
 
@@ -230,6 +298,12 @@ router.get('/', requiresAuth(), async (req, res) => {
             statusMessage = 'Scholarship was deleted.';
         } else if ( req.query['status'] === 'scholarshipcreatesuccess' ) {
             statusMessage = 'Scholarship was added.';
+        } else if ( req.query['status'] === 'userupdatesuccess' ) {
+            statusMessage = 'User was updated.';
+        } else if ( req.query['status'] === 'userdeletesuccess' ) {
+            statusMessage = 'User was deleted.';
+        } else if ( req.query['status'] === 'usercreatesuccess' ) {
+            statusMessage = 'User was added.';
         } else{
             statusMessage = '';
         };
@@ -268,9 +342,8 @@ router.get('/', requiresAuth(), async (req, res) => {
             criteriaFAAMechanicCertificateCategories,
             // User Information
             userCanReadUsers,
-            usersAllDDL,
+            usersAllowedDDL,
             userCanCreateUsers,
-            userID: '',
             // Sponsor CRUD Information
             sponsorID,
             sponsorDetails,
@@ -279,9 +352,11 @@ router.get('/', requiresAuth(), async (req, res) => {
             scholarshipID,
             scholarshipDetails,
             userCanReadScholarship, userCanUpdateScholarship, userCanDeleteScholarship,
-            scholarshipRecurrenceCategories
-// ToDo: Copy "Scholarship CRUD Information" to here for "User CRUD Information" block
-
+            scholarshipRecurrenceCategories,
+            // Website User CRUD Information
+            userID,
+            userDetails,
+            userCanReadUser, userCanUpdateUser, userCanDeleteUser
         })
     } catch(err) {
 // ToDo:  Log the error
@@ -342,7 +417,9 @@ router.post('/sponsoradd', requiresAuth(),
 
 // ToDo:  If insert successful, add permission for Current User to new Sponsor
 
-        res.redirect(`/switchboard?sponsorid=${newSponsor.SponsorID}&status=sponsorcreatesuccess`);
+        res.redirect(`/switchboard?sponsorid=${newSponsor.SponsorID}` +
+                     `&status=sponsorcreatesuccess` +
+                     `&actionrequested=editsponsor`);
     };
 });
 
@@ -437,6 +514,52 @@ router.post('/scholarshipadd', requiresAuth(),
     };
 });
 
+///////////////////////////////
+// User (Insert)
+///////////////////////////////
+router.post('/useradd', requiresAuth(),
+    [
+        check('userLoginName')
+            .isLength( { min: 3, max: 100 } ).withMessage('User Login Name should be 3 to 100 characters.')
+    ],
+
+    async (req, res) => {
+
+    // Validate the input
+    const validationErrors = validationResult(req);
+
+    // If invalid data, return errors to client
+    if ( !validationErrors.isEmpty() ) {
+
+// ToDo:  Replicate the GET render code above, including parameters prep work
+
+        return res.status(400).json(validationErrors.array());
+
+
+
+
+
+
+
+    } else {
+        // Add the new data to the database in a new record, and return the newly-generated [UserID] value
+        const newUser = new UsersTableTest( {
+            Username: req.body.userLoginName,
+            UserFName: req.body.userFName,
+            UserLName: req.body.userLName,
+            UserTelephone: req.body.userTelephone
+        });
+        await newUser.save();
+
+// ToDo:  If insert successful, add basic permissions for new User
+
+        res.redirect(`/switchboard?userid=${newUser.UserID}` +
+                     `&status=usercreatesuccess` +
+                     `&actionrequested=edituser`);
+    };
+});
+
+
 ////////////////////////////////////////////////////////////
 // "PUT" Routes (Update data)
 ////////////////////////////////////////////////////////////
@@ -468,7 +591,9 @@ router.put('/sponsorupdate', requiresAuth(), async (req, res) => {
         SponsorContactTelephone: req.body.sponsorContactTelephone,
         SponsorType: sponsorTypesFormatted
     }).then( () => {
-        res.redirect(`/switchboard?sponsorid=${sponsorRecord.SponsorID}&status=sponsorupdatesuccess`);
+        res.redirect(`/switchboard?sponsorid=${sponsorRecord.SponsorID}` +
+                     `&status=sponsorupdatesuccess` +
+                     `&actionrequested=editsponsor`);
     });
 });
 
@@ -538,10 +663,36 @@ router.put('/scholarshipupdate', requiresAuth(), async (req, res) => {
     });
 });
 
+///////////////////////////////
+// User (Update)
+///////////////////////////////
+router.put('/userupdate', requiresAuth(), async (req, res) => {
+
+    // Get a pointer to the current record
+    const userRecord = await UsersTableTest.findOne( {
+        where: { UserID: req.body.userIDToUpdate }
+    });
+
+    // Update the database record with the new data
+    await userRecord.update( {
+        Username: req.body.userLoginName,
+        UserFName: req.body.userFName,
+        UserLName: req.body.userLName,
+        UserTelephone: req.body.userTelephone
+    }).then( () => {
+        res.redirect(`/switchboard?userid=${userRecord.UserID}` +
+                     `&status=userupdatesuccess` +
+                     `&actionrequested=edituser`);
+    });
+});
+
 ////////////////////////////////////////////////////////////
 // "DELETE" Routes (Delete data)
 ////////////////////////////////////////////////////////////
 
+///////////////////////////////
+// Sponsor (Delete)
+///////////////////////////////
 router.delete('/sponsordelete', requiresAuth(), async (req, res) => {
 
     // Get a pointer to the current record
@@ -557,6 +708,9 @@ router.delete('/sponsordelete', requiresAuth(), async (req, res) => {
     });
 });
 
+///////////////////////////////
+// Scholarship (Delete)
+///////////////////////////////
 router.delete('/scholarshipdelete', requiresAuth(), async (req, res) => {
 
     // Get a pointer to the current record
@@ -569,6 +723,22 @@ router.delete('/scholarshipdelete', requiresAuth(), async (req, res) => {
     // Delete the record, based on the Sponsor ID
     await scholarshipRecord.destroy().then( () => {
         res.redirect(`/switchboard?status=scholarshipdeletesuccess&sponsorid=${req.body.sponsorIDOfScholarship}`);
+    });
+});
+
+///////////////////////////////
+// User (Delete)
+///////////////////////////////
+router.delete('/userdelete', requiresAuth(), async (req, res) => {
+
+    // Get a pointer to the current record
+    const userRecord = await UsersTableTest.findOne( {
+        where: { UserID: req.body.userIDToDelete }
+    });
+
+    // Delete the record, based on the User ID
+    await userRecord.destroy().then( () => {
+        res.redirect(`/switchboard?status=userdeletesuccess`);
     });
 });
 
