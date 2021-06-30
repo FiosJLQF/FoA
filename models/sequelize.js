@@ -95,17 +95,32 @@ const SponsorTypeCategoriesDDL = SponsorTypeCategoriesDDLModel(sequelize, DataTy
 /********************************************
   User Models
 ********************************************/
-const UsersAllDDLTestModel = require('./usersAllDLL_Test.model');
-const UsersAllDDLTest = UsersAllDDLTestModel(sequelize, DataTypes);
-const UsersTableTestModel = require('./usersTableTest.model');
-const UsersTableTest = UsersTableTestModel(sequelize, DataTypes);
-UsersTableTest.removeAttribute('id');  // The default [id] column is not used in this table
-const UserPermissionsActiveModel = require('./userPermissionsActive.model');
-const UserPermissionsActive = UserPermissionsActiveModel(sequelize, DataTypes);
-UserPermissionsActive.removeAttribute('id');  // this is an non-updatable view and does not have a PK defined
+/*****************************
+  User Profiles
+*****************************/
+// Basic user profile information formatted for the "Select a User" SELECT object
+const UsersAllDDLModel = require('./usersAllDLL.model');
+const UsersAllDDL = UsersAllDDLModel(sequelize, DataTypes);
+// Table reference used for writing user profile data to the database
+const UsersTableModel = require('./usersTable.model');
+const UsersTable = UsersTableModel(sequelize, DataTypes);
+UsersTable.removeAttribute('id');  // The default [id] column is not used in this table
+// View used for reading user profile data
 const UserProfilesModel = require('./userProfiles.model');
 const UserProfiles = UserProfilesModel(sequelize, DataTypes);
 UserProfiles.removeAttribute('id');  // this is an non-updatable view and does not have a PK defined
+/*****************************
+  User Permissions
+*****************************/
+// Basic user permission category information formatted for the "Select a User Permission" SELECT object
+const UserPermissionCategoriesAllDDLModel = require('./websiteUserPermissionCategoriesAllDDL.model');
+const UserPermissionCategoriesAllDDL = UserPermissionCategoriesAllDDLModel(sequelize, DataTypes);
+// Table reference used for writing user permission data to the database
+
+// View used for reading user permission data
+const UserPermissionsActiveModel = require('./userPermissionsActive.model');
+const UserPermissionsActive = UserPermissionsActiveModel(sequelize, DataTypes);
+UserPermissionsActive.removeAttribute('id');  // this is an non-updatable view and does not have a PK defined
 
 /**************************************************************************************************
   Export objects
@@ -118,6 +133,8 @@ module.exports = {
   ScholarshipsActiveDDL,
   ScholarshipsAllDDL,
   ScholarshipsAllDDLTest,
+  ScholarshipRecurrenceCategoriesDDL,
+  ScholarshipStatusCategoriesDDL,
   FieldOfStudyCategoriesDDL,
   SponsorsTableTest,
   SponsorsAllDDL,
@@ -132,10 +149,9 @@ module.exports = {
   FAAMechanicCertificateCategoriesDDL,
   Sponsors,
   SponsorTypeCategoriesDDL,
-  UsersAllDDLTest,
-  UsersTableTest,
-  UserPermissionsActive,
+  UsersAllDDL,
+  UsersTable,
   UserProfiles,
-  ScholarshipRecurrenceCategoriesDDL,
-  ScholarshipStatusCategoriesDDL
+  UserPermissionCategoriesAllDDL,
+  UserPermissionsActive
 };

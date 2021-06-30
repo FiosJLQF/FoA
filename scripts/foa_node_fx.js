@@ -9,7 +9,7 @@ const { EventLogsTable, ScholarshipsTableTest, ScholarshipsActive, ScholarshipsA
         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
         FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
-        UsersAllDDLTest, UsersTableTest, UserPermissionsActive, UserProfiles,
+        UsersAllDDL, UsersTable, UserPermissionsActive, UserProfiles,
         ScholarshipRecurrenceCategoriesDDL, ScholarshipsAllMgmtViewTest
     } = require('../models/sequelize.js');
 require("dotenv").config();  // load all ".env" variables into "process.env" for use
@@ -135,13 +135,13 @@ async function getSponsorPermissionsForUser( userPermissionsActive, sponsorIDReq
     let userCanDeleteSponsor = false;
 
     // Get the list of sponsor-related permissions for the current user
-    const userPermissionsSponsorDDL = userPermissionsActive.rows.filter( permission => permission.ObjectName === 'switchboard-sponsors');
+    const userPermissionsSponsorDDL = userPermissionsActive.rows.filter( permission => permission.ObjectName === '923003');
 
     // Can the current user view the Sponsors DDL?  What Sponsors can the current user see?
     if ( userPermissionsSponsorDDL.length > 0 && userPermissionsSponsorDDL[0].CanRead ) {
         userCanReadSponsors = true;
         // What CRUD operations can the current user perform?
-        userPermissionsSponsors = userPermissionsActive.rows.filter( permission => permission.ObjectName === 'sponsors');
+        userPermissionsSponsors = userPermissionsActive.rows.filter( permission => permission.ObjectName === '923006');
         // Find the list of Sponsors the current user can see (for loading into the "Sponsors:" dropdown list)
         if ( userPermissionsSponsors.length > 0 && userPermissionsSponsors[0].CanRead ) {
             if ( userPermissionsSponsors[0].ObjectValues === '*' ) {
@@ -238,14 +238,14 @@ async function getScholarshipPermissionsForUser( userPermissionsActive, sponsorI
     let userCanDeleteScholarship = false;
 
     // Get the list of scholarship-related permissions for the current user
-    const userPermissionsScholarshipDDL = userPermissionsActive.rows.filter( permission => permission.ObjectName === 'switchboard-scholarships');
+    const userPermissionsScholarshipDDL = userPermissionsActive.rows.filter( permission => permission.ObjectName === '923005');
 
     // Can the current user view the Scholarships DDL?  What Scholarships can the current user see?
     if ( userPermissionsScholarshipDDL.length > 0 && userPermissionsScholarshipDDL[0].CanRead ) {
         userCanReadScholarships = true;
         console.log(`userCanReadScholarships: ${userCanReadScholarships}`);
         // What CRUD operations can the current user perform?
-        userPermissionsScholarships = userPermissionsActive.rows.filter( permission => permission.ObjectName === 'scholarships');
+        userPermissionsScholarships = userPermissionsActive.rows.filter( permission => permission.ObjectName === '923005');
         // Find the list of Scholarships the current user can see (for loading into the "Scholarships:" dropdown list)
         if ( userPermissionsScholarships.length > 0 && userPermissionsScholarships[0].CanRead ) {
             if ( sponsorID !== '' ) { // A specific Sponsor was requested - load Scholarships for that Sponsor
@@ -347,20 +347,20 @@ async function getUserPermissionsForUser( userPermissionsActive, userIDRequested
     let userCanDeleteUser = false;
 
     // Get the list of user-related permissions for the current user
-    const userPermissionsUserDDL = userPermissionsActive.rows.filter( permission => permission.ObjectName === 'switchboard-users');
+    const userPermissionsUserDDL = userPermissionsActive.rows.filter( permission => permission.ObjectName === '923004');
 
     // Can the current user view the Users DDL?  What Users can the current user see?
     if ( userPermissionsUserDDL.length > 0 && userPermissionsUserDDL[0].CanRead ) {
         userCanReadUsers = true;
         // What CRUD operations can the current user perform?
-        userPermissionsUsers = userPermissionsActive.rows.filter( permission => permission.ObjectName === 'users');
+        userPermissionsUsers = userPermissionsActive.rows.filter( permission => permission.ObjectName === '923007');
         // Find the list of Users the current user can see (for loading into the "User:" dropdown list)
         if ( userPermissionsUsers.length > 0 && userPermissionsUsers[0].CanRead ) {
             if ( userPermissionsUsers[0].ObjectValues === '*' ) {
-                usersAllowedDDL = await UsersAllDDLTest.findAndCountAll({});
+                usersAllowedDDL = await UsersAllDDL.findAndCountAll({});
                 userIDDefault = 999999;
             } else {  // Current user can only see specific User(s)
-                usersAllowedDDL = await UsersAllDDLTest.findAndCountAll({ where: { optionid: userPermissionsUsers[0].ObjectValues } });
+                usersAllowedDDL = await UsersAllDDL.findAndCountAll({ where: { optionid: userPermissionsUsers[0].ObjectValues } });
 // ToDo: expand for multiple Users (eventually)
                 // Assign the default UserID to be the sole User allowed
                 userIDDefault = userPermissionsUsers[0].ObjectValues; // Set the User ID to the only one User the User has permission to see
@@ -382,7 +382,7 @@ async function getUserPermissionsForUser( userPermissionsActive, userIDRequested
     if ( userIDRequested ) {
         console.log(`userIDRequested: ${userIDRequested}`);
         // Does the requested User exist? Retrieve the User's details from the database.
-        userDetails = await UsersTableTest.findAll({ where: { UserID: userIDRequested }});
+        userDetails = await UsersTable.findAll({ where: { UserID: userIDRequested }});
         if ( typeof userDetails[0] === 'undefined' ) {  // User ID does not exist
             doesUserExist = false;
         } else { // User ID does exist
@@ -403,7 +403,7 @@ async function getUserPermissionsForUser( userPermissionsActive, userIDRequested
     } else if ( userIDDefault !== 999999) { // Requested User ID does not exist - if there a default User ID
         console.log(`userIDRequested does not exist - process default User ID: ${userIDDefault}`);
         // Does the default User exist? Retrieve the User's details from the database.
-        userDetails = await UsersTableTest.findAll({ where: { UserID: userIDDefault }});
+        userDetails = await UsersTable.findAll({ where: { UserID: userIDDefault }});
         if ( typeof userDetails[0] === 'undefined' ) {  // User ID does not exist
             doesUserExist = false;
         } else {

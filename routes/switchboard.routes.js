@@ -10,7 +10,7 @@ const { ScholarshipsTableTest, ScholarshipsActive, ScholarshipsActiveDDL, Schola
         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
         FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
-        UsersAllDDL, UsersTableTest, UserPermissionsActive, UserProfiles,
+        UsersAllDDL, UsersTable, UserPermissionsActive, UserProfiles,
         ScholarshipRecurrenceCategoriesDDL, ScholarshipStatusCategoriesDDL
     } = require('../models/sequelize.js');
 const methodOverride = require('method-override');  // allows PUT and other non-standard methods
@@ -543,7 +543,7 @@ router.post('/useradd', requiresAuth(),
 
     } else {
         // Add the new data to the database in a new record, and return the newly-generated [UserID] value
-        const newUser = new UsersTableTest( {
+        const newUser = new UsersTable( {
             Username: req.body.userLoginName,
             UserFName: req.body.userFName,
             UserLName: req.body.userLName,
@@ -669,7 +669,7 @@ router.put('/scholarshipupdate', requiresAuth(), async (req, res) => {
 router.put('/userupdate', requiresAuth(), async (req, res) => {
 
     // Get a pointer to the current record
-    const userRecord = await UsersTableTest.findOne( {
+    const userRecord = await UsersTable.findOne( {
         where: { UserID: req.body.userIDToUpdate }
     });
 
@@ -732,7 +732,7 @@ router.delete('/scholarshipdelete', requiresAuth(), async (req, res) => {
 router.delete('/userdelete', requiresAuth(), async (req, res) => {
 
     // Get a pointer to the current record
-    const userRecord = await UsersTableTest.findOne( {
+    const userRecord = await UsersTable.findOne( {
         where: { UserID: req.body.userIDToDelete }
     });
 

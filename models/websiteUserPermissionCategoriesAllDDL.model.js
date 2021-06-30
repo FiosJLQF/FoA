@@ -1,20 +1,20 @@
 ///////////////////////////////////////////////////////////////////////////////////
-// Users Table
+// Website User Permissions Options, formatted for DDL
 ///////////////////////////////////////////////////////////////////////////////////
 
 module.exports = (sequelize, DataTypes) => {
-    const UsersTableTest = sequelize.define('tblWebsiteUsersTest', {
-        UserID: {
-            type: DataTypes.INTEGER//,
-//            primaryKey: true
+    const WebsiteUserPermissionCategoriesAllDDL = sequelize.define('vwWebsiteUserPermissionCategoriesDDL', {
+        optionid: {
+            type: DataTypes.INTEGER,
+            primaryKey: true
         },
-        Username:                 DataTypes.STRING,
-        UserFName:                DataTypes.STRING,
-        UserLName:                DataTypes.STRING,
-        UserTelephone:            DataTypes.STRING
+        optiontext: {
+            type: DataTypes.STRING
+        }
     }, {
+        schema: 'public',
         freezeTableName: true,  // don't have Sequelize automatically pluralize the table name
         timestamps: false,  // don't add the timestamp attributes (updatedAt, createdAt)
     });
-    return UsersTableTest;
+    return WebsiteUserPermissionCategoriesAllDDL;
 };
