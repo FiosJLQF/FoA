@@ -6,12 +6,14 @@ const router = express.Router();
 const { auth, requiresAuth } = require('express-openid-connect');
 require("dotenv").config();  // load all ".env" variables into "process.env" for use
 const { ScholarshipsTableTest, ScholarshipsActive, ScholarshipsActiveDDL, ScholarshipsAllDDL, ScholarshipsAllDDLTest,
-        SponsorsTableTest, Sponsors, SponsorsDDL, SponsorsAllDDLTest, 
+        ScholarshipRecurrenceCategoriesDDL, ScholarshipStatusCategoriesDDL,
+        SponsorsTableTest, Sponsors, SponsorsDDL, SponsorsAllDDLTest, SponsorTypeCategoriesDDL,
         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
-        FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
-        UsersAllDDL, UsersTable, UserPermissionsActive, UserProfiles,
-        ScholarshipRecurrenceCategoriesDDL, ScholarshipStatusCategoriesDDL
+        FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL,
+        UsersAllDDL, UsersTable, UserProfiles,
+        UserPermissionsAll, UserPermissionsAllDDL, UserPermissionsActive,
+        UserPermissionsTable, UserPermissionCategoriesAllDDL
     } = require('../models/sequelize.js');
 const methodOverride = require('method-override');  // allows PUT and other non-standard methods
 router.use(methodOverride('_method')); // allows use of the PUT/DELETE method extensions
@@ -143,8 +145,24 @@ router.get('/', requiresAuth(), async (req, res) => {
             };
         };
         
+        // If a requested "userpermissionid" is blank, zero or not a number, redirect to the generic Switchboard page
+        console.log(`userpermissionid = ${req.query['userpermissionid']}`);
+        let userPermissionIDRequested = '';
+        if ( req.query['userpermissionid'] != undefined ) {  // if the querystring variable exists, check its format
+            userPermissionIDRequested = Number(req.query['userpermissionid']);
+            console.log(`userPermissionIDRequested = ${userPermissionIDRequested}`);
+            if ( userPermissionIDRequested == 0 || userPermissionIDRequested === '' || Number.isNaN(userPermissionIDRequested)) {
+                // Log the event
+                let logEventResult = await jsFx.logEvent('UserPermissionID Validation', '', 0, 'Failure',
+                    `UserPermissionID is not valid (${req.query['userpermissionid']})`,
+                    0, 0, userProfiles[0].UserID, process.env.EMAIL_WEBMASTER_LIST);
+                // Redirect the user to the main switchboard
+                res.redirect('/switchboard');
+            };
+        };
+        
         ////////////////////////////////////////////////////
-        //  Sponsor Permissions / Details (DDL, Add Sponsor, Default Sponsor, etc.)
+        //  Sponsor Data Permissions / Details (DDL, Add Sponsor, Default Sponsor, etc.)
         ////////////////////////////////////////////////////
         const { userCanReadSponsors, userCanCreateSponsors, sponsorsAllowedDDL, sponsorID, sponsorDetails, doesSponsorExist,
                 userCanReadSponsor, userCanUpdateSponsor, userCanDeleteSponsor
@@ -176,7 +194,7 @@ router.get('/', requiresAuth(), async (req, res) => {
         };
 
         ////////////////////////////////////////////////////
-        //  Scholarships Permissions / Details (DDL, Add Scholarship, Default Scholarship, etc.)
+        //  Scholarship Data Permissions / Details (DDL, Add Scholarship, Default Scholarship, etc.)
         ////////////////////////////////////////////////////
         const { userCanReadScholarships, userCanCreateScholarships, scholarshipsAllowedDDL, scholarshipID, scholarshipDetails,
                 doesScholarshipExist, userCanReadScholarship, userCanUpdateScholarship, userCanDeleteScholarship
@@ -205,11 +223,11 @@ router.get('/', requiresAuth(), async (req, res) => {
 
 
         ////////////////////////////////////////////////////
-        //  Website User Permissions / Details (DDL, Add User, Default User, etc.)
+        //  Website User Data Permissions / Details (DDL, Add User, Default User, etc.)
         ////////////////////////////////////////////////////
         const { userCanReadUsers, userCanCreateUsers, usersAllowedDDL, userID, userDetails, doesUserExist,
-                userCanReadUser, userCanUpdateUser, userCanDeleteUser
-        } = await jsFx.getUserPermissionsForUser( userPermissionsActive, userIDRequested );
+            userCanReadUser, userCanUpdateUser, userCanDeleteUser
+        } = await jsFx.getUserPermissionsForWebsiteUser( userPermissionsActive, userIDRequested );
 
         // Does the User have access to the Users DDL?
         if ( userCanReadUsers ) {
@@ -236,9 +254,42 @@ router.get('/', requiresAuth(), async (req, res) => {
             };
         };
 
+        ////////////////////////////////////////////////////
+        //  Website User Permissions Permissions / Details (DDL, Add Permission, Default Permission, etc.)
+        ////////////////////////////////////////////////////
+        const { userCanReadUserPermissions, userCanCreateUserPermissions, userPermissionsAllowedDDL,
+                userPermissionID, userPermissionDetails, doesUserPermissionExist,
+                userCanReadUserPermission, userCanUpdateUserPermission, userCanDeleteUserPermission
+        } = await jsFx.getUserPermissionsForWebsiteUserPermission( userPermissionsActive, userID, userPermissionIDRequested );
+
+        // Does the User have access to the User Permissions DDL?
+        if ( userCanReadUserPermissions ) {
+
+            // Does the requested User Permission exist (if requested)?  If not, skip error processing
+            console.log(`doesUserPermissionExist: (${doesUserPermissionExist})`);
+            if ( !doesUserPermissionExist ) {  // User ID does not exist
+// ToDo:  Log the error
+                errorCode = 938;  // Unknown User Permission
+                return res.render( 'error', {
+                    errorCode: errorCode,
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                });
+            };
+
+            // Does the User have permission to see/edit/delete this User Permission?
+            if ( !userCanReadUserPermission ) { // Current User does not have permission to read Website User's Permission data - trap and log error
+// ToDo:  Log the error
+                errorCode = 939;  // Unknown User
+                return res.render( 'error', {
+                    errorCode: errorCode,
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                });
+            };
+        };
+
 
         ////////////////////////////////////////////////////
-        // Retrieve options for add/edit form DDLs
+        // Retrieve options for data mgmt form DDLs
         ////////////////////////////////////////////////////
         let scholarshipStatusCategories = await ScholarshipStatusCategoriesDDL.findAndCountAll({});
         let sponsorTypeCategoriesDDL = await SponsorTypeCategoriesDDL.findAndCountAll({});
@@ -252,7 +303,7 @@ router.get('/', requiresAuth(), async (req, res) => {
         let criteriaFAAPilotCertificateCategories = await FAAPilotCertificateCategoriesDDL.findAndCountAll({});
         let criteriaFAAPilotRatingCategories = await FAAPilotRatingCategoriesDDL.findAndCountAll({});
         let criteriaFAAMechanicCertificateCategories = await FAAMechanicCertificateCategoriesDDL.findAndCountAll({});
-
+        let userPermissionsCategoriesAllDLL = await UserPermissionCategoriesAllDDL.findAndCountAll({});
         ////////////////////////////////////////////////////
         //  Process any querystring "actions requested" (this will tell the form how to render for the user)
         ////////////////////////////////////////////////////
@@ -281,6 +332,14 @@ router.get('/', requiresAuth(), async (req, res) => {
             if ( userCanReadUser ) {
                 actionRequested = 'edituser';
             };
+        } else if ( req.query['actionrequested'] === 'adduserpermission' ) {
+            if ( userCanCreateUserPermissions ) {
+                actionRequested = 'adduserpermission';
+            };
+        } else if ( req.query['actionrequested'] === 'edituserpermission' ) {
+            if ( userCanReadUserPermission ) {
+                actionRequested = 'edituserpermission';
+            };
         };
 
         ////////////////////////////////////////////////////
@@ -304,6 +363,12 @@ router.get('/', requiresAuth(), async (req, res) => {
             statusMessage = 'User was deleted.';
         } else if ( req.query['status'] === 'usercreatesuccess' ) {
             statusMessage = 'User was added.';
+        } else if ( req.query['status'] === 'userpermissionupdatesuccess' ) {
+            statusMessage = 'User Permission was updated.';
+        } else if ( req.query['status'] === 'userpermissiondeletesuccess' ) {
+            statusMessage = 'User Permission was deleted.';
+        } else if ( req.query['status'] === 'userpermissioncreatesuccess' ) {
+            statusMessage = 'User Permission was added.';
         } else{
             statusMessage = '';
         };
@@ -344,6 +409,10 @@ router.get('/', requiresAuth(), async (req, res) => {
             userCanReadUsers,
             usersAllowedDDL,
             userCanCreateUsers,
+            // User Permission Information
+            userCanReadUserPermissions,
+            userPermissionsAllowedDDL,
+            userCanCreateUserPermissions,
             // Sponsor CRUD Information
             sponsorID,
             sponsorDetails,
@@ -356,7 +425,12 @@ router.get('/', requiresAuth(), async (req, res) => {
             // Website User CRUD Information
             userID,
             userDetails,
-            userCanReadUser, userCanUpdateUser, userCanDeleteUser
+            userCanReadUser, userCanUpdateUser, userCanDeleteUser,
+            // Website User CRUD Information
+            userPermissionID,
+            userPermissionDetails,
+            userPermissionsCategoriesAllDLL,
+            userCanReadUserPermission, userCanUpdateUserPermission, userCanDeleteUserPermission
         })
     } catch(err) {
 // ToDo:  Log the error
@@ -559,6 +633,68 @@ router.post('/useradd', requiresAuth(),
     };
 });
 
+///////////////////////////////
+// User Permission (Insert)
+///////////////////////////////
+router.post('/userpermissionadd', requiresAuth(),
+[
+    check('permissionValues')
+        .isLength( { min: 1, max: 100 } ).withMessage('Limiting Values should be 1 to 100 characters.')
+],
+
+    async (req, res) => {
+
+    // Reformat checkboxes to boolean values to be updated into Postgres
+    let CanRead = (req.body.canRead === "CanRead") ? true : false;
+    let CanUpdate = (req.body.canUpdate === "CanUpdate") ? true : false;
+    let CanDelete = (req.body.canDelete === "CanDelete") ? true : false;
+    let CanCreate = (req.body.canCreate === "CanCreate") ? true : false;
+
+    // Reformat blank dates and numbers to NULL values to be updated into Postgres
+    let EffectiveDate = (req.body.effectiveDate === "") ? null : req.body.effectiveDate;
+    let ExpirationDate = (req.body.expirationDate === "") ? null : req.body.expirationDate;
+
+    // Validate the input
+    const validationErrors = validationResult(req);
+
+    // If invalid data, return errors to client
+    if ( !validationErrors.isEmpty() ) {
+
+// ToDo:  Replicate the GET render code above, including parameters prep work
+
+
+        return res.status(400).json(validationErrors.array());
+
+
+
+
+
+
+
+    } else {
+        // Add the new data to the database in a new record, and return the newly-generated [WebsiteUserPermissionID] value
+        console.log(`userID to save user permission: ${req.body.userID}`);
+        const newUserPermission = new UserPermissionsTable( {
+            UserID: req.body.userID,
+            PermissionCategoryID: req.body.permissionCategory,
+            ObjectValues: req.body.permissionValues,
+            CanCreate: CanCreate,
+            CanRead: CanRead,
+            CanUpdate: CanUpdate,
+            CanDelete: CanDelete,
+            EffectiveDate: EffectiveDate,
+            ExpirationDate: ExpirationDate,
+            });
+        await newUserPermission.save();
+
+// ToDo:  Error Checking
+        res.redirect(`/switchboard?userpermissionid=${newUserPermission.WebsiteUserPermissionID}` +
+                     `&status=userpermissioncreatesuccess` +
+                     `&actionrequested=edituserpermission` +
+                     `&userid=${req.body.userID}`);
+    };
+});
+
 
 ////////////////////////////////////////////////////////////
 // "PUT" Routes (Update data)
@@ -668,6 +804,8 @@ router.put('/scholarshipupdate', requiresAuth(), async (req, res) => {
 ///////////////////////////////
 router.put('/userupdate', requiresAuth(), async (req, res) => {
 
+//ToDo: Add server-side verification
+
     // Get a pointer to the current record
     const userRecord = await UsersTable.findOne( {
         where: { UserID: req.body.userIDToUpdate }
@@ -684,6 +822,59 @@ router.put('/userupdate', requiresAuth(), async (req, res) => {
                      `&status=userupdatesuccess` +
                      `&actionrequested=edituser`);
     });
+});
+
+///////////////////////////////
+// User Permission (Insert)
+///////////////////////////////
+router.put('/userpermissionupdate', requiresAuth(), async (req, res) => {
+
+//ToDo: Add server-side verification
+
+    // Reformat checkboxes to boolean values to be updated into Postgres
+    let CanRead = (req.body.canRead === "CanRead") ? true : false;
+    let CanUpdate = (req.body.canUpdate === "CanUpdate") ? true : false;
+    let CanDelete = (req.body.canDelete === "CanDelete") ? true : false;
+    let CanCreate = (req.body.canCreate === "CanCreate") ? true : false;
+
+    // Reformat blank dates and numbers to NULL values to be updated into Postgres
+    let EffectiveDate = (req.body.effectiveDate === "") ? null : req.body.effectiveDate;
+    let ExpirationDate = (req.body.expirationDate === "") ? null : req.body.expirationDate;
+
+    // Validate the input
+//    const validationErrors = validationResult(req);
+
+    // If invalid data, return errors to client
+//    if ( !validationErrors.isEmpty() ) {
+
+// ToDo:  Replicate the GET render code above, including parameters prep work
+
+
+//        return res.status(400).json(validationErrors.array());
+
+//    } else {
+
+        // Get a pointer to the current record
+        const userPermissionRecord = await UserPermissionsTable.findOne( {
+            where: { WebsiteUserPermissionID: req.body.userPermissionIDToUpdate }
+        });
+
+        // Update the database record with the new data
+        await userPermissionRecord.update( {
+            ObjectValues: req.body.permissionValues,
+            CanCreate: CanCreate,
+            CanRead: CanRead,
+            CanUpdate: CanUpdate,
+            CanDelete: CanDelete,
+            EffectiveDate: EffectiveDate,
+            ExpirationDate: ExpirationDate,
+        }).then( () => {
+            res.redirect(`/switchboard?userpermissionid=${userPermissionRecord.WebsiteUserPermissionID}` +
+                         `&userid=${userPermissionRecord.UserID}` +
+                         `&status=userpermissionupdatesuccess` +
+                         `&actionrequested=edituserpermission`);
+        });
+//    };
 });
 
 ////////////////////////////////////////////////////////////
@@ -739,6 +930,26 @@ router.delete('/userdelete', requiresAuth(), async (req, res) => {
     // Delete the record, based on the User ID
     await userRecord.destroy().then( () => {
         res.redirect(`/switchboard?status=userdeletesuccess`);
+    });
+});
+
+///////////////////////////////
+// User Permission (Delete)
+///////////////////////////////
+router.delete('/userpermissiondelete', requiresAuth(), async (req, res) => {
+
+    // Get a pointer to the current record
+    console.log(`body.userPermissionIDToDelete: ${req.body.userPermissionIDToDelete}`);
+    const userPermissionRecord = await UserPermissionsTable.findOne( {
+        where: { WebsiteUserPermissionID: req.body.userPermissionIDToDelete }
+    });
+    console.log(`userPermissionRecord: ${userPermissionRecord.WebsiteUserPermissionID}`);
+
+    // Delete the record
+    console.log(`userID to redirect to after user permission deletion: ${req.body.userIDOfPermission}`)
+    await userPermissionRecord.destroy().then( () => {
+        res.redirect(`/switchboard?status=userpermissiondeletesuccess` +
+                     `&userid=${req.body.userIDOfPermission}`);
     });
 });
 

@@ -112,15 +112,25 @@ UserProfiles.removeAttribute('id');  // this is an non-updatable view and does n
 /*****************************
   User Permissions
 *****************************/
-// Basic user permission category information formatted for the "Select a User Permission" SELECT object
-const UserPermissionCategoriesAllDDLModel = require('./websiteUserPermissionCategoriesAllDDL.model');
-const UserPermissionCategoriesAllDDL = UserPermissionCategoriesAllDDLModel(sequelize, DataTypes);
+// View used for reading all user permission data (for loading into the "Select a User Permission" SELECT object)
+const UserPermissionsAllDDLModel = require('./userPermissionsAllDDL.model');
+const UserPermissionsAllDDL = UserPermissionsAllDDLModel(sequelize, DataTypes);
+UserPermissionsAllDDL.removeAttribute('id');  // this is an non-updatable view and does not have a PK defined
 // Table reference used for writing user permission data to the database
-
-// View used for reading user permission data
+const UserPermissionsTableModel = require('./userPermissionsTable.model');
+const UserPermissionsTable = UserPermissionsTableModel(sequelize, DataTypes);
+UserPermissionsTable.removeAttribute('id');  // The default [id] column is not used in this table
+// View used for reading all user permission data (for data mgmt)
+const UserPermissionsAllModel = require('./userPermissionsAll.model');
+const UserPermissionsAll = UserPermissionsAllModel(sequelize, DataTypes);
+UserPermissionsAll.removeAttribute('id');  // this is an non-updatable view and does not have a PK defined
+// View used for reading active user permission data (for authorization checking)
 const UserPermissionsActiveModel = require('./userPermissionsActive.model');
 const UserPermissionsActive = UserPermissionsActiveModel(sequelize, DataTypes);
 UserPermissionsActive.removeAttribute('id');  // this is an non-updatable view and does not have a PK defined
+// Basic user permission category information formatted for the "Select a User Permission Category" SELECT object
+const UserPermissionCategoriesAllDDLModel = require('./userPermissionCategoriesAllDDL.model');
+const UserPermissionCategoriesAllDDL = UserPermissionCategoriesAllDDLModel(sequelize, DataTypes);
 
 /**************************************************************************************************
   Export objects
@@ -152,6 +162,9 @@ module.exports = {
   UsersAllDDL,
   UsersTable,
   UserProfiles,
+  UserPermissionsTable,
   UserPermissionCategoriesAllDDL,
-  UserPermissionsActive
+  UserPermissionsActive,
+  UserPermissionsAll,
+  UserPermissionsAllDDL
 };

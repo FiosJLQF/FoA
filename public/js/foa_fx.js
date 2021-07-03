@@ -97,27 +97,6 @@ function toggleAdvancedSearchCriteriaInputBlock(elIcon, elBlock, elInput, status
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
-// does the user have permission to access the page?
-//////////////////////////////////////////////////////////////////////////////////////////
-function userPermissions(permissionsList, userID, objectName, objectValue = '') {
-
-// ToDo:  database call here with specifics to return T/F instead of this???
-
-    // for each Permission in the Permissions List, is there a match to the current request?
-    for (let permission of permissionsList) {
-        console.log(permission.userid);
-        console.log(permission.objectName);
-        console.log(permission.objectValue);
-        console.log(permission.canCreate);
-        console.log(permission.canRead);
-        console.log(permission.canUpdate);
-        console.log(permission.canDelete);
-    };
-
-}
-
-
-//////////////////////////////////////////////////////////////////////////////////////////
 // Format selected options in a SELECT control into a delimited string for database storage
 // => client-side version (see scripts/foa_fx.js for server-side version)
 //////////////////////////////////////////////////////////////////////////////////////////

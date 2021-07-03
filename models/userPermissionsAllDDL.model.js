@@ -1,20 +1,21 @@
 ///////////////////////////////////////////////////////////////////////////////////
-// Website User Permissions Options, formatted for DDL
+// User Permission IDs, formatted for the search criteria DDL
 ///////////////////////////////////////////////////////////////////////////////////
 
 module.exports = (sequelize, DataTypes) => {
-    const WebsiteUserPermissionCategoriesAllDDL = sequelize.define('vwWebsiteUserPermissionCategoriesDDL', {
+    const UserPermissionsAllDDL = sequelize.define('vwWebsiteUserPermissionsAllDDL', {
         optionid: {
             type: DataTypes.INTEGER,
             primaryKey: true
         },
         optiontext: {
             type: DataTypes.STRING
-        }
+        },
+        UserID: DataTypes.STRING
     }, {
         schema: 'public',
         freezeTableName: true,  // don't have Sequelize automatically pluralize the table name
         timestamps: false,  // don't add the timestamp attributes (updatedAt, createdAt)
     });
-    return WebsiteUserPermissionCategoriesAllDDL;
+    return UserPermissionsAllDDL;
 };

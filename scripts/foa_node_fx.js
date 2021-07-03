@@ -9,31 +9,12 @@ const { EventLogsTable, ScholarshipsTableTest, ScholarshipsActive, ScholarshipsA
         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
         FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
-        UsersAllDDL, UsersTable, UserPermissionsActive, UserProfiles,
+        UsersAllDDL, UsersTable,  UserProfiles,
+        UserPermissionsTable, UserPermissionsActive, UserPermissionCategoriesAllDDL, UserPermissionsAll, UserPermissionsAllDDL,
         ScholarshipRecurrenceCategoriesDDL, ScholarshipsAllMgmtViewTest
     } = require('../models/sequelize.js');
 require("dotenv").config();  // load all ".env" variables into "process.env" for use
 const nodemailer = require('nodemailer');  // allows SMPT push emails to be sent
-
-//////////////////////////////////////////////////////////////////////////////////////////
-// Does the user have permission to access the page?
-//////////////////////////////////////////////////////////////////////////////////////////
-function userPermissions(permissionsList, userID, objectName, objectValue = '') {
-
-// ToDo:  database call here with specifics to return T/F instead of this???
-
-    // for each Permission in the Permissions List, is there a match to the current request?
-    for (let permission of permissionsList) {
-        console.log(permission.userid);
-        console.log(permission.objectName);
-        console.log(permission.objectValue);
-        console.log(permission.canCreate);
-        console.log(permission.canRead);
-        console.log(permission.canUpdate);
-        console.log(permission.canDelete);
-    };
-
-}
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -135,13 +116,13 @@ async function getSponsorPermissionsForUser( userPermissionsActive, sponsorIDReq
     let userCanDeleteSponsor = false;
 
     // Get the list of sponsor-related permissions for the current user
-    const userPermissionsSponsorDDL = userPermissionsActive.rows.filter( permission => permission.ObjectName === '923003');
+    const userPermissionsSponsorDDL = userPermissionsActive.rows.filter( permission => permission.PermissionCategoryID === 923003);
 
     // Can the current user view the Sponsors DDL?  What Sponsors can the current user see?
     if ( userPermissionsSponsorDDL.length > 0 && userPermissionsSponsorDDL[0].CanRead ) {
         userCanReadSponsors = true;
         // What CRUD operations can the current user perform?
-        userPermissionsSponsors = userPermissionsActive.rows.filter( permission => permission.ObjectName === '923006');
+        userPermissionsSponsors = userPermissionsActive.rows.filter( permission => permission.PermissionCategoryID === 923006);
         // Find the list of Sponsors the current user can see (for loading into the "Sponsors:" dropdown list)
         if ( userPermissionsSponsors.length > 0 && userPermissionsSponsors[0].CanRead ) {
             if ( userPermissionsSponsors[0].ObjectValues === '*' ) {
@@ -224,6 +205,8 @@ async function getSponsorPermissionsForUser( userPermissionsActive, sponsorIDReq
 //////////////////////////////////////////////////////////////////////////////////////////
 async function getScholarshipPermissionsForUser( userPermissionsActive, sponsorID, scholarshipIDRequested ) {
 
+    console.log(`sponsorID at Scholarships fx: ${sponsorID}`);
+
     // declare and set local variables
     let userCanReadScholarships = false;
     let userCanCreateScholarships = false;
@@ -238,14 +221,14 @@ async function getScholarshipPermissionsForUser( userPermissionsActive, sponsorI
     let userCanDeleteScholarship = false;
 
     // Get the list of scholarship-related permissions for the current user
-    const userPermissionsScholarshipDDL = userPermissionsActive.rows.filter( permission => permission.ObjectName === '923005');
+    const userPermissionsScholarshipDDL = userPermissionsActive.rows.filter( permission => permission.PermissionCategoryID === 923005);
 
     // Can the current user view the Scholarships DDL?  What Scholarships can the current user see?
     if ( userPermissionsScholarshipDDL.length > 0 && userPermissionsScholarshipDDL[0].CanRead ) {
         userCanReadScholarships = true;
         console.log(`userCanReadScholarships: ${userCanReadScholarships}`);
         // What CRUD operations can the current user perform?
-        userPermissionsScholarships = userPermissionsActive.rows.filter( permission => permission.ObjectName === '923005');
+        userPermissionsScholarships = userPermissionsActive.rows.filter( permission => permission.PermissionCategoryID === 923005);
         // Find the list of Scholarships the current user can see (for loading into the "Scholarships:" dropdown list)
         if ( userPermissionsScholarships.length > 0 && userPermissionsScholarships[0].CanRead ) {
             if ( sponsorID !== '' ) { // A specific Sponsor was requested - load Scholarships for that Sponsor
@@ -329,31 +312,33 @@ async function getScholarshipPermissionsForUser( userPermissionsActive, sponsorI
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////
-// Get the Current User's User permissions (permissions to let the Current User manage other website Users)
+// Get the Current User's Website User Profile permissions
+//   (permissions to let the Current User manage other website Users' profile)
 //////////////////////////////////////////////////////////////////////////////////////////
-async function getUserPermissionsForUser( userPermissionsActive, userIDRequested ) {
+async function getUserPermissionsForWebsiteUser( userPermissionsActive, userIDRequested ) {
 
     // declare and set local variables
-    let userCanReadUsers = false;
-    let userCanCreateUsers = false;
+    // User Profiles
+    let userCanReadUsers = false; // DDL permission
+    let userCanCreateUsers = false; // "Add User" link permission
     let userPermissionsUsers = [];
     let usersAllowedDDL = [];
     let userIDDefault = 0;
     let userID = 0;
-    let userDetails = [];
+    let userDetails = []; // User Profile data
     let doesUserExist = false;
     let userCanReadUser = false;
     let userCanUpdateUser = false;
     let userCanDeleteUser = false;
 
     // Get the list of user-related permissions for the current user
-    const userPermissionsUserDDL = userPermissionsActive.rows.filter( permission => permission.ObjectName === '923004');
+    const userPermissionsUserDDL = userPermissionsActive.rows.filter( permission => permission.PermissionCategoryID === 923004);
 
     // Can the current user view the Users DDL?  What Users can the current user see?
     if ( userPermissionsUserDDL.length > 0 && userPermissionsUserDDL[0].CanRead ) {
         userCanReadUsers = true;
         // What CRUD operations can the current user perform?
-        userPermissionsUsers = userPermissionsActive.rows.filter( permission => permission.ObjectName === '923007');
+        userPermissionsUsers = userPermissionsActive.rows.filter( permission => permission.PermissionCategoryID === 923007);
         // Find the list of Users the current user can see (for loading into the "User:" dropdown list)
         if ( userPermissionsUsers.length > 0 && userPermissionsUsers[0].CanRead ) {
             if ( userPermissionsUsers[0].ObjectValues === '*' ) {
@@ -435,6 +420,127 @@ async function getUserPermissionsForUser( userPermissionsActive, userIDRequested
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////
+// Get the Current User's Website User's Permission permissions
+//   (permissions to let the Current User manage other Website Users' permissions)
+//////////////////////////////////////////////////////////////////////////////////////////
+async function getUserPermissionsForWebsiteUserPermission( userPermissionsActive, userIDRequested, userPermissionIDRequested ) {
+
+    console.log(`userIDRequested at Permissions fx: ${userIDRequested}`);
+
+    // declare and set local variables
+    // User Permissions (note individual website user permissions are not separated in authority; 
+    // if the current user can see any user permission, they can see all user permissions)
+    let userCanReadUserPermissions = false; // DDL permissions
+    let userCanCreateUserPermissions = false; // "Add Permission" link permission
+    let userPermissionsUserPermissions = [];  // Current User's permissions for requested Website User's permissions
+    let userPermissionsAllowedDDL = [];
+    let userPermissionIDDefault = 0;
+    let userPermissionID = 0;  // same as used above
+    let userPermissionDetails = []; // User Permissions data
+    let doesUserPermissionExist = false;
+    let userCanReadUserPermission = false;
+    let userCanUpdateUserPermission = false;
+    let userCanDeleteUserPermission = false;
+
+    // Get the list of user permissions-related permissions for the current user
+    const userPermissionsUserPermissionDDL = userPermissionsActive.rows.filter( permission => permission.PermissionCategoryID === 923009);
+
+    // Can the current user view the User Permissions DDL?  What User Permissions can the current user see?
+    if ( userPermissionsUserPermissionDDL.length > 0 && userPermissionsUserPermissionDDL[0].CanRead ) {
+        userCanReadUserPermissions = true;
+
+        // What CRUD operations can the current user perform?
+        userPermissionsUserPermissions = userPermissionsActive.rows.filter( permission => permission.PermissionCategoryID === 923008);
+        // Find the list of User Permissions the current user can see (for loading into the "User:" dropdown list)
+        if ( userPermissionsUserPermissions.length > 0 && userPermissionsUserPermissions[0].CanRead ) {
+            if ( userIDRequested !== '' ) { // A specific User was requested - load User Permissions for that User
+                if ( userPermissionsUserPermissions[0].ObjectValues === '*' ) {
+                    userPermissionsAllowedDDL = await UserPermissionsAllDDL.findAndCountAll({ where: { UserID: userIDRequested } });
+                    userPermissionIDDefault = 999999;
+                } else {  // Current user can only see specific User Permission(s)
+                    userPermissionsAllowedDDL = await UserPermissionsAllDDL.findAndCountAll({ where: { optionid: userPermissionsUserPermissions[0].ObjectValues } });
+// ToDo: expand for multiple User Permissions (eventually)
+                    // Assign the default UserPermissionID to be the sole User Permission allowed
+                    userPermissionIDDefault = userPermissionsUserPermissions[0].ObjectValues; // Set the User Permission ID to the only one User Permission the User has permission to see
+                };
+            } else {  // Load a blank row of data
+                userPermissionsAllowedDDL = await UserPermissionsAllDDL.findAndCountAll({ where: { UserID: -1 } });
+                userPermissionIDDefault = 999999; // used ???
+            };
+        } else {  // The user can see the User Permissions DDL, but has no User Permissions assigned to them - hide the DDL
+            userCanReadUserPermissions = false;
+        };
+
+    };
+    console.log(`userPermissionsUserPermissionDDL.length: ${userPermissionsUserPermissionDDL.length}`);
+    console.log(`record Permission Category ID: ${userPermissionsUserPermissionDDL[0].PermissionCategoryID}`);
+    console.log(`userCanReadUserPermissions: ${userCanReadUserPermissions}`);
+
+    // Can the current user create new User Permissions? (Current logic is always true for allowed User)
+    if ( userPermissionsUserPermissionDDL.length > 0 && userPermissionsUserPermissionDDL[0].CanCreate ) {
+        userCanCreateUserPermissions = true;
+    };
+
+    // If a querystring request was made for a specific User Permission
+    if ( userPermissionIDRequested ) {
+        console.log(`userPermissionIDRequested: ${userPermissionIDRequested}`);
+        // Does the requested User Permission exist? Retrieve the User Permission's details from the database.
+        userPermissionDetails = await UserPermissionsAll.findAll({ where: { WebsiteUserPermissionID: userPermissionIDRequested }});
+        if ( typeof userPermissionDetails[0] === 'undefined' ) {  // User Permission ID does not exist
+            doesUserPermissionExist = false;
+        } else { // User Permission ID does exist
+            doesUserPermissionExist = true;
+            // Can current user view requested User Permission (or permission to view all User Permissions)?
+            if ( userPermissionIDRequested === userPermissionsUserPermissions[0].ObjectValues
+                 || userPermissionsUserPermissions[0].ObjectValues === '*' ) {
+                userCanReadUserPermission = userPermissionsUserPermissions[0].CanRead;
+                console.log(`userCanReadUserPermission: ${userCanReadUserPermission}`);
+                userCanUpdateUserPermission = userPermissionsUserPermissions[0].CanUpdate;
+                console.log(`userCanUpdateUserPermission: ${userCanUpdateUserPermission}`);
+                userCanDeleteUserPermission = userPermissionsUserPermissions[0].CanDelete;
+                console.log(`userCanDeleteUserPermission: ${userCanDeleteUserPermission}`);
+            };
+            userPermissionID = userPermissionIDRequested;
+        };
+
+    } else if ( userPermissionIDDefault !== 999999) { // Requested User Permission ID does not exist - if there a default User Permission ID
+        console.log(`userPermissionIDRequested does not exist - process default User Permission ID: ${userPermissionIDDefault}`);
+        // Does the default User Permission exist? Retrieve the User Permission's details from the database.
+        userPermissionDetails = await UserPermissionsAll.findAll({ where: { WebsiteUserPermissionID: userPermissionIDDefault }});
+        if ( typeof userPermissionDetails[0] === 'undefined' ) {  // User Permission ID does not exist
+            doesUserPermissionExist = false;
+        } else {
+            doesUserPermissionExist = true;
+            // Can current user view requested User Permission (or permission to view all User Permissions)?
+            if ( userPermissionIDDefault === userPermissionsUserPermissions[0].ObjectValues
+                || userPermissionsUserPermissions[0].ObjectValues === '*' ) {
+               userCanReadUserPermission = userPermissionsUserPermissions[0].CanRead;
+               console.log(`userCanReadUserPermission: ${userCanReadUserPermission}`);
+               userCanUpdateUserPermission = userPermissionsUserPermissions[0].CanUpdate;
+               console.log(`userCanUpdateUserPermission: ${userCanUpdateUserPermission}`);
+               userCanDeleteUserPermission = userPermissionsUserPermissions[0].CanDelete;
+               console.log(`userCanDeleteUserPermission: ${userCanDeleteUserPermission}`);
+           };
+           userPermissionID = userPermissionIDDefault;
+        };
+
+    } else { // No specific User Permission was requested, or user can read all User Permissions
+
+        doesUserPermissionExist = true;
+        userCanReadUserPermission = true;
+        userPermissionID = '';
+
+    };
+
+    console.log(`userPermissionID returned: ${userPermissionID}`);
+
+    return { userCanReadUserPermissions, userCanCreateUserPermissions, userPermissionsAllowedDDL,
+             userPermissionID, userPermissionDetails, doesUserPermissionExist,
+             userCanReadUserPermission, userCanUpdateUserPermission, userCanDeleteUserPermission };
+};
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
 // Send email
 //////////////////////////////////////////////////////////////////////////////////////////
 function sendEmail(emailRecipient, emailSubject, emailBody) {
@@ -492,7 +598,8 @@ module.exports = {
     convertOptionsToDelimitedString,
     getSponsorPermissionsForUser,
     getScholarshipPermissionsForUser,
-    getUserPermissionsForUser,
+    getUserPermissionsForWebsiteUser,
+    getUserPermissionsForWebsiteUserPermission,
     sendEmail,
     logEvent
 };

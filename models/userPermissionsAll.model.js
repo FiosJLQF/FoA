@@ -3,7 +3,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 
 module.exports = (sequelize, DataTypes) => {
-    const UserPermissionsActive = sequelize.define('vwWebsiteUserPermissionsActive', {
+    const UserPermissionsAll = sequelize.define('vwWebsiteUserPermissionsAll', {
         WebsiteUserPermissionID: {
             type: DataTypes.INTEGER,
             primaryKey: true
@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
         UserID:                   DataTypes.NUMBER,
         Username:                 DataTypes.STRING,
         PermissionCategoryID:     DataTypes.NUMBER,
+        EffectiveDate:            DataTypes.DATE,
+        ExpirationDate:           DataTypes.DATE,
         ObjectValues:             DataTypes.STRING,
         CanCreate:                DataTypes.BOOLEAN,
         CanRead:                  DataTypes.BOOLEAN,
@@ -21,5 +23,5 @@ module.exports = (sequelize, DataTypes) => {
         freezeTableName: true,  // don't have Sequelize automatically pluralize the table name
         timestamps: false,  // don't add the timestamp attributes (updatedAt, createdAt)
     });
-    return UserPermissionsActive;
+    return UserPermissionsAll;
 };

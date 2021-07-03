@@ -30,6 +30,10 @@
       <%- include('partials/user_crud') %>
     <% } else if ( actionRequested === 'edituser' && userID !== '' ) { %>
       <%- include('partials/user_crud') %>
+    <% } else if ( actionRequested === 'adduserpermission' ) { %>
+      <%- include('partials/userpermission_crud') %>
+    <% } else if ( actionRequested === 'edituserpermission' && userPermissionID !== '' ) { %>
+      <%- include('partials/userpermission_crud') %>
     <% } else { %>
       <%- include('partials/switchboard_home') %>
     <% } %>
