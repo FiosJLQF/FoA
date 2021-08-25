@@ -27,32 +27,32 @@ async function logEvent(processName, eventObject, eventCode, eventStatus, eventD
     console.log('Logging event now...');
 
 //    async (req, res) => {
-        try {
-            console.log('Writing event to log...');
-            const newEventLog = new EventLogsTable( {
-                EventDate: Date().toString(),
-                ProcessName: processName,
-                EventObject: eventObject,
-                EventStatus: eventStatus,
-                EventDescription: eventDescription,
-                EventDuration: eventDuration,
-                EventRows: eventRows,
-                EventUserID: eventUserID,
-                EventCode: eventCode
-                });
-            await newEventLog.save();
-            console.log('Event written to log...');
-            logEventResult = true;
-            console.log('Event logged.');
-            if ( sendEmailTo.length !== 0 ) {
-                let emailResultLogSuccess = sendEmail(sendEmailTo, `Event Logged (${eventStatus})`,
+    try {
+        console.log('Writing event to log...');
+        const newEventLog = new EventLogsTable( {
+            EventDate: Date().toString(),
+            ProcessName: processName,
+            EventObject: eventObject,
+            EventStatus: eventStatus,
+            EventDescription: eventDescription,
+            EventDuration: eventDuration,
+            EventRows: eventRows,
+            EventUserID: eventUserID,
+            EventCode: eventCode
+        });
+        await newEventLog.save();
+        console.log('Event written to log...');
+        logEventResult = true;
+        console.log('Event logged.');
+        if ( sendEmailTo.length !== 0 ) {
+            let emailResultLogSuccess = sendEmail(sendEmailTo, `Event Logged (${eventStatus})`,
                 `An event was logged for ${processName}:  ${eventDescription}`);
-            };
-        } catch (error) {
-            let emailResultError = sendEmail(process.env.EMAIL_WEBMASTER_LIST, 'Event Log Error',
-            `An error occurred logging an event: ${error}`);
-            console.log(`Event not logged (${error})`);
         };
+    } catch (error) {
+        let emailResultError = sendEmail(process.env.EMAIL_WEBMASTER_LIST, 'Event Log Error',
+            `An error occurred logging an event: ${error}`);
+        console.log(`Event not logged (${error})`);
+    };
 //    };
 //    console.log(`Event Log Error (${error})`);
 

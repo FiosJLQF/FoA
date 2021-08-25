@@ -1,3 +1,11 @@
+//////////////////////////////////////////////////////////////////////////////////////////
+// global variables
+//////////////////////////////////////////////////////////////////////////////////////////
+
+//const { eventNames } = require("../../app");
+//const pageScholarshipVolume = 15; // number of scholarships to be displayed on a page
+//const pageSponsorVolume = 15; // number of sponsors to be displayed on a page
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // show all scholarships
@@ -736,7 +744,6 @@ function findMatchingScholarships(scholarships, pageNumber) {
 
     } // end scholarships "for" loop
 
-
     ///////////////////////////////////////////////////////////
     // if matches found, build the search results; otherwise, show a message
     ///////////////////////////////////////////////////////////
@@ -749,8 +756,12 @@ function findMatchingScholarships(scholarships, pageNumber) {
         const searchResults = document.querySelector('#searchResults');
         document.querySelector('#scholarshipsearchresultscolumn').removeChild(searchResults);
     } else {
-        // sort the matching scholarships
-        matchingScholarships.sort( (a,b) => (a.matchCountExact <= b.matchCountExact) ? 1 : -1 );
+        // sort the matching scholarships, first by number of exact mataches (most matches first), second by Sponsor Name
+//        matchingScholarships.sort( (a,b) => (a.matchCountExact <= b.matchCountExact) ? 1 : -1 );
+        console.log('Before sorting results.');
+        matchingScholarships.sort( (a,b) => (b.matchCountExact - a.matchCountExact || a.SponsorName.localeCompare(b.SponsorName) ));
+//        matchingScholarships.sort( (a,b) => (a.matchCountExact - b.matchCountExact || a.SponsorName - b.SponsorName ));
+        console.log('After sorting results.');
         // build "scholarship search results"
         const createResults = buildScholarshipSearchResults(matchingScholarships, pageNumber, true);
     }

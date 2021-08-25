@@ -195,6 +195,7 @@
       </div><br>
 
       <!-- Eligibility Requirements (Other) -->
+      <!--  Removed by KK request on 5/12/21
       <div class="flexcontainer-datamgmt">
         <div class="row">
           <div class="col-3 data-mgmt-label">
@@ -209,6 +210,7 @@
           </div>
         </div>
       </div><br>
+      -->
 
       <!-- Recurrence Frequency -->
       <div class="flexcontainer-datamgmt">
@@ -573,7 +575,7 @@
     document.getElementById('scholarshipContactTelephone').value = "<%= scholarshipDetails[0].ScholarshipContactTelephone %>";
     document.getElementById('notesAdmin').value = "<%= scholarshipDetails[0].Notes_Admin %>";
     document.getElementById('scholarshipEligReqsPrimary').value = "<%= scholarshipDetails[0].ScholarshipEligibilityReqs %>";
-    document.getElementById('scholarshipEligReqsOther').value = "<%= scholarshipDetails[0].ScholarshipEligibilityReqsOther %>";
+//    document.getElementById('scholarshipEligReqsOther').value = "<%= scholarshipDetails[0].ScholarshipEligibilityReqsOther %>";
     document.getElementById('scholarshipRecurrence').value = "<%= scholarshipDetails[0].ScholarshipRecurrence %>";
     document.getElementById('scholarshipApplListDate').value = "<%= scholarshipDetails[0].ScholarshipApplListDate %>";
     document.getElementById('scholarshipApplStartDate').value = "<%= scholarshipDetails[0].ScholarshipApplStartDate %>";
@@ -671,7 +673,7 @@
       document.getElementById('scholarshipContactTelephone').disabled = true;
       document.getElementById('notesAdmin').disabled = true;
       document.getElementById('scholarshipEligReqsPrimary').disabled = true;
-      document.getElementById('scholarshipEligReqsOther').disabled = true;
+//      document.getElementById('scholarshipEligReqsOther').disabled = true;
       document.getElementById('scholarshipRecurrence').disabled = true;
       document.getElementById('scholarshipApplListDate').disabled = true;
       document.getElementById('scholarshipApplStartDate').disabled = true;

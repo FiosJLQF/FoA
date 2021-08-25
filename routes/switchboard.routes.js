@@ -84,17 +84,20 @@ router.get('/', requiresAuth(), async (req, res) => {
         const userProfiles = await UserProfiles.findAll( { where: { Username: req.oidc.user.email }});
         if ( userProfiles.length === 0 ) {  // The new user has not yet been set up
             // Log the event
-            let logEventResult = await jsFx.logEvent('User Profiles', 'Get Current User', 0, 'Failure', 'No such user',
+            let logEventResult = await jsFx.logEvent('User Profiles', 'Get Current User', 0, 'Failure', 'User not yet configured',
                 0, 0, 0, '');
             // Redirect the user to the "New User" screen
             res.redirect(`/switchboard/newuser`);
         };
+        // Log the access by the Current User
+        let logEventResult = await jsFx.logEvent('Page Access', 'Switchboard', 0, 'Informational', 'User Accessed Page',
+            0, 0, userProfiles[0].UserID, '');
         // Get the list of active permissions for the user
         const userPermissionsActive = await UserPermissionsActive.findAndCountAll( { where: { UserID: userProfiles[0].UserID }});
 
 
         ////////////////////////////////////////////////////
-        // Validate query string values
+        // Validate any query string parameters
         ////////////////////////////////////////////////////
 
         // If a requested "sponsorid" is blank, zero or not a number, redirect to the generic Switchboard page
@@ -173,7 +176,7 @@ router.get('/', requiresAuth(), async (req, res) => {
         if ( !doesSponsorExist ) {  // Sponsor ID does not exist
             errorCode = 908;
             // Log the event
-            let logEventResult = await jsFx.logEvent('SponsorID Validation', '', 908, 'Failure',
+            let logEventResult = await jsFx.logEvent('SponsorID Validation', '', errorCode, 'Failure',
                 `SponsorID does not exist (${sponsorIDRequested})`,
                 0, 0, userProfiles[0].UserID, process.env.EMAIL_WEBMASTER_LIST);
             // redirect the user to the error screen
@@ -235,8 +238,11 @@ router.get('/', requiresAuth(), async (req, res) => {
             // Does the requested User exist (if requested)?  If not, skip error processing
             console.log(`doesUserExist: (${doesUserExist})`);
             if ( !doesUserExist ) {  // User ID does not exist
-// ToDo:  Log the error
                 errorCode = 928;  // Unknown User
+                // Log the event
+                let logEventResult = await jsFx.logEvent('User Access', `Website User: ${ userIDRequested }`, errorCode,
+                    'Failure', 'UserID does not exist', 0, 0, userProfiles[0].UserID, process.env.EMAIL_WEBMASTER_LIST);
+                // Raise an error
                 return res.render( 'error', {
                     errorCode: errorCode,
                     userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
@@ -245,15 +251,22 @@ router.get('/', requiresAuth(), async (req, res) => {
 
             // Does the User have permission to see/edit/delete this User?
             if ( !userCanReadUser ) { // User does not have permission to read User's data - trap and log error
-// ToDo:  Log the error
                 errorCode = 929;  // Unknown User
+                // Log the error
+                let logEventResult = await jsFx.logEvent('Website User Access', `Website User: ${ userIDRequested }`, errorCode,
+                   'Failure', 'User not authorized to view website user data', 0, 0, userProfiles[0].UserID, process.env.EMAIL_WEBMASTER_LIST);
+                // Raise an error
                 return res.render( 'error', {
                     errorCode: errorCode,
                     userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
                 });
+            } else {
+                // Log the access
+                let logEventResult = await jsFx.logEvent('Content Access', `Website User: ${ userIDRequested }`, 0,
+                    'Success', '', 0, 0, userProfiles[0].UserID, '');
             };
         };
-
+    
         ////////////////////////////////////////////////////
         //  Website User Permissions Permissions / Details (DDL, Add Permission, Default Permission, etc.)
         ////////////////////////////////////////////////////
