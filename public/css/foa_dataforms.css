@@ -108,7 +108,10 @@ span.data-mgmt-error {
   height: 20px;
   vertical-align: top;
   margin-top: 5px;
+  padding-top: 3px;
+  padding-left: 3x;
   color: red;
+  /* background-color: #f3cdd4; */
 }
   
 input.data-mgmt-text {

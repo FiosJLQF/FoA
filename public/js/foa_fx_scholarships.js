@@ -760,7 +760,6 @@ function findMatchingScholarships(scholarships, pageNumber) {
 //        matchingScholarships.sort( (a,b) => (a.matchCountExact <= b.matchCountExact) ? 1 : -1 );
         console.log('Before sorting results.');
         matchingScholarships.sort( (a,b) => (b.matchCountExact - a.matchCountExact || a.SponsorName.localeCompare(b.SponsorName) ));
-//        matchingScholarships.sort( (a,b) => (a.matchCountExact - b.matchCountExact || a.SponsorName - b.SponsorName ));
         console.log('After sorting results.');
         // build "scholarship search results"
         const createResults = buildScholarshipSearchResults(matchingScholarships, pageNumber, true);
