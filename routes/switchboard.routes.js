@@ -5,9 +5,11 @@ const express = require("express");
 const router = express.Router();
 const { auth, requiresAuth } = require('express-openid-connect');
 require("dotenv").config();  // load all ".env" variables into "process.env" for use
-const { ScholarshipsTableTest, ScholarshipsActive, /* ScholarshipsActiveDDL, */ ScholarshipsAllDDL, ScholarshipsAllDDLTest,
+const { ScholarshipsTable, /* ScholarshipsTableTest, */ ScholarshipsActive, /* ScholarshipsActiveDDL, */ 
+        ScholarshipsAllDDL, /* ScholarshipsAllDDLTest, */
         ScholarshipRecurrenceCategoriesDDL, ScholarshipStatusCategoriesDDL,
-        SponsorsTableTest, Sponsors, SponsorsDDL, SponsorsAllDDLTest, SponsorTypeCategoriesDDL,
+        SponsorsTable, /* SponsorsTableTest, */ SponsorsAllDLL, Sponsors, SponsorsDDL, /* SponsorsAllDDLTest, */
+        SponsorTypeCategoriesDDL,
         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
         FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL,
@@ -489,7 +491,7 @@ router.post('/sponsoradd', requiresAuth(),
 
     } else {
         // Add the new data to the database in a new record, and return the newly-generated [SponsorID] value
-        const newSponsor = new SponsorsTableTest( {
+        const newSponsor = new SponsorsTable( {
             SponsorName: req.body.sponsorName,
             SponsorDescription: req.body.sponsorDescription,
             SponsorWebsite: req.body.sponsorWebsite,
@@ -561,7 +563,7 @@ router.post('/scholarshipadd', requiresAuth(),
     } else {
         // Add the new data to the database in a new record, and return the newly-generated [ScholarshipID] value
         console.log(`sponsorID to save scholarship: ${req.body.sponsorID}`);
-        const newScholarship = new ScholarshipsTableTest( {
+        const newScholarship = new ScholarshipsTable( {
             SponsorID: req.body.sponsorID,
             ScholarshipStatus: req.body.scholarshipStatus,
             ScholarshipName: req.body.scholarshipName,
@@ -725,7 +727,7 @@ router.put('/sponsorupdate', requiresAuth(), async (req, res) => {
 //    console.log(`sponsorTypesFormattedUDF: ${sponsorTypesFormatted}`);
 
     // Get a pointer to the current record
-    const sponsorRecord = await SponsorsTableTest.findOne( {
+    const sponsorRecord = await SponsorsTable.findOne( {
         where: { SponsorID: req.body.sponsorIDToUpdate }
     });
 //    console.log(`sponsorRecordToUpdate: ${sponsorRecord.SponsorID}`);
@@ -774,7 +776,7 @@ router.put('/scholarshipupdate', requiresAuth(), async (req, res) => {
     let MinimumGPA = (req.body.criteriaMinimumGPA === "") ? null : req.body.criteriaMinimumGPA;
 
     // Get a pointer to the current record
-    const scholarshipRecord = await ScholarshipsTableTest.findOne( {
+    const scholarshipRecord = await ScholarshipsTable.findOne( {
         where: { ScholarshipID: req.body.scholarshipIDToUpdate }
     });
 
@@ -905,7 +907,7 @@ router.delete('/sponsordelete', requiresAuth(), async (req, res) => {
 
     // Get a pointer to the current record
 //    console.log(`body.SponsorID: ${req.body.sponsorIDToDelete}`);
-    const sponsorRecord = await SponsorsTableTest.findOne( {
+    const sponsorRecord = await SponsorsTable.findOne( {
         where: { SponsorID: req.body.sponsorIDToDelete }
     });
 //    console.log(`sponsorRecord: ${sponsorRecord.SponsorID}`);
@@ -923,7 +925,7 @@ router.delete('/scholarshipdelete', requiresAuth(), async (req, res) => {
 
     // Get a pointer to the current record
     console.log(`body.ScholarshipIDToDelete: ${req.body.scholarshipIDToDelete}`);
-    const scholarshipRecord = await ScholarshipsTableTest.findOne( {
+    const scholarshipRecord = await ScholarshipsTable.findOne( {
         where: { ScholarshipID: req.body.scholarshipIDToDelete }
     });
     console.log(`scholarshipRecord: ${scholarshipRecord.ScholarshipID}`);

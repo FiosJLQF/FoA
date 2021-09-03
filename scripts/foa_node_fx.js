@@ -4,14 +4,16 @@
 
 //const pageScholarshipVolume = 15; // number of scholarships to be displayed on a page
 //const pageSponsorVolume = 15; // number of sponsors to be displayed on a page
-const { EventLogsTable, ScholarshipsTableTest, ScholarshipsActive, /* ScholarshipsActiveDDL, */ ScholarshipsAllDDL,
-        ScholarshipsAllDDLTest, SponsorsTableTest, Sponsors, SponsorsDDL, SponsorsAllDDLTest, 
+const { EventLogsTable, ScholarshipsTable, /* ScholarshipsTableTest, */ ScholarshipsActive,
+        /* ScholarshipsActiveDDL, */ ScholarshipsAllDDL,
+        /* ScholarshipsAllDDLTest, */ SponsorsTable, /* SponsorsTableTest, */ SponsorsAllDDL, Sponsors, SponsorsDDL,
+        /* SponsorsAllDDLTest, */
         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
         FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
         UsersAllDDL, UsersTable,  UserProfiles,
         UserPermissionsTable, UserPermissionsActive, UserPermissionCategoriesAllDDL, UserPermissionsAll, UserPermissionsAllDDL,
-        ScholarshipRecurrenceCategoriesDDL, ScholarshipsAllMgmtViewTest
+        ScholarshipRecurrenceCategoriesDDL, ScholarshipsAllMgmtView /* ScholarshipsAllMgmtViewTest */
     } = require('../models/sequelize.js');
 require("dotenv").config();  // load all ".env" variables into "process.env" for use
 const nodemailer = require('nodemailer');  // allows SMPT push emails to be sent
@@ -126,10 +128,10 @@ async function getSponsorPermissionsForUser( userPermissionsActive, sponsorIDReq
         // Find the list of Sponsors the current user can see (for loading into the "Sponsors:" dropdown list)
         if ( userPermissionsSponsors.length > 0 && userPermissionsSponsors[0].CanRead ) {
             if ( userPermissionsSponsors[0].ObjectValues === '*' ) {
-                sponsorsAllowedDDL = await SponsorsAllDDLTest.findAndCountAll({});
+                sponsorsAllowedDDL = await SponsorsAllDDL.findAndCountAll({});
                 sponsorIDDefault = 999999;
             } else {  // Current user can only see specific Sponsor(s)
-                sponsorsAllowedDDL = await SponsorsAllDDLTest.findAndCountAll({ where: { optionid: userPermissionsSponsors[0].ObjectValues } });
+                sponsorsAllowedDDL = await SponsorsAllDDL.findAndCountAll({ where: { optionid: userPermissionsSponsors[0].ObjectValues } });
 // ToDo: expand for multiple Sponsors (eventually)
                 // Assign the default SponsorID to be the sole Sponsor allowed
                 sponsorIDDefault = userPermissionsSponsors[0].ObjectValues; // Set the Sponsor ID to the only one Sponsor the User has permission to see
@@ -148,7 +150,7 @@ async function getSponsorPermissionsForUser( userPermissionsActive, sponsorIDReq
     if ( sponsorIDRequested ) {
         console.log(`sponsorIDRequested: ${sponsorIDRequested}`);
         // Does the requested Sponsor exist? Retrieve the Sponsor's details from the database.
-        sponsorDetails = await SponsorsTableTest.findAll({ where: { SponsorID: sponsorIDRequested }});
+        sponsorDetails = await SponsorsTable.findAll({ where: { SponsorID: sponsorIDRequested }});
         if ( typeof sponsorDetails[0] === 'undefined' ) {  // Sponsor ID does not exist
             doesSponsorExist = false;
         } else { // Sponsor ID does exist
@@ -169,7 +171,7 @@ async function getSponsorPermissionsForUser( userPermissionsActive, sponsorIDReq
     } else if ( sponsorIDDefault !== 999999) { // Requested Sponsor ID does not exist - if there a default Sponsor ID
         console.log(`sponsorIDRequested does not exist - process default Sponsor ID: ${sponsorIDDefault}`);
         // Does the default Sponsor exist? Retrieve the Sponsor's details from the database.
-        sponsorDetails = await SponsorsTableTest.findAll({ where: { SponsorID: sponsorIDDefault }});
+        sponsorDetails = await SponsorsTable.findAll({ where: { SponsorID: sponsorIDDefault }});
         if ( typeof sponsorDetails[0] === 'undefined' ) {  // Sponsor ID does not exist
             doesSponsorExist = false;
         } else {
@@ -233,16 +235,16 @@ async function getScholarshipPermissionsForUser( userPermissionsActive, sponsorI
         if ( userPermissionsScholarships.length > 0 && userPermissionsScholarships[0].CanRead ) {
             if ( sponsorID !== '' ) { // A specific Sponsor was requested - load Scholarships for that Sponsor
                 if ( userPermissionsScholarships[0].ObjectValues === '*' ) { // wildcard is limited to a specific Sponsor only
-                    scholarshipsAllowedDDL = await ScholarshipsAllDDLTest.findAndCountAll({ where: { SponsorID: sponsorID } });
+                    scholarshipsAllowedDDL = await ScholarshipsAllDDL.findAndCountAll({ where: { SponsorID: sponsorID } });
                     scholarshipIDDefault = 999999; // used ???
                 } else {  // Current user can only see specific Scholarship(s)
 // ToDo: expand for multiple specific Scholarships (eventually)
-                    scholarshipsAllowedDDL = await ScholarshipsAllDDLTest.findAndCountAll({ where: { optionid: userPermissionsScholarships[0].ObjectValues } });
+                    scholarshipsAllowedDDL = await ScholarshipsAllDDL.findAndCountAll({ where: { optionid: userPermissionsScholarships[0].ObjectValues } });
                     // Assign the default ScholarshipID to be the sole Scholarship allowed (only one permitted at the moment)
                     scholarshipIDDefault = userPermissionsScholarships[0].ObjectValues; // Set the Scholarship ID to the only one Scholarship the User has permission to see
                 };
             } else {  // Load a blank row of data
-                scholarshipsAllowedDDL = await ScholarshipsAllDDLTest.findAndCountAll({ where: { SponsorID: -1 } });
+                scholarshipsAllowedDDL = await ScholarshipsAllDDL.findAndCountAll({ where: { SponsorID: -1 } });
                 scholarshipIDDefault = 999999; // used ???
             };
         } else {  // The user can see the Scholarships DDL, but has no Scholarships assigned to them - hide the DDL
@@ -259,7 +261,7 @@ async function getScholarshipPermissionsForUser( userPermissionsActive, sponsorI
     if ( scholarshipIDRequested ) {
         console.log(`scholarshipIDRequested: ${scholarshipIDRequested}`);
         // Does the requested Scholarship exist? Retrieve the Scholarship's details from the database.
-        scholarshipDetails = await ScholarshipsAllMgmtViewTest.findAll({ where: { ScholarshipID: scholarshipIDRequested }});
+        scholarshipDetails = await ScholarshipsAllMgmtView.findAll({ where: { ScholarshipID: scholarshipIDRequested }});
         if ( typeof scholarshipDetails[0] === 'undefined' ) {  // Scholarship ID does not exist
             doesScholarshipExist = false;
         } else { // Scholarship ID does exist
@@ -280,7 +282,7 @@ async function getScholarshipPermissionsForUser( userPermissionsActive, sponsorI
     } else if ( scholarshipIDDefault !== 999999) { // Requested Scholarship ID does not exist - if there a default Scholarship ID
         console.log(`scholarshipIDRequested does not exist - process default Scholarship ID: ${scholarshipIDDefault}`);
         // Does the default Scholarship exist? Retrieve the Scholarship's details from the database.
-        scholarshipDetails = await ScholarshipsAllMgmtViewTest.findAll({ where: { ScholarshipID: scholarshipIDDefault }});
+        scholarshipDetails = await ScholarshipsAllMgmtView.findAll({ where: { ScholarshipID: scholarshipIDDefault }});
         if ( typeof scholarshipDetails[0] === 'undefined' ) {  // Scholarship ID does not exist
             doesScholarshipExist = false;
         } else {

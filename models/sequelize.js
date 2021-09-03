@@ -41,19 +41,24 @@ EventLogsTable.removeAttribute('id');  // a different, auto-populated primary ke
 /********************************************
   Scholarship Models
 ********************************************/
-const ScholarshipsTableTestModel = require('./scholarshipsTableTest.model');
-const ScholarshipsTableTest = ScholarshipsTableTestModel(sequelize, DataTypes);
-ScholarshipsTableTest.removeAttribute('id');  // a different, auto-populated primary key is used in the DB
-const ScholarshipsAllMgmtViewTestModel = require('./scholarshipsAllMgmtView_Test.model');
-const ScholarshipsAllMgmtViewTest = ScholarshipsAllMgmtViewTestModel(sequelize, DataTypes);
+// const ScholarshipsTableTestModel = require('./scholarshipsTableTest.model');
+// const ScholarshipsTableTest = ScholarshipsTableTestModel(sequelize, DataTypes);
+// ScholarshipsTableTest.removeAttribute('id');  // a different, auto-populated primary key is used in the DB
+const ScholarshipsTableModel = require('./scholarshipsTable.model');
+const ScholarshipsTable = ScholarshipsTableModel(sequelize, DataTypes);
+ScholarshipsTable.removeAttribute('id');  // a different, auto-populated primary key is used in the DB
+// const ScholarshipsAllMgmtViewTestModel = require('./scholarshipsAllMgmtView_Test.model');
+// const ScholarshipsAllMgmtViewTest = ScholarshipsAllMgmtViewTestModel(sequelize, DataTypes);
+const ScholarshipsAllMgmtViewModel = require('./scholarshipsAllMgmtView.model');
+const ScholarshipsAllMgmtView = ScholarshipsAllMgmtViewModel(sequelize, DataTypes);
 const ScholarshipsActiveModel = require('./scholarshipsActiveView.model');
 const ScholarshipsActive = ScholarshipsActiveModel(sequelize, DataTypes);
 // const ScholarshipsActiveDDLModel = require('./scholarshipsActiveDDL.model.js_deprecated');
 // const ScholarshipsActiveDDL = ScholarshipsActiveDDLModel(sequelize, DataTypes);
-const ScholarshipsAllDDLModel = require('./scholarshipnameallddl.model');
+const ScholarshipsAllDDLModel = require('./scholarshipsAllDDL.model');
 const ScholarshipsAllDDL = ScholarshipsAllDDLModel(sequelize, DataTypes);
-const ScholarshipsAllDDLTestModel = require('./scholarshipsAllDDL_Test.model');
-const ScholarshipsAllDDLTest = ScholarshipsAllDDLTestModel(sequelize, DataTypes);
+//const ScholarshipsAllDDLTestModel = require('./scholarshipsAllDDL_Test.model');
+//const ScholarshipsAllDDLTest = ScholarshipsAllDDLTestModel(sequelize, DataTypes);
 const FieldOfStudyCategoriesDDLModel = require('./fieldofstudyddl.model');
 const FieldOfStudyCategoriesDDL = FieldOfStudyCategoriesDDLModel(sequelize, DataTypes);
 const GenderCategoriesDDLModel = require('./genderddl.model');
@@ -80,13 +85,16 @@ const ScholarshipStatusCategoriesDDL = ScholarshipStatusCategoriesDDLModel(seque
 /********************************************
   Sponsor Models
 ********************************************/
-const SponsorsTableTestModel = require('./sponsorsTableTest.model');
-const SponsorsTableTest = SponsorsTableTestModel(sequelize, DataTypes);
-SponsorsTableTest.removeAttribute('id');  // The default [id] column is not used in this table
+// const SponsorsTableTestModel = require('./sponsorsTableTest.model');
+// const SponsorsTableTest = SponsorsTableTestModel(sequelize, DataTypes);
+// SponsorsTableTest.removeAttribute('id');  // The default [id] column is not used in this table
+const SponsorsTableModel = require('./sponsorsTable.model');
+const SponsorsTable = SponsorsTableModel(sequelize, DataTypes);
+SponsorsTable.removeAttribute('id');  // The default [id] column is not used in this table
 const SponsorsAllDDLModel = require('./sponsorsAllDDL.model');
 const SponsorsAllDDL = SponsorsAllDDLModel(sequelize, DataTypes);
-const SponsorsAllDDLTestModel = require('./sponsorsAllDDL_Test.model');
-const SponsorsAllDDLTest = SponsorsAllDDLTestModel(sequelize, DataTypes);
+// const SponsorsAllDDLTestModel = require('./sponsorsAllDDL_Test.model');
+// const SponsorsAllDDLTest = SponsorsAllDDLTestModel(sequelize, DataTypes);
 const SponsorsAllViewModel = require('./sponsorsAllView.model');
 const SponsorsAllView = SponsorsAllViewModel(sequelize, DataTypes);
 const SponsorTypeCategoriesDDLModel = require('./sponsortypeddl.model');
@@ -137,18 +145,21 @@ const UserPermissionCategoriesAllDDL = UserPermissionCategoriesAllDDLModel(seque
 **************************************************************************************************/
 module.exports = {
   EventLogsTable,
-  ScholarshipsTableTest,
-  ScholarshipsAllMgmtViewTest,
+  // ScholarshipsTableTest,
+  ScholarshipsTable,
+  // ScholarshipsAllMgmtViewTest,
+  ScholarshipsAllMgmtView,
   ScholarshipsActive,
   // ScholarshipsActiveDDL,
   ScholarshipsAllDDL,
-  ScholarshipsAllDDLTest,
+  //ScholarshipsAllDDLTest,
   ScholarshipRecurrenceCategoriesDDL,
   ScholarshipStatusCategoriesDDL,
   FieldOfStudyCategoriesDDL,
-  SponsorsTableTest,
+  SponsorsTable,
+  // SponsorsTableTest,
   SponsorsAllDDL,
-  SponsorsAllDDLTest,
+  // SponsorsAllDDLTest,
   GenderCategoriesDDL,
   CitizenshipCategoriesDDL,
   YearOfNeedCategoriesDDL,

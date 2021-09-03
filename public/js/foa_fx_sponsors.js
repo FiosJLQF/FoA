@@ -10,7 +10,13 @@ function showAllSponsors(sponsors, scholarships) {
     clearSponsorSearchCriteria();
 
     // load all sponsors
+    // sort the sponsors by Sponsor Name
+    console.log('Before sorting results.');
+    sponsors.sort( (a,b) => ( a.SponsorName.localeCompare(b.SponsorName) ));
+    console.log('After sorting results.');
+    // build "all sponsors results"
     buildSponsorSearchResults(sponsors, scholarships, 1);
+
 }
 
 
@@ -255,6 +261,10 @@ function findMatchingSponsors(sponsors, scholarships, pageNumber) {
         const searchResults = document.querySelector('#searchResults');
         document.querySelector('#sponsorsearchresultscolumn').removeChild(searchResults);
     } else {
+        // sort the matching sponsors by Sponsor Name
+        console.log('Before sorting results.');
+        matchingSponsors.sort( (a,b) => ( a.SponsorName.localeCompare(b.SponsorName) ));
+        console.log('After sorting results.');
         // build "sponsor search results"
         const createResults = buildSponsorSearchResults(matchingSponsors, scholarships, pageNumber);
     }
