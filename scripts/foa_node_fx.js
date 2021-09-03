@@ -4,7 +4,7 @@
 
 //const pageScholarshipVolume = 15; // number of scholarships to be displayed on a page
 //const pageSponsorVolume = 15; // number of sponsors to be displayed on a page
-const { EventLogsTable, ScholarshipsTableTest, ScholarshipsActive, ScholarshipsActiveDDL, ScholarshipsAllDDL,
+const { EventLogsTable, ScholarshipsTableTest, ScholarshipsActive, /* ScholarshipsActiveDDL, */ ScholarshipsAllDDL,
         ScholarshipsAllDDLTest, SponsorsTableTest, Sponsors, SponsorsDDL, SponsorsAllDDLTest, 
         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,

@@ -48,8 +48,8 @@ const ScholarshipsAllMgmtViewTestModel = require('./scholarshipsAllMgmtView_Test
 const ScholarshipsAllMgmtViewTest = ScholarshipsAllMgmtViewTestModel(sequelize, DataTypes);
 const ScholarshipsActiveModel = require('./scholarshipsActiveView.model');
 const ScholarshipsActive = ScholarshipsActiveModel(sequelize, DataTypes);
-const ScholarshipsActiveDDLModel = require('./scholarshipsActiveDDL.model');
-const ScholarshipsActiveDDL = ScholarshipsActiveDDLModel(sequelize, DataTypes);
+// const ScholarshipsActiveDDLModel = require('./scholarshipsActiveDDL.model.js_deprecated');
+// const ScholarshipsActiveDDL = ScholarshipsActiveDDLModel(sequelize, DataTypes);
 const ScholarshipsAllDDLModel = require('./scholarshipnameallddl.model');
 const ScholarshipsAllDDL = ScholarshipsAllDDLModel(sequelize, DataTypes);
 const ScholarshipsAllDDLTestModel = require('./scholarshipsAllDDL_Test.model');
@@ -87,8 +87,8 @@ const SponsorsAllDDLModel = require('./sponsorsAllDDL.model');
 const SponsorsAllDDL = SponsorsAllDDLModel(sequelize, DataTypes);
 const SponsorsAllDDLTestModel = require('./sponsorsAllDDL_Test.model');
 const SponsorsAllDDLTest = SponsorsAllDDLTestModel(sequelize, DataTypes);
-const SponsorsModel = require('./sponsors.model');
-const Sponsors = SponsorsModel(sequelize, DataTypes);
+const SponsorsAllViewModel = require('./sponsorsAllView.model');
+const SponsorsAllView = SponsorsAllViewModel(sequelize, DataTypes);
 const SponsorTypeCategoriesDDLModel = require('./sponsortypeddl.model');
 const SponsorTypeCategoriesDDL = SponsorTypeCategoriesDDLModel(sequelize, DataTypes);
 
@@ -140,7 +140,7 @@ module.exports = {
   ScholarshipsTableTest,
   ScholarshipsAllMgmtViewTest,
   ScholarshipsActive,
-  ScholarshipsActiveDDL,
+  // ScholarshipsActiveDDL,
   ScholarshipsAllDDL,
   ScholarshipsAllDDLTest,
   ScholarshipRecurrenceCategoriesDDL,
@@ -157,7 +157,7 @@ module.exports = {
   FAAPilotCertificateCategoriesDDL,
   FAAPilotRatingCategoriesDDL,
   FAAMechanicCertificateCategoriesDDL,
-  Sponsors,
+  SponsorsAllView,
   SponsorTypeCategoriesDDL,
   UsersAllDDL,
   UsersTable,

@@ -5,7 +5,7 @@ const express = require("express");
 const router = express.Router();
 const { auth, requiresAuth } = require('express-openid-connect');
 require("dotenv").config();  // load all ".env" variables into "process.env" for use
-const { ScholarshipsTableTest, ScholarshipsActive, ScholarshipsActiveDDL, ScholarshipsAllDDL, ScholarshipsAllDDLTest,
+const { ScholarshipsTableTest, ScholarshipsActive, /* ScholarshipsActiveDDL, */ ScholarshipsAllDDL, ScholarshipsAllDDLTest,
         ScholarshipRecurrenceCategoriesDDL, ScholarshipStatusCategoriesDDL,
         SponsorsTableTest, Sponsors, SponsorsDDL, SponsorsAllDDLTest, SponsorTypeCategoriesDDL,
         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
@@ -522,9 +522,11 @@ router.post('/scholarshipadd', requiresAuth(),
     async (req, res) => {
 
     // Reformat the multiple-option SELECT values into a pipe-delimited array for storage
+    const scholarshipRecurrenceFormatted = jsFx.convertOptionsToDelimitedString(req.body.scholarshipRecurrence, "|", "0");
     const criteriaFieldOfStudyFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFieldOfStudy, "|", "0");
     const criteriaCitizenshipFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaCitizenship, "|", "0");
     const criteriaYearOfNeedFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaYearOfNeed, "|", "0");
+    const criteriaFemaleApplicantsOnlyFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFemaleApplicantsOnly, "|", "0");
     const criteriaEnrollmentStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaEnrollmentStatus, "|", "0");
     const criteriaMilitaryServiceFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaMilitaryService, "|", "0");
     const criteriaFAAPilotCertificateFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAPilotCertificate, "|", "0");
@@ -573,7 +575,7 @@ router.post('/scholarshipadd', requiresAuth(),
             Notes_Admin: req.body.notesAdmin,
             ScholarshipEligibilityReqs: req.body.scholarshipEligReqsPrimary,
             ScholarshipEligibilityReqsOther: req.body.scholarshipEligReqsOther,
-            ScholarshipRecurrence: req.body.scholarshipRecurrence,
+            ScholarshipRecurrence: scholarshipRecurrenceFormatted,
             ScholarshipApplListDate: ApplListDate,
             ScholarshipApplStartDate: ApplStartDate,
             ScholarshipApplEndDate: ApplEndDate,
@@ -582,7 +584,7 @@ router.post('/scholarshipadd', requiresAuth(),
             Criteria_AgeMaximum: MaximumAge,
             Criteria_Citizenship: criteriaCitizenshipFormatted,
             Criteria_YearOfNeed: criteriaYearOfNeedFormatted,
-            Criteria_FemaleApplicantsOnly: req.body.criteriaFemaleApplicantsOnly,
+            Criteria_FemaleApplicantsOnly: criteriaFemaleApplicantsOnlyFormatted,
             Criteria_EnrollmentStatus: criteriaEnrollmentStatusFormatted,
             Criteria_GPAMinimum: MinimumGPA,
             Criteria_USMilitaryService: criteriaMilitaryServiceFormatted,
@@ -752,9 +754,11 @@ router.put('/sponsorupdate', requiresAuth(), async (req, res) => {
 router.put('/scholarshipupdate', requiresAuth(), async (req, res) => {
 
     // Reformat the multiple-option SELECT values into a pipe-delimited array for storage
+    const scholarshipRecurrenceFormatted = jsFx.convertOptionsToDelimitedString(req.body.scholarshipRecurrence, "|", "0");
     const criteriaFieldOfStudyFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFieldOfStudy, "|", "0");
     const criteriaCitizenshipFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaCitizenship, "|", "0");
     const criteriaYearOfNeedFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaYearOfNeed, "|", "0");
+    const criteriaFemaleApplicantsOnlyFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFemaleApplicantsOnly, "|", "0");
     const criteriaEnrollmentStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaEnrollmentStatus, "|", "0");
     const criteriaMilitaryServiceFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaMilitaryService, "|", "0");
     const criteriaFAAPilotCertificateFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAPilotCertificate, "|", "0");
@@ -788,7 +792,7 @@ router.put('/scholarshipupdate', requiresAuth(), async (req, res) => {
         Notes_Admin: req.body.notesAdmin,
         ScholarshipEligibilityReqs: req.body.scholarshipEligReqsPrimary,
         ScholarshipEligibilityReqsOther: req.body.scholarshipEligReqsOther,
-        ScholarshipRecurrence: req.body.scholarshipRecurrence,
+        ScholarshipRecurrence: scholarshipRecurrenceFormatted,
         ScholarshipApplListDate: ApplListDate,
         ScholarshipApplStartDate: ApplStartDate,
         ScholarshipApplEndDate: ApplEndDate,
@@ -797,7 +801,7 @@ router.put('/scholarshipupdate', requiresAuth(), async (req, res) => {
         Criteria_AgeMaximum: MaximumAge,
         Criteria_Citizenship: criteriaCitizenshipFormatted,
         Criteria_YearOfNeed: criteriaYearOfNeedFormatted,
-        Criteria_FemaleApplicantsOnly: req.body.criteriaFemaleApplicantsOnly,
+        Criteria_FemaleApplicantsOnly: criteriaFemaleApplicantsOnlyFormatted,
         Criteria_EnrollmentStatus: criteriaEnrollmentStatusFormatted,
         Criteria_GPAMinimum: MinimumGPA,
         Criteria_USMilitaryService: criteriaMilitaryServiceFormatted,

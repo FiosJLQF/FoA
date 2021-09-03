@@ -3,7 +3,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 
 module.exports = (sequelize, DataTypes) => {
-    const Sponsors = sequelize.define('vwSponsorsAll', {
+    const SponsorsAllView = sequelize.define('vwSponsorsAll', {
         SponsorID: {
             type: DataTypes.INTEGER,
             primaryKey: true
@@ -24,5 +24,5 @@ module.exports = (sequelize, DataTypes) => {
     freezeTableName: true,  // don't have Sequelize automatically pluralize the table name
     timestamps: false,  // don't add the timestamp attributes (updatedAt, createdAt)
     });
-    return Sponsors;
+    return SponsorsAllView;
 };
