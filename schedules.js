@@ -8,3 +8,5 @@ function test_email() {
 module.exports = {
     test_email
 };
+
+require('make-runnable');
