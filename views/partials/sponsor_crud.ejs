@@ -206,7 +206,7 @@
     // Set the current values for the Sponsor data elements
     document.getElementById('sponsorIDToUpdate').value = "<%- sponsorDetails[0].SponsorID %>";
     document.getElementById('sponsorName').value = "<%= sponsorDetails[0].SponsorName %>";
-    document.getElementById('sponsorDescription').value = "<%= sponsorDetails[0].SponsorDescription %>";
+    document.getElementById('sponsorDescription').innerHTML = `<%= sponsorDetails[0].SponsorDescription %>`;
     document.getElementById('sponsorWebsite').value = "<%= sponsorDetails[0].SponsorWebsite %>";
     document.getElementById('sponsorLogo').value = "<%= sponsorDetails[0].SponsorLogo %>";
     document.getElementById('sponsorContactFName').value = "<%= sponsorDetails[0].SponsorContactFName %>";

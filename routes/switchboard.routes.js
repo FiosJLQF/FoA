@@ -524,6 +524,7 @@ router.post('/scholarshipadd', requiresAuth(),
     async (req, res) => {
 
     // Reformat the multiple-option SELECT values into a pipe-delimited array for storage
+    const scholarshipStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.scholarshipStatus, "|", "0");
     const scholarshipRecurrenceFormatted = jsFx.convertOptionsToDelimitedString(req.body.scholarshipRecurrence, "|", "0");
     const criteriaFieldOfStudyFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFieldOfStudy, "|", "0");
     const criteriaCitizenshipFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaCitizenship, "|", "0");
@@ -565,7 +566,7 @@ router.post('/scholarshipadd', requiresAuth(),
         console.log(`sponsorID to save scholarship: ${req.body.sponsorID}`);
         const newScholarship = new ScholarshipsTable( {
             SponsorID: req.body.sponsorID,
-            ScholarshipStatus: req.body.scholarshipStatus,
+            ScholarshipStatus: scholarshipStatusFormatted,
             ScholarshipName: req.body.scholarshipName,
             ScholarshipDescription: req.body.scholarshipDescription,
             ScholarshipLink: req.body.scholarshipLink,
@@ -755,7 +756,10 @@ router.put('/sponsorupdate', requiresAuth(), async (req, res) => {
 ///////////////////////////////
 router.put('/scholarshipupdate', requiresAuth(), async (req, res) => {
 
+    console.log(`ScholarshipDescription (unformatted): ${req.body.scholarshipDescription}`);
+
     // Reformat the multiple-option SELECT values into a pipe-delimited array for storage
+    const scholarshipStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.scholarshipStatus, "|", "0");
     const scholarshipRecurrenceFormatted = jsFx.convertOptionsToDelimitedString(req.body.scholarshipRecurrence, "|", "0");
     const criteriaFieldOfStudyFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFieldOfStudy, "|", "0");
     const criteriaCitizenshipFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaCitizenship, "|", "0");
@@ -782,7 +786,7 @@ router.put('/scholarshipupdate', requiresAuth(), async (req, res) => {
 
     // Update the database record with the new data
     await scholarshipRecord.update( {
-        ScholarshipStatus: req.body.scholarshipStatus,
+        ScholarshipStatus: scholarshipStatusFormatted,
         ScholarshipName: req.body.scholarshipName,
         ScholarshipDescription: req.body.scholarshipDescription,
         ScholarshipLink: req.body.scholarshipLink,

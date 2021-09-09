@@ -552,7 +552,8 @@ function sendEmail(emailRecipient, emailSubject, emailBody) {
         to: emailRecipient,
         from: process.env.EMAIL_SENDER,
         subject: emailSubject,
-        text: emailBody // change to HTML once content is pre-checked
+        text: emailBody,
+        html: emailBody
     };
 
     // send the message

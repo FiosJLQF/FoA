@@ -137,6 +137,7 @@ textarea.data-mgmt {
   width: 590px;
   height: 85px;
   line-height: 1.1;
+  white-space: pre-wrap;
 }
 
 button.data-mgmt {

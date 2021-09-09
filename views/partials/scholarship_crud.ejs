@@ -564,17 +564,31 @@
     // Set the current values for the Scholarship data elements
     document.getElementById('scholarshipIDToUpdate').value = "<%- scholarshipDetails[0].ScholarshipID %>";
     document.getElementById('sponsorID').value = "<%- sponsorID %>";
-    document.getElementById('scholarshipStatus').value = "<%= scholarshipDetails[0].ScholarshipStatus %>";
+//    document.getElementById('scholarshipStatus').value = "<%= scholarshipDetails[0].ScholarshipStatus %>";
+    // Select Scholarship Status
+    var scholarshipStatus = "<%- scholarshipDetails[0].ScholarshipStatus %>";
+    var scholarshipStatusArrTrimmed = scholarshipStatus.split('|').slice(1, -1);
+    var scholarshipStatusSelectObject = document.getElementById('scholarshipStatus');
+    if ( scholarshipStatusArrTrimmed.length !== 0 ) {
+      scholarshipStatusSelectObject.options[0].selected = '';  // Remove the default 'Not Selected' option
+      scholarshipStatusArrTrimmed.forEach( function(scholarshipStatus) {
+        for ( i=0; i < scholarshipStatusSelectObject.length; i++ ) {
+          if ( scholarshipStatusSelectObject.options[i].value === scholarshipStatus ) {
+            scholarshipStatusSelectObject.options[i].selected = 'selected';
+          }
+        }
+      });
+    };
     document.getElementById('scholarshipName').value = "<%= scholarshipDetails[0].ScholarshipName %>";
-    document.getElementById('scholarshipDescription').value = "<%= scholarshipDetails[0].ScholarshipDescription %>";
+    document.getElementById('scholarshipDescription').innerHTML = `<%= scholarshipDetails[0].ScholarshipDescription %>`;
     document.getElementById('scholarshipLink').value = "<%= scholarshipDetails[0].ScholarshipLink %>";
     document.getElementById('scholarshipAward').value = "<%= scholarshipDetails[0].ScholarshipAward %>";
     document.getElementById('scholarshipContactFName').value = "<%= scholarshipDetails[0].ScholarshipContactFName %>";
     document.getElementById('scholarshipContactLName').value = "<%= scholarshipDetails[0].ScholarshipContactLName %>";
     document.getElementById('scholarshipContactEmail').value = "<%= scholarshipDetails[0].ScholarshipContactEmail %>";
     document.getElementById('scholarshipContactTelephone').value = "<%= scholarshipDetails[0].ScholarshipContactTelephone %>";
-    document.getElementById('notesAdmin').value = "<%= scholarshipDetails[0].Notes_Admin %>";
-    document.getElementById('scholarshipEligReqsPrimary').value = "<%= scholarshipDetails[0].ScholarshipEligibilityReqs %>";
+    document.getElementById('notesAdmin').innerHTML = `<%= scholarshipDetails[0].Notes_Admin %>`;
+    document.getElementById('scholarshipEligReqsPrimary').innerHTML = `<%= scholarshipDetails[0].ScholarshipEligibilityReqs %>`;
 //    document.getElementById('scholarshipEligReqsOther').value = "<%= scholarshipDetails[0].ScholarshipEligibilityReqsOther %>";
     document.getElementById('scholarshipRecurrence').value = "<%= scholarshipDetails[0].ScholarshipRecurrence %>";
     // Select Recurrence Frequency
