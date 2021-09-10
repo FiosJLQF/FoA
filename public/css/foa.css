@@ -621,3 +621,11 @@ td.amcg_main_td {
   text-align: center;
   color: var(--amcg-blue);
 }
+
+.button-icon-magglass {
+  width: 35px;
+}
+
+.button-icon-refresh {
+  width: 25px;
+}

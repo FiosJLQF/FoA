@@ -1,7 +1,7 @@
 <div>
     <div class="bodylayout1col1title" id="searchCriteriaTitle">Search Criteria</div>
     <hr class="bodycol1break">
-    <div class="searchInstructions">Enter search criteria below and click "search".</div><br>
+    <div class="searchInstructions">Enter criteria below and click "search".</div><br>
 
     <!-- Field(s) of Study -->
     Field of Study: <button type="button" class="btn btn-default button-small"
@@ -210,15 +210,19 @@
 
     <div style="text-align:left">
         <button type="button" class="btn btn-default button-search" onclick="searchScholarships(schRows);">
-            <img src="/img/imgMagnifyingGlass.png" alt="Magnifying Glass" style="width:35px;" class="img-responsive">
+            <img src="/img/imgMagnifyingGlass.png" alt="Magnifying Glass" class="img-responsive button-icon-magglass">
             Search
-        </button><br>
-        <button type="button" class="btn btn-default button-small" onclick="showAllScholarships(schRows);">
+        </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-default button-search" onclick="showAllScholarships(schRows);">
+            <img src="/img/imgRefresh.png" alt="arrow circling clockwise" class="img-responsive button-icon-refresh">
+            Reset Search
+        </button>
+        <!-- <button type="button" class="btn btn-default button-small" onclick="showAllScholarships(schRows);">
             >> Show All Scholarships
         </button><br>
         <button type="button" class="btn btn-default button-small" onclick="clearScholarshipSearchCriteria();">
             >> Reset Search
-        </button>
+        </button> -->
     </div>
 
 </div>
@@ -270,7 +274,5 @@
 
     // Load all active scholarships into the "Search" button destinations
     var schRows = <%- JSON.stringify(scholarshipsActive.rows) %>;
-
-//alert('Test 2');
 
 </script>

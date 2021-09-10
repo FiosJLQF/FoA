@@ -19,3 +19,9 @@
     </div>
   </div>
 </div>
+
+<script>
+  // Show all active scholarships by default
+  var schRows = <%- JSON.stringify(scholarshipsActive.rows) %>;
+  showAllScholarships(schRows);
+</script>

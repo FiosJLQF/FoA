@@ -581,7 +581,7 @@
     };
     document.getElementById('scholarshipName').value = "<%= scholarshipDetails[0].ScholarshipName %>";
     document.getElementById('scholarshipDescription').innerHTML = `<%= scholarshipDetails[0].ScholarshipDescription %>`;
-    document.getElementById('scholarshipLink').value = "<%= scholarshipDetails[0].ScholarshipLink %>";
+    document.getElementById('scholarshipLink').value = `<%- scholarshipDetails[0].ScholarshipLink %>`;
     document.getElementById('scholarshipAward').value = "<%= scholarshipDetails[0].ScholarshipAward %>";
     document.getElementById('scholarshipContactFName').value = "<%= scholarshipDetails[0].ScholarshipContactFName %>";
     document.getElementById('scholarshipContactLName').value = "<%= scholarshipDetails[0].ScholarshipContactLName %>";

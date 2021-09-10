@@ -123,11 +123,16 @@ function clearScholarshipSearchCriteria() {
 function clearScholarshipSearchResults() {
 
     document.querySelector('#searchResultsTitle').textContent = 'Enter criteria and click "Search"';
-    const searchResults = document.querySelector('#searchResults');
-    if (searchResults !== null) {
-        document.querySelector('#scholarshipsearchresultscolumn').removeChild(searchResults);
+//    const searchResults = document.querySelector('#searchResults');
+    if (document.querySelector('#searchResults') !== null) {
+        document.querySelector('#scholarshipsearchresultscolumn').removeChild(document.querySelector('#searchResults'));
         document.querySelector('#scholarshipsearchresultscolumn').removeChild(pagination);
     };
+    // const searchResults = document.querySelector('#searchResults');
+    // if (searchResults !== null) {
+    //     document.querySelector('#scholarshipsearchresultscolumn').removeChild(searchResults);
+    //     document.querySelector('#scholarshipsearchresultscolumn').removeChild(pagination);
+    // };
 
 }
 
@@ -776,7 +781,11 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber, showMat
 
     // clear any previous search results
     clearScholarshipSearchResults();
-    document.querySelector('#searchResultsTitle').textContent = 'Search Results:';
+    if ( showMatchingCriteria == true ) {
+        document.querySelector('#searchResultsTitle').textContent = 'Search Results:';
+    } else {
+        document.querySelector('#searchResultsTitle').textContent = 'Showing All Scholarships';
+    }
 
     // if a specific page number is displayed, extract just the scholarships to be built
     const selectedScholarships = matchingScholarships.slice(

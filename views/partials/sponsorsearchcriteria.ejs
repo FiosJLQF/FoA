@@ -1,7 +1,7 @@
 <div>
     <div class="bodylayout1col1title" id="searchCriteriaTitle">Search Criteria</div>
     <hr class="bodycol1break">
-    <div class="searchInstructions">Enter search criteria below and click "search".</div><br>
+    <div class="searchInstructions">Enter criteria below and click "search".</div><br>
 
     <!-- Keyword(s) -->
     Keywords: <button type="button" class="btn btn-default button-small"
@@ -46,14 +46,12 @@
 
     <div style="text-align:left">
         <button type="button" class="btn btn-default button-search" onclick="findMatchingSponsors(spnRows, schRows, 1);">
-            <img src="/img/imgMagnifyingGlass.png" alt="Magnifying Glass" style="width:35px;" class="img-responsive">
+            <img src="/img/imgMagnifyingGlass.png" alt="Magnifying Glass" class="img-responsive button-icon-magglass">
             Search
-        </button><br>
-        <button type="button" class="btn btn-default button-small" onclick="showAllSponsors(spnRows, schRows);">
-            >> Show All Sponsors
-        </button><br>
-        <button type="button" class="btn btn-default button-small" onclick="clearSponsorSearchCriteria();">
-            >> Reset Search
+        </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-default button-search" onclick="showAllSponsors(spnRows, schRows);">
+            <img src="/img/imgRefresh.png" alt="arrow circling clockwise" class="img-responsive button-icon-refresh">
+            Reset Search
         </button>
     </div>
 

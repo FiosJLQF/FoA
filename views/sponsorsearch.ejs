@@ -19,3 +19,10 @@
     </div>
   </div>
 </div>
+
+<script>
+  // Show all active sponsors by default
+  var spnRows = <%- JSON.stringify(sponsorsAllView.rows) %>;
+  var schRows = <%- JSON.stringify(scholarshipsActive.rows) %>;
+  showAllSponsors(spnRows, schRows);
+</script>

@@ -15,7 +15,7 @@ function showAllSponsors(sponsors, scholarships) {
     sponsors.sort( (a,b) => ( a.SponsorName.localeCompare(b.SponsorName) ));
     console.log('After sorting results.');
     // build "all sponsors results"
-    buildSponsorSearchResults(sponsors, scholarships, 1);
+    buildSponsorSearchResults(sponsors, scholarships, 1, false);
 
 }
 
@@ -266,7 +266,7 @@ function findMatchingSponsors(sponsors, scholarships, pageNumber) {
         matchingSponsors.sort( (a,b) => ( a.SponsorName.localeCompare(b.SponsorName) ));
         console.log('After sorting results.');
         // build "sponsor search results"
-        const createResults = buildSponsorSearchResults(matchingSponsors, scholarships, pageNumber);
+        const createResults = buildSponsorSearchResults(matchingSponsors, scholarships, pageNumber, true);
     }
 
 }
@@ -274,13 +274,15 @@ function findMatchingSponsors(sponsors, scholarships, pageNumber) {
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // build the sponsor search results divs
 /////////////////////////////////////////////////////////////////////////////////////////////////
-function buildSponsorSearchResults(matchingSponsors, scholarships, pageNumber) {
+function buildSponsorSearchResults(matchingSponsors, scholarships, pageNumber, showMatchingCriteria) {
 
     // clear any previous search results
     clearSponsorSearchResults();
-
-    // get a reference to the Search Results column <div>
-    document.querySelector('#searchResultsTitle').textContent = 'Search Results:';
+    if ( showMatchingCriteria == true ) {
+        document.querySelector('#searchResultsTitle').textContent = 'Search Results:';
+    } else {
+        document.querySelector('#searchResultsTitle').textContent = 'Showing All Sponsors';
+    }
 
     // if a specific page number is displayed, extract just the scholarships to be built
     const selectedSponsors = matchingSponsors.slice(
@@ -389,7 +391,7 @@ function buildPageNavigator(matchingSponsors, scholarships, pageNumberSelected) 
         spanPageNumber.addEventListener('click', function() {
 //            clearSponsorSearchCriteria();
             clearSponsorSearchResults();
-            buildSponsorSearchResults(matchingSponsors, scholarships, pageNumberToLoad);
+            buildSponsorSearchResults(matchingSponsors, scholarships, pageNumberToLoad, true);
         });
 
         lnkPageNumber.append(spanPageNumber);
