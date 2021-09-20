@@ -86,7 +86,7 @@
             <label for="sponsorContactFName" class="data-mgmt">Contact First Name:</label>
           </div>
           <div class="col-1 data-mgmt-required">
-            <label for="sponsorContactFName" class="data-mgmt-required">*</label>
+            <label for="sponsorContactFName" class="data-mgmt-required"></label>
           </div>
           <div class="col-8 data-mgmt-value">
             <input type="text" id="sponsorContactFName" name="sponsorContactFName" class="data-mgmt-text-short"><br>
@@ -102,7 +102,7 @@
             <label for="sponsorContactLName" class="data-mgmt">Contact Last Name:</label>
           </div>
           <div class="col-1 data-mgmt-required">
-            <label for="sponsorContactLName" class="data-mgmt-required">*</label>
+            <label for="sponsorContactLName" class="data-mgmt-required"></label>
           </div>
           <div class="col-8 data-mgmt-value">
             <input type="text" id="sponsorContactLName" name="sponsorContactLName" class="data-mgmt-text-short"><br>
@@ -300,34 +300,34 @@
     //////////////////////////////////////////////////
     // Sponsor Contact First Name
     //////////////////////////////////////////////////
-    var sponsorContactFName = document.getElementById("sponsorContactFName").value;
-    var sponsorContactFNameErrors = document.getElementById("sponsorContactFNameErrors");
-    sponsorContactFNameErrors.innerText = '';  // reset value
-    if ( sponsorContactFName.length === 0 ) {
-      sponsorContactFNameErrors.innerText = "Sponsor Contact First Name cannot be blank.";
-    };
-    if ( sponsorContactFNameErrors.innerText.length === 0 ) {  // if no errors, add the sponsor
-      sponsorContactFNameErrors.style.display = "none";
-    } else {
-      sponsorContactFNameErrors.style.display = "block";
-      dataAreValid = false;
-    };
+    // var sponsorContactFName = document.getElementById("sponsorContactFName").value;
+    // var sponsorContactFNameErrors = document.getElementById("sponsorContactFNameErrors");
+    // sponsorContactFNameErrors.innerText = '';  // reset value
+    // if ( sponsorContactFName.length === 0 ) {
+    //   sponsorContactFNameErrors.innerText = "Sponsor Contact First Name cannot be blank.";
+    // };
+    // if ( sponsorContactFNameErrors.innerText.length === 0 ) {  // if no errors, add the sponsor
+    //   sponsorContactFNameErrors.style.display = "none";
+    // } else {
+    //   sponsorContactFNameErrors.style.display = "block";
+    //   dataAreValid = false;
+    // };
 
     //////////////////////////////////////////////////
     // Sponsor Contact Last Name
     //////////////////////////////////////////////////
-    var sponsorContactLName = document.getElementById("sponsorContactLName").value;
-    var sponsorContactLNameErrors = document.getElementById("sponsorContactLNameErrors");
-    sponsorContactLNameErrors.innerText = '';  // reset value
-    if ( sponsorContactLName.length === 0 ) {
-      sponsorContactLNameErrors.innerText = "Sponsor Contact Last Name cannot be blank.";
-    };
-    if ( sponsorContactLNameErrors.innerText.length === 0 ) {  // if no errors, add the sponsor
-      sponsorContactLNameErrors.style.display = "none";
-    } else {
-      sponsorContactLNameErrors.style.display = "block";
-      dataAreValid = false;
-    };
+    // var sponsorContactLName = document.getElementById("sponsorContactLName").value;
+    // var sponsorContactLNameErrors = document.getElementById("sponsorContactLNameErrors");
+    // sponsorContactLNameErrors.innerText = '';  // reset value
+    // if ( sponsorContactLName.length === 0 ) {
+    //   sponsorContactLNameErrors.innerText = "Sponsor Contact Last Name cannot be blank.";
+    // };
+    // if ( sponsorContactLNameErrors.innerText.length === 0 ) {  // if no errors, add the sponsor
+    //   sponsorContactLNameErrors.style.display = "none";
+    // } else {
+    //   sponsorContactLNameErrors.style.display = "block";
+    //   dataAreValid = false;
+    // };
 
     //////////////////////////////////////////////////
     // Sponsor Contact Email

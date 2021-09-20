@@ -353,6 +353,7 @@ select.single-choice {
   font-variant: normal;
   padding-top: 8px;
   line-height: 1.3;
+  white-space: pre-wrap;
 }
 
 /* .scholarshipsearchresultscol3B.text-block.description-short {  */
@@ -363,6 +364,8 @@ select.single-choice {
   display: -webkit-box;
   -webkit-line-clamp: 6;
   -webkit-box-orient: vertical;
+  white-space: pre-wrap;
+
 /*  max-height: 110px; /* default to 6 lines of text */ 
 /*  white-space: nowrap; */
 /*  -o-text-overflow: ellipsis; */
@@ -372,6 +375,7 @@ select.single-choice {
 .description-long {
   height: auto; /* expand to fit contents */
   overflow: visible;
+  white-space: pre-wrap;
 }
 
 .sponsorLogo {

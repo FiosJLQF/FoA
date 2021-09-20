@@ -907,7 +907,7 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber, showMat
                 spanScholarshipDescription.id = 'pscholarshipdesc_' + selectedScholarship['ScholarshipID'];
                 spanScholarshipDescription.classList.add('description-short');
 //                spanScholarshipDescription.textContent = selectedScholarship['ScholarshipDescription'];
-                spanScholarshipDescription.innerText = selectedScholarship['ScholarshipDescription'];
+                spanScholarshipDescription.innerHTML = selectedScholarship['ScholarshipDescription'];
 
                 divScholarshipRow1Col3Row4Col2.appendChild(spanScholarshipDescription);
 

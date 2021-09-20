@@ -839,7 +839,7 @@ function createScholarshipDiv(scholarship) {
         const spanScholarshipDescription = document.createElement('span');
         spanScholarshipDescription.id = 'spanScholarshipDesc_' + scholarship['ScholarshipID'];
         spanScholarshipDescription.classList.add('description-short');
-        spanScholarshipDescription.innerText = scholarship['ScholarshipDescription'];
+        spanScholarshipDescription.innerHTML = scholarship['ScholarshipDescription'];
         divScholarshipRow5Col4.appendChild(spanScholarshipDescription);
 
         const iconDescExpand = document.createElement('i');
