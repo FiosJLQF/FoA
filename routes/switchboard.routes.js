@@ -21,6 +21,7 @@ const methodOverride = require('method-override');  // allows PUT and other non-
 router.use(methodOverride('_method')); // allows use of the PUT/DELETE method extensions
 const jsFx = require('../scripts/foa_node_fx');
 const { check, validationResult } = require('express-validator');
+const htmlEntities = require('html-entities');
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -387,6 +388,19 @@ router.get('/', requiresAuth(), async (req, res) => {
         } else{
             statusMessage = '';
         };
+
+        ////////////////////////////////////////////////////
+        // HTML decode for display
+        ////////////////////////////////////////////////////
+        // sponsorsAllowedDDL.rows.forEach( function(sponsor, index) {
+        //     sponsor.optiontext = htmlEntities.decode(sponsor.optiontext);
+        // });
+        // sponsorDetails.forEach( function(sponsor, index) {
+        //     console.log(sponsor.SponsorName);
+        //     sponsor.SponsorName = htmlEntities.decode(sponsor.SponsorName);
+        //     console.log(sponsor.SponsorName);
+        // });
+           
 
         ////////////////////////////////////////////////////
         // Render the page

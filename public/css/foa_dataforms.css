@@ -133,11 +133,31 @@ input.data-mgmt-text-third {
   width: 195px;
   line-height: 1.00;
 }
+
 textarea.data-mgmt {
   width: 590px;
   height: 85px;
   line-height: 1.1;
   white-space: pre-wrap;
+}
+
+textarea.data-mgmt-1line {
+  width: 590px;
+  height: 23px;
+  resize: none;
+}
+
+textarea.data-mgmt-1line-half {
+  width: 295px;
+  height: 23px;
+  resize: none;
+}
+
+textarea.data-mgmt-2lines {
+  width: 590px;
+  height: 40px;
+  resize: none;
+  line-height: 1.1;
 }
 
 button.data-mgmt {

@@ -26,7 +26,7 @@
             <label for="sponsorName" class="data-mgmt-required">*</label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <input type="text" id="sponsorName" name="sponsorName" class="data-mgmt-text"><br>
+            <textarea id="sponsorName" name="sponsorName" class="data-mgmt-1line" rows=></textarea><br>
             <span class="data-mgmt-error" id="sponsorNameErrors"></span>
           </div>
         </div>
@@ -58,7 +58,8 @@
             <label for="sponsorWebsite" class="data-mgmt-required"></label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <input type="text" id="sponsorWebsite" name="sponsorWebsite" class="data-mgmt-text">
+            <textarea id="sponsorWebsite" name="sponsorWebsite" class="data-mgmt-2lines" rows="1"></textarea><br>
+            <span class="data-mgmt-error" id="sponsorWebsiteErrors"></span>
           </div>
         </div>
       </div><br>
@@ -73,7 +74,7 @@
             <label for="sponsorLogo" class="data-mgmt-required">*</label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <input type="text" id="sponsorLogo" name="sponsorLogo" class="data-mgmt-text"><br>
+            <textarea id="sponsorLogo" name="sponsorLogo" class="data-mgmt-2lines" rows="1"></textarea><br>
             <span class="data-mgmt-error" id="sponsorLogoErrors"></span>
           </div>
         </div>
@@ -89,7 +90,7 @@
             <label for="sponsorContactFName" class="data-mgmt-required"></label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <input type="text" id="sponsorContactFName" name="sponsorContactFName" class="data-mgmt-text-short"><br>
+            <textarea id="sponsorContactFName" name="sponsorContactFName" class="data-mgmt-1line-half" rows="1"></textarea><br>
             <span class="data-mgmt-error" id="sponsorContactFNameErrors"></span>
           </div>
         </div>
@@ -105,7 +106,7 @@
             <label for="sponsorContactLName" class="data-mgmt-required"></label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <input type="text" id="sponsorContactLName" name="sponsorContactLName" class="data-mgmt-text-short"><br>
+            <textarea id="sponsorContactLName" name="sponsorContactLName" class="data-mgmt-1line-half" rows="1"></textarea><br>
             <span class="data-mgmt-error" id="sponsorContactLNameErrors"></span>
           </div>
         </div>
@@ -121,7 +122,7 @@
             <label for="sponsorContactEmail" class="data-mgmt-required">*</label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <input type="text" id="sponsorContactEmail" name="sponsorContactEmail" class="data-mgmt-text-short"><br>
+            <textarea id="sponsorContactEmail" name="sponsorContactEmail" class="data-mgmt-1line-half" rows="1"></textarea><br>
             <span class="data-mgmt-error" id="sponsorContactEmailErrors"></span>
           </div>
         </div>
@@ -137,7 +138,8 @@
             <label for="sponsorContactTelephone" class="data-mgmt-required"></label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <input type="text" id="sponsorContactTelephone" name="sponsorContactTelephone" class="data-mgmt-text-short">
+            <textarea id="sponsorContactTelephone" name="sponsorContactTelephone" class="data-mgmt-1line-half" rows="1"></textarea><br>
+            <span class="data-mgmt-error" id="sponsorContactTelephoneErrors"></span>
           </div>
         </div>
       </div><br>
@@ -205,14 +207,14 @@
     document.getElementById('sponsorData').method = "POST";
     // Set the current values for the Sponsor data elements
     document.getElementById('sponsorIDToUpdate').value = "<%- sponsorDetails[0].SponsorID %>";
-    document.getElementById('sponsorName').value = "<%= sponsorDetails[0].SponsorName %>";
+    document.getElementById('sponsorName').innerHTML = "<%= sponsorDetails[0].SponsorName %>";
     document.getElementById('sponsorDescription').innerHTML = `<%= sponsorDetails[0].SponsorDescription %>`;
-    document.getElementById('sponsorWebsite').value = "<%= sponsorDetails[0].SponsorWebsite %>";
-    document.getElementById('sponsorLogo').value = "<%= sponsorDetails[0].SponsorLogo %>";
-    document.getElementById('sponsorContactFName').value = "<%= sponsorDetails[0].SponsorContactFName %>";
-    document.getElementById('sponsorContactLName').value = "<%= sponsorDetails[0].SponsorContactLName %>";
-    document.getElementById('sponsorContactEmail').value = "<%= sponsorDetails[0].SponsorContactEmail %>";
-    document.getElementById('sponsorContactTelephone').value = "<%= sponsorDetails[0].SponsorContactTelephone %>";
+    document.getElementById('sponsorWebsite').innerHTML = "<%= sponsorDetails[0].SponsorWebsite %>";
+    document.getElementById('sponsorLogo').innerHTML = "<%= sponsorDetails[0].SponsorLogo %>";
+    document.getElementById('sponsorContactFName').innerHTML = "<%= sponsorDetails[0].SponsorContactFName %>";
+    document.getElementById('sponsorContactLName').innerHTML = "<%= sponsorDetails[0].SponsorContactLName %>";
+    document.getElementById('sponsorContactEmail').innerHTML = "<%= sponsorDetails[0].SponsorContactEmail %>";
+    document.getElementById('sponsorContactTelephone').innerHTML = "<%= sponsorDetails[0].SponsorContactTelephone %>";
     // Select Sponsor Types from the Sponsor's data
     var sponsorTypes = "<%- sponsorDetails[0].SponsorType %>";
     var sponsorTypesArrTrimmed = sponsorTypes.split('|').slice(1, -1);

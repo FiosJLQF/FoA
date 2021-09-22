@@ -5,7 +5,6 @@
 //const { eventNames } = require("../../app");
 const pageScholarshipVolume = 15; // number of scholarships to be displayed on a page
 const pageSponsorVolume = 15; // number of sponsors to be displayed on a page
-const nodemailer = require('nodemailer');  // allows SMPT push emails to be sent
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
