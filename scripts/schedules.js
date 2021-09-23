@@ -7,7 +7,11 @@ async function test_email() {
     // console.log(sponsorTypeCategoriesDDLRows);
     //console.log('Starting email');
     let emailResultError = jsFx.sendEmail('fiosjlqf@gmail.com', 'Testing Scheduler Within Node.js', '',
-            `This is a <b>test email</b> sent by the <em>Cron To Go</em> <u>scheduler</u>. There are ${sponsorTypeCategoriesDDL.count} rows.`);
+            `This is a <b>test email</b> sent by the <em>Cron To Go</em> <u>scheduler</u>. There are ${sponsorTypeCategoriesDDL.count} rows.<br><br>
+            <table><tr><th>GenderCategory</th><th>GenderCategoryID</th><th>RecordID</th><th>GenderCategorySortOrder</th></tr>
+            <tr><td>Yes</td><td>919001</td><td>1</td><td>1</td></tr>
+            <tr><td>No</td><td>919002</td><td>2</td><td>2</td></tr>
+            </table>`);
     //console.log('Finishing email');
 };
 
