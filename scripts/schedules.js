@@ -7,7 +7,7 @@ async function test_email() {
     console.log(sponsorTypeCategoriesDDLRows);
     console.log('Starting email');
     let emailResultError = jsFx.sendEmail('fiosjlqf@gmail.com', 'Testing Scheduler Within Node.js',
-            `This is a test email sent by the Cron To Go scheduler.`);
+            `This is a test email sent by the Cron To Go scheduler. There are ${sponsorTypeCategoriesDDL.count} rows.`);
     console.log('Finishing email');
 };
 
