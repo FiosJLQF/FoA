@@ -43,7 +43,7 @@
             <label for="scholarshipName" class="data-mgmt-required">*</label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <input type="text" id="scholarshipName" name="scholarshipName" class="data-mgmt-text"><br>
+            <textarea id="scholarshipName" name="scholarshipName" class="data-mgmt-1line" rows="1"></textarea><br>
             <span class="data-mgmt-error" id="scholarshipNameErrors"></span>
           </div>
         </div>
@@ -75,7 +75,7 @@
             <label for="scholarshipLink" class="data-mgmt-required">*</label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <input type="text" id="scholarshipLink" name="scholarshipLink" class="data-mgmt-text"><br>
+            <textarea id="scholarshipLink" name="scholarshipLink" class="data-mgmt-1line" rows="1"></textarea><br>
             <span class="data-mgmt-error" id="scholarshipLinkErrors"></span>
           </div>
         </div>
@@ -91,7 +91,7 @@
             <label for="scholarshipAward" class="data-mgmt-required">*</label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <input type="text" id="scholarshipAward" name="scholarshipAward" class="data-mgmt-text-half"><br>
+            <textarea id="scholarshipAward" name="scholarshipAward" class="data-mgmt-1line-half"></textarea><br>
             <span class="data-mgmt-error" id="scholarshipAwardErrors"></span>
           </div>
         </div>
@@ -107,7 +107,7 @@
             <label for="scholarshipContactFName" class="data-mgmt-required"></label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <input type="text" id="scholarshipContactFName" name="scholarshipContactFName" class="data-mgmt-text-third"><br>
+            <textarea id="scholarshipContactFName" name="scholarshipContactFName" class="data-mgmt-1line-half" rows="1"></textarea><br>
             <span class="data-mgmt-error" id="scholarshipContactFNameErrors"></span>
           </div>
         </div>
@@ -123,7 +123,7 @@
             <label for="scholarshipContactLName" class="data-mgmt-required"></label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <input type="text" id="scholarshipContactLName" name="scholarshipContactLName" class="data-mgmt-text-third"><br>
+            <textarea id="scholarshipContactLName" name="scholarshipContactLName" class="data-mgmt-1line-half" rows="1"></textarea><br>
             <span class="data-mgmt-error" id="scholarshipContactLNameErrors"></span>
           </div>
         </div>
@@ -139,7 +139,7 @@
             <label for="scholarshipContactEmail" class="data-mgmt-required">*</label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <input type="text" id="scholarshipContactEmail" name="scholarshipContactEmail" class="data-mgmt-text-half"><br>
+            <textarea id="scholarshipContactEmail" name="scholarshipContactEmail" class="data-mgmt-1line-half" rows="1"></textarea><br>
             <span class="data-mgmt-error" id="scholarshipContactEmailErrors"></span>
           </div>
         </div>
@@ -155,7 +155,7 @@
             <label for="scholarshipContactTelephone" class="data-mgmt-required"></label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <input type="text" id="scholarshipContactTelephone" name="scholarshipContactTelephone" class="data-mgmt-text-half">
+            <textarea id="scholarshipContactTelephone" name="scholarshipContactTelephone" class="data-mgmt-1line-half" rows="1"></textarea><br>
             <span class="data-mgmt-error" id="scholarshipContactTelephoneErrors"></span>
           </div>
         </div>
@@ -579,14 +579,14 @@
         }
       });
     };
-    document.getElementById('scholarshipName').value = "<%= scholarshipDetails[0].ScholarshipName %>";
+    document.getElementById('scholarshipName').innerHTML = "<%= scholarshipDetails[0].ScholarshipName %>";
     document.getElementById('scholarshipDescription').innerHTML = `<%= scholarshipDetails[0].ScholarshipDescription %>`;
-    document.getElementById('scholarshipLink').value = `<%- scholarshipDetails[0].ScholarshipLink %>`;
-    document.getElementById('scholarshipAward').value = "<%= scholarshipDetails[0].ScholarshipAward %>";
-    document.getElementById('scholarshipContactFName').value = "<%= scholarshipDetails[0].ScholarshipContactFName %>";
-    document.getElementById('scholarshipContactLName').value = "<%= scholarshipDetails[0].ScholarshipContactLName %>";
-    document.getElementById('scholarshipContactEmail').value = "<%= scholarshipDetails[0].ScholarshipContactEmail %>";
-    document.getElementById('scholarshipContactTelephone').value = "<%= scholarshipDetails[0].ScholarshipContactTelephone %>";
+    document.getElementById('scholarshipLink').innerHTML = `<%- scholarshipDetails[0].ScholarshipLink %>`;
+    document.getElementById('scholarshipAward').innerHTML = "<%= scholarshipDetails[0].ScholarshipAward %>";
+    document.getElementById('scholarshipContactFName').innerHTML = "<%= scholarshipDetails[0].ScholarshipContactFName %>";
+    document.getElementById('scholarshipContactLName').innerHTML = "<%= scholarshipDetails[0].ScholarshipContactLName %>";
+    document.getElementById('scholarshipContactEmail').innerHTML = "<%= scholarshipDetails[0].ScholarshipContactEmail %>";
+    document.getElementById('scholarshipContactTelephone').innerHTML = "<%= scholarshipDetails[0].ScholarshipContactTelephone %>";
     document.getElementById('notesAdmin').innerHTML = `<%= scholarshipDetails[0].Notes_Admin %>`;
     document.getElementById('scholarshipEligReqsPrimary').innerHTML = `<%= scholarshipDetails[0].ScholarshipEligibilityReqs %>`;
 //    document.getElementById('scholarshipEligReqsOther').value = "<%= scholarshipDetails[0].ScholarshipEligibilityReqsOther %>";
