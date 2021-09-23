@@ -48,11 +48,11 @@ async function logEvent(processName, eventObject, eventCode, eventStatus, eventD
         console.log('Event logged.');
         if ( sendEmailTo.length !== 0 ) {
             let emailResultLogSuccess = sendEmail(sendEmailTo, `Event Logged (${eventStatus})`,
-                `An event was logged for ${processName}:  ${eventDescription}`);
+                `An event was logged for ${processName}:  ${eventDescription}`, '');
         };
     } catch (error) {
         let emailResultError = sendEmail(process.env.EMAIL_WEBMASTER_LIST, 'Event Log Error',
-            `An error occurred logging an event: ${error}`);
+            `An error occurred logging an event: ${error}`, '');
         console.log(`Event not logged (${error})`);
     };
 //    };
@@ -545,7 +545,7 @@ async function getUserPermissionsForWebsiteUserPermission( userPermissionsActive
 //////////////////////////////////////////////////////////////////////////////////////////
 // Send email
 //////////////////////////////////////////////////////////////////////////////////////////
-function sendEmail(emailRecipient, emailSubject, emailBody) {
+function sendEmail(emailRecipient, emailSubject, emailBody, emailBodyHTML) {
 
     // create message
     var msg = {
@@ -553,7 +553,7 @@ function sendEmail(emailRecipient, emailSubject, emailBody) {
         from: process.env.EMAIL_SENDER,
         subject: emailSubject,
         text: emailBody,
-        html: emailBody
+        html: emailBodyHTML
     };
 
     // send the message
