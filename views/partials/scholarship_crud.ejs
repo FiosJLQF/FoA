@@ -58,7 +58,7 @@
           <div class="col-1 data-mgmt-required">
             <label for="scholarshipName" class="data-mgmt-required">*</label>
           </div>
-          <div class="col-8 data-mgmt-value">
+          <div class="col-8 data-mgmt-value" id="scholarshipDescDiv">
             <textarea id="scholarshipDescription" name="scholarshipDescription" class="data-mgmt"></textarea><br>
             <span class="data-mgmt-error" id="scholarshipDescriptionErrors"></span>
           </div>
@@ -581,6 +581,7 @@
     };
     document.getElementById('scholarshipName').innerHTML = "<%= scholarshipDetails[0].ScholarshipName %>";
     document.getElementById('scholarshipDescription').innerHTML = `<%= scholarshipDetails[0].ScholarshipDescription %>`;
+    document.getElementById('scholarshipDescDiv').contentEditable = true;
     document.getElementById('scholarshipLink').innerHTML = `<%- scholarshipDetails[0].ScholarshipLink %>`;
     document.getElementById('scholarshipAward').innerHTML = "<%= scholarshipDetails[0].ScholarshipAward %>";
     document.getElementById('scholarshipContactFName').innerHTML = "<%= scholarshipDetails[0].ScholarshipContactFName %>";
