@@ -16,16 +16,16 @@ async function test_email() {
                 <th style="border: 1px solid black;">GenderCategorySortOrder</th>
               </tr>
               <tr>
-                <td style="border: 1px solid black;>Yes</td>
-                <td style="border: 1px solid black;>919001</td>
-                <td style="border: 1px solid black;>1</td>
-                <td style="border: 1px solid black;>1</td>
+                <td style="border: 1px solid black;">Yes</td>
+                <td style="border: 1px solid black;">919001</td>
+                <td style="border: 1px solid black;">1</td>
+                <td style="border: 1px solid black;">1</td>
               </tr>
               <tr>
-                <td style="border: 1px solid black;>No</td>
-                <td style="border: 1px solid black;>919002</td>
-                <td style="border: 1px solid black;>2</td>
-                <td style="border: 1px solid black;>2</td>
+                <td style="border: 1px solid black;">No</td>
+                <td style="border: 1px solid black;">919002</td>
+                <td style="border: 1px solid black;">2</td>
+                <td style="border: 1px solid black;">2</td>
               </tr>
             </table>`);
     //console.log('Finishing email');
