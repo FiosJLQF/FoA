@@ -29,9 +29,9 @@ async function test_email() {
         `SELECT public."fnQueryToHTMLTable"('SELECT * FROM public."vwScholarships_DateProblems_Alert"') AS "TableDef"`,
         { type: sequelize.QueryTypes.SELECT })
     .then( htmlTable => {
-      console.log(`Date Issues: ${htmlTable}`);
-//        let emailResultError = jsFx.sendEmail('fiosjlqf@gmail.com', 'Scholarship Records with Application Date Issues', '',
-//          htmlTable[0].TableDef);
+      console.log(`Date Issues: ${htmlTable[0].TableDef}`);
+        let emailResultError = jsFx.sendEmail('fiosjlqf@gmail.com', 'Scholarship Records with Application Date Issues', '',
+          htmlTable[0].TableDef);
     });
 
   };
