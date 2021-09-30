@@ -109,6 +109,10 @@ const SponsorTypeCategoriesDDL = SponsorTypeCategoriesDDLModel(sequelize, DataTy
 // Basic user profile information formatted for the "Select a User" SELECT object
 const UsersAllDDLModel = require('./usersAllDDL.model');
 const UsersAllDDL = UsersAllDDLModel(sequelize, DataTypes);
+// View used to read Website User's data
+const UsersAllViewModel = require('./usersAllView.model');
+const UsersAllView = UsersAllViewModel(sequelize, DataTypes);
+UsersAllView.removeAttribute('id');  // The default [id] column is not used in this table
 // Table reference used for writing user profile data to the database
 const UsersTableModel = require('./usersTable.model');
 const UsersTable = UsersTableModel(sequelize, DataTypes);
@@ -129,9 +133,9 @@ const UserPermissionsTableModel = require('./userPermissionsTable.model');
 const UserPermissionsTable = UserPermissionsTableModel(sequelize, DataTypes);
 UserPermissionsTable.removeAttribute('id');  // The default [id] column is not used in this table
 // View used for reading all user permission data (for data mgmt)
-const UserPermissionsAllModel = require('./userPermissionsAll.model');
-const UserPermissionsAll = UserPermissionsAllModel(sequelize, DataTypes);
-UserPermissionsAll.removeAttribute('id');  // this is an non-updatable view and does not have a PK defined
+const UserPermissionsAllViewModel = require('./userPermissionsAllView.model');
+const UserPermissionsAllView = UserPermissionsAllViewModel(sequelize, DataTypes);
+UserPermissionsAllView.removeAttribute('id');  // this is an non-updatable view and does not have a PK defined
 // View used for reading active user permission data (for authorization checking)
 const UserPermissionsActiveModel = require('./userPermissionsActive.model');
 const UserPermissionsActive = UserPermissionsActiveModel(sequelize, DataTypes);
@@ -171,11 +175,12 @@ module.exports = {
   SponsorsAllView,
   SponsorTypeCategoriesDDL,
   UsersAllDDL,
+  UsersAllView,
   UsersTable,
   UserProfiles,
   UserPermissionsTable,
   UserPermissionCategoriesAllDDL,
   UserPermissionsActive,
-  UserPermissionsAll,
+  UserPermissionsAllView,
   UserPermissionsAllDDL
 };

@@ -11,8 +11,8 @@ const { EventLogsTable, ScholarshipsTable, /* ScholarshipsTableTest, */ Scholars
         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
         FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
-        UsersAllDDL, UsersTable,  UserProfiles,
-        UserPermissionsTable, UserPermissionsActive, UserPermissionCategoriesAllDDL, UserPermissionsAll, UserPermissionsAllDDL,
+        UsersAllDDL, UsersTable, UsersAllView, UserProfiles,
+        UserPermissionsTable, UserPermissionsActive, UserPermissionCategoriesAllDDL, UserPermissionsAllView, UserPermissionsAllDDL,
         ScholarshipRecurrenceCategoriesDDL, ScholarshipsAllMgmtView /* ScholarshipsAllMgmtViewTest */
     } = require('../models/sequelize.js');
 require("dotenv").config();  // load all ".env" variables into "process.env" for use
@@ -369,7 +369,7 @@ async function getUserPermissionsForWebsiteUser( userPermissionsActive, userIDRe
     if ( userIDRequested ) {
         console.log(`userIDRequested: ${userIDRequested}`);
         // Does the requested User exist? Retrieve the User's details from the database.
-        userDetails = await UsersTable.findAll({ where: { UserID: userIDRequested }});
+        userDetails = await UsersAllView.findAll({ where: { UserID: userIDRequested }});
         if ( typeof userDetails[0] === 'undefined' ) {  // User ID does not exist
             doesUserExist = false;
         } else { // User ID does exist
@@ -390,7 +390,7 @@ async function getUserPermissionsForWebsiteUser( userPermissionsActive, userIDRe
     } else if ( userIDDefault !== 999999) { // Requested User ID does not exist - if there a default User ID
         console.log(`userIDRequested does not exist - process default User ID: ${userIDDefault}`);
         // Does the default User exist? Retrieve the User's details from the database.
-        userDetails = await UsersTable.findAll({ where: { UserID: userIDDefault }});
+        userDetails = await UsersAllView.findAll({ where: { UserID: userIDDefault }});
         if ( typeof userDetails[0] === 'undefined' ) {  // User ID does not exist
             doesUserExist = false;
         } else {
@@ -487,7 +487,7 @@ async function getUserPermissionsForWebsiteUserPermission( userPermissionsActive
     if ( userPermissionIDRequested ) {
         console.log(`userPermissionIDRequested: ${userPermissionIDRequested}`);
         // Does the requested User Permission exist? Retrieve the User Permission's details from the database.
-        userPermissionDetails = await UserPermissionsAll.findAll({ where: { WebsiteUserPermissionID: userPermissionIDRequested }});
+        userPermissionDetails = await UserPermissionsAllView.findAll({ where: { WebsiteUserPermissionID: userPermissionIDRequested }});
         if ( typeof userPermissionDetails[0] === 'undefined' ) {  // User Permission ID does not exist
             doesUserPermissionExist = false;
         } else { // User Permission ID does exist
@@ -508,7 +508,7 @@ async function getUserPermissionsForWebsiteUserPermission( userPermissionsActive
     } else if ( userPermissionIDDefault !== 999999) { // Requested User Permission ID does not exist - if there a default User Permission ID
         console.log(`userPermissionIDRequested does not exist - process default User Permission ID: ${userPermissionIDDefault}`);
         // Does the default User Permission exist? Retrieve the User Permission's details from the database.
-        userPermissionDetails = await UserPermissionsAll.findAll({ where: { WebsiteUserPermissionID: userPermissionIDDefault }});
+        userPermissionDetails = await UserPermissionsAllView.findAll({ where: { WebsiteUserPermissionID: userPermissionIDDefault }});
         if ( typeof userPermissionDetails[0] === 'undefined' ) {  // User Permission ID does not exist
             doesUserPermissionExist = false;
         } else {

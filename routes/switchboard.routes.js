@@ -14,7 +14,7 @@ const { ScholarshipsTable, /* ScholarshipsTableTest, */ ScholarshipsActive, /* S
         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
         FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL,
         UsersAllDDL, UsersTable, UserProfiles,
-        UserPermissionsAll, UserPermissionsAllDDL, UserPermissionsActive,
+        UserPermissionsAllView, UserPermissionsAllDDL, UserPermissionsActive,
         UserPermissionsTable, UserPermissionCategoriesAllDDL
     } = require('../models/sequelize.js');
 const methodOverride = require('method-override');  // allows PUT and other non-standard methods

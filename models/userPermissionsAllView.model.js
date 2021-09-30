@@ -3,7 +3,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 
 module.exports = (sequelize, DataTypes) => {
-    const UserPermissionsAll = sequelize.define('vwWebsiteUserPermissionsAll', {
+    const UserPermissionsAllView = sequelize.define('vwWebsiteUserPermissionsAll', {
         WebsiteUserPermissionID: {
             type: DataTypes.INTEGER,
             primaryKey: true
@@ -23,5 +23,5 @@ module.exports = (sequelize, DataTypes) => {
         freezeTableName: true,  // don't have Sequelize automatically pluralize the table name
         timestamps: false,  // don't add the timestamp attributes (updatedAt, createdAt)
     });
-    return UserPermissionsAll;
+    return UserPermissionsAllView;
 };
