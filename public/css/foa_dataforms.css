@@ -145,12 +145,24 @@ textarea.data-mgmt-1line {
   width: 590px;
   height: 23px;
   resize: none;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 textarea.data-mgmt-1line-half {
   width: 295px;
   height: 23px;
   resize: none;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+textarea.data-mgmt-1line-third {
+  width: 195px;
+  height: 23px;
+  resize: none;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 textarea.data-mgmt-2lines {

@@ -107,7 +107,7 @@ const SponsorTypeCategoriesDDL = SponsorTypeCategoriesDDLModel(sequelize, DataTy
   User Profiles
 *****************************/
 // Basic user profile information formatted for the "Select a User" SELECT object
-const UsersAllDDLModel = require('./usersAllDLL.model');
+const UsersAllDDLModel = require('./usersAllDDL.model');
 const UsersAllDDL = UsersAllDDLModel(sequelize, DataTypes);
 // Table reference used for writing user profile data to the database
 const UsersTableModel = require('./usersTable.model');
