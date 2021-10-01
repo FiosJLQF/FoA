@@ -34,9 +34,11 @@ async function scholarshipDates() {
           { type: sequelize.QueryTypes.SELECT })
       .then( htmlTable => {
         console.log(`Date Issues: ${htmlTable[0].TableDef}`);
-          let emailResultError = jsFx.sendEmail('fiosjlqf@gmail.com', 'Scholarship Records with Application Date Issues', '',
+          let emailResultError = jsFx.sendEmail('fiosjlqf@gmail.com', 'Scholarship Date Notifications', '',
             htmlTable[0].TableDef);
       });
+    } else {
+      let emailResultError = jsFx.sendEmail('fiosjlqf@gmail.com', `Today is the ${today.getDate()} day of the month`, '', '');
     };
 
 };
