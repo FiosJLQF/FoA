@@ -66,7 +66,7 @@ app.use(
       clientID: process.env.AUTH0_CLIENT_ID,
       secret: process.env.SESSION_SECRET,
       authRequired: false,  // set to false by default as some pages are public
-      auth0Logout: true,
+      auth0Logout: true
     })
 );
 

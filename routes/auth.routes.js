@@ -21,6 +21,9 @@ router.get( "/login",
   );
 
 router.get("/callback", (req, res, next) => {
+
+  console.log('Entered router.get callback');
+
     passport.authenticate("auth0", (err, user, info) => {
       if (err) {
         return next(err);
@@ -33,6 +36,7 @@ router.get("/callback", (req, res, next) => {
           return next(err);
         }
         const returnTo = req.session.returnTo;
+        console.log(`returnTo: ${returnTo}`);
         delete req.session.returnTo;
         res.redirect(returnTo || "/switchboard");
       });
