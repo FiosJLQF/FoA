@@ -16,7 +16,7 @@ async function scholarshipDates() {
 
   var today = new Date();
 
-    if ( today.getDate() === 1 ) { // Run on the 1st of the month
+    if ( today.getDate() === '1' ) { // Run on the 1st of the month
       const { Sequelize, Model, DataTypes } = require('sequelize');
       const sequelize = new Sequelize( process.env.DB_URI, {
           dialect: 'postgres',
