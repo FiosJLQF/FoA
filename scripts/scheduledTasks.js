@@ -42,7 +42,7 @@ async function scholarshipDates() {
 };
 
 module.exports = {
-    test_email
+  scholarshipDates
 };
 
 require('make-runnable');
