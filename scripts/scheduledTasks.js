@@ -37,11 +37,11 @@ async function checkTasksToRun() {
   ////////////////////////////////////////////
   // Check the schedules for tasks to run
   ////////////////////////////////////////////
-  if ( today.getDate() === 1 ) { // Run on the 1st of the month
+//  if ( today.getDate() === 1 ) { // Run on the 1st of the month
     let scholarshipDatesResult = scholarshipDates(today, sequelize);
-  } else {
-    let emailResultError = jsFx.sendEmail('fiosjlqf@gmail.com', `Today is the ${today.getDate()} day of the month`, '', '');
-  };
+//  } else {
+//    let emailResultError = jsFx.sendEmail('fiosjlqf@gmail.com', `Today is the ${today.getDate()} day of the month`, '', '');
+//  };
 
 }; // end checkTasksToRun
 
