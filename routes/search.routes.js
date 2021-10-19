@@ -6,7 +6,7 @@ const router = express.Router();
 const { auth, requiresAuth } = require('express-openid-connect');
 require("dotenv").config();  // load all ".env" variables into "process.env" for use
 const { ScholarshipsTable, /* ScholarshipsTableTest, */ ScholarshipsActive, /* ScholarshipsActiveDDL, */ ScholarshipsAllDDL,
-    SponsorsAllView, SponsorsAllDDL,
+    SponsorsAllView, SponsorsAllDDL, SponsorsActiveDDL,
     GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
     EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
     FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
@@ -43,7 +43,8 @@ router.get('/scholarships', async (req, res) => {
     const scholarshipsActive = await ScholarshipsActive.findAndCountAll({});
 //    console.log(scholarshipsActive.count);
     const fieldOfStudyCategoriesDDL = await FieldOfStudyCategoriesDDL.findAndCountAll({});
-    const sponsorsAllDDL = await SponsorsAllDDL.findAndCountAll({});
+//    const sponsorsAllDDL = await SponsorsAllDDL.findAndCountAll({});
+    const sponsorsActiveDDL = await SponsorsActiveDDL.findAndCountAll({});
     const genderCategoriesDDL = await GenderCategoriesDDL.findAndCountAll({});
     const citizenshipCategoriesDDL = await CitizenshipCategoriesDDL.findAndCountAll({});
     const yearOfNeedCategoriesDDL = await YearOfNeedCategoriesDDL.findAndCountAll({});
@@ -54,7 +55,7 @@ router.get('/scholarships', async (req, res) => {
     const faaMechanicCertificateCategoriesDDL = await FAAMechanicCertificateCategoriesDDL.findAndCountAll({});
     res.render('scholarshipsearch', {
         userName: ( req.oidc.user == null ? '' : req.oidc.user.name ), pageTitle: "Scholarship Search",
-        scholarshipsActive, fieldOfStudyCategoriesDDL, sponsorsAllDDL, genderCategoriesDDL, citizenshipCategoriesDDL,
+        scholarshipsActive, fieldOfStudyCategoriesDDL, sponsorsActiveDDL, genderCategoriesDDL, citizenshipCategoriesDDL,
         yearOfNeedCategoriesDDL, enrollmentStatusCategoriesDDL, militaryServiceCategoriesDDL, faaPilotCertificateCategoriesDDL,
         faaPilotRatingCategoriesDDL, faaMechanicCertificateCategoriesDDL
     });
@@ -62,14 +63,15 @@ router.get('/scholarships', async (req, res) => {
 
 router.get('/sponsors', async (req, res) => {
     const sponsorsAllView = await SponsorsAllView.findAndCountAll({});
-//    console.log(sponsors.count);
-    const sponsorsAllDDL = await SponsorsAllDDL.findAndCountAll({});
+//    const sponsorsActiveView = await SponsorsActiveView.findAndCountAll({});
+//    const sponsorsAllDDL = await SponsorsAllDDL.findAndCountAll({});
+    const sponsorsActiveDDL = await SponsorsActiveDDL.findAndCountAll({});
     const sponsorTypeCategoriesDDL = await SponsorTypeCategoriesDDL.findAndCountAll({});
     const scholarshipsActive = await ScholarshipsActive.findAndCountAll({});
     console.log(scholarshipsActive.count);
     res.render('sponsorsearch', {
         userName: ( req.oidc.user == null ? '' : req.oidc.user.name ), pageTitle: "Sponsor Search",
-        sponsorsAllView,sponsorsAllDDL, sponsorTypeCategoriesDDL, scholarshipsActive });
+        sponsorsAllView, sponsorsActiveDDL, sponsorTypeCategoriesDDL, scholarshipsActive });
 });
 
 ///////////////////////////////////////////

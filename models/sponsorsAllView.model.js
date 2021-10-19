@@ -19,7 +19,9 @@ module.exports = (sequelize, DataTypes) => {
         SponsorContactTelephone:     DataTypes.STRING,
         SponsorContactInfoFormatted: DataTypes.STRING,
         SponsorTypeText:             DataTypes.STRING,
-        SponsorTypeMatchingText:     DataTypes.STRING
+        SponsorType:                 DataTypes.STRING,
+        SponsorTypeMatchingText:     DataTypes.STRING,
+        SponsorStatusID:             DataTypes.STRING
     }, {
     freezeTableName: true,  // don't have Sequelize automatically pluralize the table name
     timestamps: false,  // don't add the timestamp attributes (updatedAt, createdAt)

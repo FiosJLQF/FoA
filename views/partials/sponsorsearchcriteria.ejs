@@ -63,7 +63,7 @@
     document.title = "Future of Aviation - Sponsor Search";
 
     // Load the Sponsor List into the DDL
-    var splRows = <%- JSON.stringify(sponsorsAllDDL.rows) %>;
+    var splRows = <%- JSON.stringify(sponsorsActiveDDL.rows) %>;
     loadSelectOptionsList("filterSponsorNamesInput", "(Not Selected)", 0, splRows);
 
     // Load the Sponsor Type options into the DDL

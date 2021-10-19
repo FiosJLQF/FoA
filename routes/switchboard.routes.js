@@ -8,8 +8,8 @@ require("dotenv").config();  // load all ".env" variables into "process.env" for
 const { ScholarshipsTable, /* ScholarshipsTableTest, */ ScholarshipsActive, /* ScholarshipsActiveDDL, */ 
         ScholarshipsAllDDL, /* ScholarshipsAllDDLTest, */
         ScholarshipRecurrenceCategoriesDDL, ScholarshipStatusCategoriesDDL,
-        SponsorsTable, /* SponsorsTableTest, */ SponsorsAllDLL, Sponsors, SponsorsDDL, /* SponsorsAllDDLTest, */
-        SponsorTypeCategoriesDDL,
+        SponsorsTable, SponsorsAllDLL, Sponsors, SponsorsDDL, /* SponsorsAllDDLTest, */
+        SponsorTypeCategoriesDDL, SponsorStatusCategoriesDDL,
         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
         FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL,
@@ -319,6 +319,7 @@ router.get('/', requiresAuth(), async (req, res) => {
         let criteriaFAAPilotCertificateCategories = await FAAPilotCertificateCategoriesDDL.findAndCountAll({});
         let criteriaFAAPilotRatingCategories = await FAAPilotRatingCategoriesDDL.findAndCountAll({});
         let criteriaFAAMechanicCertificateCategories = await FAAMechanicCertificateCategoriesDDL.findAndCountAll({});
+        let sponsorStatusCategories = await SponsorStatusCategoriesDDL.findAndCountAll({});
         let userPermissionsCategoriesAllDLL = await UserPermissionCategoriesAllDDL.findAndCountAll({});
         ////////////////////////////////////////////////////
         //  Process any querystring "actions requested" (this will tell the form how to render for the user)
@@ -420,6 +421,7 @@ router.get('/', requiresAuth(), async (req, res) => {
             sponsorsAllowedDDL,
             userCanCreateSponsors,
             sponsorTypeCategoriesDDL,
+            sponsorStatusCategories,
             // Scholarship Information
             userCanReadScholarships,
             scholarshipsAllowedDDL,
@@ -484,6 +486,7 @@ router.post('/sponsoradd', requiresAuth(),
     async (req, res) => {
 
     // Reformat the SELECT options into a pipe-delimited array for storage
+    const sponsorStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.sponsorStatus, "|", "0");
     const sponsorTypesFormatted = jsFx.convertOptionsToDelimitedString(req.body.sponsorTypes, "|", "0");
 
     // Validate the input
@@ -514,7 +517,8 @@ router.post('/sponsoradd', requiresAuth(),
             SponsorContactLName: req.body.sponsorContactLName,
             SponsorContactEmail: req.body.sponsorContactEmail,
             SponsorContactTelephone: req.body.sponsorContactTelephone,
-            SponsorType: sponsorTypesFormatted
+            SponsorType: sponsorTypesFormatted,
+            SponsorStatusID: sponsorStatusFormatted
         });
         await newSponsor.save();
 
@@ -738,8 +742,8 @@ router.post('/userpermissionadd', requiresAuth(),
 router.put('/sponsorupdate', requiresAuth(), async (req, res) => {
 
     // Reformat the SELECT options into a pipe-delimited array for storage
+    const sponsorStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.sponsorStatus, "|", "0");
     const sponsorTypesFormatted = jsFx.convertOptionsToDelimitedString(req.body.sponsorTypes, "|", "0");
-//    console.log(`sponsorTypesFormattedUDF: ${sponsorTypesFormatted}`);
 
     // Get a pointer to the current record
     const sponsorRecord = await SponsorsTable.findOne( {
@@ -757,7 +761,8 @@ router.put('/sponsorupdate', requiresAuth(), async (req, res) => {
         SponsorContactLName: req.body.sponsorContactLName,
         SponsorContactEmail: req.body.sponsorContactEmail,
         SponsorContactTelephone: req.body.sponsorContactTelephone,
-        SponsorType: sponsorTypesFormatted
+        SponsorType: sponsorTypesFormatted,
+        SponsorStatusID: sponsorStatusFormatted
     }).then( () => {
         res.redirect(`/switchboard?sponsorid=${sponsorRecord.SponsorID}` +
                      `&status=sponsorupdatesuccess` +

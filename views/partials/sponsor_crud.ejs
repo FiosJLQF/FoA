@@ -16,6 +16,22 @@
       <!-- If the form context is "Manage Sponsor" then provide the sponsorID for reference -->
       <input type="hidden" id="sponsorIDToUpdate" name="sponsorIDToUpdate">
 
+      <!-- Sponsor Status -->
+      <div class="flexcontainer-datamgmt">
+        <div class="row">
+          <div class="col-3 data-mgmt-label">
+            <label for="sponsorStatus" class="data-mgmt">Sponsor Active Status:</label>
+          </div>
+          <div class="col-1 data-mgmt-required">
+            <label for="sponsorStatus" class="data-mgmt-required">*</label>
+          </div>
+          <div class="col-8 data-mgmt-value">
+            <select id="sponsorStatus" name="sponsorStatus" class="data-mgmt-single-third"></select><br>
+            <span class="data-mgmt-error" id="sponsorStatusErrors"></span>
+          </div>
+        </div>
+      </div><br>
+
       <!-- Sponsor Name -->
       <div class="flexcontainer-datamgmt">
         <div class="row">
@@ -180,11 +196,21 @@
 
 <script>
 
-  // Load the Sponsor Types into the DDL
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  // Load the DDLs options lists
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
+  // Load the Sponsor Statuses
+  var sponsorStatusRows = <%- JSON.stringify(sponsorStatusCategories.rows) %>;
+  loadSelectOptionsList("sponsorStatus", "(Not Selected)", 0, sponsorStatusRows);
+
+  // Load the Sponsor Types
   var sptRows = <%- JSON.stringify(sponsorTypeCategoriesDDL.rows) %>;
   loadSelectOptionsList("sponsorTypes", "(Not Selected)", 0, sptRows);
 
+  /////////////////////////////////////////////////////////////////////////////////////////////
   // Customize the page based on the context ("Add Sponsor" v. "Manage Sponsor")
+  /////////////////////////////////////////////////////////////////////////////////////////////
   <% if ( actionRequested === 'addsponsor' ) { %>  // "Add Sponsor"
 
     // Set the browser tab name (i.e., title)
@@ -207,6 +233,20 @@
     document.getElementById('sponsorData').method = "POST";
     // Set the current values for the Sponsor data elements
     document.getElementById('sponsorIDToUpdate').value = "<%- sponsorDetails[0].SponsorID %>";
+    // Select Status Status
+    var sponsorStatus = "<%- sponsorDetails[0].SponsorStatusID %>";
+    var sponsorStatusArrTrimmed = sponsorStatus.split('|').slice(1, -1);
+    var sponsorStatusSelectObject = document.getElementById('sponsorStatus');
+    if ( sponsorStatusArrTrimmed.length !== 0 ) {
+      sponsorStatusSelectObject.options[0].selected = '';  // Remove the default 'Not Selected' option
+      sponsorStatusArrTrimmed.forEach( function(sponsorStatus) {
+        for ( i=0; i < sponsorStatusSelectObject.length; i++ ) {
+          if ( sponsorStatusSelectObject.options[i].value === sponsorStatus ) {
+            sponsorStatusSelectObject.options[i].selected = 'selected';
+          }
+        }
+      });
+    };
     document.getElementById('sponsorName').innerHTML = "<%= sponsorDetails[0].SponsorName %>";
     document.getElementById('sponsorDescription').innerHTML = `<%= sponsorDetails[0].SponsorDescription %>`;
     document.getElementById('sponsorWebsite').innerHTML = "<%= sponsorDetails[0].SponsorWebsite %>";
@@ -232,6 +272,7 @@
     // Disable the controls (and change the instruction) if the user does not have permission to update Sponsors.
     if ( <%- !userCanUpdateSponsor %> ) {
       document.getElementById('sponsorInstructions').innerText = "Review the entries below.";
+      document.getElementById('sponsorStatus').disabled = true;
       document.getElementById('sponsorName').disabled = true;
       document.getElementById('sponsorDescription').disabled = true;
       document.getElementById('sponsorWebsite').disabled = true;
@@ -250,6 +291,22 @@
   //////////////////////////////////////////////////////////////////////
   function validateData() {
     var dataAreValid = true;  // test for errors below
+
+    //////////////////////////////////////////////////
+    // Sponsor Status
+    //////////////////////////////////////////////////
+    var sponsorStatus = document.getElementById("sponsorStatus").value;
+    var sponsorStatusErrors = document.getElementById("sponsorStatusErrors");
+    sponsorStatusErrors.innerText = '';  // reset value
+    if ( sponsorStatus.length === 0 || sponsorStatus == '0') {
+      sponsorStatusErrors.innerText = "Sponsor Active Status cannot be blank.";
+    };
+    if ( sponsorStatusErrors.innerText.length === 0 ) {  // if no errors, hide the error text
+      sponsorStatusErrors.style.display = "none";
+    } else {
+      sponsorStatusErrors.style.display = "block";
+      dataAreValid = false;
+    };
 
     //////////////////////////////////////////////////
     // Sponsor Name

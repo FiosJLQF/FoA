@@ -6,7 +6,7 @@
 //const pageSponsorVolume = 15; // number of sponsors to be displayed on a page
 const { EventLogsTable, ScholarshipsTable, /* ScholarshipsTableTest, */ ScholarshipsActive,
         /* ScholarshipsActiveDDL, */ ScholarshipsAllDDL,
-        /* ScholarshipsAllDDLTest, */ SponsorsTable, /* SponsorsTableTest, */ SponsorsAllDDL, Sponsors, SponsorsDDL,
+        /* ScholarshipsAllDDLTest, */ SponsorsAllView, SponsorsTable, SponsorsAllDDL, Sponsors, SponsorsDDL,
         /* SponsorsAllDDLTest, */
         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
@@ -150,7 +150,7 @@ async function getSponsorPermissionsForUser( userPermissionsActive, sponsorIDReq
     if ( sponsorIDRequested ) {
         console.log(`sponsorIDRequested: ${sponsorIDRequested}`);
         // Does the requested Sponsor exist? Retrieve the Sponsor's details from the database.
-        sponsorDetails = await SponsorsTable.findAll({ where: { SponsorID: sponsorIDRequested }});
+        sponsorDetails = await SponsorsAllView.findAll({ where: { SponsorID: sponsorIDRequested }});
         if ( typeof sponsorDetails[0] === 'undefined' ) {  // Sponsor ID does not exist
             doesSponsorExist = false;
         } else { // Sponsor ID does exist
@@ -171,7 +171,7 @@ async function getSponsorPermissionsForUser( userPermissionsActive, sponsorIDReq
     } else if ( sponsorIDDefault !== 999999) { // Requested Sponsor ID does not exist - if there a default Sponsor ID
         console.log(`sponsorIDRequested does not exist - process default Sponsor ID: ${sponsorIDDefault}`);
         // Does the default Sponsor exist? Retrieve the Sponsor's details from the database.
-        sponsorDetails = await SponsorsTable.findAll({ where: { SponsorID: sponsorIDDefault }});
+        sponsorDetails = await SponsorsAllView.findAll({ where: { SponsorID: sponsorIDDefault }});
         if ( typeof sponsorDetails[0] === 'undefined' ) {  // Sponsor ID does not exist
             doesSponsorExist = false;
         } else {
