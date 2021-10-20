@@ -71,7 +71,7 @@
     loadSelectOptionsList("filterSponsorTypeInput", "(Not Selected)", 0, spsRows);
 
     // Load distinct list of Sponsors into the "Search" button destinations
-    var spnRows = <%- JSON.stringify(sponsorsAllView.rows) %>;
+    var spnRows = <%- JSON.stringify(sponsorsActiveView.rows) %>;
 
     // Load all active scholarships into the "Search" button destinations
     var schRows = <%- JSON.stringify(scholarshipsActive.rows) %>;

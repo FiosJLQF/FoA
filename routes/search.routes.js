@@ -6,7 +6,7 @@ const router = express.Router();
 const { auth, requiresAuth } = require('express-openid-connect');
 require("dotenv").config();  // load all ".env" variables into "process.env" for use
 const { ScholarshipsTable, /* ScholarshipsTableTest, */ ScholarshipsActive, /* ScholarshipsActiveDDL, */ ScholarshipsAllDDL,
-    SponsorsAllView, SponsorsAllDDL, SponsorsActiveDDL,
+    SponsorsAllView, SponsorsAllDDL, SponsorsActiveView, SponsorsActiveDDL,
     GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
     EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
     FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
@@ -62,16 +62,14 @@ router.get('/scholarships', async (req, res) => {
 });
 
 router.get('/sponsors', async (req, res) => {
-    const sponsorsAllView = await SponsorsAllView.findAndCountAll({});
-//    const sponsorsActiveView = await SponsorsActiveView.findAndCountAll({});
-//    const sponsorsAllDDL = await SponsorsAllDDL.findAndCountAll({});
+    const sponsorsActiveView = await SponsorsActiveView.findAndCountAll({});
     const sponsorsActiveDDL = await SponsorsActiveDDL.findAndCountAll({});
     const sponsorTypeCategoriesDDL = await SponsorTypeCategoriesDDL.findAndCountAll({});
     const scholarshipsActive = await ScholarshipsActive.findAndCountAll({});
     console.log(scholarshipsActive.count);
     res.render('sponsorsearch', {
         userName: ( req.oidc.user == null ? '' : req.oidc.user.name ), pageTitle: "Sponsor Search",
-        sponsorsAllView, sponsorsActiveDDL, sponsorTypeCategoriesDDL, scholarshipsActive });
+        sponsorsActiveView, sponsorsActiveDDL, sponsorTypeCategoriesDDL, scholarshipsActive });
 });
 
 ///////////////////////////////////////////

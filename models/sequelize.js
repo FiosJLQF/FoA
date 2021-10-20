@@ -101,6 +101,8 @@ const SponsorTypeCategoriesDDLModel = require('./sponsortypeddl.model');
 const SponsorTypeCategoriesDDL = SponsorTypeCategoriesDDLModel(sequelize, DataTypes);
 const SponsorStatusCategoriesDDLModel = require('./sponsorStatusDDL.model');
 const SponsorStatusCategoriesDDL = SponsorStatusCategoriesDDLModel(sequelize, DataTypes);
+const SponsorsActiveViewModel = require('./sponsorsActiveView.model');
+const SponsorsActiveView = SponsorsActiveViewModel(sequelize, DataTypes);
 const SponsorsActiveDDLModel = require('./sponsorsActiveDDL.model');
 const SponsorsActiveDDL = SponsorsActiveDDLModel(sequelize, DataTypes);
 
@@ -169,6 +171,7 @@ module.exports = {
   SponsorsAllDDL,
   // SponsorsAllDDLTest,
   SponsorStatusCategoriesDDL,
+  SponsorsActiveView,
   SponsorsActiveDDL,
   GenderCategoriesDDL,
   CitizenshipCategoriesDDL,
