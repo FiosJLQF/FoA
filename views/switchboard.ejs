@@ -21,7 +21,7 @@
     <% } else if ( actionRequested === 'addsponsor' ) { %>
       <%- include('partials/sponsor_crud') %>
     <% } else if ( actionRequested === 'editsponsor' && sponsorID !== '' ) { %>
-      <%- include('partials/sponsor_crud') %>
+      <%- include('partials/sponsor_crud_tabs') %>
     <% } else if ( actionRequested === 'addscholarship' && sponsorID !== '' ) { %>
       <%- include('partials/scholarship_crud') %>
     <% } else if ( actionRequested === 'editscholarship' && scholarshipID !== '' ) { %>
