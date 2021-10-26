@@ -211,12 +211,21 @@ select.data-mgmt-single-third {
 
 
 
-
-
-
+.tab button {
+  background-color: lightgray;
+  border: 0;
+  box-shadow: none;
+  padding: 0.5rem;
+  font-weight: normal;
+  font-size: 0.9rem;
+}
 
 .tab button.active {
   background-color: #ccc;
+  color: black;
+  font-weight: bold;
+  font-size: 0.95rem;
+  padding: 0.47rem;
 }
 
 .tabcontent {

@@ -81,7 +81,7 @@
             <label for="sponsorWebsite" class="data-mgmt-required"></label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <textarea id="sponsorWebsite" name="sponsorWebsite" class="data-mgmt-1line" rows="1"></textarea><br>
+            <textarea id="sponsorWebsite" name="sponsorWebsite" class="data-mgmt-1line" rows="1" onchange="updatePreview();"></textarea><br>
             <span class="data-mgmt-error" id="sponsorWebsiteErrors"></span>
           </div>
         </div>
@@ -97,7 +97,7 @@
             <label for="sponsorLogo" class="data-mgmt-required">*</label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <textarea id="sponsorLogo" name="sponsorLogo" class="data-mgmt-1line" rows="1"></textarea><br>
+            <textarea id="sponsorLogo" name="sponsorLogo" class="data-mgmt-1line" rows="1" onchange="updatePreview();"></textarea><br>
             <span class="data-mgmt-error" id="sponsorLogoErrors"></span>
           </div>
         </div>
@@ -113,7 +113,7 @@
             <label for="sponsorContactFName" class="data-mgmt-required"></label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <textarea id="sponsorContactFName" name="sponsorContactFName" class="data-mgmt-1line-half" rows="1"></textarea><br>
+            <textarea id="sponsorContactFName" name="sponsorContactFName" class="data-mgmt-1line-half" rows="1" onchange="updatePreview();"></textarea><br>
             <span class="data-mgmt-error" id="sponsorContactFNameErrors"></span>
           </div>
         </div>
@@ -129,7 +129,7 @@
             <label for="sponsorContactLName" class="data-mgmt-required"></label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <textarea id="sponsorContactLName" name="sponsorContactLName" class="data-mgmt-1line-half" rows="1"></textarea><br>
+            <textarea id="sponsorContactLName" name="sponsorContactLName" class="data-mgmt-1line-half" rows="1" onchange="updatePreview();"></textarea><br>
             <span class="data-mgmt-error" id="sponsorContactLNameErrors"></span>
           </div>
         </div>
@@ -145,7 +145,7 @@
             <label for="sponsorContactEmail" class="data-mgmt-required">*</label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <textarea id="sponsorContactEmail" name="sponsorContactEmail" class="data-mgmt-1line-half" rows="1"></textarea><br>
+            <textarea id="sponsorContactEmail" name="sponsorContactEmail" class="data-mgmt-1line-half" rows="1" onchange="updatePreview();"></textarea><br>
             <span class="data-mgmt-error" id="sponsorContactEmailErrors"></span>
           </div>
         </div>
@@ -161,7 +161,7 @@
             <label for="sponsorContactTelephone" class="data-mgmt-required"></label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <textarea id="sponsorContactTelephone" name="sponsorContactTelephone" class="data-mgmt-1line-half" rows="1"></textarea><br>
+            <textarea id="sponsorContactTelephone" name="sponsorContactTelephone" class="data-mgmt-1line-half" rows="1" onchange="updatePreview();"></textarea><br>
             <span class="data-mgmt-error" id="sponsorContactTelephoneErrors"></span>
           </div>
         </div>
@@ -279,11 +279,9 @@
     document.getElementById('sponsorLogoPreview').src = "<%= sponsorDetails[0].SponsorLogo %>";
     document.getElementById('sponsorContactFName').innerHTML = "<%= sponsorDetails[0].SponsorContactFName %>";
     document.getElementById('sponsorContactLName').innerHTML = "<%= sponsorDetails[0].SponsorContactLName %>";
-    document.getElementById('sponsorContactNamePreview').innerHTML = "<%= sponsorDetails[0].SponsorContactLName %> <%= sponsorDetails[0].SponsorContactLName %>";
     document.getElementById('sponsorContactEmail').innerHTML = "<%= sponsorDetails[0].SponsorContactEmail %>";
-    document.getElementById('sponsorContactEmailPreview').innerHTML = "<%= sponsorDetails[0].SponsorContactEmail %>";
     document.getElementById('sponsorContactTelephone').innerHTML = "<%= sponsorDetails[0].SponsorContactTelephone %>";
-    document.getElementById('sponsorContactTelephonePreview').innerHTML = "<%= sponsorDetails[0].SponsorContactTelephone %>";
+    document.getElementById('sponsorContactInfoPreview').innerHTML = formatContactInfo();
     // Select Sponsor Types from the Sponsor's data
     var sponsorTypes = "<%- sponsorDetails[0].SponsorType %>";
     var sponsorTypesArrTrimmed = sponsorTypes.split('|').slice(1, -1);
@@ -320,7 +318,12 @@
   // Keep the "Preview" tab sync-ed with the "Edit" tab
   /////////////////////////////////////////////////////////////////////////////////////////////
   function updatePreview() {
-    document.getElementById("sponsorNamePreview").innerHTML = document.getElementById("sponsorName").value;
+    document.getElementById("sponsorLogoPreview").src = document.getElementById("sponsorLogo").value;
+    document.getElementById('sponsorNamePreview').innerHTML = document.getElementById("sponsorName").value;
+    document.getElementById('sponsorDescriptionPreview').innerHTML = document.getElementById("sponsorDescription").value;
+    document.getElementById('sponsorWebsitePreview').innerHTML = document.getElementById("sponsorWebsite").value;
+    document.getElementById('sponsorWebsitePreview').href = document.getElementById("sponsorWebsite").value;
+    document.getElementById('sponsorContactInfoPreview').innerHTML = formatContactInfo();
   }
 
 
@@ -483,5 +486,40 @@
       return false;
     };
   };  // END: Confirm delete Sponsor
+
+
+  //////////////////////////////////////////////////////////////////////
+  // Format the Sponsor Contact Information for "preview" display
+  //////////////////////////////////////////////////////////////////////
+  function formatContactInfo() {
+
+    // get the current values
+    var contactFName = document.getElementById("sponsorContactFName").value;
+    var contactLName = document.getElementById("sponsorContactLName").value;
+    var contactEmail = document.getElementById("sponsorContactEmail").value;
+    var contactTelephone = document.getElementById("sponsorContactTelephone").value;
+
+    // format them for display in the "Contact Info" section of the Search Results
+    var contactInfoFormatted = "";
+    if ( contactFName.length > 0 ) {
+      contactInfoFormatted = contactFName + " ";
+    };
+    if ( contactLName.length > 0 ) {
+      contactInfoFormatted += contactLName;
+    };
+    if ( contactEmail.length > 0 ) {
+      if ( contactInfoFormatted.length > 0 ) {
+        contactInfoFormatted += "<br>";
+      };
+      contactInfoFormatted += contactEmail;
+    };
+    if ( contactTelephone.length > 0 ) {
+      if ( contactInfoFormatted.length > 0 ) {
+        contactInfoFormatted += "<br>";
+      };
+      contactInfoFormatted += contactTelephone;
+    };
+    return contactInfoFormatted;
+  };  // END: Format Sponsor Contact Name
 
 </script>
