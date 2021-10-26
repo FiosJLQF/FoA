@@ -97,6 +97,8 @@ router.get('/', requiresAuth(), async (req, res) => {
             0, 0, userProfiles[0].UserID, '');
         // Get the list of active permissions for the user
         const userPermissionsActive = await UserPermissionsActive.findAndCountAll( { where: { UserID: userProfiles[0].UserID }});
+        const userIsDataAdmin = userPermissionsActive.rows.filter( permission => permission.PermissionCategoryID === 923010)[0].CanRead;
+console.log(`userIsDataAdmin: ${userIsDataAdmin}`);
 
 
         ////////////////////////////////////////////////////
@@ -415,6 +417,7 @@ router.get('/', requiresAuth(), async (req, res) => {
             // User data
             user: req.oidc.user,
             userName: ( req.oidc.user == null ? '' : req.oidc.user.name ),
+            userIsDataAdmin,
             // Main Menu Data
             // Sponsor Information
             userCanReadSponsors,
@@ -486,8 +489,8 @@ router.post('/sponsoradd', requiresAuth(),
     async (req, res) => {
 
     // Reformat the SELECT options into a pipe-delimited array for storage
-    const sponsorStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.sponsorStatus, "|", "0");
-    const sponsorTypesFormatted = jsFx.convertOptionsToDelimitedString(req.body.sponsorTypes, "|", "0");
+    const sponsorStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.sponsorStatus, "|", "0", "false");
+    const sponsorTypesFormatted = jsFx.convertOptionsToDelimitedString(req.body.sponsorTypes, "|", "0", "false");
 
     // Validate the input
     const validationErrors = validationResult(req);
@@ -542,17 +545,17 @@ router.post('/scholarshipadd', requiresAuth(),
     async (req, res) => {
 
     // Reformat the multiple-option SELECT values into a pipe-delimited array for storage
-    const scholarshipStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.scholarshipStatus, "|", "0");
-    const scholarshipRecurrenceFormatted = jsFx.convertOptionsToDelimitedString(req.body.scholarshipRecurrence, "|", "0");
-    const criteriaFieldOfStudyFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFieldOfStudy, "|", "0");
-    const criteriaCitizenshipFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaCitizenship, "|", "0");
-    const criteriaYearOfNeedFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaYearOfNeed, "|", "0");
-    const criteriaFemaleApplicantsOnlyFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFemaleApplicantsOnly, "|", "0");
-    const criteriaEnrollmentStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaEnrollmentStatus, "|", "0");
-    const criteriaMilitaryServiceFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaMilitaryService, "|", "0");
-    const criteriaFAAPilotCertificateFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAPilotCertificate, "|", "0");
-    const criteriaFAAPilotRatingFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAPilotRating, "|", "0");
-    const criteriaFAAMechanicCertificateFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAMechanicCertificate, "|", "0");
+    const scholarshipStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.scholarshipStatus, "|", "0", "false");
+    const scholarshipRecurrenceFormatted = jsFx.convertOptionsToDelimitedString(req.body.scholarshipRecurrence, "|", "0", "false");
+    const criteriaFieldOfStudyFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFieldOfStudy, "|", "0", "false");
+    const criteriaCitizenshipFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaCitizenship, "|", "0", "false");
+    const criteriaYearOfNeedFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaYearOfNeed, "|", "0", "false");
+    const criteriaFemaleApplicantsOnlyFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFemaleApplicantsOnly, "|", "0", "false");
+    const criteriaEnrollmentStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaEnrollmentStatus, "|", "0", "false");
+    const criteriaMilitaryServiceFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaMilitaryService, "|", "0", "false");
+    const criteriaFAAPilotCertificateFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAPilotCertificate, "|", "0", "false");
+    const criteriaFAAPilotRatingFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAPilotRating, "|", "0", "false");
+    const criteriaFAAMechanicCertificateFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAMechanicCertificate, "|", "0", "false");
 
     // Reformat blank dates and numbers to NULL values to be updated into Postgres
     let ApplListDate = (req.body.scholarshipApplListDate === "") ? null : req.body.scholarshipApplListDate;
@@ -742,8 +745,8 @@ router.post('/userpermissionadd', requiresAuth(),
 router.put('/sponsorupdate', requiresAuth(), async (req, res) => {
 
     // Reformat the SELECT options into a pipe-delimited array for storage
-    const sponsorStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.sponsorStatus, "|", "0");
-    const sponsorTypesFormatted = jsFx.convertOptionsToDelimitedString(req.body.sponsorTypes, "|", "0");
+    const sponsorStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.sponsorStatus, "|", "0", "false");
+    const sponsorTypesFormatted = jsFx.convertOptionsToDelimitedString(req.body.sponsorTypes, "|", "0", "false");
 
     // Get a pointer to the current record
     const sponsorRecord = await SponsorsTable.findOne( {
@@ -778,17 +781,17 @@ router.put('/scholarshipupdate', requiresAuth(), async (req, res) => {
     console.log(`ScholarshipDescription (unformatted): ${req.body.scholarshipDescription}`);
 
     // Reformat the multiple-option SELECT values into a pipe-delimited array for storage
-    const scholarshipStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.scholarshipStatus, "|", "0");
-    const scholarshipRecurrenceFormatted = jsFx.convertOptionsToDelimitedString(req.body.scholarshipRecurrence, "|", "0");
-    const criteriaFieldOfStudyFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFieldOfStudy, "|", "0");
-    const criteriaCitizenshipFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaCitizenship, "|", "0");
-    const criteriaYearOfNeedFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaYearOfNeed, "|", "0");
-    const criteriaFemaleApplicantsOnlyFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFemaleApplicantsOnly, "|", "0");
-    const criteriaEnrollmentStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaEnrollmentStatus, "|", "0");
-    const criteriaMilitaryServiceFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaMilitaryService, "|", "0");
-    const criteriaFAAPilotCertificateFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAPilotCertificate, "|", "0");
-    const criteriaFAAPilotRatingFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAPilotRating, "|", "0");
-    const criteriaFAAMechanicCertificateFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAMechanicCertificate, "|", "0");
+    const scholarshipStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.scholarshipStatus, "|", "0", "false");
+    const scholarshipRecurrenceFormatted = jsFx.convertOptionsToDelimitedString(req.body.scholarshipRecurrence, "|", "0", "false");
+    const criteriaFieldOfStudyFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFieldOfStudy, "|", "0", "false");
+    const criteriaCitizenshipFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaCitizenship, "|", "0", "false");
+    const criteriaYearOfNeedFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaYearOfNeed, "|", "0", "false");
+    const criteriaFemaleApplicantsOnlyFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFemaleApplicantsOnly, "|", "0", "false");
+    const criteriaEnrollmentStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaEnrollmentStatus, "|", "0", "false");
+    const criteriaMilitaryServiceFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaMilitaryService, "|", "0", "false");
+    const criteriaFAAPilotCertificateFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAPilotCertificate, "|", "0", "false");
+    const criteriaFAAPilotRatingFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAPilotRating, "|", "0", "false");
+    const criteriaFAAMechanicCertificateFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAMechanicCertificate, "|", "0", "false");
 
     // Reformat blank dates and numbers to NULL values to be updated into Postgres
     let ApplListDate = (req.body.scholarshipApplListDate === "") ? null : req.body.scholarshipApplListDate;

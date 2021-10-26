@@ -67,7 +67,7 @@ async function logEvent(processName, eventObject, eventCode, eventStatus, eventD
 // Format selected options in a SELECT control into a delimited string for database storage
 // => server-side version (see public/js/foa_fx.js for client-side version)
 //////////////////////////////////////////////////////////////////////////////////////////
-function convertOptionsToDelimitedString(optionsToConvert, delimiterToUse = "|", notSelectedValue) {
+function convertOptionsToDelimitedString(optionsToConvert, delimiterToUse = "|", notSelectedValue, trimEdges) {
 
     let optionsOrig = optionsToConvert;
     let optionsFormatted = '';
@@ -94,6 +94,12 @@ function convertOptionsToDelimitedString(optionsToConvert, delimiterToUse = "|",
         };
     };
 
+    // If the function call requests the edges to be trimmed, remove the delimiter from the left and right edges
+    if ( trimEdges === "true" ) {
+        optionsFormatted = optionsFormatted.slice(delimiterToUse.length, optionsFormatted.length - delimiterToUse.length);
+    };
+
+    // Return the formatted string
     return optionsFormatted;
     
 };

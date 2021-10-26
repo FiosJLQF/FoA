@@ -10,8 +10,15 @@
       </div>
       <% } %>
   
-    <!-- The data entry form container -->
-    <form action="/switchboard/scholarshipadd" method="POST" id="scholarshipData">
+    <!-- TAB control -->
+    <div class="tab">
+      <button class="tablinks" onclick="openTab(event, 'tabEdit')" id="btnTabPreview">Edit</button>
+      <button class="tablinks" onclick="openTab(event, 'tabPreview')">Preview</button>
+    </div>
+
+    <!-- Data editing container (Tab #1) -->
+    <div id="tabEdit" class="tabcontent">
+    <form action="/switchboard/scholarshipadd" method="POST" id="scholarshipDataEdit">
 
       <!-- If the form context is "Manage Scholarship" then provide the scholarshipID for reference -->
       <input type="hidden" id="sponsorID" name="sponsorID">
@@ -43,7 +50,7 @@
             <label for="scholarshipName" class="data-mgmt-required">*</label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <textarea id="scholarshipName" name="scholarshipName" class="data-mgmt-1line" rows="1"></textarea><br>
+            <textarea id="scholarshipName" name="scholarshipName" class="data-mgmt-1line" rows="1" onchange="updatePreview();"></textarea><br>
             <span class="data-mgmt-error" id="scholarshipNameErrors"></span>
           </div>
         </div>
@@ -59,7 +66,7 @@
             <label for="scholarshipName" class="data-mgmt-required">*</label>
           </div>
           <div class="col-8 data-mgmt-value" id="scholarshipDescDiv">
-            <textarea id="scholarshipDescription" name="scholarshipDescription" class="data-mgmt"></textarea><br>
+            <textarea id="scholarshipDescription" name="scholarshipDescription" class="data-mgmt" onchange="updatePreview();"></textarea><br>
             <span class="data-mgmt-error" id="scholarshipDescriptionErrors"></span>
           </div>
         </div>
@@ -287,7 +294,7 @@
             <label for="criteriaFieldOfStudy" class="data-mgmt-required"></label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <select id="criteriaFieldOfStudy" name="criteriaFieldOfStudy" class="data-mgmt-multiple" multiple></select><br>
+            <select id="criteriaFieldOfStudy" name="criteriaFieldOfStudy" class="data-mgmt-multiple" multiple onchange="updatePreview();"></select><br>
             <span class="data-mgmt-error" id="criteriaFieldOfStudyErrors"></span>
           </div>
         </div>
@@ -475,13 +482,18 @@
           </div>
         </div>
       </div><br>
-
     </form> <!-- End data mgmt form -->
+    </div>  <!-- END: Data editing container (Tab #1) --> 
 
-    <!-- CRUD Actions -->
+    <!-- Data preview container (Tab #2) -->
+    <div id="tabPreview" class="tabcontent">
+      <%- include('scholarship_crud_preview') %>
+    </div>  <!-- END: Data preview container (Tab #2) -->
+
+    <!-- Form controls -->
     <div><br>
       <% if ( actionRequested === 'addscholarship' ) { %>
-        <button class="data-mgmt" form="scholarshipData" onclick="return validateData();">Add Scholarship</button>
+        <button class="data-mgmt" form="scholarshipDataEdit" onclick="return validateData();">Add Scholarship</button>
       <% } %>
       <% if ( scholarshipID !== '' && userCanDeleteScholarship ) { %>
         <form form action="/switchboard/scholarshipdelete?_method=DELETE" method="POST" id="scholarshipDataDelete">
@@ -490,14 +502,19 @@
         </form>
       <% } %>
       <% if ( scholarshipID !== '' && userCanUpdateScholarship ) { %>
-        <button class="data-mgmt" form="scholarshipData" onclick="return validateData();">Save Changes</button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="data-mgmt" form="scholarshipDataEdit" onclick="return validateData();">Save Changes</button>&nbsp;&nbsp;&nbsp;&nbsp;
       <% } %>
       <% if ( scholarshipID !== '' && userCanDeleteScholarship ) { %>
         <button class="data-mgmt" form="scholarshipDataDelete" onclick=" return deleteScholarship();">Delete This Scholarship</button>
       <% } %>
-    </div><br><br>
+    </div>  <!-- END: Form controls -->
+
+    <br><br>
 
 <script>
+
+  // Show the "Edit" tab by default
+  document.getElementById("btnTabPreview").click();
 
   /////////////////////////////////////////////////////////////////////////////////////////////
   // Load the DDLs options lists
@@ -559,11 +576,13 @@
     // Set the instructions
     document.getElementById('scholarshipInstructions').innerText = "Edit the entries below, and click 'Save Changes'.";
     // Set the form submittal configuration
-    document.getElementById('scholarshipData').action = "/switchboard/scholarshipupdate?_method=PUT";
-    document.getElementById('scholarshipData').method = "POST";
+    document.getElementById('scholarshipDataEdit').action = "/switchboard/scholarshipupdate?_method=PUT";
+    document.getElementById('scholarshipDataEdit').method = "POST";
     // Set the current values for the Scholarship data elements
     document.getElementById('scholarshipIDToUpdate').value = "<%- scholarshipDetails[0].ScholarshipID %>";
-    document.getElementById('sponsorID').value = "<%- sponsorID %>";
+    document.getElementById('sponsorID').value = "<%= sponsorID %>";
+    document.getElementById('sponsorLogoPreview').src = `<%- scholarshipDetails[0].SponsorLogo %>`;
+    document.getElementById('sponsorNamePreview').innerHTML = `<%- scholarshipDetails[0].SponsorName %>`;
 //    document.getElementById('scholarshipStatus').value = "<%= scholarshipDetails[0].ScholarshipStatus %>";
     // Select Scholarship Status
     var scholarshipStatus = "<%- scholarshipDetails[0].ScholarshipStatus %>";
@@ -580,7 +599,9 @@
       });
     };
     document.getElementById('scholarshipName').innerHTML = "<%= scholarshipDetails[0].ScholarshipName %>";
+    document.getElementById('scholarshipNamePreview').innerHTML = "<%= scholarshipDetails[0].ScholarshipName %>";
     document.getElementById('scholarshipDescription').innerHTML = `<%= scholarshipDetails[0].ScholarshipDescription %>`;
+    document.getElementById('scholarshipDescriptionPreview').innerHTML = `<%= scholarshipDetails[0].ScholarshipDescription %>`;
     document.getElementById('scholarshipDescDiv').contentEditable = true;
     document.getElementById('scholarshipLink').innerHTML = `<%- scholarshipDetails[0].ScholarshipLink %>`;
     document.getElementById('scholarshipAward').innerHTML = "<%= scholarshipDetails[0].ScholarshipAward %>";
@@ -623,6 +644,9 @@
         }
       });
     };
+    var scholarshipFieldsOfStudyText = Array.from(document.getElementById("criteriaFieldOfStudy").selectedOptions).map(v=>v.innerText);
+    var scholarshipFieldsOfStudyTextFormatted = convertOptionsToDelimitedString(scholarshipFieldsOfStudyText, "; ", "0", "true");
+    document.getElementById('scholarshipTypePreview').innerHTML = scholarshipFieldsOfStudyTextFormatted;
     document.getElementById('criteriaMinimumAge').value = "<%= scholarshipDetails[0].Criteria_AgeMinimum %>";
     document.getElementById('criteriaMaximumAge').value = "<%= scholarshipDetails[0].Criteria_AgeMaximum %>";
     // Select Citizenship Criteria
@@ -734,6 +758,19 @@
       document.getElementById('criteriaFAAMechanicCertificate').disabled = true;
     };
   <% } %>
+
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  // Keep the "Preview" tab sync-ed with the "Edit" tab
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  function updatePreview() {
+//    alert('Updating Preview!');
+    document.getElementById('scholarshipNamePreview').innerHTML = document.getElementById("scholarshipName").value;
+    var scholarshipFieldsOfStudyText = Array.from(document.getElementById("criteriaFieldOfStudy").selectedOptions).map(v=>v.innerText);
+    var scholarshipFieldsOfStudyTextFormatted = convertOptionsToDelimitedString(scholarshipFieldsOfStudyText, "; ", "0", "true");
+    document.getElementById('scholarshipTypePreview').innerHTML = scholarshipFieldsOfStudyTextFormatted;
+    document.getElementById('scholarshipDescriptionPreview').innerHTML = document.getElementById("scholarshipDescription").value;
+  }
 
 
   //////////////////////////////////////////////////////////////////////

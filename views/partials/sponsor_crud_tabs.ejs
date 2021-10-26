@@ -183,15 +183,13 @@
           </div>
         </div>
       </div><br>
-    </form>
+    </form> <!-- End data mgmt form -->
     </div>  <!-- END: Data editing container (Tab #1) --> 
-
 
     <!-- Data preview container (Tab #2) -->
     <div id="tabPreview" class="tabcontent">
       <%- include('sponsor_crud_preview') %>
     </div>  <!-- END: Data preview container (Tab #2) -->
-
 
     <!-- Form controls -->
     <div><br>
@@ -215,6 +213,7 @@
 
 <script>
 
+  // Show the "Edit" tab by default
   document.getElementById("btnTabPreview").click();
 
   /////////////////////////////////////////////////////////////////////////////////////////////
@@ -268,10 +267,10 @@
         }
       });
     };
-    document.getElementById('sponsorName').innerHTML = "<%= sponsorDetails[0].SponsorName %>";
-    document.getElementById('sponsorNamePreview').innerHTML = "<%= sponsorDetails[0].SponsorName %>";
+    document.getElementById('sponsorName').innerHTML = `<%= sponsorDetails[0].SponsorName %>`;
+    document.getElementById('sponsorNamePreview').innerHTML = `<%= sponsorDetails[0].SponsorName %>`;
     document.getElementById('sponsorDescription').innerHTML = `<%= sponsorDetails[0].SponsorDescription %>`;
-    document.getElementById('sponsorDescriptionPreview').innerText = `<%= sponsorDetails[0].SponsorDescription %>`;
+    document.getElementById('sponsorDescriptionPreview').innerHTML = `<%= sponsorDetails[0].SponsorDescription %>`;
     document.getElementById('sponsorWebsite').innerHTML = "<%= sponsorDetails[0].SponsorWebsite %>";
     document.getElementById('sponsorWebsitePreview').innerHTML = "<%= sponsorDetails[0].SponsorWebsite %>";
     document.getElementById('sponsorWebsitePreview').href = "<%= sponsorDetails[0].SponsorWebsite %>";
@@ -296,6 +295,12 @@
         }
       });
     };
+
+    // Disable the controls if the user is not an FoA Admin
+    if ( <%- !userIsDataAdmin %> ) {
+      document.getElementById('sponsorStatus').disabled = true;
+    };
+
     // Disable the controls (and change the instruction) if the user does not have permission to update Sponsors.
     if ( <%- !userCanUpdateSponsor %> ) {
       document.getElementById('sponsorInstructions').innerText = "Review the entries below.";

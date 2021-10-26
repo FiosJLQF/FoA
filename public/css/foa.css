@@ -454,6 +454,7 @@ select.single-choice {
   font-variant: normal;
   padding-top: 8px;
   line-height: 1.3;
+  white-space: pre-wrap;
 }
 
 .sponsorsearchresultscol4 {

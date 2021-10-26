@@ -9,6 +9,8 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true
         },
         SponsorID:                                   DataTypes.INTEGER,
+        SponsorName:                                 DataTypes.STRING,
+        SponsorLogo:                                 DataTypes.STRING,
         ScholarshipName:                             DataTypes.STRING,
         ScholarshipLink:                             DataTypes.STRING,
         ScholarshipContactFName:                     DataTypes.STRING,
