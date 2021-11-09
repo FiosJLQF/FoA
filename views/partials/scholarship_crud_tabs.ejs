@@ -22,6 +22,7 @@
 
       <!-- If the form context is "Manage Scholarship" then provide the scholarshipID for reference -->
       <input type="hidden" id="sponsorID" name="sponsorID">
+      <input type="hidden" id="sponsorName" name="sponsorName">
       <input type="hidden" id="scholarshipIDToUpdate" name="scholarshipIDToUpdate">
 
       <!-- Scholarship Status -->
@@ -566,6 +567,7 @@
     document.getElementById('scholarshipInstructions').innerText = "Add the information for the new Scholarship below, and click 'Add Scholarship'.";
     // Set the Sponsor ID for this new Scholarship
     document.getElementById('sponsorID').value = "<%= sponsorID %>";
+    document.getElementById('sponsorNamePreview').innerHTML = `<%- sponsorDetails[0].SponsorName %>`;
 
   <% } else if ( scholarshipID !== '' ) { %>  // "Read/Update/Delete Scholarship"
 
