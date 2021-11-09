@@ -98,7 +98,7 @@
             <label for="scholarshipAward" class="data-mgmt-required">*</label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <textarea id="scholarshipAward" name="scholarshipAward" class="data-mgmt-1line-half"></textarea><br>
+            <textarea id="scholarshipAward" name="scholarshipAward" class="data-mgmt-1line-half" onchange="updatePreview();"></textarea><br>
             <span class="data-mgmt-error" id="scholarshipAwardErrors"></span>
           </div>
         </div>
@@ -114,7 +114,7 @@
             <label for="scholarshipContactFName" class="data-mgmt-required"></label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <textarea id="scholarshipContactFName" name="scholarshipContactFName" class="data-mgmt-1line-half" rows="1"></textarea><br>
+            <textarea id="scholarshipContactFName" name="scholarshipContactFName" class="data-mgmt-1line-half" rows="1" onchange="updatePreview();"></textarea><br>
             <span class="data-mgmt-error" id="scholarshipContactFNameErrors"></span>
           </div>
         </div>
@@ -130,7 +130,7 @@
             <label for="scholarshipContactLName" class="data-mgmt-required"></label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <textarea id="scholarshipContactLName" name="scholarshipContactLName" class="data-mgmt-1line-half" rows="1"></textarea><br>
+            <textarea id="scholarshipContactLName" name="scholarshipContactLName" class="data-mgmt-1line-half" rows="1" onchange="updatePreview();"></textarea><br>
             <span class="data-mgmt-error" id="scholarshipContactLNameErrors"></span>
           </div>
         </div>
@@ -146,7 +146,7 @@
             <label for="scholarshipContactEmail" class="data-mgmt-required">*</label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <textarea id="scholarshipContactEmail" name="scholarshipContactEmail" class="data-mgmt-1line-half" rows="1"></textarea><br>
+            <textarea id="scholarshipContactEmail" name="scholarshipContactEmail" class="data-mgmt-1line-half" rows="1" onchange="updatePreview();"></textarea><br>
             <span class="data-mgmt-error" id="scholarshipContactEmailErrors"></span>
           </div>
         </div>
@@ -162,7 +162,7 @@
             <label for="scholarshipContactTelephone" class="data-mgmt-required"></label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <textarea id="scholarshipContactTelephone" name="scholarshipContactTelephone" class="data-mgmt-1line-half" rows="1"></textarea><br>
+            <textarea id="scholarshipContactTelephone" name="scholarshipContactTelephone" class="data-mgmt-1line-half" rows="1" onchange="updatePreview();"></textarea><br>
             <span class="data-mgmt-error" id="scholarshipContactTelephoneErrors"></span>
           </div>
         </div>
@@ -195,7 +195,7 @@
             <label for="scholarshipEligReqsPrimary" class="data-mgmt-required"></label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <textarea id="scholarshipEligReqsPrimary" name="scholarshipEligReqsPrimary" class="data-mgmt"></textarea><br>
+            <textarea id="scholarshipEligReqsPrimary" name="scholarshipEligReqsPrimary" class="data-mgmt" onchange="updatePreview();"></textarea><br>
             <span class="data-mgmt-error" id="scholarshipEligReqsPrimaryErrors"></span>
           </div>
         </div>
@@ -261,7 +261,7 @@
             <label for="scholarshipApplStartDate" class="data-mgmt-required"></label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <input type="date" id="scholarshipApplStartDate" name="scholarshipApplStartDate" class="data-mgmt-text-third">
+            <input type="date" id="scholarshipApplStartDate" name="scholarshipApplStartDate" class="data-mgmt-text-third" onchange="updatePreview();">
             <span class="data-mgmt-error" id="scholarshipApplStartDateErrors"></span>
           </div>
         </div>
@@ -277,7 +277,7 @@
             <label for="scholarshipApplEndDate" class="data-mgmt-required"></label>
           </div>
           <div class="col-8 data-mgmt-value">
-            <input type="date" id="scholarshipApplEndDate" name="scholarshipApplEndDate" class="data-mgmt-text-third">
+            <input type="date" id="scholarshipApplEndDate" name="scholarshipApplEndDate" class="data-mgmt-text-third" onchange="updatePreview();">
             <span class="data-mgmt-error" id="scholarshipApplEndDateErrors"></span>
           </div>
         </div>
@@ -605,12 +605,15 @@
     document.getElementById('scholarshipDescDiv').contentEditable = true;
     document.getElementById('scholarshipLink').innerHTML = `<%- scholarshipDetails[0].ScholarshipLink %>`;
     document.getElementById('scholarshipAward').innerHTML = "<%= scholarshipDetails[0].ScholarshipAward %>";
+    document.getElementById('scholarshipAwardPreview').innerHTML = `<%= scholarshipDetails[0].ScholarshipAward %>`;
     document.getElementById('scholarshipContactFName').innerHTML = "<%= scholarshipDetails[0].ScholarshipContactFName %>";
     document.getElementById('scholarshipContactLName').innerHTML = "<%= scholarshipDetails[0].ScholarshipContactLName %>";
     document.getElementById('scholarshipContactEmail').innerHTML = "<%= scholarshipDetails[0].ScholarshipContactEmail %>";
     document.getElementById('scholarshipContactTelephone').innerHTML = "<%= scholarshipDetails[0].ScholarshipContactTelephone %>";
+    document.getElementById('scholarshipContactInfoPreview').innerHTML = formatContactInfo();
     document.getElementById('notesAdmin').innerHTML = `<%= scholarshipDetails[0].Notes_Admin %>`;
     document.getElementById('scholarshipEligReqsPrimary').innerHTML = `<%= scholarshipDetails[0].ScholarshipEligibilityReqs %>`;
+    document.getElementById('scholarshipEligReqsPrimaryPreview').innerHTML = `<%= scholarshipDetails[0].ScholarshipEligibilityReqs %>`;
 //    document.getElementById('scholarshipEligReqsOther').value = "<%= scholarshipDetails[0].ScholarshipEligibilityReqsOther %>";
     document.getElementById('scholarshipRecurrence').value = "<%= scholarshipDetails[0].ScholarshipRecurrence %>";
     // Select Recurrence Frequency
@@ -630,6 +633,7 @@
     document.getElementById('scholarshipApplListDate').value = "<%= scholarshipDetails[0].ScholarshipApplListDate %>";
     document.getElementById('scholarshipApplStartDate').value = "<%= scholarshipDetails[0].ScholarshipApplStartDate %>";
     document.getElementById('scholarshipApplEndDate').value = "<%= scholarshipDetails[0].ScholarshipApplEndDate %>";
+    document.getElementById('scholarshipApplDatesPreview').innerHTML = formatApplicationDates();
     // Select Field of Study Criteria
     var criteriaFieldOfStudy = "<%- scholarshipDetails[0].Criteria_FieldOfStudy %>";
     var criteriaFieldOfStudyArrTrimmed = criteriaFieldOfStudy.split('|').slice(1, -1);
@@ -770,6 +774,10 @@
     var scholarshipFieldsOfStudyTextFormatted = convertOptionsToDelimitedString(scholarshipFieldsOfStudyText, "; ", "0", "true");
     document.getElementById('scholarshipTypePreview').innerHTML = scholarshipFieldsOfStudyTextFormatted;
     document.getElementById('scholarshipDescriptionPreview').innerHTML = document.getElementById("scholarshipDescription").value;
+    document.getElementById('scholarshipAwardPreview').innerHTML = document.getElementById("scholarshipAward").value;
+    document.getElementById('scholarshipEligReqsPrimaryPreview').innerHTML = document.getElementById("scholarshipEligReqsPrimary").value;
+    document.getElementById('scholarshipApplDatesPreview').innerHTML = formatApplicationDates();
+    document.getElementById('scholarshipContactInfoPreview').innerHTML = formatContactInfo();
   }
 
 
@@ -1160,6 +1168,65 @@
     if (answer !== true) {
       return false;
     };
+  };
+
+  //////////////////////////////////////////////////////////////////////
+  // Format the applications dates for the preview screen
+  //////////////////////////////////////////////////////////////////////
+  function formatApplicationDates() {
+
+    var formattedApplDates = '';
+    var scholarshipApplEndDate = document.getElementById('scholarshipApplEndDate').value;
+    var scholarshipApplEndDateFormatted = new Date(scholarshipApplEndDate).toLocaleDateString('en-US', {timeZone: 'UTC'});
+    var scholarshipApplStartDate = document.getElementById('scholarshipApplStartDate').value;
+    var scholarshipApplStartDateFormatted = new Date(scholarshipApplStartDate).toLocaleDateString('en-US', {timeZone: 'UTC'});
+
+    if ( scholarshipApplEndDate.length === 0 ) { // No End Date
+      formattedApplDates = 'Applications accepted throughout the year.';
+    } else if ( scholarshipApplStartDate.length === 0 ) { // End Date but no Start Date
+      formattedApplDates = 'Through ' + scholarshipApplEndDateFormatted;
+    } else {
+      formattedApplDates = scholarshipApplStartDateFormatted + ' - ' + scholarshipApplEndDateFormatted;
+    };
+
+    return formattedApplDates;
+  };
+
+  //////////////////////////////////////////////////////////////////////
+  // Format the contact information for the preview screen
+  //////////////////////////////////////////////////////////////////////
+  function formatContactInfo() {
+  var formattedContactInfo = '';
+  var scholarshipContactFName = document.getElementById('scholarshipContactFName').value;
+  var scholarshipContactLName = document.getElementById('scholarshipContactLName').value;
+  var scholarshipContactEmail = document.getElementById('scholarshipContactEmail').value;
+  var scholarshipContactTelephone = document.getElementById('scholarshipContactTelephone').value;
+
+  // Format the Contact Name
+  if ( scholarshipContactFName.length !== 0 ) { // First name is provided
+    formattedContactInfo = scholarshipContactFName + ' ';
+  };
+  if ( scholarshipContactLName.length !== 0 ) { // Last name is provided
+    formattedContactInfo += scholarshipContactLName;
+  };
+
+  // Format the Contact Email
+  if ( scholarshipContactEmail.length !== 0 ) { // Email is provided
+    if ( formattedContactInfo.length !== 0 ) { // If Contact Name is provided, add a <br>
+      formattedContactInfo += '<br>';
+    };
+    formattedContactInfo += scholarshipContactEmail;
+  };
+
+  // Format the Contact Telephone
+  if ( scholarshipContactTelephone.length !== 0 ) { // Telephone is provided
+    if ( formattedContactInfo.length !== 0 ) { // If Contact Name or Email is provided, add a <br>
+      formattedContactInfo += '<br>';
+    };
+    formattedContactInfo += scholarshipContactTelephone;
+  };
+
+  return formattedContactInfo;
   };
 
 </script>

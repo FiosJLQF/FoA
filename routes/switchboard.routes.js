@@ -79,6 +79,7 @@ router.get('/', requiresAuth(), async (req, res) => {
         let errorCode = 0;
         let actionRequested = '';
         let statusMessage = '';
+        let userIsDataAdmin = 0;
 
 
         ////////////////////////////////////////////////////
@@ -97,7 +98,8 @@ router.get('/', requiresAuth(), async (req, res) => {
             0, 0, userProfiles[0].UserID, '');
         // Get the list of active permissions for the user
         const userPermissionsActive = await UserPermissionsActive.findAndCountAll( { where: { UserID: userProfiles[0].UserID }});
-        const userIsDataAdmin = userPermissionsActive.rows.filter( permission => permission.PermissionCategoryID === 923010)[0].CanRead;
+        const userIsDataAdminArray = userPermissionsActive.rows.filter( permission => permission.PermissionCategoryID === 923010);
+        userIsDataAdmin = ( userIsDataAdminArray.length > 0 ) ? userIsDataAdminArray[0].CanRead : 0;
 console.log(`userIsDataAdmin: ${userIsDataAdmin}`);
 
 
