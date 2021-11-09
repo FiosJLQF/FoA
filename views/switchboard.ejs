@@ -19,11 +19,11 @@
     <% if ( errorCode !== 0 ) { %>
       <%- include('partials/switchboard_error') %>
     <% } else if ( actionRequested === 'addsponsor' ) { %>
-      <%- include('partials/sponsor_crud') %>
+      <%- include('partials/sponsor_crud_tabs') %>
     <% } else if ( actionRequested === 'editsponsor' && sponsorID !== '' ) { %>
       <%- include('partials/sponsor_crud_tabs') %>
     <% } else if ( actionRequested === 'addscholarship' && sponsorID !== '' ) { %>
-      <%- include('partials/scholarship_crud') %>
+      <%- include('partials/scholarship_crud_tabs') %>
     <% } else if ( actionRequested === 'editscholarship' && scholarshipID !== '' ) { %>
       <%- include('partials/scholarship_crud_tabs') %>
     <% } else if ( actionRequested === 'adduser' ) { %>
