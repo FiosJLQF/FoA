@@ -37,11 +37,11 @@ async function checkTasksToRun() {
   ////////////////////////////////////////////
   // Check the schedules for tasks to run
   ////////////////////////////////////////////
-//  if ( today.getDate() === 1 ) { // Run on the 1st of the month
+  if ( today.getDate() === 1 ) { // Run on the 1st of the month
     let scholarshipDatesResult = scholarshipDates(today, sequelize);
-//  } else {
-//    let emailResultError = jsFx.sendEmail('fiosjlqf@gmail.com', `Today is the ${today.getDate()} day of the month`, '', '');
-//  };
+  } else {
+    let emailResultError = jsFx.sendEmail('fiosjlqf@gmail.com', `Today is the ${today.getDate()} day of the month`, '', '');
+  };
 
 }; // end checkTasksToRun
 
@@ -55,7 +55,7 @@ function scholarshipDates(today, sequelize) {
     { type: sequelize.QueryTypes.SELECT })
   .then( async htmlTable => {
     // send the email notification
-    let emailResultError = jsFx.sendEmail('fiosjlqf@gmail.com', 'Scholarship Date(s) Notifications', '',
+    let emailResultError = jsFx.sendEmail('fiosjlqf@gmail.com; kkueber@amcg.aero', 'Scholarship Date(s) Notifications', '',
       htmlTable[0].TableDef);
     // log the event
     let logEventResult = await jsFx.logEvent('Scheduled Task', 'scholarshipDates', 0,
