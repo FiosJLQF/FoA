@@ -8,7 +8,7 @@ require("dotenv").config();  // load all ".env" variables into "process.env" for
 const { ScholarshipsTable, /* ScholarshipsTableTest, */ ScholarshipsActive, /* ScholarshipsActiveDDL, */ 
         ScholarshipsAllDDL, /* ScholarshipsAllDDLTest, */
         ScholarshipRecurrenceCategoriesDDL, ScholarshipStatusCategoriesDDL,
-        SponsorsTable, SponsorsAllDLL, Sponsors, SponsorsDDL, /* SponsorsAllDDLTest, */
+        SponsorsTable, SponsorsAllDLL, Sponsors, SponsorsDDL, SponsorsAllView, /* SponsorsAllDDLTest, */
         SponsorTypeCategoriesDDL, SponsorStatusCategoriesDDL,
         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
@@ -79,6 +79,7 @@ router.get('/', requiresAuth(), async (req, res) => {
         let errorCode = 0;
         let actionRequested = '';
         let statusMessage = '';
+        let currentUserID = 0;
         let userIsDataAdmin = 0;
 
 
@@ -93,14 +94,14 @@ router.get('/', requiresAuth(), async (req, res) => {
             // Redirect the user to the "New User" screen
             res.redirect(`/switchboard/newuser`);
         };
+        currentUserID = userProfiles[0].UserID;
         // Log the access by the Current User
         let logEventResult = await jsFx.logEvent('Page Access', 'Switchboard', 0, 'Informational', 'User Accessed Page',
-            0, 0, userProfiles[0].UserID, '');
+            0, 0, currentUserID, '');
         // Get the list of active permissions for the user
-        const userPermissionsActive = await UserPermissionsActive.findAndCountAll( { where: { UserID: userProfiles[0].UserID }});
-        const userIsDataAdminArray = userPermissionsActive.rows.filter( permission => permission.PermissionCategoryID === 923010);
-        userIsDataAdmin = ( userIsDataAdminArray.length > 0 ) ? userIsDataAdminArray[0].CanRead : 0;
-console.log(`userIsDataAdmin: ${userIsDataAdmin}`);
+        const userPermissionsActive = await UserPermissionsActive.findAndCountAll( { where: { UserID: currentUserID } } );
+        // Check to see if the current User is a "Data Admin" (FoA or AMCG web manager)
+        userIsDataAdmin = await jsFx.checkUserPermission(currentUserID, '923010', 'CanRead');
 
 
         ////////////////////////////////////////////////////
@@ -114,12 +115,31 @@ console.log(`userIsDataAdmin: ${userIsDataAdmin}`);
             sponsorIDRequested = Number(req.query['sponsorid']);
             console.log(`sponsorIDRequested = ${sponsorIDRequested}`);
             if ( sponsorIDRequested == 0 || sponsorIDRequested === '' || Number.isNaN(sponsorIDRequested)) {
+                errorCode = 908; // Invalid, missing or non-existant SponsorID
                 // Log the event
                 let logEventResult = await jsFx.logEvent('SponsorID Validation', '', 0, 'Failure',
-                    `SponsorID is not valid (${req.query['sponsorid']})`,
-                    0, 0, userProfiles[0].UserID, process.env.EMAIL_WEBMASTER_LIST);
-                // Redirect the user to the main switchboard
-                res.redirect('/switchboard');
+                    `SponsorID is not a valid format (${req.query['sponsorid']})`,
+                    0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
+                // redirect the user to the error screen
+                return res.render( 'error', {
+                    errorCode: errorCode,
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                });
+            } else { // value is in a valid format; check to see if it exists in the database
+                let doesSponsorIDExist = await SponsorsAllView.findAndCountAll( { where: { SponsorID: sponsorIDRequested } } );
+                console.log(`matching SponsorID count: ${doesSponsorIDExist.count}`);
+                if ( doesSponsorIDExist.count == 0 ) {
+                    errorCode = 908; // Invalid, missing or non-existant SponsorID
+                    // Log the event
+                    let logEventResult = await jsFx.logEvent('SponsorID Validation', '', 0, 'Failure',
+                        `SponsorID does not exist (${req.query['sponsorid']})`,
+                        0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
+                    // redirect the user to the error screen
+                    return res.render( 'error', {
+                        errorCode: errorCode,
+                        userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                    });
+                };
             };
         };
 
@@ -133,9 +153,12 @@ console.log(`userIsDataAdmin: ${userIsDataAdmin}`);
                 // Log the event
                 let logEventResult = await jsFx.logEvent('ScholarshipID Validation', '', 0, 'Failure',
                     `ScholarshipID is not valid (${req.query['scholarshipid']})`,
-                    0, 0, userProfiles[0].UserID, process.env.EMAIL_WEBMASTER_LIST);
+                    0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
                 // Redirect the user to the main switchboard
                 res.redirect('/switchboard');
+            } else {
+                // TODO: Validate requested ScholarshipID exists
+                
             };
         };
         
@@ -149,12 +172,14 @@ console.log(`userIsDataAdmin: ${userIsDataAdmin}`);
                 // Log the event
                 let logEventResult = await jsFx.logEvent('UserID Validation', '', 0, 'Failure',
                     `UserID is not valid (${req.query['userid']})`,
-                    0, 0, userProfiles[0].UserID, process.env.EMAIL_WEBMASTER_LIST);
+                    0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
                 // Redirect the user to the main switchboard
                 res.redirect('/switchboard');
+            } else {
+                // TODO: Validate requested UserID exists
             };
         };
-        
+                        
         // If a requested "userpermissionid" is blank, zero or not a number, redirect to the generic Switchboard page
         console.log(`userpermissionid = ${req.query['userpermissionid']}`);
         let userPermissionIDRequested = '';
@@ -165,50 +190,56 @@ console.log(`userIsDataAdmin: ${userIsDataAdmin}`);
                 // Log the event
                 let logEventResult = await jsFx.logEvent('UserPermissionID Validation', '', 0, 'Failure',
                     `UserPermissionID is not valid (${req.query['userpermissionid']})`,
-                    0, 0, userProfiles[0].UserID, process.env.EMAIL_WEBMASTER_LIST);
+                    0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
                 // Redirect the user to the main switchboard
                 res.redirect('/switchboard');
+            } else {
+                // TODO: Validate requested UserPermissionID exists
             };
         };
-        
+                        
         ////////////////////////////////////////////////////
         //  Sponsor Data Permissions / Details (DDL, Add Sponsor, Default Sponsor, etc.)
         ////////////////////////////////////////////////////
-        const { userCanReadSponsors, userCanCreateSponsors, sponsorsAllowedDDL, sponsorID, sponsorDetails, doesSponsorExist,
+        const { userCanReadSponsorsDDL, userCanCreateSponsors, sponsorsAllowedDDL, sponsorID, sponsorDetails, doesSponsorExist,
                 userCanReadSponsor, userCanUpdateSponsor, userCanDeleteSponsor
-        } = await jsFx.getSponsorPermissionsForUser( userPermissionsActive, sponsorIDRequested );
+        } = await jsFx.getSponsorPermissionsForUser( currentUserID, sponsorIDRequested );
 
-        // Does the requested Sponsor exist (if requested)?
-        console.log(`doesSponsorExist: (${doesSponsorExist})`);
-        if ( !doesSponsorExist ) {  // Sponsor ID does not exist
-            errorCode = 908;
-            // Log the event
-            let logEventResult = await jsFx.logEvent('SponsorID Validation', '', errorCode, 'Failure',
-                `SponsorID does not exist (${sponsorIDRequested})`,
-                0, 0, userProfiles[0].UserID, process.env.EMAIL_WEBMASTER_LIST);
-            // redirect the user to the error screen
-            return res.render( 'error', {
-                errorCode: errorCode,
-                userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
-            });
-        };
+        // If the current User can see the Sponsors DDL, validate the requested values
+        if ( userCanReadSponsorsDDL ) {
 
-        // Does the User have permission to see/edit/delete this Sponsor?
-        if ( !userCanReadSponsor ) { // User does not have permission to read Sponsor's data - trap and log error
+            // Does the requested Sponsor exist (if requested)?
+            console.log(`doesSponsorExist: (${doesSponsorExist})`);
+            if ( !doesSponsorExist ) {  // Sponsor ID does not exist
+                errorCode = 908;
+                // Log the event
+                let logEventResult = await jsFx.logEvent('SponsorID Validation', '', errorCode, 'Failure',
+                    `SponsorID does not exist (${sponsorIDRequested})`,
+                    0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
+                // redirect the user to the error screen
+                return res.render( 'error', {
+                    errorCode: errorCode,
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                });
+            };
+
+            // Does the User have permission to see/edit/delete this Sponsor?
+            if ( !userCanReadSponsor ) { // User does not have permission to read Sponsor's data - trap and log error
 // ToDo:  Log the error
-            errorCode = 909;
-            return res.render( 'error', {
-                errorCode: errorCode,
-                userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
-            });
-        };
+                errorCode = 909;
+                return res.render( 'error', {
+                    errorCode: errorCode,
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                });
+            };
+        }; // END: Can the current User see the Sponsors' DDL?
 
         ////////////////////////////////////////////////////
         //  Scholarship Data Permissions / Details (DDL, Add Scholarship, Default Scholarship, etc.)
         ////////////////////////////////////////////////////
-        const { userCanReadScholarships, userCanCreateScholarships, scholarshipsAllowedDDL, scholarshipID, scholarshipDetails,
+        const { userCanReadScholarshipsDDL, userCanCreateScholarships, scholarshipsAllowedDDL, scholarshipID, scholarshipDetails,
                 doesScholarshipExist, userCanReadScholarship, userCanUpdateScholarship, userCanDeleteScholarship
-        } = await jsFx.getScholarshipPermissionsForUser( userPermissionsActive, sponsorID, scholarshipIDRequested );
+        } = await jsFx.getScholarshipPermissionsForUser( currentUserID, userPermissionsActive, sponsorID, scholarshipIDRequested );
 
         // Does the requested Scholarship exist (if requested)?
         console.log(`doesScholarshipExist: (${doesScholarshipExist})`);
@@ -248,7 +279,7 @@ console.log(`userIsDataAdmin: ${userIsDataAdmin}`);
                 errorCode = 928;  // Unknown User
                 // Log the event
                 let logEventResult = await jsFx.logEvent('User Access', `Website User: ${ userIDRequested }`, errorCode,
-                    'Failure', 'UserID does not exist', 0, 0, userProfiles[0].UserID, process.env.EMAIL_WEBMASTER_LIST);
+                    'Failure', 'UserID does not exist', 0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
                 // Raise an error
                 return res.render( 'error', {
                     errorCode: errorCode,
@@ -261,7 +292,7 @@ console.log(`userIsDataAdmin: ${userIsDataAdmin}`);
                 errorCode = 929;  // Unknown User
                 // Log the error
                 let logEventResult = await jsFx.logEvent('Website User Access', `Website User: ${ userIDRequested }`, errorCode,
-                   'Failure', 'User not authorized to view website user data', 0, 0, userProfiles[0].UserID, process.env.EMAIL_WEBMASTER_LIST);
+                   'Failure', 'User not authorized to view website user data', 0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
                 // Raise an error
                 return res.render( 'error', {
                     errorCode: errorCode,
@@ -270,7 +301,7 @@ console.log(`userIsDataAdmin: ${userIsDataAdmin}`);
             } else {
                 // Log the access
                 let logEventResult = await jsFx.logEvent('Content Access', `Website User: ${ userIDRequested }`, 0,
-                    'Success', '', 0, 0, userProfiles[0].UserID, '');
+                    'Success', '', 0, 0, currentUserID, '');
             };
         };
     
@@ -325,6 +356,8 @@ console.log(`userIsDataAdmin: ${userIsDataAdmin}`);
         let criteriaFAAMechanicCertificateCategories = await FAAMechanicCertificateCategoriesDDL.findAndCountAll({});
         let sponsorStatusCategories = await SponsorStatusCategoriesDDL.findAndCountAll({});
         let userPermissionsCategoriesAllDLL = await UserPermissionCategoriesAllDDL.findAndCountAll({});
+
+
         ////////////////////////////////////////////////////
         //  Process any querystring "actions requested" (this will tell the form how to render for the user)
         ////////////////////////////////////////////////////
@@ -360,6 +393,10 @@ console.log(`userIsDataAdmin: ${userIsDataAdmin}`);
         } else if ( req.query['actionrequested'] === 'edituserpermission' ) {
             if ( userCanReadUserPermission ) {
                 actionRequested = 'edituserpermission';
+            };
+        } else { // No valid "action requested" querystring value; show default Sponsor
+            if ( userCanReadSponsor ) {
+                actionRequested = 'editsponsor';
             };
         };
 
@@ -422,13 +459,13 @@ console.log(`userIsDataAdmin: ${userIsDataAdmin}`);
             userIsDataAdmin,
             // Main Menu Data
             // Sponsor Information
-            userCanReadSponsors,
+            userCanReadSponsorsDDL,
             sponsorsAllowedDDL,
             userCanCreateSponsors,
             sponsorTypeCategoriesDDL,
             sponsorStatusCategories,
             // Scholarship Information
-            userCanReadScholarships,
+            userCanReadScholarshipsDDL,
             scholarshipsAllowedDDL,
             userCanCreateScholarships,
             scholarshipStatusCategories,

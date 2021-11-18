@@ -11,7 +11,7 @@
 -->
 
 <!-- Sponsor Name(s) -->
-  <% if ( userCanReadSponsors ) { %>  <!-- If the current user can read the sponsors list, show it and the scholarships list. -->
+  <% if ( userCanReadSponsorsDDL ) { %>  <!-- If the current user can read the sponsors list, show it and the scholarships list. -->
   <div id="sponsorBlock">
     Sponsors: <span id="testText"></span>
     <% if ( userCanCreateSponsors ) { %>  <!-- If the current user can create sponsors, show the link. -->
@@ -27,7 +27,7 @@
   </div>
 
   <!-- Scholarship(s) -->
-  <% if ( userCanReadScholarships ) { %>  <!-- If the current user can read the sponsors list, show it and the scholarships list. -->
+  <% if ( userCanReadScholarshipsDDL ) { %>  <!-- If the current user can read the sponsors list, show it and the scholarships list. -->
   <div>
     Scholarships:
     <% if ( userCanCreateScholarships && sponsorID !== '' ) { %>  <!-- If the current user can create scholarships, and a Sponsor is selected, show the link. -->
@@ -80,10 +80,10 @@
 </div>  <!-- End column 1 DIV -->
 
 <script>
-
   // Load the allowed Sponsors into the DDL, and lock the DDL if the User only has access to a single Sponsor
   var splRows = <%- JSON.stringify(sponsorsAllowedDDL.rows) %>;
   var splCount = <%- JSON.stringify(sponsorsAllowedDDL.count) %>;
+  console.log('splCount: ' + splCount);
   loadSelectOptionsList("filterSponsorsInput", "(Not Selected)", 0, splRows, '<%= sponsorID %>');
   if ( splCount === 1 ) {
     document.getElementById('filterSponsorsInput').disabled = true;
@@ -98,7 +98,7 @@
       newURL = 'switchboard?actionrequested=editsponsor&sponsorid=' + selectedSponsorID;
     }
     location.href=newURL;
-  }
+  };
 
   // If a Sponsor is selected, enable the "Add Scholarship" link and load the Scholarships DDL
   var ddlSponsors = document.getElementById("filterSponsorsInput");
