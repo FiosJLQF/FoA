@@ -481,6 +481,125 @@ async function checkUserPermission(userID, permissionCategoryID, permissionType)
 }; // end "checkUserPermission"
 
 
+//////////////////////////////////////////////////////////////////////////////////////////
+// If the Current User is not configured for access (i.e., a New User),
+// create an entry in the User Profiles table, and create their default User Permissions
+//////////////////////////////////////////////////////////////////////////////////////////
+async function checkForNewUser( usernameToCheck ) {
+
+    // Local variables
+    let errorCode = 0;
+    let newUserID = 0;
+    let today = new Date();
+    let permissionExpirationDate = new Date();
+    permissionExpirationDate.setFullYear(today.getFullYear() + 5);
+
+    // Log the event
+    let logEventResult = await logEvent('User Profiles', 'Get Current User', 0, 'Failure',
+        'User not yet configured.', 0, 0, 0, '');
+
+    // Add the new data to the database in a new record, and return the newly-generated [UserID] value
+    const newUser = new UsersTable( { Username: usernameToCheck });
+console.log(`Before newuser.save`);
+    await newUser.save()
+        .then( async function() {
+            newUserID = newUser.UserID;
+console.log(`newUser.UserID: ${newUserID}`);
+
+            // Add New User Permission (Switchboard)
+            const newUserPermissionSwitchboard = new UserPermissionsTable( {
+                UserID: newUserID,
+                PermissionCategoryID: '923001',
+                ObjectValues: '*',
+                EffectiveDate: today,
+                ExpirationDate: permissionExpirationDate,
+                CanCreate: false,
+                CanRead: true,
+                CanUpdate: false,
+                CanDelete: false
+            });
+            await newUserPermissionSwitchboard.save()
+                .then()
+                .catch( async function(errorSwitchboard) {
+console.log(`newUser Switchboard Permission error: ${errorSwitchboard}`);
+                    errorCode = 902;
+                    // Log the error
+                    let logEventResult = jsFx.logEvent('Error', 'New Permission', errorCode, 'Failure',
+                        'Could not create new User Permission for Switchboard (' + errorSwitchboard + ').',
+                        0, 0, newUserID, '');
+                }); // END: Create new User Permission (Switchboard)
+
+            // Add New User Permission (Users DDL)
+            const newUserPermissionUsersDDL = new UserPermissionsTable( {
+                UserID: newUserID,
+                PermissionCategoryID: '923004',
+                ObjectValues: '*',
+                EffectiveDate: today,
+                ExpirationDate: permissionExpirationDate,
+                CanCreate: false,
+                CanRead: true,
+                CanUpdate: false,
+                CanDelete: false
+            });
+            await newUserPermissionUsersDDL.save()
+                .then()
+                .catch( async function(errorUsersDDL) {
+console.log(`newUser Users DDL Permission error: ${errorUsersDDL}`);
+                    errorCode = 902;
+                    // Log the error
+                    let logEventResult = jsFx.logEvent('Error', 'New Permission', errorCode, 'Failure',
+                        'Could not create new User Permission for Users DDL (' + errorUsersDDL + ').',
+                        0, 0, newUserID, '');
+                }); // END: Create new User Permission (Users DDL)
+
+            // Add New User Permission (User Data Mgmt)
+            const newUserPermissionUserMgmt = new UserPermissionsTable( {
+                UserID: newUserID,
+                PermissionCategoryID: '923007',
+                ObjectValues: '|' + newUserID + '|',
+                EffectiveDate: today,
+                ExpirationDate: permissionExpirationDate,
+                CanCreate: false,
+                CanRead: true,
+                CanUpdate: true,
+                CanDelete: false
+            });
+            await newUserPermissionUserMgmt.save()
+                .then()
+                .catch( async function(errorUserMgmt) {
+ console.log(`newUser User Data Mgmt Permission error: ${errorUserMgmt}`);
+                    errorCode = 903;
+                    // Log the error
+                    let logEventResult = jsFx.logEvent('Error', 'New Permission', errorCode, 'Failure',
+                        'Could not create new User Permission for User Data Mgmt (' + errorUserMgmt + ').',
+                        0, 0, newUserID, '');
+                }); // END: Create new User Permission (User Data Mgmt)
+
+        }).catch( function(errorUserProfile) { // Could not create new User Profile
+console.log(`newUser error: ${error}`);
+            errorCode = 901;
+            // Log the error
+            let logEventResult = jsFx.logEvent('Error', 'New User', errorCode, 'Failure',
+                'Could not create new User Profile (' + errorUserProfile + ').',
+                0, 0, newUserID, '');
+        }); // END: Create new User Profile
+
+console.log(`After newuser.save`);
+
+    // ToDo: Send email notification
+    let emailResultError = sendEmail(
+        'fiosjlqf@gmail.com',
+        `New User Account Created`,
+        `A New User Account was successfully created for ${usernameToCheck}.`,
+        '');
+
+    // New User successfully configured
+    
+    return { errorCode, newUserID };
+       
+}; // END: checkForNewUser()
+
+
 module.exports = {
     convertOptionsToDelimitedString,
     getSponsorPermissionsForCurrentUser,
@@ -489,5 +608,6 @@ module.exports = {
     getWebsiteUserPermissionPermissionsForCurrentUser,
     sendEmail,
     logEvent,
-    checkUserPermission
+    checkUserPermission,
+    checkForNewUser
 };

@@ -77,6 +77,10 @@ router.get('/', requiresAuth(), async (req, res) => {
         // Set local variables
         ////////////////////////////////////////////////////
         let errorCode = 0;
+//        let today = new Date();
+//        let permissionExpirationDate = new Date();
+        let userProfiles = [];
+//        permissionExpirationDate.setFullYear(today.getFullYear() + 5);
         const actionRequestedValues = [
             'addsponsor', 'editsponsor', 'addscholarship', 'editscholarship',
             'adduser', 'edituser', 'adduserpermission', 'edituserpermission'
@@ -104,56 +108,27 @@ router.get('/', requiresAuth(), async (req, res) => {
         ////////////////////////////////////////////////////
         // Get the current user's profile and permissions
         ////////////////////////////////////////////////////
-        const userProfiles = await UserProfiles.findAndCountAll( { where: { Username: req.oidc.user.email }});
+        userProfiles = await UserProfiles.findAndCountAll( { where: { Username: req.oidc.user.name }});
 console.log(`userProfiles.count: ${userProfiles.count}`);
+
         if ( userProfiles.count == 0 ) {  // The new user has not yet been set up
-            // Log the event
-            let logEventResult = await jsFx.logEvent('User Profiles', 'Get Current User', 0, 'Failure', 'User not yet configured.',
-                0, 0, 0, '');
-            // Set up the new user and notify the Admin
-//            async (req, res) => {
-                // Add the new data to the database in a new record, and return the newly-generated [UserID] value
-                const newUser = new UsersTable( { Username: req.oidc.user.email });
-console.log(`Before newuser.save`);
-                await newUser.save()
-                    .then( function() {
-                        console.log(`newUser.UserID: ${newUser.UserID}`);
 
-                        // Add Current User's default permissions
-//                        const newUserPermissionSwitchboard = new UserPermissionsTable( {
-//                            UserID: newUser.UserID,
-//                            PermissionCategoryID: '|923001|',
-//
-//                        })
+            const { errorCode, newUserID } = await jsFx.checkForNewUser( req.oidc.user.name );
 
+            if ( errorCode !== 0 ) { // If an error was raised during the New User configuration, redirect the user
+                return res.render( 'error', {
+                    errorCode: errorCode,
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                });
+            } else { // New User was successfully created, so redirect to the New User Data Mgmt screen
+                res.redirect(`/switchboard?userid=${newUserID}` +
+                    `&status=usercreatesuccess` +
+                    `&actionrequested=edituser`);
+            };
 
+        }; // END: Does the User Profile exist?
 
-
-
-
-                        // Redirect the user to the Welcome Screen
-                        res.redirect(`/switchboard?userid=${newUser.UserID}` +
-                        `&status=usercreatesuccess` +
-                        `&actionrequested=edituser`);
-                    }).catch( function(error) {
-                        console.log(`newUser error: ${error}`);
-
-                    });
-console.log(`After newuser.save`);
-                            
-            // ToDo:  If insert successful, add basic permissions for new User
-            
-            // ToDo: Send email notification
-
-
-
-//            };
-//            // Redirect the user to the "New User" screen
-//            res.redirect(`/switchboard/newuser`);
-        };
-
-console.log(`Test1: userProfiles[0].UserID: ${userProfiles.rows[0].UserID}`);
-
+        // Current User exists and is configured; continue processing
         currentUserID = userProfiles.rows[0].UserID;
         // Log the access by the Current User
         let logEventResult = await jsFx.logEvent('Page Access', 'Switchboard', 0, 'Informational', 'User Accessed Page',
