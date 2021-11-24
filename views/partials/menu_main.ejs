@@ -18,7 +18,6 @@
     <span class="float-right">
       <span id="addSponsor" class="float-right"><a id="addSponsor" class="btn btn-default button-small"
         href="/switchboard?actionrequested=addsponsor">Add Sponsor</a>&nbsp;</span>
-<!--      <button type="button" id="addSponsorLink" class="btn btn-default button-small" onclick="">Add Sponsor</button>&nbsp; -->
     </span>
     <% } %>
     <div id="filterSponsorsInputBlock">
@@ -47,7 +46,7 @@
   <% } %>
 
   <!-- User(s) -->
-  <% if ( userCanReadUsers ) { %>  <!-- If the current user can read the users list, show it. -->
+  <% if ( userCanReadUsersDDL ) { %>  <!-- If the current user can read the users list, show it. -->
   <div>
     Users:
     <% if ( userCanCreateUsers ) { %>  <!-- If the current user can create users, show the link. -->
@@ -61,7 +60,7 @@
   </div><br>
 
   <!-- User Permission(s) -->
-  <% if ( userCanReadUserPermissions ) { %>  <!-- If the current user can read the Website User's Permissions list, show it. -->
+  <% if ( userCanReadUserPermissionsDDL ) { %>  <!-- If the current user can read the Website User's Permissions list, show it. -->
     <div>
       User Permissions:
       <% if ( userCanCreateUserPermissions && userID !== '' ) { %>  <!-- If the current user can create user permissions, show the link. -->
@@ -80,14 +79,17 @@
 </div>  <!-- End column 1 DIV -->
 
 <script>
-  // Load the allowed Sponsors into the DDL, and lock the DDL if the User only has access to a single Sponsor
-  var splRows = <%- JSON.stringify(sponsorsAllowedDDL.rows) %>;
-  var splCount = <%- JSON.stringify(sponsorsAllowedDDL.count) %>;
-  console.log('splCount: ' + splCount);
-  loadSelectOptionsList("filterSponsorsInput", "(Not Selected)", 0, splRows, '<%= sponsorID %>');
-  if ( splCount === 1 ) {
-    document.getElementById('filterSponsorsInput').disabled = true;
-  }
+
+  // Load the allowed Sponsors into the DDL, and lock the DDL if the User does not have access to any Sponsors
+  if ( '<%= userCanReadSponsorsDDL %>' === 'true' ) {
+    var splRows = <%- JSON.stringify(sponsorsAllowedDDL.rows) %>;
+    var splCount = <%- JSON.stringify(sponsorsAllowedDDL.count) %>;
+    console.log('splCount: ' + splCount);
+    loadSelectOptionsList("filterSponsorsInput", "(Not Selected)", 0, splRows, '<%= sponsorID %>');
+    if ( splCount === 0 ) {
+      document.getElementById('filterSponsorsInput').disabled = true;
+    };
+  };
 
   // Redirect the user to the Sponsor Details page
   function gotoSponsorDetails(selectedSponsorID) {
@@ -101,20 +103,22 @@
   };
 
   // If a Sponsor is selected, enable the "Add Scholarship" link and load the Scholarships DDL
-  var ddlSponsors = document.getElementById("filterSponsorsInput");
-  if ( ddlSponsors.value !== '0' ) {
-    var schRows = <%- JSON.stringify(scholarshipsAllowedDDL.rows) %>;
-    var schCount = <%- JSON.stringify(scholarshipsAllowedDDL.count) %>;
-    if ( schCount === 0 ) {
-      loadSelectOptionsList("filterScholarshipsInput", "(None)", 0, schRows, '');
-    } else {
-      loadSelectOptionsList("filterScholarshipsInput", "(Not Selected)", 0, schRows, '');
-      if ( '<%= scholarshipID %>' !== '' ) {
-        document.getElementById("filterScholarshipsInput").value = '<%= scholarshipID %>';
+  if ( '<%= userCanReadScholarshipsDDL %>' === 'true' ) {
+    var ddlSponsors = document.getElementById("filterSponsorsInput");
+    if ( ddlSponsors.value !== '0' ) {
+      var schRows = <%- JSON.stringify(scholarshipsAllowedDDL.rows) %>;
+      var schCount = <%- JSON.stringify(scholarshipsAllowedDDL.count) %>;
+      if ( schCount === 0 ) {
+        loadSelectOptionsList("filterScholarshipsInput", "(None)", 0, schRows, '');
+      } else {
+        loadSelectOptionsList("filterScholarshipsInput", "(Not Selected)", 0, schRows, '');
+        if ( '<%= scholarshipID %>' !== '' ) {
+          document.getElementById("filterScholarshipsInput").value = '<%= scholarshipID %>';
+        };
       };
+    } else {
+      document.getElementById('filterScholarshipsInput').disabled = true;
     };
-  } else {
-    document.getElementById('filterScholarshipsInput').disabled = true;
   };
 
   // Redirect the user to the Scholarship Details page
@@ -131,7 +135,7 @@
   };
 
   // Load the Users List into the DDL, if the user has permission to use the DDL
-  if ( '<%= userCanReadUsers %>' === 'true' ) {
+  if ( '<%= userCanReadUsersDDL %>' === 'true' ) {
     var usrRows = <%- JSON.stringify(usersAllowedDDL.rows) %>;
     loadSelectOptionsList("filterUsersInput", "(Not Selected)", 0, usrRows, '<%= userID %>');
   };
@@ -148,21 +152,23 @@
   };
 
   // If a User is selected, enable the "Add User Permission" link and load the User Permissions DDL
-  var ddlUsers = document.getElementById("filterUsersInput");
-  console.log('ddlUsers.value: ' + ddlUsers.value);
-  if ( ddlUsers.value !== '0' ) {
-    var perRows = <%- JSON.stringify(userPermissionsAllowedDDL.rows) %>;
-    var perCount = <%- JSON.stringify(userPermissionsAllowedDDL.count) %>;
-    if ( perCount === 0 ) {
-      loadSelectOptionsList("filterUserPermissionsInput", "(None)", 0, perRows, '');
-    } else {
-      loadSelectOptionsList("filterUserPermissionsInput", "(Not Selected)", 0, perRows, '');
-      if ( '<%= userPermissionID %>' !== '' ) {
-        document.getElementById("filterUserPermissionsInput").value = '<%= userPermissionID %>';
+  if ( '<%= userCanReadUserPermissionsDDL %>' === 'true' ) {
+    var ddlUsers = document.getElementById("filterUsersInput");
+    console.log('ddlUsers.value: ' + ddlUsers.value);
+    if ( ddlUsers.value !== '0' ) {
+      var perRows = <%- JSON.stringify(userPermissionsAllowedDDL.rows) %>;
+      var perCount = <%- JSON.stringify(userPermissionsAllowedDDL.count) %>;
+      if ( perCount === 0 ) {
+        loadSelectOptionsList("filterUserPermissionsInput", "(None)", 0, perRows, '');
+      } else {
+        loadSelectOptionsList("filterUserPermissionsInput", "(Not Selected)", 0, perRows, '');
+        if ( '<%= userPermissionID %>' !== '' ) {
+          document.getElementById("filterUserPermissionsInput").value = '<%= userPermissionID %>';
+        };
       };
+    } else {
+      document.getElementById('filterUserPermissionsInput').disabled = true;
     };
-  } else {
-    document.getElementById('filterUserPermissionsInput').disabled = true;
   };
 
   // Redirect the user to the User Permissions Details page
