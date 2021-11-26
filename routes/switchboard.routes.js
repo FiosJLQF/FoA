@@ -77,18 +77,27 @@ router.get('/', requiresAuth(), async (req, res) => {
         // Set local variables
         ////////////////////////////////////////////////////
         let errorCode = 0;
-//        let today = new Date();
-//        let permissionExpirationDate = new Date();
         let userProfiles = [];
-//        permissionExpirationDate.setFullYear(today.getFullYear() + 5);
         const actionRequestedValues = [
             'addsponsor', 'editsponsor', 'addscholarship', 'editscholarship',
             'adduser', 'edituser', 'adduserpermission', 'edituserpermission'
         ];
-        let actionRequested = '';
         let statusMessage = '';
         let currentUserID = 0;
+
+
+
+
+        let currentUsername = '';
+
+
+
+
         let userIsDataAdmin = 0;
+        // Querystring parameters
+        let actionRequested = '';
+        let sponsorIDRequested = '';
+        let scholarshipIDRequested = '';
         // DDL options lists
         let sponsorStatusCategories = [];
         let sponsorTypeCategoriesDDL = [];
@@ -112,9 +121,7 @@ router.get('/', requiresAuth(), async (req, res) => {
 console.log(`userProfiles.count: ${userProfiles.count}`);
 
         if ( userProfiles.count == 0 ) {  // The new user has not yet been set up
-
             const { errorCode, newUserID } = await jsFx.checkForNewUser( req.oidc.user.name );
-
             if ( errorCode !== 0 ) { // If an error was raised during the New User configuration, redirect the user
                 return res.render( 'error', {
                     errorCode: errorCode,
@@ -125,7 +132,6 @@ console.log(`userProfiles.count: ${userProfiles.count}`);
                     `&status=usercreatesuccess` +
                     `&actionrequested=edituser`);
             };
-
         }; // END: Does the User Profile exist?
 
         // Current User exists and is configured; continue processing
@@ -160,11 +166,10 @@ console.log(`userProfiles.count: ${userProfiles.count}`);
         };
 
         // If a requested "sponsorid" is blank, zero or not a number, redirect to the generic Switchboard page
-        let sponsorIDRequested = '';
         if ( req.query['sponsorid'] != undefined ) {  // if the querystring variable exists, check its format
             sponsorIDRequested = Number(req.query['sponsorid']);
             if ( sponsorIDRequested == 0 || sponsorIDRequested === '' || Number.isNaN(sponsorIDRequested)) {
-                errorCode = 908; // Invalid, missing or non-existant SponsorID
+                errorCode = 908; // Invalid, missing or non-existent SponsorID
                 // Log the event
                 let logEventResult = await jsFx.logEvent('SponsorID Validation', '', 0, 'Failure',
                     `SponsorID is not a valid format (${req.query['sponsorid']})`,
@@ -177,7 +182,7 @@ console.log(`userProfiles.count: ${userProfiles.count}`);
             } else { // value is in a valid format; check to see if it exists in the database
                 let doesSponsorIDExist = await SponsorsAllView.findAndCountAll( { where: { SponsorID: sponsorIDRequested } } );
                 if ( doesSponsorIDExist.count == 0 ) {
-                    errorCode = 908; // Invalid, missing or non-existant SponsorID
+                    errorCode = 908; // Invalid, missing or non-existent SponsorID
                     // Log the event
                     let logEventResult = await jsFx.logEvent('SponsorID Validation', '', 0, 'Failure',
                         `SponsorID does not exist (${req.query['sponsorid']})`,
@@ -192,22 +197,43 @@ console.log(`userProfiles.count: ${userProfiles.count}`);
         };
 
         // If a requested "scholarshipid" is blank, zero or not a number, redirect to the generic Switchboard page
-        let scholarshipIDRequested = '';
         if ( req.query['scholarshipid'] != undefined ) {  // if the querystring variable exists, check its format
             scholarshipIDRequested = Number(req.query['scholarshipid']);
             if ( scholarshipIDRequested == 0 || scholarshipIDRequested === '' || Number.isNaN(scholarshipIDRequested)) {
+                errorCode = 909; // Invalid, missing or non-existent ScholarshipID
                 // Log the event
                 let logEventResult = await jsFx.logEvent('ScholarshipID Validation', '', 0, 'Failure',
-                    `ScholarshipID is not valid (${req.query['scholarshipid']})`,
+                    `ScholarshipID is not a valid format (${req.query['scholarshipid']})`,
                     0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
-                // Redirect the user to the main switchboard
-                res.redirect('/switchboard');
-            } else {
-// TODO: Validate requested ScholarshipID exists
-                
+                // redirect the user to the error screen
+                return res.render( 'error', {
+                    errorCode: errorCode,
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                });
+            } else {  // value is in a valid format; check to see if it exists in the database
+                let doesScholarshipIDExist = await ScholarshipsAllMgmtView.findAndCountAll( { where: { ScholarshipID: scholarshipIDRequested } } );
+                if ( doesScholarshipIDExist.count == 0 ) {
+                    errorCode = 909; // Non-existant SponsorID
+                    // Log the event
+                    let logEventResult = await jsFx.logEvent('ScholarshipID Validation', '', 0, 'Failure',
+                        `ScholarshipID does not exist (${req.query['scholarshipid']})`,
+                        0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
+                    // redirect the user to the error screen
+                    return res.render( 'error', {
+                        errorCode: errorCode,
+                        userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                    });
+                };
             };
         };
         
+
+
+
+
+
+
+
         // If a requested "userid" is blank, zero or not a number, redirect to the generic Switchboard page
         console.log(`userid = ${req.query['userid']}`);
         let userIDRequested = '';

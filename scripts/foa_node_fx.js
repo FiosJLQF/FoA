@@ -568,7 +568,7 @@ console.log(`newUser Users DDL Permission error: ${errorUsersDDL}`);
                 .then()
                 .catch( async function(errorUserMgmt) {
  console.log(`newUser User Data Mgmt Permission error: ${errorUserMgmt}`);
-                    errorCode = 903;
+                    errorCode = 902;
                     // Log the error
                     let logEventResult = jsFx.logEvent('Error', 'New Permission', errorCode, 'Failure',
                         'Could not create new User Permission for User Data Mgmt (' + errorUserMgmt + ').',
