@@ -5,15 +5,14 @@ const express = require("express");
 const router = express.Router();
 const { auth, requiresAuth } = require('express-openid-connect');
 require("dotenv").config();  // load all ".env" variables into "process.env" for use
-const { ScholarshipsTable, /* ScholarshipsTableTest, */ ScholarshipsActive, /* ScholarshipsActiveDDL, */ 
-        ScholarshipsAllDDL, /* ScholarshipsAllDDLTest, */
+const { ScholarshipsTable, ScholarshipsActive, ScholarshipsAllDDL, ScholarshipsAllMgmtView,
         ScholarshipRecurrenceCategoriesDDL, ScholarshipStatusCategoriesDDL,
         SponsorsTable, SponsorsAllDLL, Sponsors, SponsorsDDL, SponsorsAllView, /* SponsorsAllDDLTest, */
         SponsorTypeCategoriesDDL, SponsorStatusCategoriesDDL,
         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
         FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL,
-        UsersAllDDL, UsersTable, UserProfiles,
+        UsersAllDDL, UsersTable, UserProfiles, UsersAllView,
         UserPermissionsAllView, UserPermissionsAllDDL, UserPermissionsActive,
         UserPermissionsTable, UserPermissionCategoriesAllDDL
     } = require('../models/sequelize.js');
@@ -98,6 +97,7 @@ router.get('/', requiresAuth(), async (req, res) => {
         let actionRequested = '';
         let sponsorIDRequested = '';
         let scholarshipIDRequested = '';
+        let userIDRequested = '';
         // DDL options lists
         let sponsorStatusCategories = [];
         let sponsorTypeCategoriesDDL = [];
@@ -118,7 +118,6 @@ router.get('/', requiresAuth(), async (req, res) => {
         // Get the current user's profile and permissions
         ////////////////////////////////////////////////////
         userProfiles = await UserProfiles.findAndCountAll( { where: { Username: req.oidc.user.name }});
-console.log(`userProfiles.count: ${userProfiles.count}`);
 
         if ( userProfiles.count == 0 ) {  // The new user has not yet been set up
             const { errorCode, newUserID } = await jsFx.checkForNewUser( req.oidc.user.name );
@@ -141,7 +140,6 @@ console.log(`userProfiles.count: ${userProfiles.count}`);
             0, 0, currentUserID, '');
         // Check to see if the current User is a "Data Admin" (FoA or AMCG web manager)
         userIsDataAdmin = await jsFx.checkUserPermission(currentUserID, '923010', 'CanRead');
-
 
         ////////////////////////////////////////////////////
         // Validate any query string parameters
@@ -197,7 +195,7 @@ console.log(`userProfiles.count: ${userProfiles.count}`);
         };
 
         // If a requested "scholarshipid" is blank, zero or not a number, redirect to the generic Switchboard page
-        if ( req.query['scholarshipid'] != undefined ) {  // if the querystring variable exists, check its format
+        if ( req.query['scholarshipid'] != undefined ) {  // If the querystring variable exists, check its format
             scholarshipIDRequested = Number(req.query['scholarshipid']);
             if ( scholarshipIDRequested == 0 || scholarshipIDRequested === '' || Number.isNaN(scholarshipIDRequested)) {
                 errorCode = 909; // Invalid, missing or non-existent ScholarshipID
@@ -205,20 +203,20 @@ console.log(`userProfiles.count: ${userProfiles.count}`);
                 let logEventResult = await jsFx.logEvent('ScholarshipID Validation', '', 0, 'Failure',
                     `ScholarshipID is not a valid format (${req.query['scholarshipid']})`,
                     0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
-                // redirect the user to the error screen
+                // Redirect the user to the error screen
                 return res.render( 'error', {
                     errorCode: errorCode,
                     userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
                 });
-            } else {  // value is in a valid format; check to see if it exists in the database
+            } else {  // Value is in a valid format; check to see if it exists in the database
                 let doesScholarshipIDExist = await ScholarshipsAllMgmtView.findAndCountAll( { where: { ScholarshipID: scholarshipIDRequested } } );
                 if ( doesScholarshipIDExist.count == 0 ) {
-                    errorCode = 909; // Non-existant SponsorID
+                    errorCode = 909; // Non-existant ScholarshipID
                     // Log the event
                     let logEventResult = await jsFx.logEvent('ScholarshipID Validation', '', 0, 'Failure',
                         `ScholarshipID does not exist (${req.query['scholarshipid']})`,
                         0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
-                    // redirect the user to the error screen
+                    // Redirect the user to the error screen
                     return res.render( 'error', {
                         errorCode: errorCode,
                         userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
@@ -227,31 +225,44 @@ console.log(`userProfiles.count: ${userProfiles.count}`);
             };
         };
         
-
-
-
-
-
-
-
         // If a requested "userid" is blank, zero or not a number, redirect to the generic Switchboard page
-        console.log(`userid = ${req.query['userid']}`);
-        let userIDRequested = '';
-        if ( req.query['userid'] != undefined ) {  // if the querystring variable exists, check its format
+        if ( req.query['userid'] != undefined ) {  // If the querystring variable exists, check its format
             userIDRequested = Number(req.query['userid']);
-            console.log(`userIDRequested = ${userIDRequested}`);
             if ( userIDRequested == 0 || userIDRequested === '' || Number.isNaN(userIDRequested)) {
+                errorCode = 910; // Invalid, missing or non-existent UserID
                 // Log the event
                 let logEventResult = await jsFx.logEvent('UserID Validation', '', 0, 'Failure',
-                    `UserID is not valid (${req.query['userid']})`,
+                    `UserID is not a valid format (${req.query['userid']})`,
                     0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
-                // Redirect the user to the main switchboard
-                res.redirect('/switchboard');
-            } else {
-                // TODO: Validate requested UserID exists
+                // Redirect the user to the error screen
+                return res.render( 'error', {
+                    errorCode: errorCode,
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                });
+            } else {  // Value is in a valid format; check to see if it exists in the database
+                let doesUserIDExist = await UsersAllView.findAndCountAll( { where: { UserID: userIDRequested } } );
+                if ( doesUserIDExist.count == 0 ) {
+                    errorCode = 910; // Non-existant UserID
+                    // Log the event
+                    let logEventResult = await jsFx.logEvent('UserID Validation', '', 0, 'Failure',
+                        `UserID does not exist (${req.query['userid']})`,
+                        0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
+                    // Redirect the user to the error screen
+                    return res.render( 'error', {
+                        errorCode: errorCode,
+                        userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                    });
+                };
             };
         };
-                        
+
+
+
+
+
+
+
+
         // If a requested "userpermissionid" is blank, zero or not a number, redirect to the generic Switchboard page
         console.log(`userpermissionid = ${req.query['userpermissionid']}`);
         let userPermissionIDRequested = '';
