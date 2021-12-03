@@ -373,13 +373,13 @@ async function getWebsiteUserPermissionPermissionsForCurrentUser( currentUserID,
         // If a querystring request was made for a specific User Permission's data, find and validate it
         if ( userPermissionIDRequested.toString().length > 0 ) {
             // Does the requested User Permission exist? Retrieve the details from the database.
-            userPermissionDetails = await UserPermissionsAllView.findAll({ where: { UserPermissionID: userPermissionIDRequested }});
+            userPermissionDetails = await UserPermissionsAllView.findAll({ where: { WebsiteUserPermissionID: userPermissionIDRequested }});
             if ( typeof userPermissionDetails[0] === 'undefined' ) {  // User Permission ID does not exist
                 doesUserPermissionExist = false;
             } else { // User Permission ID does exist
                 doesUserPermissionExist = true;
                 // Can Current User view requested user permission?
-                if ( userPermissionsAllowedToUserArray.indexOf(userPermissionIDRequested.toString()) > -1 || (userPermissionsAllowedToUser === '*') ) {
+                if ( userPermissionsAllowedToCurrentUserArray.indexOf(userPermissionIDRequested.toString()) > -1 || (userPermissionsAllowedToCurrentUser === '*') ) {
                     userCanReadUserPermission = await checkUserPermission( currentUserID, '923008', 'CanRead' );
                     userCanUpdateUserPermission = await checkUserPermission( currentUserID, '923008', 'CanUpdate' );
                     userCanDeleteUserPermission = await checkUserPermission( currentUserID, '923008', 'CanDelete' );

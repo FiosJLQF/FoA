@@ -5,8 +5,9 @@
 
 :root {
   --amcg-blue: rgb(0,73,140);
-  --amcg-blue-50: rgb(0,73,140,.5);
+  --amcg-blue-50: rgb(0,73,140,.50);
   --amcg-blue-25: rgb(0,73,140,.25);
+  --amcg-blue-08: rgb(0,73,140,.08);
   --amcg-yellow: rgb(253,185,19);
 }
 
@@ -68,7 +69,7 @@ hr.bodycol2break{
 
 hr.bodycol2scholarshipbreak{
   border-top: 2px solid var(--amcg-yellow);
-  margin: 10px 0px 0px 0px;
+  margin: 0px;
   padding: 0px;
   width: 100%;
   opacity: 1;
@@ -76,7 +77,7 @@ hr.bodycol2scholarshipbreak{
 
 hr.bodycol2sponsorbreak{
   border-top: 2px solid var(--amcg-yellow);
-  margin: 10px 0px 0px 0px;
+  /* margin: 10px 0px 0px 0px; */
   padding: 0px;
   width: 100%;
   opacity: 1;
@@ -204,6 +205,7 @@ select.single-choice {
 }
 
 .bodylayout1col2 {
+  width: 975px;
   margin: 0px;
   padding: 0px 0px 0px 15px;
   font-family: 'Lato', sans-serif;
@@ -286,15 +288,30 @@ select.single-choice {
 }
 
 .scholarshipSearchResultsSummaryRow {
-  margin: 0px 0px 0px 0px;
+  width: 975px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.scholarshipSearchResultsSummaryRowBreak {
+  width: 975px;
+  height: 2px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.scholarshipSearchResultsSummaryRowPreview {
+  margin: 0px;
+  padding: 0px;
 }
 
 .scholarshipSearchResultsDetailsRow {
+  width: 975px;
   margin: 0px 0px 0px 0px;
 }
 
 .scholarshipsearchresultscol1 {
-  padding: 5px 0px 0px 0px;
+  padding: 5px 0px 0px 5px;
   font-size: 0.875em;
   width: 125px;
   white-space: normal;
@@ -302,12 +319,13 @@ select.single-choice {
   vertical-align: top;
 }
 
-.scholarshipsearchresultscol1.apply {
-  vertical-align: bottom;
-  text-align: center;
-/*  position: absolute;
-  bottom: 0;
-  left: 0; */
+/* .scholarshipsearchresultscol1.apply { */
+.apply {
+  align-items: end;
+  display: flex;
+  justify-content: center;
+  /* text-align: center; */
+  padding: 0px 0px 10px 0px;
 }
 
 .scholarshipsearchresultscol2 {
@@ -317,10 +335,11 @@ select.single-choice {
 }
 
 .scholarshipsearchresultscol3 {
-  width: 660px;    /* fix this later to take up the remaining screen width */
-/*  color: black;  */
-  margin: 0px 0px 0px 15px;
+  width: 800px;
+  margin: 0px;
+  padding: 0px 0px 0px 12px;
   line-height: 1.8;
+  position: relative;
 }
 
 .scholarshipsearchresultscol3A {
@@ -333,7 +352,7 @@ select.single-choice {
 }
 
 .scholarshipsearchresultscol3A.text-block {
-  width: 140px;    /* fix this later to take up the remaining screen width */
+  width: 140px;
   font-size: 0.875em;
   font-variant: normal;
   padding-top: 8px;
@@ -341,24 +360,24 @@ select.single-choice {
 }
 
 .scholarshipsearchresultscol3B {
-  width: 500px;    /* fix this later to take up the remaining screen width */
+  width: 635px;
   font-size: 0.875em;
   font-variant: normal;
-  padding-top: 3px;
+  padding: 3px 0px 0px 0px;
 }
 
 .scholarshipsearchresultscol3B.text-block {
-  width: 500px;    /* fix this later to take up the remaining screen width */
+  width: 635px;
   font-size: 0.875em;
   font-variant: normal;
-  padding-top: 8px;
+  padding: 8px 0px 0px 0px;
   line-height: 1.3;
   white-space: pre-wrap;
 }
 
 /* .scholarshipsearchresultscol3B.text-block.description-short {  */
 .description-short {
-  width: 490px;    /* fix this later to take up the remaining screen width */
+  /* width: 650px; */
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -380,6 +399,8 @@ select.single-choice {
 
 .sponsorLogo {
   width:125px;
+  padding: 0px;
+  margin: 0px;
 }
 
 .scholarshipsponsorname {
@@ -400,11 +421,33 @@ select.single-choice {
 }
 
 .sponsorSearchResultsSummaryRow {
+  width: 975px;
+  margin: 0px;
+  padding-bottom: 10px;
+}
+
+.sponsorSearchResultsSummaryRowFeatured {
+  background-color: var(--amcg-blue-08);
+  width: 960px;
+  margin: 0px;
+  padding-bottom: 10px;
+}
+
+.sponsorSearchResultsSummaryRowPreview {
   margin: 0px 0px 0px 0px;
 }
 
 .sponsorsearchresultscol1 {
   padding: 5px 0px 0px 0px;
+  font-size: 0.875em;
+  width: 125px;
+  white-space: normal;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.sponsorsearchresultscol1break {
+  /* padding: 5px 0px 0px 0px; */
   font-size: 0.875em;
   width: 125px;
   white-space: normal;
@@ -419,10 +462,17 @@ select.single-choice {
 }
 
 .sponsorsearchresultscol3 {
-  width: 660px;    /* fix this later to take up the remaining screen width */
-/*  color: black;  */
+  width: 800px;
+  margin: 0px 0px 0px 15px; /* needed?? */
+  line-height: 1.8;
+  position: relative;
+}
+
+.sponsorsearchresultscol3featured {
+  width: 785px;
   margin: 0px 0px 0px 15px;
   line-height: 1.8;
+  position: relative;
 }
 
 .sponsorsearchresultscol3A {
@@ -434,7 +484,7 @@ select.single-choice {
 }
 
 .sponsorsearchresultscol3A.text-block {
-  width: 140px;    /* fix this later to take up the remaining screen width */
+  width: 140px;
   font-size: 0.875em;
   font-variant: normal;
   padding-top: 8px;
@@ -442,14 +492,21 @@ select.single-choice {
 }
 
 .sponsorsearchresultscol3B {
-  width: 500px;    /* fix this later to take up the remaining screen width */
+  width: 635px;
   font-size: 0.875em;
   font-variant: normal;
   padding-top: 3px;
+  /* margin-top: 3px; */
+}
+
+.sponsorsearchresultscol3Bfeatured {
+  width: 510px;
+  font-size: 0.875em;
+  font-variant: normal;
 }
 
 .sponsorsearchresultscol3B.text-block {
-  width: 500px;    /* fix this later to take up the remaining screen width */
+  width: 635px;
   font-size: 0.875em;
   font-variant: normal;
   padding-top: 8px;
@@ -457,28 +514,23 @@ select.single-choice {
   white-space: pre-wrap;
 }
 
-.sponsorsearchresultscol4 {
-  width: 500px;    /* fix this later to take up the remaining screen width */
-  font-size: 0.875em;
-  font-variant: normal;
-  padding-top: 3px;
-  line-height: 1.8;
-}
-
-.sponsorsearchresultscol4.text-block {
-  width: 500px;    /* fix this later to take up the remaining screen width */
+.sponsorsearchresultscol3Bfeatured.text-block {
+  width: 510px;
   font-size: 0.875em;
   font-variant: normal;
   padding-top: 8px;
   line-height: 1.3;
+  white-space: pre-wrap;
 }
 
 .sponsorsearchresultscol4.text-block.description-short {
   max-height: 115px; /* default to 6 lines of text */
-/*  white-space: nowrap; */
-/*  overflow: hidden; */
-/*  text-overflow: ellipsis; */
   overflow: hidden;
+}
+
+.sponsorSearchResultsScholarshipBlock {
+  margin-top: 0px;
+  padding: 0px 0px 10px 0px;
 }
 
 a.text-link {
@@ -633,4 +685,22 @@ td.amcg_main_td {
 
 .button-icon-refresh {
   width: 25px;
+}
+
+.featuredScholarshipBadge {
+  width: 9em;
+  height: auto;
+  position: absolute;
+  top: 5px;
+  right: 0px;
+}
+
+.featuredSponsorBadge {
+  width: 7em;
+  height: auto;
+  position: absolute;
+  top: 5px;
+  right: 0px;
+  margin: 0px;
+  padding: 0px;
 }

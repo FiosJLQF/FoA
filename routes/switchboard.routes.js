@@ -7,7 +7,7 @@ const { auth, requiresAuth } = require('express-openid-connect');
 require("dotenv").config();  // load all ".env" variables into "process.env" for use
 const { ScholarshipsTable, ScholarshipsActive, ScholarshipsAllDDL, ScholarshipsAllMgmtView,
         ScholarshipRecurrenceCategoriesDDL, ScholarshipStatusCategoriesDDL,
-        SponsorsTable, SponsorsAllDLL, Sponsors, SponsorsDDL, SponsorsAllView, /* SponsorsAllDDLTest, */
+        SponsorsTable, SponsorsAllDLL, Sponsors, SponsorsDDL, SponsorsAllView,
         SponsorTypeCategoriesDDL, SponsorStatusCategoriesDDL,
         GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
         EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
@@ -98,6 +98,7 @@ router.get('/', requiresAuth(), async (req, res) => {
         let sponsorIDRequested = '';
         let scholarshipIDRequested = '';
         let userIDRequested = '';
+        let userPermissionIDRequested = '';
         // DDL options lists
         let sponsorStatusCategories = [];
         let sponsorTypeCategoriesDDL = [];
@@ -256,28 +257,34 @@ router.get('/', requiresAuth(), async (req, res) => {
             };
         };
 
-
-
-
-
-
-
-
         // If a requested "userpermissionid" is blank, zero or not a number, redirect to the generic Switchboard page
-        console.log(`userpermissionid = ${req.query['userpermissionid']}`);
-        let userPermissionIDRequested = '';
-        if ( req.query['userpermissionid'] != undefined ) {  // if the querystring variable exists, check its format
+        if ( req.query['userpermissionid'] != undefined ) {  // If the querystring variable exists, check its format
             userPermissionIDRequested = Number(req.query['userpermissionid']);
-            console.log(`userPermissionIDRequested = ${userPermissionIDRequested}`);
             if ( userPermissionIDRequested == 0 || userPermissionIDRequested === '' || Number.isNaN(userPermissionIDRequested)) {
+                errorCode = 911; // Invalid, missing or non-existent UserPermissionID
                 // Log the event
                 let logEventResult = await jsFx.logEvent('UserPermissionID Validation', '', 0, 'Failure',
-                    `UserPermissionID is not valid (${req.query['userpermissionid']})`,
+                    `UserPermissionID is not a valid format (${req.query['userpermissionid']})`,
                     0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
-                // Redirect the user to the main switchboard
-                res.redirect('/switchboard');
-            } else {
-                // TODO: Validate requested UserPermissionID exists
+                // Redirect the user to the error screen
+                return res.render( 'error', {
+                    errorCode: errorCode,
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                });
+            } else {  // Value is in a valid format; check to see if it exists in the database
+                let doesUserPermissionIDExist = await UserPermissionsAllView.findAndCountAll( { where: { WebsiteUserPermissionID: userPermissionIDRequested } } );
+                if ( doesUserPermissionIDExist.count == 0 ) {
+                    errorCode = 911; // Non-existant UserPermissionID
+                    // Log the event
+                    let logEventResult = await jsFx.logEvent('UserPermissionID Validation', '', 0, 'Failure',
+                        `UserPermissionID does not exist (${req.query['userpermissionid']})`,
+                        0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
+                    // Redirect the user to the error screen
+                    return res.render( 'error', {
+                        errorCode: errorCode,
+                        userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                    });
+                };
             };
         };
                         
@@ -640,6 +647,9 @@ router.post('/sponsoradd', requiresAuth(),
     const sponsorStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.sponsorStatus, "|", "0", "false");
     const sponsorTypesFormatted = jsFx.convertOptionsToDelimitedString(req.body.sponsorTypes, "|", "0", "false");
 
+    // Reformat checkboxes to boolean values to be updated into Postgres
+    let SponsorIsFeatured = (req.body.sponsorIsFeatured === "SponsorIsFeatured") ? true : false;
+
     // Validate the input
     const validationErrors = validationResult(req);
 
@@ -669,7 +679,8 @@ router.post('/sponsoradd', requiresAuth(),
             SponsorContactEmail: req.body.sponsorContactEmail,
             SponsorContactTelephone: req.body.sponsorContactTelephone,
             SponsorType: sponsorTypesFormatted,
-            SponsorStatusID: sponsorStatusFormatted
+            SponsorStatusID: sponsorStatusFormatted,
+            SponsorIsFeatured: SponsorIsFeatured
         });
         await newSponsor.save();
 
@@ -712,6 +723,9 @@ router.post('/scholarshipadd', requiresAuth(),
     let MinimumAge = (req.body.criteriaMinimumAge === "") ? null : req.body.criteriaMinimumAge;
     let MaximumAge = (req.body.criteriaMaximumAge === "") ? null : req.body.criteriaMaximumAge;
     let MinimumGPA = (req.body.criteriaMinimumGPA === "") ? null : req.body.criteriaMinimumGPA;
+
+    // Reformat checkboxes to boolean values to be updated into Postgres
+    let ScholarshipIsFeatured = (req.body.scholarshipIsFeatured === "ScholarshipIsFeatured") ? true : false;
 
     // Validate the input
     const validationErrors = validationResult(req);
@@ -762,7 +776,8 @@ router.post('/scholarshipadd', requiresAuth(),
             Criteria_USMilitaryService: criteriaMilitaryServiceFormatted,
             Criteria_FAAPilotCertificate: criteriaFAAPilotCertificateFormatted,
             Criteria_FAAPilotRating: criteriaFAAPilotRatingFormatted,
-            Criteria_FAAMechanicCertificate: criteriaFAAMechanicCertificateFormatted
+            Criteria_FAAMechanicCertificate: criteriaFAAMechanicCertificateFormatted,
+            ScholarshipIsFeatured: ScholarshipIsFeatured
             });
         await newScholarship.save();
 
@@ -896,6 +911,9 @@ router.put('/sponsorupdate', requiresAuth(), async (req, res) => {
     const sponsorStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.sponsorStatus, "|", "0", "false");
     const sponsorTypesFormatted = jsFx.convertOptionsToDelimitedString(req.body.sponsorTypes, "|", "0", "false");
 
+    // Reformat checkboxes to boolean values to be updated into Postgres
+    let SponsorIsFeatured = (req.body.sponsorIsFeatured === "SponsorIsFeatured") ? true : false;
+
     // Get a pointer to the current record
     const sponsorRecord = await SponsorsTable.findOne( {
         where: { SponsorID: req.body.sponsorIDToUpdate }
@@ -913,7 +931,8 @@ router.put('/sponsorupdate', requiresAuth(), async (req, res) => {
         SponsorContactEmail: req.body.sponsorContactEmail,
         SponsorContactTelephone: req.body.sponsorContactTelephone,
         SponsorType: sponsorTypesFormatted,
-        SponsorStatusID: sponsorStatusFormatted
+        SponsorStatusID: sponsorStatusFormatted,
+        SponsorIsFeatured: SponsorIsFeatured
     }).then( () => {
         res.redirect(`/switchboard?sponsorid=${sponsorRecord.SponsorID}` +
                      `&status=sponsorupdatesuccess` +
@@ -949,6 +968,9 @@ router.put('/scholarshipupdate', requiresAuth(), async (req, res) => {
     let MaximumAge = (req.body.criteriaMaximumAge === "") ? null : req.body.criteriaMaximumAge;
     let MinimumGPA = (req.body.criteriaMinimumGPA === "") ? null : req.body.criteriaMinimumGPA;
 
+    // Reformat checkboxes to boolean values to be updated into Postgres
+    let ScholarshipIsFeatured = (req.body.scholarshipIsFeatured === "ScholarshipIsFeatured") ? true : false;
+
     // Get a pointer to the current record
     const scholarshipRecord = await ScholarshipsTable.findOne( {
         where: { ScholarshipID: req.body.scholarshipIDToUpdate }
@@ -983,7 +1005,8 @@ router.put('/scholarshipupdate', requiresAuth(), async (req, res) => {
         Criteria_USMilitaryService: criteriaMilitaryServiceFormatted,
         Criteria_FAAPilotCertificate: criteriaFAAPilotCertificateFormatted,
         Criteria_FAAPilotRating: criteriaFAAPilotRatingFormatted,
-        Criteria_FAAMechanicCertificate: criteriaFAAMechanicCertificateFormatted
+        Criteria_FAAMechanicCertificate: criteriaFAAMechanicCertificateFormatted,
+        ScholarshipIsFeatured: ScholarshipIsFeatured
     }).then( () => {
         res.redirect(`/switchboard?scholarshipid=${scholarshipRecord.ScholarshipID}` +
                      `&status=scholarshipupdatesuccess` +

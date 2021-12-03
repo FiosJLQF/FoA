@@ -203,7 +203,10 @@ select.data-mgmt-single-third {
   background-color: white;
 }
 
-
+.data-mgmt-checkbox {
+  line-height: 1.00;
+  margin-top: 5px;
+}
 
 
 

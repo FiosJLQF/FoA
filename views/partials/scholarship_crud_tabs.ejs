@@ -25,6 +25,23 @@
       <input type="hidden" id="sponsorName" name="sponsorName">
       <input type="hidden" id="scholarshipIDToUpdate" name="scholarshipIDToUpdate">
 
+      <!-- Scholarship Is "Featured" -->
+      <div class="flexcontainer-datamgmt">
+        <div class="row">
+          <div class="col-3 data-mgmt-label">
+            <label for="scholarshipIsFeatured" class="data-mgmt">Scholarship Is Featured?</label>
+          </div>
+          <div class="col-1 data-mgmt-required">
+            <label for="scholarshipIsFeatured" class="data-mgmt-required"></label>
+          </div>
+          <div class="col-8 data-mgmt-value">
+            <input type="checkbox" id="scholarshipIsFeatured" name="scholarshipIsFeatured"
+              class="data-mgmt-checkbox" value="ScholarshipIsFeatured" onchange="updatePreview();"><br>
+            <span class="data-mgmt-error" id="scholarshipIsFeaturedErrors"></span>
+          </div>
+        </div>
+      </div><br>
+      
       <!-- Scholarship Status -->
       <div class="flexcontainer-datamgmt">
         <div class="row">
@@ -585,7 +602,7 @@
     document.getElementById('sponsorID').value = "<%= sponsorID %>";
     document.getElementById('sponsorLogoPreview').src = `<%- scholarshipDetails[0].SponsorLogo %>`;
     document.getElementById('sponsorNamePreview').innerHTML = `<%- scholarshipDetails[0].SponsorName %>`;
-//    document.getElementById('scholarshipStatus').value = "<%= scholarshipDetails[0].ScholarshipStatus %>";
+    document.getElementById('scholarshipIsFeatured').checked = <%- scholarshipDetails[0].ScholarshipIsFeatured %>;
     // Select Scholarship Status
     var scholarshipStatus = "<%- scholarshipDetails[0].ScholarshipStatus %>";
     var scholarshipStatusArrTrimmed = scholarshipStatus.split('|').slice(1, -1);
@@ -731,9 +748,15 @@
     loadSelectedValues("criteriaFAAPilotRating", "<%- scholarshipDetails[0].Criteria_FAAPilotRating %>");
     loadSelectedValues("criteriaFAAMechanicCertificate", "<%- scholarshipDetails[0].Criteria_FAAMechanicCertificate %>");
 
+    // Disable the controls if the user is not an FoA Admin
+    if ( <%- !userIsDataAdmin %> ) {
+      document.getElementById('scholarshipIsFeatured').disabled = true;
+    };
+
     // Disable the controls (and change the instruction) if the user does not have permission to update Scholarships.
     if ( <%- !userCanUpdateScholarship %> ) {
       document.getElementById('scholarshipInstructions').innerText = "Review the entries below.";
+      document.getElementById('scholarshipIsFeatured').disabled = true;
       document.getElementById('scholarshipStatus').disabled = true;
       document.getElementById('scholarshipName').disabled = true;
       document.getElementById('scholarshipDescription').disabled = true;

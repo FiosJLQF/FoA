@@ -23,6 +23,23 @@
       <!-- If the form context is "Manage Sponsor" then provide the sponsorID for reference -->
       <input type="hidden" id="sponsorIDToUpdate" name="sponsorIDToUpdate">
 
+      <!-- Sponsor Is "Featured" -->
+      <div class="flexcontainer-datamgmt">
+        <div class="row">
+          <div class="col-3 data-mgmt-label">
+            <label for="sponsorIsFeatured" class="data-mgmt">Sponsor Is Featured?</label>
+          </div>
+          <div class="col-1 data-mgmt-required">
+            <label for="sponsorIsFeatured" class="data-mgmt-required"></label>
+          </div>
+          <div class="col-8 data-mgmt-value">
+            <input type="checkbox" id="sponsorIsFeatured" name="sponsorIsFeatured"
+              class="data-mgmt-checkbox" value="SponsorIsFeatured" onchange="updatePreview();"><br>
+            <span class="data-mgmt-error" id="sponsorIsFeaturedErrors"></span>
+          </div>
+        </div>
+      </div><br>
+      
       <!-- Sponsor Status -->
       <div class="flexcontainer-datamgmt">
         <div class="row">
@@ -253,6 +270,7 @@
     document.getElementById('sponsorDataEdit').method = "POST";
     // Set the current values for the Sponsor data elements
     document.getElementById('sponsorIDToUpdate').value = "<%- sponsorDetails[0].SponsorID %>";
+    document.getElementById('sponsorIsFeatured').checked = <%- sponsorDetails[0].SponsorIsFeatured %>;
     // Select Status Status
     var sponsorStatus = "<%- sponsorDetails[0].SponsorStatusID %>";
     var sponsorStatusArrTrimmed = sponsorStatus.split('|').slice(1, -1);
@@ -299,11 +317,13 @@
     // Disable the controls if the user is not an FoA Admin
     if ( <%- !userIsDataAdmin %> ) {
       document.getElementById('sponsorStatus').disabled = true;
+      document.getElementById('sponsorIsFeatured').disabled = true;
     };
 
     // Disable the controls (and change the instruction) if the user does not have permission to update Sponsors.
     if ( <%- !userCanUpdateSponsor %> ) {
       document.getElementById('sponsorInstructions').innerText = "Review the entries below.";
+      document.getElementById('sponsorIsFeatured').disabled = true;
       document.getElementById('sponsorStatus').disabled = true;
       document.getElementById('sponsorName').disabled = true;
       document.getElementById('sponsorDescription').disabled = true;

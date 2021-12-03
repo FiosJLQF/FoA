@@ -38,7 +38,8 @@ module.exports = (sequelize, DataTypes) => {
         Criteria_FAAPilotRating:                     DataTypes.STRING,
         Criteria_FAAMechanicCertificate:             DataTypes.STRING,
         Notes_Admin:                                 DataTypes.STRING,
-        ScholarshipStatus:                           DataTypes.STRING
+        ScholarshipStatus:                           DataTypes.STRING,
+        ScholarshipIsFeatured:                       DataTypes.BOOLEAN
     }, {
         freezeTableName: true,  // don't have Sequelize automatically pluralize the table name
         timestamps: false,  // don't add the timestamp attributes (updatedAt, createdAt)

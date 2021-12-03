@@ -762,9 +762,11 @@ function findMatchingScholarships(scholarships, pageNumber) {
         document.querySelector('#scholarshipsearchresultscolumn').removeChild(searchResults);
     } else {
         // sort the matching scholarships, first by number of exact mataches (most matches first), second by Sponsor Name
-//        matchingScholarships.sort( (a,b) => (a.matchCountExact <= b.matchCountExact) ? 1 : -1 );
         console.log('Before sorting results.');
-        matchingScholarships.sort( (a,b) => (b.matchCountExact - a.matchCountExact || a.SponsorName.localeCompare(b.SponsorName) ));
+        matchingScholarships.sort( (a,b) => (
+            b.matchCountExact - a.matchCountExact ||
+            a.SponsorName.localeCompare(b.SponsorName)
+        ));
         console.log('After sorting results.');
         // build "scholarship search results"
         const createResults = buildScholarshipSearchResults(matchingScholarships, pageNumber, true);
@@ -857,7 +859,6 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber, showMat
 
                 const divScholarshipRow1Col3Row1Col2 = document.createElement('div');
                 divScholarshipRow1Col3Row1Col2.classList.add('scholarshipsearchresultscol3B');
-//                divScholarshipRow1Col3Row1Col2.textContent = selectedScholarship.sponsorName;
                 divScholarshipRow1Col3Row1Col2.textContent = selectedScholarship['SponsorName'];
 
             divScholarshipRow1Col3Rows.appendChild(divScholarshipRow1Col3Row1Col2);
@@ -956,7 +957,7 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber, showMat
             const divScholarshipRow2Col1 = document.createElement('div');
             divScholarshipRow2Col1.classList.add('scholarshipsearchresultscol1');
             divScholarshipRow2Col1.classList.add('apply');
-            divScholarshipRow2Col1.style.display = "inline-block";
+//            divScholarshipRow2Col1.style.display = "inline";
         
 //                const chkIAgreeToReqs = document.createElement('input');
 //                chkIAgreeToReqs.setAttribute("type","checkbox");
@@ -994,7 +995,7 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber, showMat
             // build and add the second column to the second row (empty)
             const divScholarshipRow2Col2 = document.createElement('div');
             divScholarshipRow2Col2.classList.add('scholarshipsearchresultscol2');
-            divScholarshipRow2Col2.style.display = "inline-block";
+//            divScholarshipRow2Col2.style.display = "inline-block";
 
         divScholarshipRow2.appendChild(divScholarshipRow2Col2);
         
@@ -1002,7 +1003,7 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber, showMat
             const divScholarshipRow2Col3 = document.createElement('div');
             divScholarshipRow2Col3.classList.add('scholarshipsearchresultscol3');
             divScholarshipRow2Col3.classList.add('container');
-            divScholarshipRow2Col3.style.display = "inline-block";
+//            divScholarshipRow2Col3.style.display = "inline-block";
             const divScholarshipRow2Col3Rows = document.createElement('div');
             divScholarshipRow2Col3Rows.classList.add('row');
 
@@ -1203,8 +1204,8 @@ function toggleShowScholarshipDetails(buttonID, detailsID) {
 //    alert('div.display: ' + divDetails.style.display);
 
     // if the current display is hidden, then show
-    if ( divDetails.style.display !== "inline-block") {
-        divDetails.style.display = "inline-block";
+    if ( divDetails.style.display !== "flex") {
+        divDetails.style.display = "flex";
         enableButton.classList.remove("fa-chevron-down");
         enableButton.classList.add("fa-chevron-up");
     } else {
