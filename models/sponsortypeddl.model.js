@@ -4,10 +4,10 @@
 
 module.exports = (sequelize, DataTypes) => {
     const SponsorTypeCategoriesDDL = sequelize.define('vwSponsorTypeCategoriesDDL', {
-        optionid: {
+        optionid: { 
             type: DataTypes.INTEGER,
             primaryKey: true
-        },
+        }, 
         optiontext: {
             type: DataTypes.STRING
         }
