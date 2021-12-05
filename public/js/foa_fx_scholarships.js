@@ -1097,7 +1097,7 @@ function buildScholarshipSearchResults(matchingScholarships, pageNumber, showMat
     
         // add the scholarship break line to the search results div
         const hrScholarshipBreak = document.createElement('hr');
-        hrScholarshipBreak.classList.add('bodycol2scholarshipbreak');
+        hrScholarshipBreak.classList.add('searchresults-subblock-break-hr');
         divSearchResultsDivs.appendChild(hrScholarshipBreak);
 
         // add all scholarship search results divs to the body
@@ -1135,7 +1135,7 @@ function buildScholarshipPageNavigator(matchingScholarships, pageNumberSelected,
     const divSearchResultsColumn = document.querySelector('#scholarshipsearchresultscolumn');
     const divPaginationNavBar = document.createElement('div');
     divPaginationNavBar.id = 'pagination';
-    divPaginationNavBar.classList.add('paginationNavBar');
+    divPaginationNavBar.classList.add('paginationnavbar');
 
     // page label
     const spanPageLabel = document.createElement('span');

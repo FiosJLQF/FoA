@@ -67,7 +67,7 @@ hr.bodycol2break{
   opacity: 1;
 }
 
-hr.bodycol2scholarshipbreak{
+hr.searchresults-subblock-break-hr{
   border-top: 2px solid var(--amcg-yellow);
   margin: 0px;
   padding: 0px;
@@ -77,8 +77,8 @@ hr.bodycol2scholarshipbreak{
 
 hr.bodycol2sponsorbreak{
   border-top: 2px solid var(--amcg-yellow);
-  /* margin: 10px 0px 0px 0px; */
   padding: 0px;
+  margin: 0px;
   width: 100%;
   opacity: 1;
 }
@@ -293,13 +293,6 @@ select.single-choice {
   padding: 0px;
 }
 
-.scholarshipSearchResultsSummaryRowBreak {
-  width: 975px;
-  height: 2px;
-  margin: 0px;
-  padding: 0px;
-}
-
 .scholarshipSearchResultsSummaryRowPreview {
   margin: 0px;
   padding: 0px;
@@ -420,21 +413,33 @@ select.single-choice {
   color: var(--amcg-blue);
 }
 
-.sponsorSearchResultsSummaryRow {
-  width: 975px;
-  margin: 0px;
-  padding-bottom: 10px;
-}
-
-.sponsorSearchResultsSummaryRowFeatured {
-  background-color: var(--amcg-blue-08);
+.searchresults-mainblock {
   width: 960px;
   margin: 0px;
   padding-bottom: 10px;
 }
 
-.sponsorSearchResultsSummaryRowPreview {
+.searchresults-mainblock-featured {
+  background-color: var(--amcg-blue-08);
+  margin: 0px;
+  padding-bottom: 10px;
+}
+
+.searchresults-mainblockPreview {
   margin: 0px 0px 0px 0px;
+}
+
+.searchresults-subblock {
+  width: 975px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.searchresults-subblock-break {
+  width: 960px;
+  height: 2px;
+  margin: 0px;
+  padding: 0px;
 }
 
 .sponsorsearchresultscol1 {
@@ -447,7 +452,7 @@ select.single-choice {
 }
 
 .sponsorsearchresultscol1break {
-  /* padding: 5px 0px 0px 0px; */
+  padding: 0px;
   font-size: 0.875em;
   width: 125px;
   white-space: normal;
@@ -462,24 +467,26 @@ select.single-choice {
 }
 
 .sponsorsearchresultscol3 {
-  width: 800px;
-  margin: 0px 0px 0px 15px; /* needed?? */
+  width: 805px;
+  margin: 0px;
   line-height: 1.8;
   position: relative;
+  padding: 0px 0px 0px 12px;
 }
 
-.sponsorsearchresultscol3featured {
+/* .sponsorsearchresultscol3featured {
   width: 785px;
-  margin: 0px 0px 0px 15px;
+  margin: 0px;
   line-height: 1.8;
   position: relative;
-}
+  padding: 0px 0px 0px 12px;
+} */
 
 .sponsorsearchresultscol3A {
   width: 140px;
   font-size: 0.875em;
   font-variant: normal;
-  padding-top: 3px;
+  padding: 3px 0px 0px 12px;
   font-weight: bold;
 }
 
@@ -487,39 +494,31 @@ select.single-choice {
   width: 140px;
   font-size: 0.875em;
   font-variant: normal;
-  padding-top: 8px;
+  padding: 8px 0px 0px 12px;
   line-height: 1.3;
 }
 
 .sponsorsearchresultscol3B {
-  width: 635px;
+  width: 660px;
   font-size: 0.875em;
   font-variant: normal;
-  padding-top: 3px;
-  /* margin-top: 3px; */
+  line-height: 1.3;
+  padding: 6px 0px 0px 12px;
 }
 
 .sponsorsearchresultscol3Bfeatured {
-  width: 510px;
+  width: 540px;
   font-size: 0.875em;
   font-variant: normal;
+  line-height: 1.3;
+  padding: 6px 0px 0px 12px;
 }
 
 .sponsorsearchresultscol3B.text-block {
-  width: 635px;
-  font-size: 0.875em;
-  font-variant: normal;
-  padding-top: 8px;
-  line-height: 1.3;
   white-space: pre-wrap;
 }
 
 .sponsorsearchresultscol3Bfeatured.text-block {
-  width: 510px;
-  font-size: 0.875em;
-  font-variant: normal;
-  padding-top: 8px;
-  line-height: 1.3;
   white-space: pre-wrap;
 }
 
@@ -528,16 +527,11 @@ select.single-choice {
   overflow: hidden;
 }
 
-.sponsorSearchResultsScholarshipBlock {
-  margin-top: 0px;
-  padding: 0px 0px 10px 0px;
-}
-
 a.text-link {
   text-decoration: underline;
 }
 
-.paginationNavBar {
+.paginationnavbar {
   text-align: right;
 }
 
@@ -695,12 +689,12 @@ td.amcg_main_td {
   right: 0px;
 }
 
-.featuredSponsorBadge {
+.featuredsponsorbadge {
   width: 7em;
   height: auto;
   position: absolute;
   top: 5px;
   right: 0px;
-  margin: 0px;
+  margin: 0px 5px 0px 0px;
   padding: 0px;
 }

@@ -40,8 +40,7 @@
 
 .flexcontainer-datamgmt {
   display: flex;
-/*  width: 900px; */
-  width: 100%;
+  width: 1010px;
   flex-direction: row;
 }
 
@@ -59,7 +58,7 @@ div.data-mgmt-required {
 div.data-mgmt-value {
   margin-left: 5px;
   padding: 0px;
-  width: 699px;
+  width: 820px;
 }
 
 label.data-mgmt-col-title {
@@ -109,40 +108,50 @@ span.data-mgmt-error {
   vertical-align: top;
   margin-top: 5px;
   padding-top: 3px;
-  padding-left: 3x;
+  padding-left: 3px;
   color: red;
   /* background-color: #f3cdd4; */
 }
   
 input.data-mgmt-text {
-  width: 590px;
+  width: 810px;
   line-height: 1.00;
 }
 
 input.data-mgmt-text-short {
-  width: 450px;
+  width: 600px;
   line-height: 1.00;
 }
 
 input.data-mgmt-text-half {
-  width: 295px;
+  width: 405px;
   line-height: 1.00;
 }
 
 input.data-mgmt-text-third {
-  width: 195px;
+  width: 270px;
+  line-height: 1.00;
+}
+
+input.data-mgmt-text-quarter {
+  width: 202px;
+  line-height: 1.00;
+}
+
+input.data-mgmt-text-fifth {
+  width: 162px;
   line-height: 1.00;
 }
 
 textarea.data-mgmt {
-  width: 590px;
+  width: 810px;
   height: 85px;
   line-height: 1.1;
   white-space: pre-wrap;
 }
 
 textarea.data-mgmt-1line {
-  width: 590px;
+  width: 810px;
   height: 23px;
   resize: none;
   white-space: nowrap;
@@ -150,7 +159,7 @@ textarea.data-mgmt-1line {
 }
 
 textarea.data-mgmt-1line-half {
-  width: 295px;
+  width: 405px;
   height: 23px;
   resize: none;
   white-space: nowrap;
@@ -158,7 +167,7 @@ textarea.data-mgmt-1line-half {
 }
 
 textarea.data-mgmt-1line-third {
-  width: 195px;
+  width: 270px;
   height: 23px;
   resize: none;
   white-space: nowrap;
@@ -166,7 +175,7 @@ textarea.data-mgmt-1line-third {
 }
 
 textarea.data-mgmt-2lines {
-  width: 590px;
+  width: 810px;
   height: 40px;
   resize: none;
   line-height: 1.1;
@@ -177,28 +186,46 @@ button.data-mgmt {
 }
 
 select.data-mgmt-multiple {
-/*  font-size: 0.875em; */
-  width: 585px;
+  width: 810px;
+  padding: 0px;
+  height: 91px;
+}
+
+select.data-mgmt-multiple-half {
+  width: 405px;
   padding: 0px;
   height: 91px;
 }
 
 select.data-mgmt-single {
-/*  font-size: 0.875em; */
   line-height: 1.00;
-  width: 450px;
+  width: 810px;
   height: 23px;
 }
 
 select.data-mgmt-single-half {
   line-height: 1.00;
-  width: 295px;
+  width: 405px;
   height: 23px;
 }
   
 select.data-mgmt-single-third {
   line-height: 1.00;
-  width: 195px;
+  width: 270px;
+  height: 23px;
+  background-color: white;
+}
+
+select.data-mgmt-single-quarter {
+  line-height: 1.00;
+  width: 202px;
+  height: 23px;
+  background-color: white;
+}
+
+select.data-mgmt-single-fifth {
+  line-height: 1.00;
+  width: 162px;
   height: 23px;
   background-color: white;
 }

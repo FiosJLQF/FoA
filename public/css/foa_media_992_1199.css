@@ -1,0 +1,52 @@
+@media (min-width: 992px) and (max-width: 1199px){
+    .bodylayout1col1 {
+      width: 265px;
+    }
+    .bodylayout1col2 {
+      width: 690px;
+    }
+    .searchresults-mainblock {
+      width: 675px;
+    }
+    .searchresults-mainblock-featured {
+      background-color: var(--amcg-blue-08);
+      width: 675px;
+    }
+    .searchresults-subblock {
+      width: 675px;
+    }
+    .searchresults-subblock-break {
+      width: 675px;
+    }
+    .sponsorsearchresultscol3 {
+      width: 520px;
+    }
+    .sponsorsearchresultscol3A {
+      width: 140px;
+    }
+    .sponsorsearchresultscol3A.text-block {
+      width: 140px;
+    }
+    .sponsorsearchresultscol3B {
+      width: 380px;
+    }
+    .sponsorsearchresultscol3Bfeatured {
+      width: 270px;
+    }
+    .sponsorsearchresultscol3B.text-block {
+      width: 380px;
+    }
+    .sponsorsearchresultscol3Bfeatured.text-block {
+      width: 270px;
+    }
+    .scholarshipsearchresultscol3 {
+      width: 680px;
+    }
+    .scholarshipsearchresultscol3B {
+      width: 530px;
+    }
+    .scholarshipsearchresultscol3B.text-block {
+      width: 530px;
+    }
+  }
+  
