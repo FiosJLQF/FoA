@@ -1069,8 +1069,12 @@ function openSponsorTab(evt, tabName) {
 
     // Build the sponsor preview DIV
 //    if ( tabName === 'tabPreview') {
-//        const divScholarshipPreview = buildScholarshipSearchResultDiv(scholarshipData, false);
-//        document.getElementById('tabPreview').replaceChildren(divScholarshipPreview);
+//        // Clear any status messages
+//        if ( document.getElementById('statusMessage') ) {
+//            document.getElementById('statusMessage').innerText = '';
+//        };
+//        const divSponsorPreview = buildSponsorSearchResultDiv(sponsorData, false);
+//        document.getElementById('tabPreview').replaceChildren(divSponsorPreview);
 //    };
 
   } 

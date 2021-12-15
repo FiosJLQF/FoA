@@ -1766,7 +1766,7 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria) {
 function openScholarshipTab(evt, tabName) {
     // Declare all variables
     var i, tabcontent, tablinks;
-  
+
     // Get all elements with class="tabcontent" and hide them
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
@@ -1785,6 +1785,10 @@ function openScholarshipTab(evt, tabName) {
 
     // Build the scholarship preview DIV
     if ( tabName === 'tabPreview') {
+        // Clear any status messages
+        if ( document.getElementById('statusMessage') ) {
+            document.getElementById('statusMessage').innerText = '';
+        };
         const divScholarshipPreview = buildScholarshipSearchResultDiv(scholarshipData, false);
         document.getElementById('tabPreview').replaceChildren(divScholarshipPreview);
     };
