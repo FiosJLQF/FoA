@@ -2,7 +2,7 @@
     <span class="bodylayout1col2title">
       <label class="data-mgmt-col-title" id="scholarshipInstructions"></label></span><br>
     <hr class="bodycol2break">
-    <label class="data-mgmt-instruction">&nbsp;&nbsp;&nbsp;<span style="color: red;">*</span> indicates a required entry</label><br><br>
+    <label class="data-mgmt-label-instruction">&nbsp;&nbsp;&nbsp;<span style="color: red;">*</span> indicates a required entry</label><br><br>
 
     <% if ( statusMessage !== '' ) { %>
       <div>
@@ -12,8 +12,8 @@
   
     <!-- TAB control -->
     <div class="tab">
-      <button class="tablinks" onclick="openTab(event, 'tabEdit')" id="btnTabPreview">Edit</button>
-      <button class="tablinks" onclick="openTab(event, 'tabPreview')">Preview</button>
+      <button class="tablinks" onclick="openScholarshipTab(event, 'tabEdit')" id="btnTabEdit">Edit</button>
+      <button class="tablinks" onclick="openScholarshipTab(event, 'tabPreview')" id="btnTabPreview">Preview</button>
     </div>
 
     <!-- Data editing container (Tab #1) -->
@@ -26,492 +26,493 @@
       <input type="hidden" id="scholarshipIDToUpdate" name="scholarshipIDToUpdate">
 
       <!-- Scholarship Is "Featured" -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="scholarshipIsFeatured" class="data-mgmt">Scholarship Is Featured?</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="scholarshipIsFeatured" class="data-mgmt-label">Scholarship Is Featured?</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="scholarshipIsFeatured" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="scholarshipIsFeatured" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
+          <div class="col-8 data-mgmt-value-div">
             <input type="checkbox" id="scholarshipIsFeatured" name="scholarshipIsFeatured"
               class="data-mgmt-checkbox" value="ScholarshipIsFeatured" onchange="updatePreview();"><br>
-            <span class="data-mgmt-error" id="scholarshipIsFeaturedErrors"></span>
+            <span class="data-mgmt-span-error" id="scholarshipIsFeaturedErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
       
       <!-- Scholarship Status -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="scholarshipStatus" class="data-mgmt">Ready-To-Post Status:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="scholarshipStatus" class="data-mgmt-label">Ready-To-Post Status:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="scholarshipStatus" class="data-mgmt-required">*</label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="scholarshipStatus" class="data-mgmt-label-required">*</label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <select id="scholarshipStatus" name="scholarshipStatus" class="data-mgmt-single-fifth"></select><br>
-            <span class="data-mgmt-error" id="scholarshipStatusErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <select id="scholarshipStatus" name="scholarshipStatus" class="data-mgmt-select-single-fifth"></select><br>
+            <span class="data-mgmt-span-error" id="scholarshipStatusErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Scholarship Name -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="scholarshipName" class="data-mgmt">Scholarship Name:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="scholarshipName" class="data-mgmt-label">Scholarship Name:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="scholarshipName" class="data-mgmt-required">*</label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="scholarshipName" class="data-mgmt-label-required">*</label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <textarea id="scholarshipName" name="scholarshipName" class="data-mgmt-1line" rows="1" onchange="updatePreview();"></textarea><br>
-            <span class="data-mgmt-error" id="scholarshipNameErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <textarea id="scholarshipName" name="scholarshipName" class="data-mgmt-textarea-1line" rows="1" onchange="updatePreview();"></textarea><br>
+            <span class="data-mgmt-span-error" id="scholarshipNameErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Scholarship Description -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="scholarshipDescription" class="data-mgmt">Description:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="scholarshipDescription" class="data-mgmt-label">Description:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="scholarshipName" class="data-mgmt-required">*</label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="scholarshipName" class="data-mgmt-label-required">*</label>
           </div>
-          <div class="col-8 data-mgmt-value" id="scholarshipDescDiv">
-            <textarea id="scholarshipDescription" name="scholarshipDescription" class="data-mgmt" onchange="updatePreview();"></textarea><br>
-            <span class="data-mgmt-error" id="scholarshipDescriptionErrors"></span>
+          <div class="col-8 data-mgmt-value-div" id="scholarshipDescDiv">
+            <textarea id="scholarshipDescription" name="scholarshipDescription" class="data-mgmt-textarea-5lines" onchange="updatePreview();"></textarea><br>
+            <span class="data-mgmt-span-error" id="scholarshipDescriptionErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Scholarship Link -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="scholarshipLink" class="data-mgmt">Link to Scholarship:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="scholarshipLink" class="data-mgmt-label">Link to Scholarship:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="scholarshipLink" class="data-mgmt-required">*</label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="scholarshipLink" class="data-mgmt-label-required">*</label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <textarea id="scholarshipLink" name="scholarshipLink" class="data-mgmt-1line" rows="1"></textarea><br>
-            <span class="data-mgmt-error" id="scholarshipLinkErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <textarea id="scholarshipLink" name="scholarshipLink" class="data-mgmt-textarea-1line" rows="1" onchange="updatePreview();"></textarea><br>
+            <span class="data-mgmt-span-error" id="scholarshipLinkErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Scholarship Award -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="scholarshipAward" class="data-mgmt">Award:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="scholarshipAward" class="data-mgmt-label">Award:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="scholarshipAward" class="data-mgmt-required">*</label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="scholarshipAward" class="data-mgmt-label-required">*</label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <textarea id="scholarshipAward" name="scholarshipAward" class="data-mgmt-1line-half" onchange="updatePreview();"></textarea><br>
-            <span class="data-mgmt-error" id="scholarshipAwardErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <textarea id="scholarshipAward" name="scholarshipAward" class="data-mgmt-textarea-1line" onchange="updatePreview();"></textarea><br>
+            <span class="data-mgmt-span-error" id="scholarshipAwardErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Scholarship Contact First Name -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="scholarshipContactFName" class="data-mgmt">Contact First Name:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="scholarshipContactFName" class="data-mgmt-label">Contact First Name:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="scholarshipContactFName" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="scholarshipContactFName" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <textarea id="scholarshipContactFName" name="scholarshipContactFName" class="data-mgmt-1line-third" rows="1" onchange="updatePreview();"></textarea><br>
-            <span class="data-mgmt-error" id="scholarshipContactFNameErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <textarea id="scholarshipContactFName" name="scholarshipContactFName" class="data-mgmt-textarea-1line-third" rows="1" onchange="updatePreview();"></textarea><br>
+            <span class="data-mgmt-span-error" id="scholarshipContactFNameErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Scholarship Contact Last Name -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="scholarshipContactLName" class="data-mgmt">Contact Last Name:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="scholarshipContactLName" class="data-mgmt-label">Contact Last Name:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="scholarshipContactLName" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="scholarshipContactLName" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <textarea id="scholarshipContactLName" name="scholarshipContactLName" class="data-mgmt-1line-third" rows="1" onchange="updatePreview();"></textarea><br>
-            <span class="data-mgmt-error" id="scholarshipContactLNameErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <textarea id="scholarshipContactLName" name="scholarshipContactLName" class="data-mgmt-textarea-1line-third" rows="1" onchange="updatePreview();"></textarea><br>
+            <span class="data-mgmt-span-error" id="scholarshipContactLNameErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Scholarship Contact Email -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="scholarshipContactEmail" class="data-mgmt">Contact Email:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="scholarshipContactEmail" class="data-mgmt-label">Contact Email:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="scholarshipContactEmail" class="data-mgmt-required">*</label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="scholarshipContactEmail" class="data-mgmt-label-required">*</label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <textarea id="scholarshipContactEmail" name="scholarshipContactEmail" class="data-mgmt-1line-half" rows="1" onchange="updatePreview();"></textarea><br>
-            <span class="data-mgmt-error" id="scholarshipContactEmailErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <textarea id="scholarshipContactEmail" name="scholarshipContactEmail" class="data-mgmt-textarea-1line-half" rows="1" onchange="updatePreview();"></textarea><br>
+            <span class="data-mgmt-span-error" id="scholarshipContactEmailErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Scholarship Contact Telephone -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="scholarshipContactTelephone" class="data-mgmt">Contact Telephone:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="scholarshipContactTelephone" class="data-mgmt-label">Contact Telephone:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="scholarshipContactTelephone" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="scholarshipContactTelephone" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <textarea id="scholarshipContactTelephone" name="scholarshipContactTelephone" class="data-mgmt-1line-third" rows="1" onchange="updatePreview();"></textarea><br>
-            <span class="data-mgmt-error" id="scholarshipContactTelephoneErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <textarea id="scholarshipContactTelephone" name="scholarshipContactTelephone" class="data-mgmt-textarea-1line-third" rows="1" onchange="updatePreview();"></textarea><br>
+            <span class="data-mgmt-span-error" id="scholarshipContactTelephoneErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Administrative Notes -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="notesAdmin" class="data-mgmt">Notes (Administrative):</label><br>
-            <label class="data-mgmt-instruction">&nbsp;&nbsp;&nbsp;(Not for use in Search.)</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="notesAdmin" class="data-mgmt-label">Notes (Administrative):</label><br>
+            <label class="data-mgmt-label-instruction">&nbsp;&nbsp;&nbsp;(Not for use in Search.)</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="notesAdmin" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="notesAdmin" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <textarea id="notesAdmin" name="notesAdmin" class="data-mgmt"></textarea><br>
-            <span class="data-mgmt-error" id="notesAdminErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <textarea id="notesAdmin" name="notesAdmin" class="data-mgmt-textarea-5lines"></textarea><br>
+            <span class="data-mgmt-span-error" id="notesAdminErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Eligibility Requirements (Primary) -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="scholarshipEligReqsPrimary" class="data-mgmt">Eligibility Requirements:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="scholarshipEligReqsPrimary" class="data-mgmt-label">Eligibility Requirements:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="scholarshipEligReqsPrimary" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="scholarshipEligReqsPrimary" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <textarea id="scholarshipEligReqsPrimary" name="scholarshipEligReqsPrimary" class="data-mgmt" onchange="updatePreview();"></textarea><br>
-            <span class="data-mgmt-error" id="scholarshipEligReqsPrimaryErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <textarea id="scholarshipEligReqsPrimary" name="scholarshipEligReqsPrimary" class="data-mgmt-textarea-5lines" onchange="updatePreview();"></textarea><br>
+            <span class="data-mgmt-span-error" id="scholarshipEligReqsPrimaryErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Eligibility Requirements (Other) -->
       <!--  Removed by KK request on 5/12/21
-      <div class="flexcontainer-datamgmt">
+      <div class="data-mgmt-row">
         <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="scholarshipEligReqsOther" class="data-mgmt">Other Requirements:</label>
+          <div class="col-3 data-mgmt-label-div">
+            <label for="scholarshipEligReqsOther" class="data-mgmt-label">Other Requirements:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="scholarshipEligReqsOther" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="scholarshipEligReqsOther" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
+          <div class="col-8 data-mgmt-value-div">
             <textarea id="scholarshipEligReqsOther" name="scholarshipEligReqsOther" class="data-mgmt"></textarea><br>
-            <span class="data-mgmt-error" id="scholarshipEligReqsOtherErrors"></span>
+            <span class="data-mgmt-span-error" id="scholarshipEligReqsOtherErrors"></span>
           </div>
         </div>
       </div><br>
       -->
 
       <!-- Recurrence Frequency -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="scholarshipRecurrence" class="data-mgmt">Recurrence Frequency:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="scholarshipRecurrence" class="data-mgmt-label">Recurrence Frequency:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="scholarshipRecurrence" class="data-mgmt-required">*</label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="scholarshipRecurrence" class="data-mgmt-label-required">*</label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <select id="scholarshipRecurrence" name="scholarshipRecurrence" class="data-mgmt-single-quarter"></select><br>
-            <span class="data-mgmt-error" id="scholarshipRecurrenceErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <select id="scholarshipRecurrence" name="scholarshipRecurrence" class="data-mgmt-select-single-quarter"></select><br>
+            <span class="data-mgmt-span-error" id="scholarshipRecurrenceErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Application List Date -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="scholarshipApplListDate" class="data-mgmt">Application List Date:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="scholarshipApplListDate" class="data-mgmt-label">Application List Date:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="scholarshipApplListDate" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="scholarshipApplListDate" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <input type="date" id="scholarshipApplListDate" name="scholarshipApplListDate" class="data-mgmt-text-fifth">
-            <span class="data-mgmt-error" id="scholarshipApplListDateErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <input type="date" id="scholarshipApplListDate" name="scholarshipApplListDate" class="data-mgmt-date">
+            <span class="data-mgmt-span-error" id="scholarshipApplListDateErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Application Start Date -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="scholarshipApplStartDate" class="data-mgmt">Application Start Date:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="scholarshipApplStartDate" class="data-mgmt-label">Application Start Date:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="scholarshipApplStartDate" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="scholarshipApplStartDate" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <input type="date" id="scholarshipApplStartDate" name="scholarshipApplStartDate" class="data-mgmt-text-fifth" onchange="updatePreview();">
-            <span class="data-mgmt-error" id="scholarshipApplStartDateErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <input type="date" id="scholarshipApplStartDate" name="scholarshipApplStartDate" class="data-mgmt-date" onchange="updatePreview();">
+            <span class="data-mgmt-span-error" id="scholarshipApplStartDateErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Application End Date -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="scholarshipApplEndDate" class="data-mgmt">Application End Date:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="scholarshipApplEndDate" class="data-mgmt-label">Application End Date:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="scholarshipApplEndDate" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="scholarshipApplEndDate" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <input type="date" id="scholarshipApplEndDate" name="scholarshipApplEndDate" class="data-mgmt-text-fifth" onchange="updatePreview();">
-            <span class="data-mgmt-error" id="scholarshipApplEndDateErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <input type="date" id="scholarshipApplEndDate" name="scholarshipApplEndDate" class="data-mgmt-date" onchange="updatePreview();">
+            <span class="data-mgmt-span-error" id="scholarshipApplEndDateErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Criteria - Field of Study -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="criteriaFieldOfStudy" class="data-mgmt">Field(s) of Study:</label><br>
-            <label class="data-mgmt-instruction">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="criteriaFieldOfStudy" class="data-mgmt-label">Field(s) of Study:</label><br>
+            <label class="data-mgmt-label-instruction">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="criteriaFieldOfStudy" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="criteriaFieldOfStudy" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <select id="criteriaFieldOfStudy" name="criteriaFieldOfStudy" class="data-mgmt-multiple-half" multiple onchange="updatePreview();"></select><br>
-            <span class="data-mgmt-error" id="criteriaFieldOfStudyErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <select id="criteriaFieldOfStudy" name="criteriaFieldOfStudy" class="data-mgmt-select-multiple-half" multiple onchange="updatePreview();"></select><br>
+            <span class="data-mgmt-span-error" id="criteriaFieldOfStudyErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Age (Minimum) -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="criteriaMinimumAge" class="data-mgmt">Minimum Age:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="criteriaMinimumAge" class="data-mgmt-label">Minimum Age:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="criteriaMinimumAge" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="criteriaMinimumAge" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
+          <div class="col-8 data-mgmt-value-div">
             <input type="text" id="criteriaMinimumAge" name="criteriaMinimumAge" class="data-mgmt-text-fifth"><br>
-            <span class="data-mgmt-error" id="criteriaMinimumAgeErrors"></span>
+            <span class="data-mgmt-span-error" id="criteriaMinimumAgeErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Age (Maximum) -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="criteriaMaximumAge" class="data-mgmt">Maximum Age:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="criteriaMaximumAge" class="data-mgmt-label">Maximum Age:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="criteriaMaximumAge" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="criteriaMaximumAge" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
+          <div class="col-8 data-mgmt-value-div">
             <input type="text" id="criteriaMaximumAge" name="criteriaMaximumAge" class="data-mgmt-text-fifth"><br>
-            <span class="data-mgmt-error" id="criteriaMaximumAgeErrors"></span>
+            <span class="data-mgmt-span-error" id="criteriaMaximumAgeErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Criteria - Citizenship -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="criteriaCitizenship" class="data-mgmt">Citizenship(s):</label><br>
-            <label class="data-mgmt-instruction">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="criteriaCitizenship" class="data-mgmt-label">Citizenship(s):</label><br>
+            <label class="data-mgmt-label-instruction">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="criteriaCitizenship" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="criteriaCitizenship" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <select id="criteriaCitizenship" name="criteriaCitizenship" class="data-mgmt-multiple-half" multiple></select><br>
-            <span class="data-mgmt-error" id="criteriaCitizenshipErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <select id="criteriaCitizenship" name="criteriaCitizenship" class="data-mgmt-select-multiple-half" multiple></select><br>
+            <span class="data-mgmt-span-error" id="criteriaCitizenshipErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Criteria - Year of Need -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="criteriaYearOfNeed" class="data-mgmt">Year(s) of Need:</label><br>
-            <label class="data-mgmt-instruction">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="criteriaYearOfNeed" class="data-mgmt-label">Year(s) of Need:</label><br>
+            <label class="data-mgmt-label-instruction">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="criteriaYearOfNeed" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="criteriaYearOfNeed" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <select id="criteriaYearOfNeed" name="criteriaYearOfNeed" class="data-mgmt-multiple-half" multiple></select><br>
-            <span class="data-mgmt-error" id="criteriaYearOfNeedErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <select id="criteriaYearOfNeed" name="criteriaYearOfNeed" class="data-mgmt-select-multiple-half" multiple></select><br>
+            <span class="data-mgmt-span-error" id="criteriaYearOfNeedErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Criteria - Female Applicants Only -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="criteriaFemaleApplicantsOnly" class="data-mgmt">Female Applicants Only:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="criteriaFemaleApplicantsOnly" class="data-mgmt-label">Female Applicants Only:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="criteriaFemaleApplicantsOnly" class="data-mgmt-required">*</label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="criteriaFemaleApplicantsOnly" class="data-mgmt-label-required">*</label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <select id="criteriaFemaleApplicantsOnly" name="criteriaFemaleApplicantsOnly" class="data-mgmt-single-fifth"></select><br>
-            <span class="data-mgmt-error" id="criteriaFemaleApplicantsOnlyErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <select id="criteriaFemaleApplicantsOnly" name="criteriaFemaleApplicantsOnly" class="data-mgmt-select-single-fifth"
+              onchange="updatePreview();"></select><br>
+            <span class="data-mgmt-span-error" id="criteriaFemaleApplicantsOnlyErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Criteria - Enrollment Status -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="criteriaEnrollmentStatus" class="data-mgmt">Enrollment Status(es):</label><br>
-            <label class="data-mgmt-instruction">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="criteriaEnrollmentStatus" class="data-mgmt-label">Enrollment Status(es):</label><br>
+            <label class="data-mgmt-label-instruction">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="criteriaEnrollmentStatus" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="criteriaEnrollmentStatus" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <select id="criteriaEnrollmentStatus" name="criteriaEnrollmentStatus" class="data-mgmt-multiple-half" multiple></select><br>
-            <span class="data-mgmt-error" id="criteriaEnrollmentStatusErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <select id="criteriaEnrollmentStatus" name="criteriaEnrollmentStatus" class="data-mgmt-select-multiple-half" multiple></select><br>
+            <span class="data-mgmt-span-error" id="criteriaEnrollmentStatusErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- GPA (Minimum) -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="criteriaMinimumGPA" class="data-mgmt">Minimum GPA:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="criteriaMinimumGPA" class="data-mgmt-label">Minimum GPA:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="criteriaMinimumGPA" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="criteriaMinimumGPA" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
+          <div class="col-8 data-mgmt-value-div">
             <input type="text" id="criteriaMinimumGPA" name="criteriaMinimumGPA" class="data-mgmt-text-quarter"><br>
-            <span class="data-mgmt-error" id="criteriaMinimumGPAErrors"></span>
+            <span class="data-mgmt-span-error" id="criteriaMinimumGPAErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Criteria - Military Service -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="criteriaMilitaryService" class="data-mgmt">U.S. Military Service:</label><br>
-            <label class="data-mgmt-instruction">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="criteriaMilitaryService" class="data-mgmt-label">U.S. Military Service:</label><br>
+            <label class="data-mgmt-label-instruction">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="criteriaMilitaryService" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="criteriaMilitaryService" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <select id="criteriaMilitaryService" name="criteriaMilitaryService" class="data-mgmt-multiple-half" multiple></select><br>
-            <span class="data-mgmt-error" id="criteriaMilitaryServiceErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <select id="criteriaMilitaryService" name="criteriaMilitaryService" class="data-mgmt-select-multiple-half" multiple></select><br>
+            <span class="data-mgmt-span-error" id="criteriaMilitaryServiceErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Criteria - FAA Pilot Certificate -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="criteriaFAAPilotCertificate" class="data-mgmt">FAA Pilot Certificate(s):</label><br>
-            <label class="data-mgmt-instruction">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="criteriaFAAPilotCertificate" class="data-mgmt-label">FAA Pilot Certificate(s):</label><br>
+            <label class="data-mgmt-label-instruction">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="criteriaFAAPilotCertificate" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="criteriaFAAPilotCertificate" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <select id="criteriaFAAPilotCertificate" name="criteriaFAAPilotCertificate" class="data-mgmt-multiple-half" multiple></select><br>
-            <span class="data-mgmt-error" id="criteriaFAAPilotCertificateErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <select id="criteriaFAAPilotCertificate" name="criteriaFAAPilotCertificate" class="data-mgmt-select-multiple-half" multiple></select><br>
+            <span class="data-mgmt-span-error" id="criteriaFAAPilotCertificateErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Criteria - FAA Pilot Rating -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="criteriaFAAPilotRating" class="data-mgmt">FAA Pilot Rating(s):</label><br>
-            <label class="data-mgmt-instruction">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="criteriaFAAPilotRating" class="data-mgmt-label">FAA Pilot Rating(s):</label><br>
+            <label class="data-mgmt-label-instruction">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="criteriaFAAPilotRating" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="criteriaFAAPilotRating" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <select id="criteriaFAAPilotRating" name="criteriaFAAPilotRating" class="data-mgmt-multiple-half" multiple></select><br>
-            <span class="data-mgmt-error" id="criteriaFAAPilotRatingErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <select id="criteriaFAAPilotRating" name="criteriaFAAPilotRating" class="data-mgmt-select-multiple-half" multiple></select><br>
+            <span class="data-mgmt-span-error" id="criteriaFAAPilotRatingErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Criteria - FAA Mechanic Certificate -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="criteriaFAAMechanicCertificate" class="data-mgmt">FAA Mechanic Certificate(s):</label><br>
-            <label class="data-mgmt-instruction">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="criteriaFAAMechanicCertificate" class="data-mgmt-label">FAA Mechanic Certificate(s):</label><br>
+            <label class="data-mgmt-label-instruction">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="criteriaFAAMechanicCertificate" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="criteriaFAAMechanicCertificate" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <select id="criteriaFAAMechanicCertificate" name="criteriaFAAMechanicCertificate" class="data-mgmt-multiple-half" multiple></select><br>
-            <span class="data-mgmt-error" id="criteriaFAAMechanicCertificateErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <select id="criteriaFAAMechanicCertificate" name="criteriaFAAMechanicCertificate" class="data-mgmt-select-multiple-half" multiple></select><br>
+            <span class="data-mgmt-span-error" id="criteriaFAAMechanicCertificateErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
+
     </form> <!-- End data mgmt form -->
+
     </div>  <!-- END: Data editing container (Tab #1) --> 
 
     <!-- Data preview container (Tab #2) -->
-    <div id="tabPreview" class="tabcontent">
-      <%- include('scholarship_crud_preview') %>
-    </div>  <!-- END: Data preview container (Tab #2) -->
+    <div id="tabPreview" class="tabcontent"></div>
 
     <!-- Form controls -->
     <div><br>
       <% if ( actionRequested === 'addscholarship' ) { %>
-        <button class="data-mgmt" form="scholarshipDataEdit" onclick="return validateData();">Add Scholarship</button>
+        <button class="data-mgmt-button" form="scholarshipDataEdit" onclick="return validateData();">Add Scholarship</button>
       <% } %>
       <% if ( scholarshipID !== '' && userCanDeleteScholarship ) { %>
         <form form action="/switchboard/scholarshipdelete?_method=DELETE" method="POST" id="scholarshipDataDelete">
@@ -520,19 +521,27 @@
         </form>
       <% } %>
       <% if ( scholarshipID !== '' && userCanUpdateScholarship ) { %>
-        <button class="data-mgmt" form="scholarshipDataEdit" onclick="return validateData();">Save Changes</button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="data-mgmt-button" form="scholarshipDataEdit" onclick="return validateData();">Save Changes</button>&nbsp;&nbsp;&nbsp;&nbsp;
       <% } %>
       <% if ( scholarshipID !== '' && userCanDeleteScholarship ) { %>
-        <button class="data-mgmt" form="scholarshipDataDelete" onclick=" return deleteScholarship();">Delete This Scholarship</button>
+        <button class="data-mgmt-button" form="scholarshipDataDelete" onclick=" return deleteScholarship();">Delete This Scholarship</button>
       <% } %>
     </div>  <!-- END: Form controls -->
 
     <br><br>
+    <hr class="bodycol2break">
 
 <script>
 
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  // Set the default environment
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
   // Show the "Edit" tab by default
-  document.getElementById("btnTabPreview").click();
+  document.getElementById("btnTabEdit").click();
+
+  // Create the "preview" scholarship object
+  var scholarshipData = {};
 
   /////////////////////////////////////////////////////////////////////////////////////////////
   // Load the DDLs options lists
@@ -584,7 +593,21 @@
     document.getElementById('scholarshipInstructions').innerText = "Add the information for the new Scholarship below, and click 'Add Scholarship'.";
     // Set the Sponsor ID for this new Scholarship
     document.getElementById('sponsorID').value = "<%= sponsorID %>";
-    document.getElementById('sponsorNamePreview').innerHTML = `<%- sponsorDetails[0].SponsorName %>`;
+    // Set the "preview" data default values for a new scholarship
+    scholarshipData['SponsorName'] = '<%- sponsorDetails[0].SponsorName %>';
+    scholarshipData['SponsorIsFeatured'] = <%- sponsorDetails[0].SponsorIsFeatured %>;
+    scholarshipData['SponsorLogo'] = "<%- sponsorDetails[0].SponsorLogo %>";
+    scholarshipData['ScholarshipIsFeatured'] = false;
+    scholarshipData['Criteria_FemaleApplicantsOnly_Text'] = "";
+    scholarshipData['ScholarshipID'] = "";
+    scholarshipData['ScholarshipName'] = "";
+    scholarshipData['Criteria_FieldOfStudyText'] = '';
+    scholarshipData['ScholarshipDescription'] = "";
+    scholarshipData['ScholarshipAward'] = "";
+    scholarshipData['ScholarshipLink'] = "";
+    scholarshipData['ScholarshipEligibilityReqs'] = '';
+    scholarshipData['ScholarshipApplDatesText'] = '';
+    scholarshipData['ScholarshipContactInfoFormatted'] = '';
 
   <% } else if ( scholarshipID !== '' ) { %>  // "Read/Update/Delete Scholarship"
 
@@ -599,9 +622,8 @@
     document.getElementById('scholarshipDataEdit').method = "POST";
     // Set the current values for the Scholarship data elements
     document.getElementById('scholarshipIDToUpdate').value = "<%- scholarshipDetails[0].ScholarshipID %>";
+    // Set the Sponsor data values
     document.getElementById('sponsorID').value = "<%= sponsorID %>";
-    document.getElementById('sponsorLogoPreview').src = `<%- scholarshipDetails[0].SponsorLogo %>`;
-    document.getElementById('sponsorNamePreview').innerHTML = `<%- scholarshipDetails[0].SponsorName %>`;
     document.getElementById('scholarshipIsFeatured').checked = <%- scholarshipDetails[0].ScholarshipIsFeatured %>;
     // Select Scholarship Status
     var scholarshipStatus = "<%- scholarshipDetails[0].ScholarshipStatus %>";
@@ -618,22 +640,16 @@
       });
     };
     document.getElementById('scholarshipName').innerHTML = "<%= scholarshipDetails[0].ScholarshipName %>";
-    document.getElementById('scholarshipNamePreview').innerHTML = "<%= scholarshipDetails[0].ScholarshipName %>";
     document.getElementById('scholarshipDescription').innerHTML = `<%= scholarshipDetails[0].ScholarshipDescription %>`;
-    document.getElementById('scholarshipDescriptionPreview').innerHTML = `<%= scholarshipDetails[0].ScholarshipDescription %>`;
     document.getElementById('scholarshipDescDiv').contentEditable = true;
     document.getElementById('scholarshipLink').innerHTML = `<%- scholarshipDetails[0].ScholarshipLink %>`;
     document.getElementById('scholarshipAward').innerHTML = "<%= scholarshipDetails[0].ScholarshipAward %>";
-    document.getElementById('scholarshipAwardPreview').innerHTML = `<%= scholarshipDetails[0].ScholarshipAward %>`;
     document.getElementById('scholarshipContactFName').innerHTML = "<%= scholarshipDetails[0].ScholarshipContactFName %>";
     document.getElementById('scholarshipContactLName').innerHTML = "<%= scholarshipDetails[0].ScholarshipContactLName %>";
     document.getElementById('scholarshipContactEmail').innerHTML = "<%= scholarshipDetails[0].ScholarshipContactEmail %>";
     document.getElementById('scholarshipContactTelephone').innerHTML = "<%= scholarshipDetails[0].ScholarshipContactTelephone %>";
-    document.getElementById('scholarshipContactInfoPreview').innerHTML = formatContactInfo();
     document.getElementById('notesAdmin').innerHTML = `<%= scholarshipDetails[0].Notes_Admin %>`;
     document.getElementById('scholarshipEligReqsPrimary').innerHTML = `<%= scholarshipDetails[0].ScholarshipEligibilityReqs %>`;
-    document.getElementById('scholarshipEligReqsPrimaryPreview').innerHTML = `<%= scholarshipDetails[0].ScholarshipEligibilityReqs %>`;
-//    document.getElementById('scholarshipEligReqsOther').value = "<%= scholarshipDetails[0].ScholarshipEligibilityReqsOther %>";
     document.getElementById('scholarshipRecurrence').value = "<%= scholarshipDetails[0].ScholarshipRecurrence %>";
     // Select Recurrence Frequency
     var scholarshipRecurrence = "<%- scholarshipDetails[0].ScholarshipRecurrence %>";
@@ -652,7 +668,6 @@
     document.getElementById('scholarshipApplListDate').value = "<%= scholarshipDetails[0].ScholarshipApplListDate %>";
     document.getElementById('scholarshipApplStartDate').value = "<%= scholarshipDetails[0].ScholarshipApplStartDate %>";
     document.getElementById('scholarshipApplEndDate').value = "<%= scholarshipDetails[0].ScholarshipApplEndDate %>";
-    document.getElementById('scholarshipApplDatesPreview').innerHTML = formatApplicationDates();
     // Select Field of Study Criteria
     var criteriaFieldOfStudy = "<%- scholarshipDetails[0].Criteria_FieldOfStudy %>";
     var criteriaFieldOfStudyArrTrimmed = criteriaFieldOfStudy.split('|').slice(1, -1);
@@ -669,7 +684,6 @@
     };
     var scholarshipFieldsOfStudyText = Array.from(document.getElementById("criteriaFieldOfStudy").selectedOptions).map(v=>v.innerText);
     var scholarshipFieldsOfStudyTextFormatted = convertOptionsToDelimitedString(scholarshipFieldsOfStudyText, "; ", "0", "true");
-    document.getElementById('scholarshipTypePreview').innerHTML = scholarshipFieldsOfStudyTextFormatted;
     document.getElementById('criteriaMinimumAge').value = "<%= scholarshipDetails[0].Criteria_AgeMinimum %>";
     document.getElementById('criteriaMaximumAge').value = "<%= scholarshipDetails[0].Criteria_AgeMaximum %>";
     // Select Citizenship Criteria
@@ -700,6 +714,7 @@
         }
       });
     };
+
     // Select Female Applicants Only Criteria
     var criteriaFemaleApplicantsOnly = "<%- scholarshipDetails[0].Criteria_FemaleApplicantsOnly %>";
     var criteriaFemaleApplicantsOnlyArrTrimmed = criteriaFemaleApplicantsOnly.split('|').slice(1, -1);
@@ -714,6 +729,7 @@
         }
       });
     };
+
     // Select Enrollment Status Criteria
     var criteriaEnrollmentStatus = "<%- scholarshipDetails[0].Criteria_EnrollmentStatus %>";
     var criteriaEnrollmentStatusArrTrimmed = criteriaEnrollmentStatus.split('|').slice(1, -1);
@@ -786,6 +802,10 @@
       document.getElementById('criteriaFAAPilotRating').disabled = true;
       document.getElementById('criteriaFAAMechanicCertificate').disabled = true;
     };
+
+    // TODO:  Change all scholarshipData[] references above to one updatePreview() call here???
+    updatePreview();
+
   <% } %>
 
 
@@ -793,17 +813,28 @@
   // Keep the "Preview" tab sync-ed with the "Edit" tab
   /////////////////////////////////////////////////////////////////////////////////////////////
   function updatePreview() {
-//    alert('Updating Preview!');
-    document.getElementById('scholarshipNamePreview').innerHTML = document.getElementById("scholarshipName").value;
+//alert('Updating Preview!');
+    scholarshipData['SponsorName'] = '<%- sponsorDetails[0].SponsorName %>';
+    scholarshipData['SponsorIsFeatured'] = <%- sponsorDetails[0].SponsorIsFeatured %>;
+    scholarshipData['SponsorLogo'] = "<%- sponsorDetails[0].SponsorLogo %>";
+    scholarshipData['ScholarshipID'] = document.getElementById('scholarshipIDToUpdate').value;
+    scholarshipData['ScholarshipIsFeatured'] = document.getElementById('scholarshipIsFeatured').checked;
+    scholarshipData['ScholarshipName'] = document.getElementById("scholarshipName").value;
     var scholarshipFieldsOfStudyText = Array.from(document.getElementById("criteriaFieldOfStudy").selectedOptions).map(v=>v.innerText);
     var scholarshipFieldsOfStudyTextFormatted = convertOptionsToDelimitedString(scholarshipFieldsOfStudyText, "; ", "0", "true");
-    document.getElementById('scholarshipTypePreview').innerHTML = scholarshipFieldsOfStudyTextFormatted;
-    document.getElementById('scholarshipDescriptionPreview').innerHTML = document.getElementById("scholarshipDescription").value;
-    document.getElementById('scholarshipAwardPreview').innerHTML = document.getElementById("scholarshipAward").value;
-    document.getElementById('scholarshipEligReqsPrimaryPreview').innerHTML = document.getElementById("scholarshipEligReqsPrimary").value;
-    document.getElementById('scholarshipApplDatesPreview').innerHTML = formatApplicationDates();
-    document.getElementById('scholarshipContactInfoPreview').innerHTML = formatContactInfo();
-  }
+    scholarshipData['Criteria_FieldOfStudyText'] = scholarshipFieldsOfStudyTextFormatted;
+    scholarshipData['ScholarshipDescription'] = document.getElementById("scholarshipDescription").value;
+    scholarshipData['ScholarshipAward'] = document.getElementById("scholarshipAward").value;
+    scholarshipData['ScholarshipLink'] = document.getElementById('scholarshipLink').value;
+    scholarshipData['ScholarshipEligibilityReqs'] = document.getElementById('scholarshipEligReqsPrimary').value;
+    if ( document.getElementById('criteriaFemaleApplicantsOnly').value == '919001' ) {
+      scholarshipData['Criteria_FemaleApplicantsOnly_Text'] = 'Female Applicants Only';
+    } else {
+      scholarshipData['Criteria_FemaleApplicantsOnly_Text'] = '';
+    };
+    scholarshipData['ScholarshipApplDatesText'] = formatApplicationDates();
+    scholarshipData['ScholarshipContactInfoFormatted'] = formatContactInfo();
+  };
 
 
   //////////////////////////////////////////////////////////////////////

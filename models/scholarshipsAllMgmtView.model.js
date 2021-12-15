@@ -31,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
         Criteria_AgeMaximum:                         DataTypes.STRING,
         Criteria_YearOfNeed:                         DataTypes.STRING,
         Criteria_FemaleApplicantsOnly:               DataTypes.STRING,
+        Criteria_FemaleApplicantsOnly_Text:          DataTypes.STRING,
         Criteria_EnrollmentStatus:                   DataTypes.STRING,
         Criteria_GPAMinimum:                         DataTypes.STRING,
         Criteria_USMilitaryService:                  DataTypes.STRING,

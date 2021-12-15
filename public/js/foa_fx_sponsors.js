@@ -334,7 +334,7 @@ function buildSponsorSearchResults(matchingSponsors, scholarships, pageNumber, s
 
         // add the sponsor break line to the search results div
         const hrSponsorBreak = document.createElement('hr');
-        hrSponsorBreak.classList.add('bodycol2sponsorbreak');
+        hrSponsorBreak.classList.add('bodycol2break');
         divSearchResultsDivs.appendChild(hrSponsorBreak);
 
     };  // End "Sponsor" For Loop
@@ -503,7 +503,7 @@ function createSponsorSummaryDiv(selectedSponsor, intScholarships) {
 
     // If the Sponsor is "Featured", change the div styling
     if ( selectedSponsor['SponsorIsFeatured'] ) {
-        divSponsor.classList.add('searchresults-mainblock-featured');
+        divSponsor.classList.add('searchresults-mainblock-featured'); /* change background color */
     } else {
         divSponsor.classList.add('searchresults-mainblock');
     };
@@ -512,7 +512,7 @@ function createSponsorSummaryDiv(selectedSponsor, intScholarships) {
         // build and add the first column to the first row (Sponsor Logo and Scholarship Count)
         /////////////////////////////////////////////////////////////
         const divSponsorRow1Col1 = document.createElement('div');
-        divSponsorRow1Col1.classList.add('sponsorsearchresultscol1');
+        divSponsorRow1Col1.classList.add('searchresultscol1');
 
         const imgSponsorLogo = document.createElement('img');
         imgSponsorLogo.src = selectedSponsor['SponsorLogo'];
@@ -533,7 +533,7 @@ function createSponsorSummaryDiv(selectedSponsor, intScholarships) {
         // build and add the second column to the first row (show/hide scholarships)
         /////////////////////////////////////////////////////////////
         const divSponsorRow1Col2 = document.createElement('div');
-        divSponsorRow1Col2.classList.add('sponsorsearchresultscol2');
+        divSponsorRow1Col2.classList.add('searchresultscol2');
 
         if (intScholarships > 0) {
             const iconExpand = document.createElement('i');
@@ -553,7 +553,7 @@ function createSponsorSummaryDiv(selectedSponsor, intScholarships) {
         // build and add the third column to the first row (Sponsor Information)
         /////////////////////////////////////////////////////////////
         const divSponsorRow1Col3 = document.createElement('div');
-        divSponsorRow1Col3.classList.add('sponsorsearchresultscol3');
+        divSponsorRow1Col3.classList.add('searchresultscol3');
         divSponsorRow1Col3.classList.add('container');
 
 //        const divSponsorRow1Col3Rows = document.createElement('div');
@@ -568,16 +568,16 @@ function createSponsorSummaryDiv(selectedSponsor, intScholarships) {
             // Sponsor Name
             ////////////////////////////////////////
             const divSponsorRow1Col3Row1Col1 = document.createElement('div');
-            divSponsorRow1Col3Row1Col1.classList.add('sponsorsearchresultscol3A');
+            divSponsorRow1Col3Row1Col1.classList.add('searchresultscol3A');
             divSponsorRow1Col3Row1Col1.textContent = 'Sponsor:';
 
         divSponsorRow1Col3Row1.appendChild(divSponsorRow1Col3Row1Col1);
 
             const divSponsorRow1Col3Row1Col2 = document.createElement('div');
             if ( selectedSponsor['SponsorIsFeatured'] ) { // Allow for "Is Featured" badge
-                divSponsorRow1Col3Row1Col2.classList.add('sponsorsearchresultscol3Bfeatured');
+                divSponsorRow1Col3Row1Col2.classList.add('searchresultscol3Bfeatured');
             } else {
-                divSponsorRow1Col3Row1Col2.classList.add('sponsorsearchresultscol3B');
+                divSponsorRow1Col3Row1Col2.classList.add('searchresultscol3B');
             };
             divSponsorRow1Col3Row1Col2.textContent = selectedSponsor['SponsorName'];
 
@@ -590,7 +590,7 @@ function createSponsorSummaryDiv(selectedSponsor, intScholarships) {
                 const imgSponsorIsFeatured = document.createElement('img');
                 imgSponsorIsFeatured.src = "/img/imgFeaturedSponsor.png";
                 imgSponsorIsFeatured.alt = "Featured Sponsor Badge";
-                imgSponsorIsFeatured.classList.add('featuredsponsorbadge');
+                imgSponsorIsFeatured.classList.add('featuredbadge');
                 divSponsorRow1Col3Row1.appendChild(imgSponsorIsFeatured);
             };
 
@@ -607,16 +607,16 @@ function createSponsorSummaryDiv(selectedSponsor, intScholarships) {
             // Sponsor Description
             ////////////////////////////////////////
             const divSponsorRow1Col3Row2Col1 = document.createElement('div');
-            divSponsorRow1Col3Row2Col1.classList.add('sponsorsearchresultscol3A');
+            divSponsorRow1Col3Row2Col1.classList.add('searchresultscol3A');
             divSponsorRow1Col3Row2Col1.textContent = 'Description:';
 
         divSponsorRow1Col3Row2.appendChild(divSponsorRow1Col3Row2Col1);
 
             const divSponsorRow1Col3Row2Col2 = document.createElement('div');
             if ( selectedSponsor['SponsorIsFeatured'] ) { // Allow for "Is Featured" badge
-                divSponsorRow1Col3Row2Col2.classList.add('sponsorsearchresultscol3Bfeatured');
+                divSponsorRow1Col3Row2Col2.classList.add('searchresultscol3Bfeatured');
             } else {
-                divSponsorRow1Col3Row2Col2.classList.add('sponsorsearchresultscol3B');
+                divSponsorRow1Col3Row2Col2.classList.add('searchresultscol3B');
             };
             divSponsorRow1Col3Row2Col2.classList.add('text-block');
             divSponsorRow1Col3Row2Col2.innerText = selectedSponsor['SponsorDescription'];
@@ -636,13 +636,13 @@ function createSponsorSummaryDiv(selectedSponsor, intScholarships) {
             // Sponsor Website
             ////////////////////////////////////////
             const divSponsorRow1Col3Row3Col1 = document.createElement('div');
-            divSponsorRow1Col3Row3Col1.classList.add('sponsorsearchresultscol3A');
+            divSponsorRow1Col3Row3Col1.classList.add('searchresultscol3A');
             divSponsorRow1Col3Row3Col1.textContent = 'Sponsor Website:';
 
         divSponsorRow1Col3Row3.appendChild(divSponsorRow1Col3Row3Col1);
 
             const divSponsorRow1Col3Row3Col2 = document.createElement('div');
-            divSponsorRow1Col3Row3Col2.classList.add('sponsorsearchresultscol3B');
+            divSponsorRow1Col3Row3Col2.classList.add('searchresultscol3B');
 
             const lnkSponsorWebsite = document.createElement('a');
             lnkSponsorWebsite.id = "lnkSponsorWebsite_" + selectedSponsor['SponsorWebsite'];
@@ -667,13 +667,13 @@ function createSponsorSummaryDiv(selectedSponsor, intScholarships) {
             // Contact Info
             ////////////////////////////////////////
             const divSponsorRow1Col3Row4Col1 = document.createElement('div');
-            divSponsorRow1Col3Row4Col1.classList.add('sponsorsearchresultscol3A');
+            divSponsorRow1Col3Row4Col1.classList.add('searchresultscol3A');
             divSponsorRow1Col3Row4Col1.textContent = 'Contact Info:';
 
         divSponsorRow1Col3Row4.appendChild(divSponsorRow1Col3Row4Col1);
 
             const divSponsorRow1Col3Row4Col2 = document.createElement('div');
-            divSponsorRow1Col3Row4Col2.classList.add('sponsorsearchresultscol3B');
+            divSponsorRow1Col3Row4Col2.classList.add('searchresultscol3B');
             divSponsorRow1Col3Row4Col2.classList.add('text-block');
             divSponsorRow1Col3Row4Col2.innerHTML = selectedSponsor['SponsorContactInfoFormatted'];
 
@@ -695,8 +695,14 @@ function createSponsorSummaryDiv(selectedSponsor, intScholarships) {
 
 function createScholarshipDiv(scholarship) {
 
-        const divScholarship = document.createElement('div');
+    const divScholarship = document.createElement('div');
+
+    // If the Sponsor or Scholarship is "Featured", change the div styling
+    if ( scholarship['SponsorIsFeatured'] || scholarship['ScholarshipIsFeatured'] ) {
+        divScholarship.classList.add('searchresults-mainblock-featured'); /* change background color */
+    } else {
         divScholarship.classList.add('searchresults-mainblock');
+    };
 
         //////////////////////////////////////////////////////////////////////
         // build the first row of the scholarship summary (the dividing line)
@@ -709,21 +715,21 @@ function createScholarshipDiv(scholarship) {
             // build and add the first column to the first row (blank, to avoid repeating Sponsor Logo)
             /////////////////////////////////////////////////////////////
             const divScholarshipRow1Col1 = document.createElement('div');
-            divScholarshipRow1Col1.classList.add('sponsorsearchresultscol1break');
+            divScholarshipRow1Col1.classList.add('searchresultscol1');
             divScholarshipRow1.appendChild(divScholarshipRow1Col1);
 
             /////////////////////////////////////////////////////////////
             // build and add the second column to the first row (blank, to avoid repeating show/hide chevron)
             /////////////////////////////////////////////////////////////
             const divScholarshipRow1Col2 = document.createElement('div');
-            divScholarshipRow1Col2.classList.add('sponsorsearchresultscol2');
+            divScholarshipRow1Col2.classList.add('searchresultscol2');
             divScholarshipRow1.appendChild(divScholarshipRow1Col2);
 
             /////////////////////////////////////////////////////////////
             // build and add the third column to the first row (preceding scholarship breaking line)
             /////////////////////////////////////////////////////////////
             const divScholarshipRow1Col3 = document.createElement('div');
-            divScholarshipRow1Col3.classList.add('sponsorsearchresultscol3');
+            divScholarshipRow1Col3.classList.add('searchresultscol3');
             const hrScholarshipBreak = document.createElement('hr');
             hrScholarshipBreak.classList.add('searchresults-subblock-break-hr');
             divScholarshipRow1Col3.appendChild(hrScholarshipBreak);
@@ -736,27 +742,27 @@ function createScholarshipDiv(scholarship) {
     //////////////////////////////////////////////////////////////////////
     const divScholarshipRow2 = document.createElement('div');
     divScholarshipRow2.classList.add('row');
-    divScholarshipRow2.classList.add('searchresults-subblock');
+     divScholarshipRow2.classList.add('searchresults-subblock');
 
         /////////////////////////////////////////////////////////////
         // build and add the first column (blank, to avoid repeating Sponsor Logo)
         /////////////////////////////////////////////////////////////
         const divScholarshipRow2Col1 = document.createElement('div');
-        divScholarshipRow2Col1.classList.add('sponsorsearchresultscol1');
+        divScholarshipRow2Col1.classList.add('searchresultscol1');
         divScholarshipRow2.appendChild(divScholarshipRow2Col1);
 
         /////////////////////////////////////////////////////////////
         // build and add the second column (blank, to avoid repeating show/hide chevron)
         /////////////////////////////////////////////////////////////
         const divScholarshipRow2Col2 = document.createElement('div');
-        divScholarshipRow2Col2.classList.add('sponsorsearchresultscol2');
+        divScholarshipRow2Col2.classList.add('searchresultscol2');
         divScholarshipRow2.appendChild(divScholarshipRow2Col2);
 
         /////////////////////////////////////////////////////////////
         // build and add the third column (Scholarship Name) in a single row
         /////////////////////////////////////////////////////////////
         const divScholarshipRow2Col3 = document.createElement('div');
-        divScholarshipRow2Col3.classList.add('sponsorsearchresultscol3');
+        divScholarshipRow2Col3.classList.add('searchresultscol3');
         divScholarshipRow2Col3.classList.add('container');
 
         const divScholarshipRow2Col3Row1 = document.createElement('div');
@@ -766,7 +772,7 @@ function createScholarshipDiv(scholarship) {
             // build and add the third column (3A) (Scholarship Name Label)
             /////////////////////////////////////////
             const divScholarshipRow2Col3A = document.createElement('div');
-            divScholarshipRow2Col3A.classList.add('sponsorsearchresultscol3A');
+            divScholarshipRow2Col3A.classList.add('searchresultscol3A');
             divScholarshipRow2Col3A.textContent = 'Scholarship Name:';
             divScholarshipRow2Col3Row1.appendChild(divScholarshipRow2Col3A);
 
@@ -774,9 +780,25 @@ function createScholarshipDiv(scholarship) {
             // build and add the fourth column (3B) (Scholarship Name Text)
             /////////////////////////////////////////////////////////////
             const divScholarshipRow2Col3B = document.createElement('div');
-            divScholarshipRow2Col3B.classList.add('sponsorsearchresultscol3B');
+            // If the Scholarship is "Featured", change the div styling (shorten the text)
+            if ( scholarship['ScholarshipIsFeatured'] ) {
+                divScholarshipRow2Col3B.classList.add('searchresultscol3Bfeatured');
+            } else {
+                divScholarshipRow2Col3B.classList.add('searchresultscol3B');
+            };
             divScholarshipRow2Col3B.textContent = scholarship['ScholarshipName'];
             divScholarshipRow2Col3Row1.appendChild(divScholarshipRow2Col3B);
+
+            ////////////////////////////////////////
+            // "Is Featured" Badge
+            ////////////////////////////////////////
+            if ( scholarship['ScholarshipIsFeatured'] ) {
+                const imgScholarshipIsFeatured = document.createElement('img');
+                imgScholarshipIsFeatured.src = "/img/imgFeaturedScholarship.png";
+                imgScholarshipIsFeatured.alt = "Featured Scholarship Badge";
+                imgScholarshipIsFeatured.classList.add('featuredbadge');
+                divScholarshipRow2Col3Row1.appendChild(imgScholarshipIsFeatured);
+            };
 
         divScholarshipRow2Col3.appendChild(divScholarshipRow2Col3Row1);
         divScholarshipRow2.appendChild(divScholarshipRow2Col3);
@@ -793,21 +815,21 @@ function createScholarshipDiv(scholarship) {
         // build and add the first column (blank, to avoid repeating Sponsor Logo)
         /////////////////////////////////////////////////////////////
         const divScholarshipRow3Col1 = document.createElement('div');
-        divScholarshipRow3Col1.classList.add('sponsorsearchresultscol1');
+        divScholarshipRow3Col1.classList.add('searchresultscol1');
         divScholarshipRow3.appendChild(divScholarshipRow3Col1);
 
         /////////////////////////////////////////////////////////////
         // build and add the second column (blank, to avoid repeating show/hide chevron)
         /////////////////////////////////////////////////////////////
         const divScholarshipRow3Col2 = document.createElement('div');
-        divScholarshipRow3Col2.classList.add('sponsorsearchresultscol2');
+        divScholarshipRow3Col2.classList.add('searchresultscol2');
         divScholarshipRow3.appendChild(divScholarshipRow3Col2);
 
         /////////////////////////////////////////////////////////////
         // build and add the third column (Scholarship Type) in a single row
         /////////////////////////////////////////////////////////////
         const divScholarshipRow3Col3 = document.createElement('div');
-        divScholarshipRow3Col3.classList.add('sponsorsearchresultscol3');
+        divScholarshipRow3Col3.classList.add('searchresultscol3');
         divScholarshipRow3Col3.classList.add('container');
 
         const divScholarshipRow3Col3Row1 = document.createElement('div');
@@ -817,7 +839,7 @@ function createScholarshipDiv(scholarship) {
             // build and add the third column (3A) (Scholarship Type Label)
             /////////////////////////////////////////
             const divScholarshipRow3Col3A = document.createElement('div');
-            divScholarshipRow3Col3A.classList.add('sponsorsearchresultscol3A');
+            divScholarshipRow3Col3A.classList.add('searchresultscol3A');
             divScholarshipRow3Col3A.textContent = 'Scholarship Type:';
             divScholarshipRow3Col3Row1.appendChild(divScholarshipRow3Col3A);
 
@@ -825,7 +847,13 @@ function createScholarshipDiv(scholarship) {
             // build and add the fourth column (3B) (Scholarship Type Text)
             /////////////////////////////////////////////////////////////
             const divScholarshipRow3Col3B = document.createElement('div');
-            divScholarshipRow3Col3B.classList.add('sponsorsearchresultscol3B');
+            // If the Scholarship is "Featured", change the div styling (shorten the text)
+            if ( scholarship['ScholarshipIsFeatured'] ) {
+                divScholarshipRow3Col3B.classList.add('searchresultscol3Bfeatured');
+            } else {
+                divScholarshipRow3Col3B.classList.add('searchresultscol3B');
+            };
+//            divScholarshipRow3Col3B.classList.add('searchresultscol3B');
             divScholarshipRow3Col3B.textContent = scholarship['Criteria_FieldOfStudyText'];
             divScholarshipRow3Col3Row1.appendChild(divScholarshipRow3Col3B);
 
@@ -844,21 +872,21 @@ function createScholarshipDiv(scholarship) {
         // build and add the first column (blank, to avoid repeating Sponsor Logo)
         /////////////////////////////////////////////////////////////
         const divScholarshipRow4Col1 = document.createElement('div');
-        divScholarshipRow4Col1.classList.add('sponsorsearchresultscol1');
+        divScholarshipRow4Col1.classList.add('searchresultscol1');
         divScholarshipRow4.appendChild(divScholarshipRow4Col1);
 
         /////////////////////////////////////////////////////////////
         // build and add the second column (blank, to avoid repeating show/hide chevron)
         /////////////////////////////////////////////////////////////
         const divScholarshipRow4Col2 = document.createElement('div');
-        divScholarshipRow4Col2.classList.add('sponsorsearchresultscol2');
+        divScholarshipRow4Col2.classList.add('searchresultscol2');
         divScholarshipRow4.appendChild(divScholarshipRow4Col2);
 
         /////////////////////////////////////////////////////////////
         // build and add the third column (Award) in a single row
         /////////////////////////////////////////////////////////////
         const divScholarshipRow4Col3 = document.createElement('div');
-        divScholarshipRow4Col3.classList.add('sponsorsearchresultscol3');
+        divScholarshipRow4Col3.classList.add('searchresultscol3');
         divScholarshipRow4Col3.classList.add('container');
 
         const divScholarshipRow4Col3Row1 = document.createElement('div');
@@ -868,7 +896,7 @@ function createScholarshipDiv(scholarship) {
             // build and add the third column (3A) (Award Label)
             /////////////////////////////////////////
             const divScholarshipRow4Col3A = document.createElement('div');
-            divScholarshipRow4Col3A.classList.add('sponsorsearchresultscol3A');
+            divScholarshipRow4Col3A.classList.add('searchresultscol3A');
             divScholarshipRow4Col3A.textContent = 'Award(s):';
             divScholarshipRow4Col3Row1.appendChild(divScholarshipRow4Col3A);
 
@@ -876,7 +904,7 @@ function createScholarshipDiv(scholarship) {
             // build and add the fourth column (3B) (Award Text)
             /////////////////////////////////////////////////////////////
             const divScholarshipRow4Col3B = document.createElement('div');
-            divScholarshipRow4Col3B.classList.add('sponsorsearchresultscol3B');
+            divScholarshipRow4Col3B.classList.add('searchresultscol3B');
             divScholarshipRow4Col3B.textContent = scholarship['ScholarshipAward'];
             divScholarshipRow4Col3Row1.appendChild(divScholarshipRow4Col3B);
 
@@ -895,13 +923,13 @@ function createScholarshipDiv(scholarship) {
         // build and add the first column
         /////////////////////////////////////////////////////////////
         const divScholarshipRow5Col1 = document.createElement('div');
-        divScholarshipRow5Col1.classList.add('sponsorsearchresultscol1');
+        divScholarshipRow5Col1.classList.add('searchresultscol1');
 
         // Add "Female Applicants Only" marker
-        if (scholarship['Criteria_Gender_FemaleOnly'].length > 0) {
+        if (scholarship['Criteria_FemaleApplicantsOnly_Text'].length > 0) {
                 const spnFemaleApplicantsOnly = document.createElement('span');
                 spnFemaleApplicantsOnly.classList.add('femaleapplicantsonly');
-                spnFemaleApplicantsOnly.textContent = scholarship['Criteria_Gender_FemaleOnly'];
+                spnFemaleApplicantsOnly.textContent = scholarship['Criteria_FemaleApplicantsOnly_Text'];
                 divScholarshipRow5Col1.appendChild(spnFemaleApplicantsOnly);
         };
 
@@ -911,14 +939,14 @@ function createScholarshipDiv(scholarship) {
         // build and add the second column (blank, to avoid repeating show/hide chevron)
         /////////////////////////////////////////////////////////////
         const divScholarshipRow5Col2 = document.createElement('div');
-        divScholarshipRow5Col2.classList.add('sponsorsearchresultscol2');
+        divScholarshipRow5Col2.classList.add('searchresultscol2');
         divScholarshipRow5.appendChild(divScholarshipRow5Col2);
 
         /////////////////////////////////////////////////////////////
         // build and add the third column (Scholarship Description) in a single row
         /////////////////////////////////////////////////////////////
         const divScholarshipRow5Col3 = document.createElement('div');
-        divScholarshipRow5Col3.classList.add('sponsorsearchresultscol3');
+        divScholarshipRow5Col3.classList.add('searchresultscol3');
         divScholarshipRow5Col3.classList.add('container');
 
         const divScholarshipRow5Col3Row1 = document.createElement('div');
@@ -928,7 +956,7 @@ function createScholarshipDiv(scholarship) {
             // build and add the third column (3A) (Scholarship Description Label)
             /////////////////////////////////////////
             const divScholarshipRow5Col3A = document.createElement('div');
-            divScholarshipRow5Col3A.classList.add('sponsorsearchresultscol3A');
+            divScholarshipRow5Col3A.classList.add('searchresultscol3A');
             divScholarshipRow5Col3A.textContent = 'Description:';
             divScholarshipRow5Col3Row1.appendChild(divScholarshipRow5Col3A);
 
@@ -936,7 +964,7 @@ function createScholarshipDiv(scholarship) {
             // build and add the fourth column (3B) (Scholarship Description Text)
             /////////////////////////////////////////////////////////////
             const divScholarshipRow5Col3B = document.createElement('div');
-            divScholarshipRow5Col3B.classList.add('sponsorsearchresultscol3B');
+            divScholarshipRow5Col3B.classList.add('searchresultscol3B');
             divScholarshipRow5Col3B.classList.add('text-block');
 
             const spanScholarshipDescription = document.createElement('span');
@@ -1016,16 +1044,10 @@ function checkForOverflow() {
 }
 
 
-
-
-
-
-
-
-
-
-
-function openTab(evt, tabName) {
+//////////////////////////////////////////////////////////////////////////////////////////
+// on the data mgmt forms, show/hide the "Edit" or "Preview" tab, as indicated
+//////////////////////////////////////////////////////////////////////////////////////////
+function openSponsorTab(evt, tabName) {
     // Declare all variables
     var i, tabcontent, tablinks;
   
@@ -1044,4 +1066,11 @@ function openTab(evt, tabName) {
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active";
+
+    // Build the sponsor preview DIV
+//    if ( tabName === 'tabPreview') {
+//        const divScholarshipPreview = buildScholarshipSearchResultDiv(scholarshipData, false);
+//        document.getElementById('tabPreview').replaceChildren(divScholarshipPreview);
+//    };
+
   } 

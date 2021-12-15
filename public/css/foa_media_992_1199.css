@@ -1,5 +1,10 @@
 @media (min-width: 992px) and (max-width: 1199px){
-    .bodylayout1col1 {
+
+
+  /**********************************************************/
+  /* "SEARCH" pages */
+  /**********************************************************/
+  .bodylayout1col1 {
       width: 265px;
     }
     .bodylayout1col2 {
@@ -18,35 +23,43 @@
     .searchresults-subblock-break {
       width: 675px;
     }
-    .sponsorsearchresultscol3 {
+    .searchresultscol3 {
       width: 520px;
     }
-    .sponsorsearchresultscol3A {
+    .searchresultscol3A {
       width: 140px;
     }
-    .sponsorsearchresultscol3A.text-block {
+    .searchresultscol3A.text-block {
       width: 140px;
     }
-    .sponsorsearchresultscol3B {
+    .searchresultscol3B {
       width: 380px;
     }
-    .sponsorsearchresultscol3Bfeatured {
+    .searchresultscol3Bfeatured {
       width: 270px;
     }
-    .sponsorsearchresultscol3B.text-block {
+    .searchresultscol3B.text-block {
       width: 380px;
     }
-    .sponsorsearchresultscol3Bfeatured.text-block {
+    .searchresultscol3Bfeatured.text-block {
       width: 270px;
     }
-    .scholarshipsearchresultscol3 {
-      width: 680px;
-    }
-    .scholarshipsearchresultscol3B {
-      width: 530px;
-    }
-    .scholarshipsearchresultscol3B.text-block {
-      width: 530px;
-    }
+
+  /**********************************************************/
+  /* "DATA MGMT" pages */
+  /**********************************************************/
+  .bodylayout1col2-datamgmt {
+    width: 734px;
   }
+  .data-mgmt-row {
+    width: 719px;
+  }
+  .data-mgmt-value-div {
+    width: 524px;
+  }
+  .data-mgmt-text-fifth {
+    width: 25%; /* keep at 1/4 width so dates fully display */
+  }
+  
+}
   

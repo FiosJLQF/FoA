@@ -75,14 +75,6 @@ hr.searchresults-subblock-break-hr{
   opacity: 1;
 }
 
-hr.bodycol2sponsorbreak{
-  border-top: 2px solid var(--amcg-yellow);
-  padding: 0px;
-  margin: 0px;
-  width: 100%;
-  opacity: 1;
-}
-
 a:link {
     color: var(--amcg-blue);
     background-color: transparent;
@@ -287,32 +279,6 @@ select.single-choice {
   filter: grayscale(0);
 }
 
-.scholarshipSearchResultsSummaryRow {
-  width: 975px;
-  margin: 0px;
-  padding: 0px;
-}
-
-.scholarshipSearchResultsSummaryRowPreview {
-  margin: 0px;
-  padding: 0px;
-}
-
-.scholarshipSearchResultsDetailsRow {
-  width: 975px;
-  margin: 0px 0px 0px 0px;
-}
-
-.scholarshipsearchresultscol1 {
-  padding: 5px 0px 0px 5px;
-  font-size: 0.875em;
-  width: 125px;
-  white-space: normal;
-  overflow: hidden;
-  vertical-align: top;
-}
-
-/* .scholarshipsearchresultscol1.apply { */
 .apply {
   align-items: end;
   display: flex;
@@ -321,54 +287,7 @@ select.single-choice {
   padding: 0px 0px 10px 0px;
 }
 
-.scholarshipsearchresultscol2 {
-  font-size: 1.25em;
-  text-align: center;
-  width: 30px;
-}
-
-.scholarshipsearchresultscol3 {
-  width: 800px;
-  margin: 0px;
-  padding: 0px 0px 0px 12px;
-  line-height: 1.8;
-  position: relative;
-}
-
-.scholarshipsearchresultscol3A {
-  width: 140px;
-  font-size: 0.875em;
-  font-variant: normal;
-  padding-top: 6px;
-  font-weight: bold;
-  line-height: 1.3;
-}
-
-.scholarshipsearchresultscol3A.text-block {
-  width: 140px;
-  font-size: 0.875em;
-  font-variant: normal;
-  padding-top: 8px;
-  line-height: 1.3;
-}
-
-.scholarshipsearchresultscol3B {
-  width: 635px;
-  font-size: 0.875em;
-  font-variant: normal;
-  padding: 3px 0px 0px 0px;
-}
-
-.scholarshipsearchresultscol3B.text-block {
-  width: 635px;
-  font-size: 0.875em;
-  font-variant: normal;
-  padding: 8px 0px 0px 0px;
-  line-height: 1.3;
-  white-space: pre-wrap;
-}
-
-/* .scholarshipsearchresultscol3B.text-block.description-short {  */
+/* .searchresultscol3B.text-block.description-short {  */
 .description-short {
   /* width: 650px; */
   overflow: hidden;
@@ -383,7 +302,7 @@ select.single-choice {
 /*  -o-text-overflow: ellipsis; */
 }
 
-/* .scholarshipsearchresultscol3B.description-long { */
+/* .searchresultscol3B.description-long { */
 .description-long {
   height: auto; /* expand to fit contents */
   overflow: visible;
@@ -420,6 +339,7 @@ select.single-choice {
 }
 
 .searchresults-mainblock-featured {
+  width: 960px;
   background-color: var(--amcg-blue-08);
   margin: 0px;
   padding-bottom: 10px;
@@ -430,7 +350,13 @@ select.single-choice {
 }
 
 .searchresults-subblock {
-  width: 975px;
+  width: 960px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.searchresults-subblock-featured {
+  background-color: var(--amcg-blue-08);
   margin: 0px;
   padding: 0px;
 }
@@ -442,7 +368,7 @@ select.single-choice {
   padding: 0px;
 }
 
-.sponsorsearchresultscol1 {
+.searchresultscol1 {
   padding: 5px 0px 0px 0px;
   font-size: 0.875em;
   width: 125px;
@@ -451,74 +377,62 @@ select.single-choice {
   vertical-align: top;
 }
 
-.sponsorsearchresultscol1break {
-  padding: 0px;
-  font-size: 0.875em;
-  width: 125px;
-  white-space: normal;
-  overflow: hidden;
-  vertical-align: top;
-}
-
-.sponsorsearchresultscol2 {
+.searchresultscol2 {
   font-size: 1.25em;
   text-align: center;
   width: 30px;
 }
 
-.sponsorsearchresultscol3 {
+.searchresultscol3 {
   width: 805px;
   margin: 0px;
+  padding: 0px 0px 0px 12px;
   line-height: 1.8;
   position: relative;
-  padding: 0px 0px 0px 12px;
 }
 
-/* .sponsorsearchresultscol3featured {
-  width: 785px;
-  margin: 0px;
-  line-height: 1.8;
-  position: relative;
-  padding: 0px 0px 0px 12px;
-} */
-
-.sponsorsearchresultscol3A {
+.searchresultscol3A {
   width: 140px;
   font-size: 0.875em;
   font-variant: normal;
-  padding: 3px 0px 0px 12px;
+  padding-top: 6px;
   font-weight: bold;
+  line-height: 1.3;
 }
 
-.sponsorsearchresultscol3A.text-block {
+.searchresultscol3A.text-block {
   width: 140px;
   font-size: 0.875em;
   font-variant: normal;
-  padding: 8px 0px 0px 12px;
+  padding-top: 8px;
   line-height: 1.3;
 }
 
-.sponsorsearchresultscol3B {
-  width: 660px;
+.searchresultscol3B {
+  width: 635px;
   font-size: 0.875em;
   font-variant: normal;
-  line-height: 1.3;
-  padding: 6px 0px 0px 12px;
+  padding: 3px 0px 0px 0px;
 }
 
-.sponsorsearchresultscol3Bfeatured {
+.searchresultscol3B.text-block {
+  width: 635px;
+  font-size: 0.875em;
+  font-variant: normal;
+  padding: 8px 0px 0px 0px;
+  line-height: 1.3;
+  white-space: pre-wrap;
+}
+
+.searchresultscol3Bfeatured {
   width: 540px;
   font-size: 0.875em;
   font-variant: normal;
   line-height: 1.3;
-  padding: 6px 0px 0px 12px;
+  padding: 6px 0px 0px 0px;
 }
 
-.sponsorsearchresultscol3B.text-block {
-  white-space: pre-wrap;
-}
-
-.sponsorsearchresultscol3Bfeatured.text-block {
+.searchresultscol3Bfeatured.text-block {
   white-space: pre-wrap;
 }
 
@@ -681,15 +595,7 @@ td.amcg_main_td {
   width: 25px;
 }
 
-.featuredScholarshipBadge {
-  width: 9em;
-  height: auto;
-  position: absolute;
-  top: 5px;
-  right: 0px;
-}
-
-.featuredsponsorbadge {
+.featuredbadge {
   width: 7em;
   height: auto;
   position: absolute;

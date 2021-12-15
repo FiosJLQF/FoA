@@ -2,7 +2,7 @@
     <span class="bodylayout1col2title">
       <label class="data-mgmt-col-title" id="sponsorInstructions"></label></span><br>
     <hr class="bodycol2break">
-    <label class="data-mgmt-instruction">&nbsp;&nbsp;&nbsp;<span style="color: red;">*</span> indicates a required entry</label><br><br>
+    <label class="data-mgmt-label-instruction">&nbsp;&nbsp;&nbsp;<span style="color: red;">*</span> indicates a required entry</label><br><br>
 
     <% if ( statusMessage !== '' ) { %>
       <div>
@@ -12,8 +12,8 @@
   
     <!-- TAB control -->
     <div class="tab">
-      <button class="tablinks" onclick="openTab(event, 'tabEdit')" id="btnTabPreview">Edit</button>
-      <button class="tablinks" onclick="openTab(event, 'tabPreview')">Preview</button>
+      <button class="tablinks" onclick="openSponsorTab(event, 'tabEdit')" id="btnTabEdit">Edit</button>
+      <button class="tablinks" onclick="openSponsorTab(event, 'tabPreview')">Preview</button>
     </div>
 
     <!-- Data editing container (Tab #1) -->
@@ -24,194 +24,194 @@
       <input type="hidden" id="sponsorIDToUpdate" name="sponsorIDToUpdate">
 
       <!-- Sponsor Is "Featured" -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="sponsorIsFeatured" class="data-mgmt">Sponsor Is Featured?</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="sponsorIsFeatured" class="data-mgmt-label">Sponsor Is Featured?</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="sponsorIsFeatured" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="sponsorIsFeatured" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
+          <div class="col-8 data-mgmt-value-div">
             <input type="checkbox" id="sponsorIsFeatured" name="sponsorIsFeatured"
               class="data-mgmt-checkbox" value="SponsorIsFeatured" onchange="updatePreview();"><br>
-            <span class="data-mgmt-error" id="sponsorIsFeaturedErrors"></span>
+            <span class="data-mgmt-span-error" id="sponsorIsFeaturedErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
       
       <!-- Sponsor Status -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="sponsorStatus" class="data-mgmt">Sponsor Active Status:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="sponsorStatus" class="data-mgmt-label">Sponsor Active Status:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="sponsorStatus" class="data-mgmt-required">*</label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="sponsorStatus" class="data-mgmt-label-required">*</label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <select id="sponsorStatus" name="sponsorStatus" class="data-mgmt-single-quarter"></select><br>
-            <span class="data-mgmt-error" id="sponsorStatusErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <select id="sponsorStatus" name="sponsorStatus" class="data-mgmt-select-single-quarter"></select><br>
+            <span class="data-mgmt-span-error" id="sponsorStatusErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Sponsor Name -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="sponsorName" class="data-mgmt">Sponsor/Owner Name:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="sponsorName" class="data-mgmt-label">Sponsor/Owner Name:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="sponsorName" class="data-mgmt-required">*</label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="sponsorName" class="data-mgmt-label-required">*</label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <textarea id="sponsorName" name="sponsorName" class="data-mgmt-1line" rows="1" onchange="updatePreview();"></textarea><br>
-            <span class="data-mgmt-error" id="sponsorNameErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <textarea id="sponsorName" name="sponsorName" class="data-mgmt-textarea-1line" rows="1" onchange="updatePreview();"></textarea><br>
+            <span class="data-mgmt-span-error" id="sponsorNameErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Sponsor Description -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="sponsorDescription" class="data-mgmt">Description:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="sponsorDescription" class="data-mgmt-label">Description:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="sponsorDescription" class="data-mgmt-required">*</label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="sponsorDescription" class="data-mgmt-label-required">*</label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <textarea id="sponsorDescription" name="sponsorDescription" class="data-mgmt" onchange="updatePreview();"></textarea><br>
-            <span class="data-mgmt-error" id="sponsorDescriptionErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <textarea id="sponsorDescription" name="sponsorDescription" class="data-mgmt-textarea-5lines" onchange="updatePreview();"></textarea><br>
+            <span class="data-mgmt-span-error" id="sponsorDescriptionErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Sponsor Website -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="sponsorWebsite" class="data-mgmt">Website:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="sponsorWebsite" class="data-mgmt-label">Website:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="sponsorWebsite" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="sponsorWebsite" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <textarea id="sponsorWebsite" name="sponsorWebsite" class="data-mgmt-1line" rows="1" onchange="updatePreview();"></textarea><br>
-            <span class="data-mgmt-error" id="sponsorWebsiteErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <textarea id="sponsorWebsite" name="sponsorWebsite" class="data-mgmt-textarea-1line" rows="1" onchange="updatePreview();"></textarea><br>
+            <span class="data-mgmt-span-error" id="sponsorWebsiteErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Sponsor Logo -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="sponsorLogo" class="data-mgmt">Logo:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="sponsorLogo" class="data-mgmt-label">Logo:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="sponsorLogo" class="data-mgmt-required">*</label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="sponsorLogo" class="data-mgmt-label-required">*</label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <textarea id="sponsorLogo" name="sponsorLogo" class="data-mgmt-1line" rows="1" onchange="updatePreview();"></textarea><br>
-            <span class="data-mgmt-error" id="sponsorLogoErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <textarea id="sponsorLogo" name="sponsorLogo" class="data-mgmt-textarea-1line" rows="1" onchange="updatePreview();"></textarea><br>
+            <span class="data-mgmt-span-error" id="sponsorLogoErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Sponsor Contact First Name -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="sponsorContactFName" class="data-mgmt">Contact First Name:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="sponsorContactFName" class="data-mgmt-label">Contact First Name:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="sponsorContactFName" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="sponsorContactFName" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <textarea id="sponsorContactFName" name="sponsorContactFName" class="data-mgmt-1line-third" rows="1" onchange="updatePreview();"></textarea><br>
-            <span class="data-mgmt-error" id="sponsorContactFNameErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <textarea id="sponsorContactFName" name="sponsorContactFName" class="data-mgmt-textarea-1line-third" rows="1" onchange="updatePreview();"></textarea><br>
+            <span class="data-mgmt-span-error" id="sponsorContactFNameErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Sponsor Contact Last Name -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="sponsorContactLName" class="data-mgmt">Contact Last Name:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="sponsorContactLName" class="data-mgmt-label">Contact Last Name:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="sponsorContactLName" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="sponsorContactLName" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <textarea id="sponsorContactLName" name="sponsorContactLName" class="data-mgmt-1line-third" rows="1" onchange="updatePreview();"></textarea><br>
-            <span class="data-mgmt-error" id="sponsorContactLNameErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <textarea id="sponsorContactLName" name="sponsorContactLName" class="data-mgmt-textarea-1line-third" rows="1" onchange="updatePreview();"></textarea><br>
+            <span class="data-mgmt-span-error" id="sponsorContactLNameErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Sponsor Contact Email -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="sponsorContactEmail" class="data-mgmt">Contact Email:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="sponsorContactEmail" class="data-mgmt-label">Contact Email:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="sponsorContactEmail" class="data-mgmt-required">*</label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="sponsorContactEmail" class="data-mgmt-label-required">*</label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <textarea id="sponsorContactEmail" name="sponsorContactEmail" class="data-mgmt-1line-half" rows="1" onchange="updatePreview();"></textarea><br>
-            <span class="data-mgmt-error" id="sponsorContactEmailErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <textarea id="sponsorContactEmail" name="sponsorContactEmail" class="data-mgmt-textarea-1line-half" rows="1" onchange="updatePreview();"></textarea><br>
+            <span class="data-mgmt-span-error" id="sponsorContactEmailErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Sponsor Contact Telephone -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="sponsorContactTelephone" class="data-mgmt">Contact Telephone:</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="sponsorContactTelephone" class="data-mgmt-label">Contact Telephone:</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="sponsorContactTelephone" class="data-mgmt-required"></label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="sponsorContactTelephone" class="data-mgmt-label-required"></label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <textarea id="sponsorContactTelephone" name="sponsorContactTelephone" class="data-mgmt-1line-third" rows="1" onchange="updatePreview();"></textarea><br>
-            <span class="data-mgmt-error" id="sponsorContactTelephoneErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <textarea id="sponsorContactTelephone" name="sponsorContactTelephone" class="data-mgmt-textarea-1line-third" rows="1" onchange="updatePreview();"></textarea><br>
+            <span class="data-mgmt-span-error" id="sponsorContactTelephoneErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Sponsor Type(s) -->
-      <div class="flexcontainer-datamgmt">
-        <div class="row">
-          <div class="col-3 data-mgmt-label">
-            <label for="sponsorType" class="data-mgmt">Sponsor/Owner Type(s):</label><br>
-            <label class="data-mgmt-instruction">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</label>
+      <div class="data-mgmt-row">
+        <!-- <div class="row"> -->
+          <div class="col-3 data-mgmt-label-div">
+            <label for="sponsorType" class="data-mgmt-label">Sponsor/Owner Type(s):</label><br>
+            <label class="data-mgmt-label-instruction">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</label>
           </div>
-          <div class="col-1 data-mgmt-required">
-            <label for="sponsorType" class="data-mgmt-required">*</label>
+          <div class="col-1 data-mgmt-required-div">
+            <label for="sponsorType" class="data-mgmt-label-required">*</label>
           </div>
-          <div class="col-8 data-mgmt-value">
-            <select id="sponsorTypes" name="sponsorTypes" class="data-mgmt-multiple" multiple></select><br>
-            <span class="data-mgmt-error" id="sponsorTypesErrors"></span>
+          <div class="col-8 data-mgmt-value-div">
+            <select id="sponsorTypes" name="sponsorTypes" class="data-mgmt-select-multiple-half" multiple></select><br>
+            <span class="data-mgmt-span-error" id="sponsorTypesErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
+
     </form> <!-- End data mgmt form -->
-    </div>  <!-- END: Data editing container (Tab #1) --> 
+
+  </div>  <!-- END: Data editing container (Tab #1) --> 
 
     <!-- Data preview container (Tab #2) -->
-    <div id="tabPreview" class="tabcontent">
-      <%- include('sponsor_crud_preview') %>
-    </div>  <!-- END: Data preview container (Tab #2) -->
+    <div id="tabPreview" class="tabcontent"></div>
 
     <!-- Form controls -->
     <div><br>
       <% if ( actionRequested === 'addsponsor' ) { %>
-        <button class="data-mgmt" form="sponsorDataEdit" onclick="return validateData();">Add Sponsor</button>
+        <button class="data-mgmt-button" form="sponsorDataEdit" onclick="return validateData();">Add Sponsor</button>
       <% } %>
       <% if ( sponsorID !== '' && userCanDeleteSponsor ) { %>
         <form form action="/switchboard/sponsordelete?_method=DELETE" method="POST" id="sponsorDataDelete">
@@ -219,19 +219,20 @@
         </form>
       <% } %>
       <% if ( sponsorID !== '' && userCanUpdateSponsor ) { %>
-        <button class="data-mgmt" form="sponsorDataEdit" onclick="return validateData();">Save Changes</button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="data-mgmt-button" form="sponsorDataEdit" onclick="return validateData();">Save Changes</button>&nbsp;&nbsp;&nbsp;&nbsp;
       <% } %>
       <% if ( sponsorID !== '' && userCanDeleteSponsor ) { %>
-        <button class="data-mgmt" form="sponsorDataDelete" onclick=" return deleteSponsor();">Delete This Sponsor</button>
+        <button class="data-mgmt-button" form="sponsorDataDelete" onclick=" return deleteSponsor();">Delete This Sponsor</button>
       <% } %>
     </div>  <!-- END: Form controls -->
 
     <br><br>
+    <hr class="bodycol2break">
 
 <script>
 
   // Show the "Edit" tab by default
-  document.getElementById("btnTabPreview").click();
+  document.getElementById("btnTabEdit").click();
 
   /////////////////////////////////////////////////////////////////////////////////////////////
   // Load the DDLs options lists
@@ -286,19 +287,19 @@
       });
     };
     document.getElementById('sponsorName').innerHTML = `<%= sponsorDetails[0].SponsorName %>`;
-    document.getElementById('sponsorNamePreview').innerHTML = `<%= sponsorDetails[0].SponsorName %>`;
+//    document.getElementById('sponsorNamePreview').innerHTML = `<%= sponsorDetails[0].SponsorName %>`;
     document.getElementById('sponsorDescription').innerHTML = `<%= sponsorDetails[0].SponsorDescription %>`;
-    document.getElementById('sponsorDescriptionPreview').innerHTML = `<%= sponsorDetails[0].SponsorDescription %>`;
+//    document.getElementById('sponsorDescriptionPreview').innerHTML = `<%= sponsorDetails[0].SponsorDescription %>`;
     document.getElementById('sponsorWebsite').innerHTML = "<%= sponsorDetails[0].SponsorWebsite %>";
-    document.getElementById('sponsorWebsitePreview').innerHTML = "<%= sponsorDetails[0].SponsorWebsite %>";
-    document.getElementById('sponsorWebsitePreview').href = "<%= sponsorDetails[0].SponsorWebsite %>";
+//    document.getElementById('sponsorWebsitePreview').innerHTML = "<%= sponsorDetails[0].SponsorWebsite %>";
+//    document.getElementById('sponsorWebsitePreview').href = "<%= sponsorDetails[0].SponsorWebsite %>";
     document.getElementById('sponsorLogo').innerHTML = "<%= sponsorDetails[0].SponsorLogo %>";
-    document.getElementById('sponsorLogoPreview').src = "<%= sponsorDetails[0].SponsorLogo %>";
+//    document.getElementById('sponsorLogoPreview').src = "<%= sponsorDetails[0].SponsorLogo %>";
     document.getElementById('sponsorContactFName').innerHTML = "<%= sponsorDetails[0].SponsorContactFName %>";
     document.getElementById('sponsorContactLName').innerHTML = "<%= sponsorDetails[0].SponsorContactLName %>";
     document.getElementById('sponsorContactEmail').innerHTML = "<%= sponsorDetails[0].SponsorContactEmail %>";
     document.getElementById('sponsorContactTelephone').innerHTML = "<%= sponsorDetails[0].SponsorContactTelephone %>";
-    document.getElementById('sponsorContactInfoPreview').innerHTML = formatContactInfo();
+//    document.getElementById('sponsorContactInfoPreview').innerHTML = formatContactInfo();
     // Select Sponsor Types from the Sponsor's data
     var sponsorTypes = "<%- sponsorDetails[0].SponsorType %>";
     var sponsorTypesArrTrimmed = sponsorTypes.split('|').slice(1, -1);
@@ -343,12 +344,12 @@
   // Keep the "Preview" tab sync-ed with the "Edit" tab
   /////////////////////////////////////////////////////////////////////////////////////////////
   function updatePreview() {
-    document.getElementById("sponsorLogoPreview").src = document.getElementById("sponsorLogo").value;
-    document.getElementById('sponsorNamePreview').innerHTML = document.getElementById("sponsorName").value;
-    document.getElementById('sponsorDescriptionPreview').innerHTML = document.getElementById("sponsorDescription").value;
-    document.getElementById('sponsorWebsitePreview').innerHTML = document.getElementById("sponsorWebsite").value;
-    document.getElementById('sponsorWebsitePreview').href = document.getElementById("sponsorWebsite").value;
-    document.getElementById('sponsorContactInfoPreview').innerHTML = formatContactInfo();
+//    document.getElementById("sponsorLogoPreview").src = document.getElementById("sponsorLogo").value;
+//    document.getElementById('sponsorNamePreview').innerHTML = document.getElementById("sponsorName").value;
+//    document.getElementById('sponsorDescriptionPreview').innerHTML = document.getElementById("sponsorDescription").value;
+//    document.getElementById('sponsorWebsitePreview').innerHTML = document.getElementById("sponsorWebsite").value;
+//    document.getElementById('sponsorWebsitePreview').href = document.getElementById("sponsorWebsite").value;
+//    document.getElementById('sponsorContactInfoPreview').innerHTML = formatContactInfo();
   }
 
 

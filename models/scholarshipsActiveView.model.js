@@ -18,7 +18,8 @@ module.exports = (sequelize, DataTypes) => {
         Criteria_FieldOfStudyText:                   DataTypes.STRING,
         Criteria_FieldOfStudyMatchingText:           DataTypes.STRING,
         Criteria_GenderMatchingText:                 DataTypes.STRING,
-        Criteria_Gender_FemaleOnly:                  DataTypes.STRING,
+//        Criteria_Gender_FemaleOnly:                  DataTypes.STRING,
+        Criteria_FemaleApplicantsOnly_Text:          DataTypes.STRING,
         Criteria_AgeMinimum:                         DataTypes.INTEGER,
         Criteria_AgeMaximum:                         DataTypes.INTEGER,
         Criteria_CitizenshipMatchingText:            DataTypes.STRING,
@@ -34,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
         SponsorLogo:                                 DataTypes.INTEGER,
         SponsorName:                                 DataTypes.INTEGER,
         SponsorTypeMatchingText:                     DataTypes.STRING,
+        SponsorIsFeatured:                           DataTypes.BOOLEAN,
         ScholarshipIsFeatured:                       DataTypes.BOOLEAN
     }, {
         freezeTableName: true,  // don't have Sequelize automatically pluralize the table name
