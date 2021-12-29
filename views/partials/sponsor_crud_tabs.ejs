@@ -13,7 +13,7 @@
     <!-- TAB control -->
     <div class="tab">
       <button class="tablinks" onclick="openSponsorTab(event, 'tabEdit')" id="btnTabEdit">Edit</button>
-      <button class="tablinks" onclick="openSponsorTab(event, 'tabPreview')">Preview</button>
+      <button class="tablinks" onclick="openSponsorTab(event, 'tabPreview')" id="btnTabPreview">Preview</button>
     </div>
 
     <!-- Data editing container (Tab #1) -->
@@ -195,7 +195,7 @@
             <label for="sponsorType" class="data-mgmt-label-required">*</label>
           </div>
           <div class="col-8 data-mgmt-value-div">
-            <select id="sponsorTypes" name="sponsorTypes" class="data-mgmt-select-multiple-half" multiple></select><br>
+            <select id="sponsorTypes" name="sponsorTypes" class="data-mgmt-select-multiple-half" multiple onchange="updatePreview();"></select><br>
             <span class="data-mgmt-span-error" id="sponsorTypesErrors"></span>
           </div>
         <!-- </div> -->
@@ -231,8 +231,15 @@
 
 <script>
 
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  // Set the default environment
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
   // Show the "Edit" tab by default
   document.getElementById("btnTabEdit").click();
+
+  // Create the "preview" sponsor data object
+  var sponsorData = {};
 
   /////////////////////////////////////////////////////////////////////////////////////////////
   // Load the DDLs options lists
@@ -257,6 +264,14 @@
     document.getElementById("pageTitle").innerText = "Switchboard - Add Sponsor";
     // Set the instructions
     document.getElementById('sponsorInstructions').innerText = "Add the information for the new Sponsor below, and click 'Add Sponsor'.";
+    // Set the "preview" data default values for a *new* Sponsor
+    sponsorData['SponsorIsFeatured'] = false;
+    sponsorData['SponsorName'] = '';
+    sponsorData['SponsorLogo'] = '';
+    sponsorData['SponsorDescription'] = '';
+    sponsorData['SponsorWebsite'] = '';
+    sponsorData['SponsorContactInfoFormatted'] = '';
+    sponsorData['ScholarshipCountActive'] = 0;
 
   <% } else if ( sponsorID !== '' ) { %>  // "Read/Update/Delete Sponsor"
 
@@ -287,19 +302,13 @@
       });
     };
     document.getElementById('sponsorName').innerHTML = `<%= sponsorDetails[0].SponsorName %>`;
-//    document.getElementById('sponsorNamePreview').innerHTML = `<%= sponsorDetails[0].SponsorName %>`;
     document.getElementById('sponsorDescription').innerHTML = `<%= sponsorDetails[0].SponsorDescription %>`;
-//    document.getElementById('sponsorDescriptionPreview').innerHTML = `<%= sponsorDetails[0].SponsorDescription %>`;
     document.getElementById('sponsorWebsite').innerHTML = "<%= sponsorDetails[0].SponsorWebsite %>";
-//    document.getElementById('sponsorWebsitePreview').innerHTML = "<%= sponsorDetails[0].SponsorWebsite %>";
-//    document.getElementById('sponsorWebsitePreview').href = "<%= sponsorDetails[0].SponsorWebsite %>";
     document.getElementById('sponsorLogo').innerHTML = "<%= sponsorDetails[0].SponsorLogo %>";
-//    document.getElementById('sponsorLogoPreview').src = "<%= sponsorDetails[0].SponsorLogo %>";
     document.getElementById('sponsorContactFName').innerHTML = "<%= sponsorDetails[0].SponsorContactFName %>";
     document.getElementById('sponsorContactLName').innerHTML = "<%= sponsorDetails[0].SponsorContactLName %>";
     document.getElementById('sponsorContactEmail').innerHTML = "<%= sponsorDetails[0].SponsorContactEmail %>";
     document.getElementById('sponsorContactTelephone').innerHTML = "<%= sponsorDetails[0].SponsorContactTelephone %>";
-//    document.getElementById('sponsorContactInfoPreview').innerHTML = formatContactInfo();
     // Select Sponsor Types from the Sponsor's data
     var sponsorTypes = "<%- sponsorDetails[0].SponsorType %>";
     var sponsorTypesArrTrimmed = sponsorTypes.split('|').slice(1, -1);
@@ -337,6 +346,10 @@
       document.getElementById('sponsorTypes').disabled = true;
     };
 
+    // Update the "preview" data object with the current data (as loaded from the database)
+    sponsorData['ScholarshipCountActive'] = "<%= sponsorDetails[0].ScholarshipCountActive %>";
+    updatePreview();
+
   <% } %>
 
 
@@ -344,12 +357,14 @@
   // Keep the "Preview" tab sync-ed with the "Edit" tab
   /////////////////////////////////////////////////////////////////////////////////////////////
   function updatePreview() {
-//    document.getElementById("sponsorLogoPreview").src = document.getElementById("sponsorLogo").value;
-//    document.getElementById('sponsorNamePreview').innerHTML = document.getElementById("sponsorName").value;
-//    document.getElementById('sponsorDescriptionPreview').innerHTML = document.getElementById("sponsorDescription").value;
-//    document.getElementById('sponsorWebsitePreview').innerHTML = document.getElementById("sponsorWebsite").value;
-//    document.getElementById('sponsorWebsitePreview').href = document.getElementById("sponsorWebsite").value;
-//    document.getElementById('sponsorContactInfoPreview').innerHTML = formatContactInfo();
+
+    sponsorData['SponsorIsFeatured'] = document.getElementById('sponsorIsFeatured').checked;
+    sponsorData['SponsorName'] = document.getElementById('sponsorName').value;
+    sponsorData['SponsorLogo'] = document.getElementById('sponsorLogo').value;
+    sponsorData['SponsorDescription'] = document.getElementById('sponsorDescription').value;
+    sponsorData['SponsorWebsite'] = document.getElementById('sponsorWebsite').value;
+    sponsorData['SponsorContactInfoFormatted'] = formatContactInfo();
+
   }
 
 

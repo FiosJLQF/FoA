@@ -19,7 +19,7 @@
 
       <!-- User Name (for reference) -->
       <div class="data-mgmt-row">
-        <div class="row">
+        <!-- <div class="row"> -->
           <div class="col-3 data-mgmt-label-div">
             <label for="userName" class="data-mgmt-label">User:</label>
           </div>
@@ -30,12 +30,12 @@
             <input type="text" id="userName" name="userName" class="data-mgmt-text-half"><br>
             <span class="data-mgmt-span-error" id="userNameErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Permission Category (for reference)-->
       <div class="data-mgmt-row">
-        <div class="row">
+        <!-- <div class="row"> -->
           <div class="col-3 data-mgmt-label-div">
             <label for="permissionCategory" class="data-mgmt-label">Permission Category:</label>
           </div>
@@ -46,12 +46,12 @@
             <select id="permissionCategory" name="permissionCategory" class="data-mgmt-select-single-half"></select><br>
             <span class="data-mgmt-span-error" id="permissionCategoryErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Limiting Values ("*" for all) -->
       <div class="data-mgmt-row">
-        <div class="row">
+        <!-- <div class="row"> -->
           <div class="col-3 data-mgmt-label-div">
             <label for="permissionValues" class="data-mgmt-label">Limiting Values (* = all):</label>
           </div>
@@ -62,12 +62,12 @@
             <input type="text" id="permissionValues" name="permissionValues" class="data-mgmt-text"><br>
             <span class="data-mgmt-span-error" id="permissionValuesErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- "Can Read/View" Permission -->
       <div class="data-mgmt-row">
-        <div class="row">
+        <!-- <div class="row"> -->
           <div class="col-3 data-mgmt-label-div">
             <label for="canRead" class="data-mgmt-label">Can View Data:</label>
           </div>
@@ -78,12 +78,12 @@
             <input type="checkbox" id="canRead" name="canRead" class="data-mgmt-checkbox" value="CanRead"><br>
             <span class="data-mgmt-span-error" id="canReadErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- "Can Update" Permission -->
       <div class="data-mgmt-row">
-        <div class="row">
+        <!-- <div class="row"> -->
           <div class="col-3 data-mgmt-label-div">
             <label for="canUpdate" class="data-mgmt-label">Can Update Data:</label>
           </div>
@@ -94,12 +94,12 @@
             <input type="checkbox" id="canUpdate" name="canUpdate" class="data-mgmt-checkbox" value="CanUpdate"><br>
             <span class="data-mgmt-span-error" id="canUpdateErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- "Can Delete" Permission -->
       <div class="data-mgmt-row">
-        <div class="row">
+        <!-- <div class="row"> -->
           <div class="col-3 data-mgmt-label-div">
             <label for="canDelete" class="data-mgmt-label">Can Delete Data:</label>
           </div>
@@ -110,12 +110,12 @@
             <input type="checkbox" id="canDelete" name="canDelete" class="data-mgmt-checkbox" value="CanDelete"><br>
             <span class="data-mgmt-span-error" id="canDeleteErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- "Can Create" Permission -->
       <div class="data-mgmt-row">
-        <div class="row">
+        <!-- <div class="row"> -->
           <div class="col-3 data-mgmt-label-div">
             <label for="canCreate" class="data-mgmt-label">Can Create/Insert Data:</label>
           </div>
@@ -126,12 +126,12 @@
             <input type="checkbox" id="canCreate" name="canCreate" class="data-mgmt-checkbox" value="CanCreate"><br>
             <span class="data-mgmt-span-error" id="canCreateErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Effective Date -->
       <div class="data-mgmt-row">
-        <div class="row">
+        <!-- <div class="row"> -->
           <div class="col-3 data-mgmt-label-div">
             <label for="effectiveDate" class="data-mgmt-label">Effective/Start Date:</label>
           </div>
@@ -139,15 +139,15 @@
             <label for="effectiveDate" class="data-mgmt-label-required">*</label>
           </div>
           <div class="col-8 data-mgmt-value-div">
-            <input type="date" id="effectiveDate" name="effectiveDate" class="data-mgmt-text-quarter">
+            <input type="date" id="effectiveDate" name="effectiveDate" class="data-mgmt-date">
             <span class="data-mgmt-span-error" id="effectiveDateErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
       <!-- Expiration Date -->
       <div class="data-mgmt-row">
-        <div class="row">
+        <!-- <div class="row"> -->
           <div class="col-3 data-mgmt-label-div">
             <label for="expirationDate" class="data-mgmt-label">Expiration/End Date:</label>
           </div>
@@ -155,10 +155,10 @@
             <label for="expirationDate" class="data-mgmt-label-required">*</label>
           </div>
           <div class="col-8 data-mgmt-value-div">
-            <input type="date" id="expirationDate" name="expirationDate" class="data-mgmt-text-quarter">
+            <input type="date" id="expirationDate" name="expirationDate" class="data-mgmt-date">
             <span class="data-mgmt-span-error" id="expirationDateErrors"></span>
           </div>
-        </div>
+        <!-- </div> -->
       </div><br>
 
     </form> <!-- End data mgmt form -->
@@ -181,6 +181,7 @@
         <button class="data-mgmt-button" form="userPermissionDataDelete" onclick=" return deleteUserPermission();">Delete This User Permission</button>
       <% } %>
     </div><br><br>
+    <hr class="bodycol2break">
 
 <script>
 

@@ -540,7 +540,7 @@
   // Show the "Edit" tab by default
   document.getElementById("btnTabEdit").click();
 
-  // Create the "preview" scholarship object
+  // Create the "preview" scholarship data object
   var scholarshipData = {};
 
   /////////////////////////////////////////////////////////////////////////////////////////////
@@ -803,7 +803,7 @@
       document.getElementById('criteriaFAAMechanicCertificate').disabled = true;
     };
 
-    // TODO:  Change all scholarshipData[] references above to one updatePreview() call here???
+    // Update the "preview" data object with the current data (as loaded from the database)
     updatePreview();
 
   <% } %>
@@ -814,7 +814,7 @@
   /////////////////////////////////////////////////////////////////////////////////////////////
   function updatePreview() {
 //alert('Updating Preview!');
-    scholarshipData['SponsorName'] = '<%- sponsorDetails[0].SponsorName %>';
+    scholarshipData['SponsorName'] = `<%- sponsorDetails[0].SponsorName %>`;
     scholarshipData['SponsorIsFeatured'] = <%- sponsorDetails[0].SponsorIsFeatured %>;
     scholarshipData['SponsorLogo'] = "<%- sponsorDetails[0].SponsorLogo %>";
     scholarshipData['ScholarshipID'] = document.getElementById('scholarshipIDToUpdate').value;

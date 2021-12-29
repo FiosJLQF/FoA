@@ -1,3 +1,25 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Scripts for the Sponsor Search Engine (client-side scripts)
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   showAllSponsors
+//   clearSponsorSearchCriteria
+//   clearSponsorSearchResults
+//   findMatchingSponsors
+//   buildSponsorSearchResults
+//      - buildSponsorSummaryDiv
+//      - createScholarshipDiv
+//      - buildSponsorPageNavigator
+//   toggleShowSponsorDetails
+//   toggleShowScholarshipDescDetails
+//   checkForOverflow
+//   searchSponsors
+//   validateSponsorSearchCriteria
+//   openSponsorTab
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // show all sponsors
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -307,7 +329,7 @@ function buildSponsorSearchResults(matchingSponsors, scholarships, pageNumber, s
         //////////////////////////////////////////////////////////////////////
         // build and add the sponsor summary block
         //////////////////////////////////////////////////////////////////////
-        const divSponsor = createSponsorSummaryDiv(selectedSponsor, matchingScholarships.length);
+        const divSponsor = buildSponsorSummaryDiv(selectedSponsor, matchingScholarships.length);
         divSearchResultsDivs.appendChild(divSponsor);
 
         //////////////////////////////////////////////////////////////////////
@@ -347,7 +369,7 @@ function buildSponsorSearchResults(matchingSponsors, scholarships, pageNumber, s
     //////////////////////////////////////////////////////////////////////
     // add the page navigator bar after the results are built
     //////////////////////////////////////////////////////////////////////
-    const buildPageNavResult = buildPageNavigator(matchingSponsors, scholarships, pageNumber);
+    const buildPageNavResult = buildSponsorPageNavigator(matchingSponsors, scholarships, pageNumber);
 
     // scroll back to the top of the page
     window.scrollTo(0,0);
@@ -358,7 +380,7 @@ function buildSponsorSearchResults(matchingSponsors, scholarships, pageNumber, s
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // build the pagination div
 /////////////////////////////////////////////////////////////////////////////////////////////////
-function buildPageNavigator(matchingSponsors, scholarships, pageNumberSelected) {
+function buildSponsorPageNavigator(matchingSponsors, scholarships, pageNumberSelected) {
 
     const numberOfPages = Math.ceil(matchingSponsors.length / pageSponsorVolume);
 
@@ -407,24 +429,6 @@ function buildPageNavigator(matchingSponsors, scholarships, pageNumberSelected) 
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
-// clear/reset the Sponsor/College Search Criteria
-/////////////////////////////////////////////////////////////////////////////////////////////////
-/*
-function clearSponsorCollegeSearchCritera() {
-
-    document.getElementById("filter_keyword").value = "";
-    document.getElementById("filter_sponsor").value = 0;
-    document.getElementById("filter_college").value = 0;
-    document.getElementById("filter_sponsortype").value = 0;
-
-    // scroll back to the top of the page
-    window.scrollTo(0,0);
-    
-}
-*/
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
 // when a user clicks on the "expand/collapse" button for a sponsor, show/hide the details
 /////////////////////////////////////////////////////////////////////////////////////////////////
 function toggleShowSponsorDetails(buttonID, detailsID) {
@@ -447,9 +451,11 @@ function toggleShowSponsorDetails(buttonID, detailsID) {
     }
 }
 
+
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // when a user clicks on "I agreed and understand...", enable the Apply button
 /////////////////////////////////////////////////////////////////////////////////////////////////
+/*
 function toggleApplyButton(checkStatus, linkID, linkHref) {
 
     let lnkToChange = document.querySelector("#" + linkID);
@@ -467,36 +473,13 @@ function toggleApplyButton(checkStatus, linkID, linkHref) {
         lnkToChange.target = "";
     }
 }
-/*
-/////////////////////////////////////////////////////////////////////////////////////////////////
-// load the list of Sponsors into the Search Criteria option
-/////////////////////////////////////////////////////////////////////////////////////////////////
-function loadSponsorList(sponsors) {
-
-    // get a reference to the SELECT element
-    const selSponsorList = document.querySelector("#filterSponsorNamesInput");
-
-    // create and add the "(Not Selected)" default option
-    const optSponsorNotSelected = document.createElement("option");
-    optSponsorNotSelected.textContent = "(Not Selected)";
-    optSponsorNotSelected.value = 0;
-    optSponsorNotSelected.selected = true;
-    selSponsorList.appendChild(optSponsorNotSelected);
-
-    // add options for each of the Sponsors in the current data file
-    sponsors.forEach( function(sponsor, ind) {
-        const optSponsor = document.createElement("option");
-        optSponsor.textContent = sponsor.sponsorName;
-        optSponsor.value = sponsor.sponsorID;
-        selSponsorList.appendChild(optSponsor);
-    });
-
-}
 */
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // return a formatted <div> of the "Sponsor Summary Block"
 /////////////////////////////////////////////////////////////////////////////////////////////////
-function createSponsorSummaryDiv(selectedSponsor, intScholarships) {
+function buildSponsorSummaryDiv(selectedSponsor, intScholarships) {
 
     const divSponsor = document.createElement('div');
     divSponsor.classList.add('row');
@@ -643,13 +626,14 @@ function createSponsorSummaryDiv(selectedSponsor, intScholarships) {
 
             const divSponsorRow1Col3Row3Col2 = document.createElement('div');
             divSponsorRow1Col3Row3Col2.classList.add('searchresultscol3B');
+            divSponsorRow1Col3Row3Col2.classList.add('text-link');
 
             const lnkSponsorWebsite = document.createElement('a');
             lnkSponsorWebsite.id = "lnkSponsorWebsite_" + selectedSponsor['SponsorWebsite'];
             lnkSponsorWebsite.href = selectedSponsor['SponsorWebsite'];
             lnkSponsorWebsite.target = "_blank";
             lnkSponsorWebsite.innerText = selectedSponsor['SponsorWebsite'];
-            lnkSponsorWebsite.classList.add('text-link');
+//            lnkSponsorWebsite.classList.add('text-link');
             divSponsorRow1Col3Row3Col2.appendChild(lnkSponsorWebsite);
 
         divSponsorRow1Col3Row3.appendChild(divSponsorRow1Col3Row3Col2);
@@ -996,6 +980,7 @@ function createScholarshipDiv(scholarship) {
 
 }
 
+
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // when a user clicks on the "expand/collapse" button for a scholarship description, show/hide the expanded view
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1020,6 +1005,7 @@ function toggleShowScholarshipDescDetails(buttonID, detailsID) {
     }
 }
 
+
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // when a text block description is rendered, check for overflow and show/hide the chevron
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1040,6 +1026,74 @@ function checkForOverflow() {
             document.getElementById('iconDescExpand_' + scholarshipID).style.display = 'none';
         };
     };
+
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// process Search Criteria submission
+//////////////////////////////////////////////////////////////////////////////////////////
+function searchSponsors(sponsors, scholarships) {
+
+    // clear any previous search results
+    clearSponsorSearchResults();
+
+    // validate the input values
+    const dataAreValidated = validateSponsorSearchCriteria();
+    if ( dataAreValidated ) {
+        // validation passed => find and display sponsors
+        findMatchingSponsors(sponsors, scholarships, 1);
+    };
+
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// validate Search Criteria
+//////////////////////////////////////////////////////////////////////////////////////////
+function validateSponsorSearchCriteria() {
+
+    let errorCount = 0;
+
+// TODO: Move all validation from "sponsor_crud_tabs.ejs"  to here
+/*
+    // Age
+    const elAge = document.querySelector('#filterAgeInput');
+    const elAgeError = document.querySelector('#filterAgeInputError');
+    if ( elAge.value.length == 0 ) {
+        elAgeError.textContent = '';
+        elAgeError.classList.remove('input-error');
+    } else if ( validator.isInt(elAge.value, { min: 16, max: 99}) ) {
+        elAgeError.textContent = '';
+        elAgeError.classList.remove('input-error');
+    } else {
+        errorCount++;
+        elAgeError.textContent = 'Age must be between 16 and 99';
+        elAgeError.classList.add('input-error');
+    }
+
+    // GPA
+    const elGPA = document.querySelector('#filterGPAInput');
+    const elGPAError = document.querySelector('#filterGPAInputError');
+    if ( elGPA.value.length == 0 ) {
+        elGPAError.textContent = '';
+        elGPAError.classList.remove('input-error');
+    } else if ( validator.isFloat(elGPA.value, { min: 0, max: 4}) ) {
+        elGPAError.textContent = '';
+        elGPAError.classList.remove('input-error');
+    } else {
+        errorCount++;
+        elGPAError.textContent = 'GPA must be between 0.00 and 4.00';
+        elGPAError.classList.add('input-error');
+    }
+
+    //    alert('Error Count: ' + errorCount);
+  */
+    if ( errorCount == 0 ) {
+        return true;
+    } else {
+        return false;
+    }
 
 }
 
@@ -1068,13 +1122,14 @@ function openSponsorTab(evt, tabName) {
     evt.currentTarget.className += " active";
 
     // Build the sponsor preview DIV
-//    if ( tabName === 'tabPreview') {
-//        // Clear any status messages
-//        if ( document.getElementById('statusMessage') ) {
-//            document.getElementById('statusMessage').innerText = '';
-//        };
-//        const divSponsorPreview = buildSponsorSearchResultDiv(sponsorData, false);
-//        document.getElementById('tabPreview').replaceChildren(divSponsorPreview);
-//    };
+    if ( tabName === 'tabPreview') {
+        // Clear any status messages
+        if ( document.getElementById('statusMessage') ) {
+            document.getElementById('statusMessage').innerText = '';
+        };
+        const divSponsorPreview = buildSponsorSummaryDiv(sponsorData, sponsorData['ScholarshipCountActive']);
+        document.getElementById('tabPreview').replaceChildren(divSponsorPreview);
+        document.getElementById('iconExpand_undefined').classList.remove('fa-chevron-down');
+    };
 
   } 
