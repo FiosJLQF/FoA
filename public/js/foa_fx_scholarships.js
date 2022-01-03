@@ -769,8 +769,8 @@ function findMatchingScholarships(scholarships, pageNumber) {
         } else {
             document.querySelector('#searchResultsTitle').textContent = 'No results found. Try changing the search criteria for better results.';
         }
-        const searchResults = document.querySelector('#searchResults');
-        document.querySelector('#scholarshipsearchresultscolumn').removeChild(searchResults);
+//        const searchResults = document.querySelector('#searchResults');
+//        document.querySelector('#scholarshipsearchresultscolumn').removeChild(searchResults);
     } else {
         // sort the matching scholarships, first by number of exact mataches (most matches first), second by Sponsor Name
         console.log('Before sorting results.');
@@ -790,26 +790,118 @@ function findMatchingScholarships(scholarships, pageNumber) {
 /////////////////////////////////////////////////////////////////////////////////////////////////
 function buildScholarshipSearchResults(matchingScholarships, pageNumber, showMatchingCriteria) {
 
-//alert(`Total Scholarship Volume: ${matchingScholarships.length}`);
+    // local variables
+    let featuredScholarshipsCount = 0;
+    let selectedScholarshipSliceBegin = 0;
+    let selectedScholarshipSliceEnd = 0;
 
     // clear any previous search results
     clearScholarshipSearchResults();
-    if ( showMatchingCriteria == true ) {
-        document.querySelector('#searchResultsTitle').textContent = 'Search Results:';
-    } else {
-        document.querySelector('#searchResultsTitle').textContent = 'Showing All Scholarships';
-    }
+    document.querySelector('#scholarshipsearchresultsmaintitle').style.display = 'none';
+    if ( document.getElementById('featuredscholarshipsresults') != undefined ) {
+        document.getElementById('featuredscholarshipsresults').style.display = 'none';
+    };
 
-    // if a specific page number is displayed, extract just the scholarships to be built
-    const selectedScholarships = matchingScholarships.slice(
-        (pageNumber-1) * pageScholarshipVolume,
-        pageNumber * pageScholarshipVolume);
+    // // set the appropriate title
+    // if ( showMatchingCriteria == true ) {
+    //     document.querySelector('#searchResultsTitle').textContent = 'Search Results';
+    // } else {
+    //     document.querySelector('#searchResultsTitle').textContent = 'Showing All Scholarships';
+    // }
 
     // create the main div for column 2 (i.e., the Search Results column)
     const divSearchResultsColumn = document.querySelector('#scholarshipsearchresultscolumn');
     const divSearchResultsDivs = document.createElement('div');
     divSearchResultsDivs.id = 'searchResults';
 
+    // extract the "featured" scholarships
+    const featuredScholarships = matchingScholarships.filter( obj => obj['ScholarshipIsFeatured'] || obj['SponsorIsFeatured'] );
+//    const featuredScholarships = matchingScholarships.filter( obj => obj['ScholarshipIsFeatured'] );
+    featuredScholarshipsCount = featuredScholarships.length;
+    console.log(`number of featured scholarships: ${featuredScholarshipsCount}`);
+    
+    ///////////////////////////////////////////////////////////
+    // if building the 1st page, show the "featured" scholarships first
+    ///////////////////////////////////////////////////////////
+    if ( pageNumber === 1 ) {
+
+        // if "featured" scholarships were found, build the "Featured Scholarships" block
+        if ( featuredScholarshipsCount > 0 ) {
+
+            // build a "featured results" div
+            const divFeaturedScholarshipsResults = document.createElement('div');
+            divFeaturedScholarshipsResults.id = 'featuredscholarshipsresults'
+            divFeaturedScholarshipsResults.classList.add('featured-scholarships-block');
+
+            // add the "Featured Scholarships" label (with break hr)
+            const divFeaturedScholarshipsBlockTitle = document.createElement('div');
+            divFeaturedScholarshipsBlockTitle.classList.add('bodylayout1col2title');
+            divFeaturedScholarshipsBlockTitle.innerText = "Featured Scholarships";
+            divFeaturedScholarshipsResults.append(divFeaturedScholarshipsBlockTitle);
+            const hrFeaturedScholarshipsBlockTitleBreak = document.createElement('hr');
+            hrFeaturedScholarshipsBlockTitleBreak.classList.add('searchresults-subblock-break-hr');
+            divFeaturedScholarshipsResults.append(hrFeaturedScholarshipsBlockTitleBreak);
+
+            // for each featured scholarship, build the initial display with the details hidden
+            for (let featuredScholarship of featuredScholarships) {
+
+                const divScholarshipSearchResult = buildScholarshipSearchResultDiv(featuredScholarship, showMatchingCriteria);
+                divFeaturedScholarshipsResults.append(divScholarshipSearchResult);
+
+                // add the scholarship break line to the search results div
+                const hrScholarshipBreak = document.createElement('hr');
+                hrScholarshipBreak.classList.add('searchresults-subblock-break-hr');
+                divFeaturedScholarshipsResults.append(hrScholarshipBreak);
+
+                // add all scholarship search results divs to the body at the top of the search results column
+                divSearchResultsColumn.prepend(divFeaturedScholarshipsResults);
+
+                ///////////////////////////////////////////////////////////////////////////////
+                // post-render scripts
+                ///////////////////////////////////////////////////////////////////////////////
+                // if the "Scholarship Description" does not overflow, hide the "show/hide" chevron        
+                const spanScholarshipDescription = document.getElementById('pscholarshipdesc_' + featuredScholarship['ScholarshipID']);
+                if ( spanScholarshipDescription.clientHeight >= spanScholarshipDescription.scrollHeight ) {
+                    document.getElementById('iconDescExpand_' + featuredScholarship['ScholarshipID']).style.display = 'none';
+                };
+
+            };  // loop to the next featured Scholarship in the array
+
+        }; // END: if any featured scholarships were found
+
+//    } else { // page number is greater than 1, so remove the "featured scholarships" block
+
+        // if ( document.getElementById('featuredscholarshipsresults') != undefined ) {
+        //     document.getElementById('featuredscholarshipsresults').style.display = 'none';
+        // };
+
+    }; // END:  Featured Scholarships block
+
+    ///////////////////////////////////////////////////////////
+    // add the "Matched Scholarships"
+    ///////////////////////////////////////////////////////////
+
+    // create the title (with hr break)
+    const divMatchedScholarshipsBlockTitle = document.createElement('div');
+    divMatchedScholarshipsBlockTitle.classList.add('bodylayout1col2title');
+    if ( showMatchingCriteria == true ) {
+        divMatchedScholarshipsBlockTitle.textContent = 'Search Results';
+    } else {
+        divMatchedScholarshipsBlockTitle.textContent = 'Showing All Scholarships';
+    }
+    divSearchResultsDivs.append(divMatchedScholarshipsBlockTitle);
+    const hrMatchedScholarshipsBlockTitleBreak = document.createElement('hr');
+    hrMatchedScholarshipsBlockTitleBreak.classList.add('searchresults-subblock-break-hr');
+    divSearchResultsDivs.append(hrMatchedScholarshipsBlockTitleBreak);
+
+    // if a specific page number is displayed, extract just the scholarships to be built
+    selectedScholarshipSliceBegin =  (pageNumber === 1) ? 0 : (((pageNumber-1) * pageScholarshipVolume) - featuredScholarshipsCount);
+    selectedScholarshipSliceEnd = (pageNumber * pageScholarshipVolume) - featuredScholarshipsCount;
+console.log(`pageNumber: ${pageNumber}; pageScholarshipVolume: ${pageScholarshipVolume}; featuredScholarshipsCount: ${featuredScholarshipsCount}`);
+console.log(`pull matching scholarships ${selectedScholarshipSliceBegin} to ${selectedScholarshipSliceEnd}`);
+    const selectedScholarships = matchingScholarships.slice( selectedScholarshipSliceBegin, selectedScholarshipSliceEnd);
+console.log(`selectedScholarships.length: ${selectedScholarships.length}`);
+    
     // for each selected scholarship, build the initial display with the details hidden
     for (let selectedScholarship of selectedScholarships) {
 

@@ -301,7 +301,7 @@ function buildSponsorSearchResults(matchingSponsors, scholarships, pageNumber, s
     // clear any previous search results
     clearSponsorSearchResults();
     if ( showMatchingCriteria == true ) {
-        document.querySelector('#searchResultsTitle').textContent = 'Search Results:';
+        document.querySelector('#searchResultsTitle').textContent = 'Search Results';
     } else {
         document.querySelector('#searchResultsTitle').textContent = 'Showing All Sponsors';
     }
