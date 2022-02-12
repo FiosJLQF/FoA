@@ -13,8 +13,8 @@
     <div id="scholarshipsearchcriteria" class="col-3 bodylayout1col1">
       <%- include('partials/scholarshipsearchcriteria') %>
     </div>
-    <div id="scholarshipsearchresultscolumn" class="col-9 bodylayout1col2">
-      <div id="scholarshipsearchresultsmaintitle">
+    <div id="searchresultscolumn" class="col-9 bodylayout1col2">
+      <div id="searchresultsmaintitle">
         <span class="bodylayout1col2title" id="searchResultsTitle">Enter criteria and click "Search"</span><br>
         <hr class="bodycol2break">
       </div>
@@ -24,6 +24,8 @@
 
 <script>
   // Show all active scholarships by default
+  var spnRows = <%- JSON.stringify(sponsorsActiveView.rows) %>;
   var schRows = <%- JSON.stringify(scholarshipsActive.rows) %>;
-  showAllScholarships(schRows);
+  showAllScholarships(schRows, spnRows);
+
 </script>

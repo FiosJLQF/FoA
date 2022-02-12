@@ -45,6 +45,36 @@
   }
 
   /**********************************************************/
+  /* "Featured Sponsor" panel                               */
+  /**********************************************************/
+  .featured-sponsor-col2 {
+    width: 640px;
+    font-size: 1.75em;
+  }
+  .featured-sponsor-badge {
+    width: 100px;
+  }
+  .featured-sponsor-fieldofstudy {
+    width: 640px;
+    overflow: hidden;
+  }
+  .featured-sponsor-fieldofstudy-col1 {
+    width: 240px;
+    font-size: .5em;
+    /* line-height: 1.25; */
+    /* float: left; */
+    margin: 0px 0px 0px 70px;
+  }
+  
+  .featured-sponsor-fieldofstudy-col2 {
+    width: 240px;
+    font-size: .5em;
+    /* line-height: 1.25; */
+    /* float: left; */
+    margin: 0px 70px 0px 0px;
+  }
+    
+  /**********************************************************/
   /* "DATA MGMT" pages */
   /**********************************************************/
   .bodylayout1col2-datamgmt {
