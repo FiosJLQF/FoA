@@ -55,7 +55,7 @@ function scholarshipDates(today, sequelize) {
     { type: sequelize.QueryTypes.SELECT })
   .then( async htmlTable => {
     // send the email notification
-    let emailResultError = jsFx.sendEmail('fiosjlqf@gmail.com; kkueber@amcg.aero', 'Scholarship Date(s) Notifications', '',
+    let emailResultError = jsFx.sendEmail('fiosjlqf@gmail.com; rblackford@amcg.aero', 'Scholarship Date(s) Notifications', '',
       htmlTable[0].TableDef);
     // log the event
     let logEventResult = await jsFx.logEvent('Scheduled Task', 'scholarshipDates', 0,
