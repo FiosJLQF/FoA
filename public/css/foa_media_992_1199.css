@@ -24,7 +24,7 @@
       width: 675px;
     }
     .searchresultscol3 {
-      width: 520px;
+      width: 550px;
     }
     .searchresultscol3A {
       width: 140px;
@@ -33,17 +33,17 @@
       width: 140px;
     }
     .searchresultscol3B {
-      width: 380px;
+      width: 410px;
     }
     .searchresultscol3Bfeatured {
-      width: 270px;
+      width: 290px;
     }
     .searchresultscol3B.text-block {
-      width: 380px;
+      width: 410px;
     }
-    .searchresultscol3Bfeatured.text-block {
+    /* .searchresultscol3Bfeatured.text-block {
       width: 270px;
-    }
+    } */
 
   /**********************************************************/
   /* "Featured Sponsor" panel                               */

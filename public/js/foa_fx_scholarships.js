@@ -851,7 +851,7 @@ function buildScholarshipSearchResults(matchingScholarships, sponsors, pageNumbe
             for (let featuredItem of featuredItems) {
 
                 // build a Scholarship Search Result div
-                const divItemSearchResult = buildScholarshipSearchResultDiv(featuredItem, showMatchingCriteria);
+                const divItemSearchResult = buildScholarshipSearchResultDiv(featuredItem, showMatchingCriteria, true);
                 divFeaturedResults.append(divItemSearchResult);
 
                 // add the sub-block break line to the search results div
@@ -866,12 +866,13 @@ function buildScholarshipSearchResults(matchingScholarships, sponsors, pageNumbe
                 ///////////////////////////////////////////////////////////////////////////////
                 // post-render scripts
                 ///////////////////////////////////////////////////////////////////////////////
+/*  // Deprecated 3/1/2022
                 // if the "Scholarship Description" does not overflow, hide the "show/hide" chevron
-                const spanScholarshipDescription = document.getElementById('pscholarshipdesc_' + featuredItem['ScholarshipID']);
+                const spanScholarshipDescription = document.getElementById('pscholarshipdesc_' + featuredItem['ScholarshipID'] + 'F');
                 if ( spanScholarshipDescription.clientHeight >= spanScholarshipDescription.scrollHeight ) {
-                    document.getElementById('iconDescExpand_' + featuredItem['ScholarshipID']).style.display = 'none';
+                    document.getElementById('iconDescExpand_' + featuredItem['ScholarshipID'] + 'F').style.display = 'none';
                 };
-
+*/
             };  // loop to the next featured item in the array
 
         }; // END: if any featured items were found
@@ -917,7 +918,7 @@ function buildScholarshipSearchResults(matchingScholarships, sponsors, pageNumbe
     for (let selectedItem of selectedItems) {
 
         // build a Scholarship Search Result div
-        const divItemSearchResult = buildScholarshipSearchResultDiv(selectedItem, showMatchingCriteria);
+        const divItemSearchResult = buildScholarshipSearchResultDiv(selectedItem, showMatchingCriteria, false);
         divSearchResultsDivs.append(divItemSearchResult);
 
         // add the break line to the search results div
@@ -931,12 +932,13 @@ function buildScholarshipSearchResults(matchingScholarships, sponsors, pageNumbe
         ///////////////////////////////////////////////////////////////////////////////
         // post-render scripts
         ///////////////////////////////////////////////////////////////////////////////
+/*  // Deprecated 3/1/2022
         // if the "Scholarship Description" does not overflow, hide the "show/hide" chevron        
         const spanScholarshipDescription = document.getElementById('pscholarshipdesc_' + selectedItem['ScholarshipID']);
         if ( spanScholarshipDescription.clientHeight >= spanScholarshipDescription.scrollHeight ) {
             document.getElementById('iconDescExpand_' + selectedItem['ScholarshipID']).style.display = 'none';
         };
-
+*/
     };  // loop to the next Item in the array
 
     // add the page navigator bar after the results are built
@@ -1003,9 +1005,10 @@ function buildScholarshipPageNavigator(matchingScholarships, sponsors, pageNumbe
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // when a user clicks on the "expand/collapse" button for a scholarship, show/hide the details
 /////////////////////////////////////////////////////////////////////////////////////////////////
-function toggleShowScholarshipDetails(buttonID, detailsID) {
+function toggleShowScholarshipDetails(buttonIDShow, buttonIDHide, detailsID) {
 
-    const enableButton = document.querySelector("#" + buttonID);
+    const showButton = document.querySelector("#" + buttonIDShow);
+    const hideButton = document.querySelector("#" + buttonIDHide);
     const divDetails = document.querySelector("#" + detailsID);
 
 //    alert('div.display: ' + divDetails.style.display);
@@ -1013,12 +1016,16 @@ function toggleShowScholarshipDetails(buttonID, detailsID) {
     // if the current display is hidden, then show
     if ( divDetails.style.display !== "flex") {
         divDetails.style.display = "flex";
-        enableButton.classList.remove("fa-chevron-down");
-        enableButton.classList.add("fa-chevron-up");
+        // enableButton.classList.remove("fa-chevron-down");
+        // enableButton.classList.add("fa-chevron-up");
+        showButton.style.display = "none";
+        hideButton.style.display = "flex";
     } else {
         divDetails.style.display = "none";
-        enableButton.classList.remove("fa-chevron-up");
-        enableButton.classList.add("fa-chevron-down");
+        // enableButton.classList.remove("fa-chevron-up");
+        // enableButton.classList.add("fa-chevron-down");
+        showButton.style.display = "flex";
+        hideButton.style.display = "none";
     }
 }
 
@@ -1142,8 +1149,10 @@ function validateScholarshipSearchCriteria() {
 //////////////////////////////////////////////////////////////////////////////////////////
 // build a Scholarship Search Result "main div" element
 //////////////////////////////////////////////////////////////////////////////////////////
-function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria) {
+function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria, isFeaturedBlock) {
 
+    const scholarshipID = scholarship['ScholarshipID'] + (isFeaturedBlock ? 'F' : '');
+//    console.log(`scholarshipID to build: ${scholarshipID}`);
     const divScholarship = document.createElement('div');
 
     /////////////////////////////////////////////////////////////
@@ -1182,6 +1191,7 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria) {
 
         divScholarshipRow1.append(divScholarshipRow1Col1);
 
+/*
         //////////////////////////////////////////////
         // build and add the second column to the first row
         //////////////////////////////////////////////
@@ -1199,7 +1209,8 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria) {
 
         divScholarshipRow1Col2.appendChild(iconExpand);
 
-    divScholarshipRow1.append(divScholarshipRow1Col2);
+        divScholarshipRow1.append(divScholarshipRow1Col2);
+*/
 
         //////////////////////////////////////////////
         // build and add the third column to the first row
@@ -1250,6 +1261,25 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria) {
             };
 
             ////////////////////////////////////////
+            // Expand Chevron To See Scholarship Details
+            ////////////////////////////////////////
+            // "Hide" icon instantiated here to get ID
+            const iconHide = document.createElement('i');
+            iconHide.id = "iconHide_" + scholarshipID;
+            // Create "Show" icon
+            const iconShow = document.createElement('i');
+            iconShow.id = "iconShow_" + scholarshipID;
+            iconShow.classList.add('fas');
+            iconShow.classList.add('fa-chevron-down');
+            iconShow.classList.add('scholarship-results-expandchevron');
+            iconShow.addEventListener('click', function() {
+                toggleShowScholarshipDetails(iconShow.id, iconHide.id,
+                    "scholarshipDetails_" + scholarshipID);
+            });
+
+            divScholarshipRow1Col3Rows.appendChild(iconShow);
+
+            ////////////////////////////////////////
             // Scholarship Name
             ////////////////////////////////////////
             const divScholarshipRow1Col3Row2Col1 = document.createElement('div');
@@ -1280,40 +1310,28 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria) {
         divScholarshipRow1Col3Rows.appendChild(divScholarshipRow1Col3Row3Col1);
 
             const divScholarshipRow1Col3Row3Col2 = document.createElement('div');
-            divScholarshipRow1Col3Row3Col2.classList.add('searchresultscol3B');
+            // divScholarshipRow1Col3Row3Col2.classList.add('searchresultscol3B');
+            if ( scholarship['ScholarshipIsFeatured'] ) {
+                divScholarshipRow1Col3Row3Col2.classList.add('searchresultscol3Bfeatured');
+            } else {
+                divScholarshipRow1Col3Row3Col2.classList.add('searchresultscol3B');
+            };
             divScholarshipRow1Col3Row3Col2.textContent = scholarship['Criteria_FieldOfStudyText'];
 
         divScholarshipRow1Col3Rows.appendChild(divScholarshipRow1Col3Row3Col2);
 
             ////////////////////////////////////////
-            // Scholarship Description
+            // Application Dates
             ////////////////////////////////////////
             const divScholarshipRow1Col3Row4Col1 = document.createElement('div');
             divScholarshipRow1Col3Row4Col1.classList.add('searchresultscol3A');
-            divScholarshipRow1Col3Row4Col1.textContent = 'Description:';
+            divScholarshipRow1Col3Row4Col1.textContent = 'Application Dates:';
 
-            divScholarshipRow1Col3Rows.appendChild(divScholarshipRow1Col3Row4Col1);
+        divScholarshipRow1Col3Rows.appendChild(divScholarshipRow1Col3Row4Col1);
 
             const divScholarshipRow1Col3Row4Col2 = document.createElement('div');
             divScholarshipRow1Col3Row4Col2.classList.add('searchresultscol3B');
-            divScholarshipRow1Col3Row4Col2.classList.add('text-block');
-
-            const spanScholarshipDescription = document.createElement('span');
-            spanScholarshipDescription.id = 'pscholarshipdesc_' + scholarship['ScholarshipID'];
-            spanScholarshipDescription.classList.add('description-short');
-            spanScholarshipDescription.innerHTML = scholarship['ScholarshipDescription'];
-
-            divScholarshipRow1Col3Row4Col2.appendChild(spanScholarshipDescription);
-
-            const iconDescExpand = document.createElement('i');
-            iconDescExpand.id = "iconDescExpand_" + scholarship['ScholarshipID'];
-            iconDescExpand.classList.add('fas');
-            iconDescExpand.classList.add('fa-chevron-down');
-            iconDescExpand.addEventListener('click', function() {
-                toggleShowScholarshipDescDetails(iconDescExpand.id, spanScholarshipDescription.id);
-            });
-
-            divScholarshipRow1Col3Row4Col2.appendChild(iconDescExpand);
+            divScholarshipRow1Col3Row4Col2.textContent = scholarship['ScholarshipApplDatesText'];
 
         divScholarshipRow1Col3Rows.appendChild(divScholarshipRow1Col3Row4Col2);
 
@@ -1343,7 +1361,7 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria) {
     // build and add the second row (scholarship detail information)
     /////////////////////////////////////////////////////////////
     const divScholarshipRow2 = document.createElement('div');
-    divScholarshipRow2.id = "scholarshipDetails_" + scholarship['ScholarshipID'];
+    divScholarshipRow2.id = "scholarshipDetails_" + scholarshipID;
     divScholarshipRow2.classList.add('row');
 
     // If the Sponsor or Scholarship is "Featured", change the div styling
@@ -1362,7 +1380,7 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria) {
         divScholarshipRow2Col1.classList.add('apply');
         
         const lnkApply = document.createElement('a');
-        lnkApply.id = "lnkApply_" + scholarship['ScholarshipID'];
+        lnkApply.id = "lnkApply_" + scholarshipID;
         lnkApply.href = scholarship['ScholarshipLink'];
         lnkApply.target = "_blank";
 
@@ -1374,7 +1392,8 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria) {
         divScholarshipRow2Col1.appendChild(lnkApply);
 
     divScholarshipRow2.appendChild(divScholarshipRow2Col1);
-        
+
+/*        
         //////////////////////////////////////////////
         // build and add the second column to the second row (empty)
         //////////////////////////////////////////////
@@ -1382,7 +1401,8 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria) {
         divScholarshipRow2Col2.classList.add('searchresultscol2');
 
         divScholarshipRow2.appendChild(divScholarshipRow2Col2);
-        
+*/
+
         //////////////////////////////////////////////
         // build and add the third column to the second row
         //////////////////////////////////////////////
@@ -1393,34 +1413,67 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria) {
         divScholarshipRow2Col3Rows.classList.add('row');
 
             ////////////////////////////////////////
-            // Eligibility Requirements
+            // Expand Chevron To See Scholarship Details
+            // Note: Object instantiated up in the "icon Show" declaration
+            ////////////////////////////////////////
+            iconHide.classList.add('fas');
+            iconHide.classList.add('fa-chevron-up');
+            iconHide.classList.add('scholarship-results-expandchevron');
+            iconHide.addEventListener('click', function() {
+                toggleShowScholarshipDetails(iconShow.id, iconHide.id, 
+                    "scholarshipDetails_" + scholarshipID);
+            });
+
+            divScholarshipRow2Col3Rows.appendChild(iconHide);
+
+            ////////////////////////////////////////
+            // Scholarship Description
             ////////////////////////////////////////
             const divScholarshipRow2Col3Row1Col1 = document.createElement('div');
             divScholarshipRow2Col3Row1Col1.classList.add('searchresultscol3A');
-            divScholarshipRow2Col3Row1Col1.classList.add('text-block');
-            divScholarshipRow2Col3Row1Col1.textContent = 'Eligibility Requirements:';
+            divScholarshipRow2Col3Row1Col1.textContent = 'Description:';
 
         divScholarshipRow2Col3Rows.appendChild(divScholarshipRow2Col3Row1Col1);
 
             const divScholarshipRow2Col3Row1Col2 = document.createElement('div');
             divScholarshipRow2Col3Row1Col2.classList.add('searchresultscol3B');
             divScholarshipRow2Col3Row1Col2.classList.add('text-block');
-            divScholarshipRow2Col3Row1Col2.innerHTML = scholarship['ScholarshipEligibilityReqs'];
 
+            const spanScholarshipDescription = document.createElement('span');
+            spanScholarshipDescription.id = 'pscholarshipdesc_' + scholarshipID;
+//            spanScholarshipDescription.classList.add('description-short');
+            spanScholarshipDescription.classList.add('description-long');
+            spanScholarshipDescription.innerHTML = scholarship['ScholarshipDescription'];
+
+            divScholarshipRow2Col3Row1Col2.appendChild(spanScholarshipDescription);
+
+/*  // Deprecated 3/1/2022
+            const iconDescExpand = document.createElement('i');
+            iconDescExpand.id = "iconDescExpand_" + scholarshipID;
+            iconDescExpand.classList.add('fas');
+            iconDescExpand.classList.add('fa-chevron-down');
+            iconDescExpand.addEventListener('click', function() {
+                toggleShowScholarshipDescDetails(iconDescExpand.id, spanScholarshipDescription.id);
+            });
+
+            divScholarshipRow2Col3Row1Col2.appendChild(iconDescExpand);
+*/
         divScholarshipRow2Col3Rows.appendChild(divScholarshipRow2Col3Row1Col2);
 
             ////////////////////////////////////////
-            // Application Dates
+            // Eligibility Requirements
             ////////////////////////////////////////
             const divScholarshipRow2Col3Row2Col1 = document.createElement('div');
             divScholarshipRow2Col3Row2Col1.classList.add('searchresultscol3A');
-            divScholarshipRow2Col3Row2Col1.textContent = 'Application Dates:';
+            divScholarshipRow2Col3Row2Col1.classList.add('text-block');
+            divScholarshipRow2Col3Row2Col1.textContent = 'Eligibility Requirements:';
 
         divScholarshipRow2Col3Rows.appendChild(divScholarshipRow2Col3Row2Col1);
 
             const divScholarshipRow2Col3Row2Col2 = document.createElement('div');
             divScholarshipRow2Col3Row2Col2.classList.add('searchresultscol3B');
-            divScholarshipRow2Col3Row2Col2.textContent = scholarship['ScholarshipApplDatesText'];
+            divScholarshipRow2Col3Row2Col2.classList.add('text-block');
+            divScholarshipRow2Col3Row2Col2.innerHTML = scholarship['ScholarshipEligibilityReqs'];
 
         divScholarshipRow2Col3Rows.appendChild(divScholarshipRow2Col3Row2Col2);
 
@@ -1440,7 +1493,9 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria) {
 
         divScholarshipRow2Col3Rows.appendChild(divScholarshipRow2Col3Row3Col2);
 
+            ////////////////////////////////////////
             // only show matching criteria if requested by the calling script
+            ////////////////////////////////////////
             if (showMatchingCriteria) {
 
                 // Matching Search Criteria (Exact)
@@ -1505,7 +1560,7 @@ function openScholarshipTab(evt, tabName) {
         if ( document.getElementById('statusMessage') ) {
             document.getElementById('statusMessage').innerText = '';
         };
-        const divScholarshipPreview = buildScholarshipSearchResultDiv(scholarshipData, false);
+        const divScholarshipPreview = buildScholarshipSearchResultDiv(scholarshipData, false, false);
         document.getElementById('tabPreview').replaceChildren(divScholarshipPreview);
     };
 
