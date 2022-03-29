@@ -4,7 +4,7 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
-const querystring = require("querystring");
+const querystring = require("query-string");
 require("dotenv").config();
 
 
@@ -46,7 +46,7 @@ router.get("/callback", (req, res, next) => {
 router.get("/logout", (req, res) => {
     req.logOut();
     let returnTo = req.protocol + "://" + req.hostname;
-    const port = req.connection.localPort;
+    const port = req.socket.localPort;
     if (port !== undefined && port !== 80 && port !== 443) {
       returnTo =
         process.env.NODE_ENV === "production"

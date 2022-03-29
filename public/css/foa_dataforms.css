@@ -144,7 +144,7 @@ label.form-status {
 }
 
 .data-mgmt-date {
-  width: 125px; /* Not a % due to dates having fixed widths */
+  width: 140px; /* Not a % due to dates having fixed widths */
   line-height: 1.00;
 }
 

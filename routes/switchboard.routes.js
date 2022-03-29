@@ -5,22 +5,28 @@ const express = require("express");
 const router = express.Router();
 const { auth, requiresAuth } = require('express-openid-connect');
 require("dotenv").config();  // load all ".env" variables into "process.env" for use
-const { ScholarshipsTable, ScholarshipsActive, ScholarshipsAllDDL, ScholarshipsAllMgmtView,
-        ScholarshipRecurrenceCategoriesDDL, ScholarshipStatusCategoriesDDL,
-        SponsorsTable, SponsorsAllDLL, Sponsors, SponsorsDDL, SponsorsAllView,
-        SponsorTypeCategoriesDDL, SponsorStatusCategoriesDDL,
-        GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
-        EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
-        FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL,
-        UsersAllDDL, UsersTable, UserProfiles, UsersAllView,
-        UserPermissionsAllView, UserPermissionsAllDDL, UserPermissionsActive,
-        UserPermissionsTable, UserPermissionCategoriesAllDDL
-    } = require('../models/sequelize.js');
+const { sequelize, Op } = require('sequelize');  // Sequelize "Operators" functions for querying
 const methodOverride = require('method-override');  // allows PUT and other non-standard methods
 router.use(methodOverride('_method')); // allows use of the PUT/DELETE method extensions
 const jsFx = require('../scripts/foa_node_fx');
 const { check, validationResult } = require('express-validator');
 const htmlEntities = require('html-entities');
+
+
+///////////////////////////////////////////////////////////////////////////////////
+// Data Models
+///////////////////////////////////////////////////////////////////////////////////
+const { ScholarshipsTable, ScholarshipsActive, ScholarshipsAllDDL, ScholarshipsAllMgmtView,
+    ScholarshipRecurrenceCategoriesDDL, ScholarshipStatusCategoriesDDL,
+    SponsorsTable, SponsorsAllDLL, Sponsors, SponsorsDDL, SponsorsAllView,
+    SponsorTypeCategoriesDDL, SponsorStatusCategoriesDDL,
+    GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
+    EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
+    FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL,
+    UsersAllDDL, UsersTable, UserProfiles, UsersAllView,
+    UserPermissionsAllView, UserPermissionsAllDDL, UserPermissionsActive,
+    UserPermissionsTable, UserPermissionCategoriesAllDDL
+} = require('../models/sequelize.js');
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -56,7 +62,6 @@ router.get('/newuser', requiresAuth(), async (req, res) => {
 
         // Log the request (10001 = "New User Page Redirect")
 //        const logResult = jsFx.createLogEntry(10001, req.oidc.user.name);
-
         return res.render('switchboard_newuser', {
             user: req.oidc.user,
             userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
@@ -76,22 +81,15 @@ router.get('/', requiresAuth(), async (req, res) => {
         // Set local variables
         ////////////////////////////////////////////////////
         let errorCode = 0;
-        let userProfiles = [];
         const actionRequestedValues = [
             'addsponsor', 'editsponsor', 'addscholarship', 'editscholarship',
             'adduser', 'edituser', 'adduserpermission', 'edituserpermission'
         ];
         let statusMessage = '';
+        // Current User variables
+        let userProfiles = [];
         let currentUserID = 0;
-
-
-
-
-        let currentUsername = '';
-
-
-
-
+        let currentUsername = '';  // TODO: Is This Still Needed?
         let userIsDataAdmin = 0;
         // Querystring parameters
         let actionRequested = '';
