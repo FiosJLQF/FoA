@@ -21,7 +21,7 @@ const sequelize = new Sequelize( process.env.DB_URI, {
 
 // Test the DB Connection
 sequelize.authenticate().then(() => {
-    console.log("Success!");
+    console.log("Database connection success!");
   }).catch((err) => {
     console.log(err);
 });

@@ -47,8 +47,14 @@
   /**********************************************************/
   /* "Featured Sponsor" panel                               */
   /**********************************************************/
+  .featured-sponsor-col1 {
+    width: 175px;
+  }
+  .featured-sponsor-logo {
+    width: 175px;
+  }
   .featured-sponsor-col2 {
-    width: 640px;
+    width: 665px;
     font-size: 1.75em;
   }
   .featured-sponsor-badge {
@@ -65,13 +71,15 @@
     /* float: left; */
     margin: 0px 0px 0px 70px;
   }
-  
   .featured-sponsor-fieldofstudy-col2 {
     width: 240px;
     font-size: .5em;
     /* line-height: 1.25; */
     /* float: left; */
     margin: 0px 70px 0px 0px;
+  }
+  .featured-scholarship-badge {
+    width: 100px;
   }
     
   /**********************************************************/

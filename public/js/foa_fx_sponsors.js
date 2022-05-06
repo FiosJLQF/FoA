@@ -549,9 +549,10 @@ function buildSponsorSearchResultDiv(selectedSponsor, intScholarships) {
 
         /////////////////////////////////////////////////////////////
         // build and add the second column to the first row (show/hide scholarships)
+        // DEPRECATED 3/2022 (KK/RB)
         /////////////////////////////////////////////////////////////
-        const divSponsorRow1Col2 = document.createElement('div');
-        divSponsorRow1Col2.classList.add('searchresultscol2');
+//        const divSponsorRow1Col2 = document.createElement('div');
+//        divSponsorRow1Col2.classList.add('searchresultscol2');
 
         // if (intScholarships > 0) {
         //     const iconExpand = document.createElement('i');
@@ -565,7 +566,7 @@ function buildSponsorSearchResultDiv(selectedSponsor, intScholarships) {
         //     divSponsorRow1Col2.appendChild(iconExpand);
         // };
 
-        divSponsor.appendChild(divSponsorRow1Col2);
+//        divSponsor.appendChild(divSponsorRow1Col2);
 
         /////////////////////////////////////////////////////////////
         // build and add the third column to the first row (Sponsor Information)
@@ -608,7 +609,7 @@ function buildSponsorSearchResultDiv(selectedSponsor, intScholarships) {
                 const imgSponsorIsFeatured = document.createElement('img');
                 imgSponsorIsFeatured.src = "/img/imgFeaturedSponsor.png";
                 imgSponsorIsFeatured.alt = "Featured Sponsor Badge";
-                imgSponsorIsFeatured.classList.add('featuredbadge');
+                imgSponsorIsFeatured.classList.add('featured-sponsor-badge');
                 divSponsorRow1Col3Row1.appendChild(imgSponsorIsFeatured);
             };
 
@@ -702,6 +703,38 @@ function buildSponsorSearchResultDiv(selectedSponsor, intScholarships) {
         divSponsorRow1Col3.appendChild(divSponsorRow1Col3Row4);
     
 //        divSponsorRow1Col3.appendChild(divSponsorRow1Col3Rows);
+
+        ////////////////////////////////////////
+        // Build and Add the "View Scholarships" link, if any active scholarships exist
+        ////////////////////////////////////////
+
+        if ( intScholarships > 0 ) { // display the link if there are active scholarships
+
+            // "View Scholarships" button
+            const lnkViewScholarships = document.createElement('a');
+            lnkViewScholarships.id = "lnkViewScholarships_" + selectedSponsor['SponsorID'];
+            lnkViewScholarships.classList.add('sponsor-view-scholarships');
+            lnkViewScholarships.href = "scholarships?sponsorid=" + selectedSponsor['SponsorID'];
+            lnkViewScholarships.target = "_blank";
+
+            const imgViewScholarships = document.createElement('img');
+            imgViewScholarships.src = "/img/imgViewScholarships.png";
+            imgViewScholarships.alt = "View Scholarship(s) for this Sponsor";
+            imgViewScholarships.classList.add('sponsor-view-scholarships-img');
+            lnkViewScholarships.appendChild(imgViewScholarships);
+
+            divSponsorRow1Col3.appendChild(lnkViewScholarships);
+
+        } else {
+
+            const imgNoActiveScholarships = document.createElement('img');
+            imgNoActiveScholarships.src = "/img/imgNoActiveScholarships.png";
+            imgNoActiveScholarships.alt = "No Active Scholarships for this Sponsor";
+            imgNoActiveScholarships.classList.add('sponsor-no-scholarships-img');
+    
+            divSponsorRow1Col3.appendChild(imgNoActiveScholarships);
+    
+        };
 
     divSponsor.appendChild(divSponsorRow1Col3);
 
@@ -816,7 +849,7 @@ function createScholarshipDiv(scholarship) {
                 const imgScholarshipIsFeatured = document.createElement('img');
                 imgScholarshipIsFeatured.src = "/img/imgFeaturedScholarship.png";
                 imgScholarshipIsFeatured.alt = "Featured Scholarship Badge";
-                imgScholarshipIsFeatured.classList.add('featuredbadge');
+                imgScholarshipIsFeatured.classList.add('featured-scholarship-badge');
                 divScholarshipRow2Col3Row1.appendChild(imgScholarshipIsFeatured);
             };
 

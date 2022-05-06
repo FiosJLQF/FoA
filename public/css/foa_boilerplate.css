@@ -53,10 +53,18 @@
   width: 220px;
 }
 
+.image-L {
+  display: block;
+}
+
+.image-M {
+  display: none;
+}
+
 .navbar-toprow-right {
   margin: auto;
   margin-left: 0px;
-  margin-right: 30px;
+  margin-right: 60px;
   width: 33%;
   text-align: right;
 }

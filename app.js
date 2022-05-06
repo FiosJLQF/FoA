@@ -14,6 +14,7 @@ const port = process.env.PORT || 3000;
 const cors = require('cors');
 const switchboardRoutes = require('./routes/switchboard.routes.js');
 const searchRoutes = require('./routes/search.routes.js');
+const jsFx = require('./scripts/foa_node_fx');
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -33,14 +34,23 @@ app.use(cors({origin: '*'}));
 ///////////////////////////////////////////////////////////////////////////////////
 const session = {
     secret: process.env.SESSION_SECRET,
-    cookie: {},
+    genid: function(req) {
+        return genuuid();
+    },
+    name: process.env.SESSION_NAME,
+    cookie: {
+        httpOnly: true,
+        secure: true,
+        sameSite: true,
+        maxAge: 600000 // in milliseconds
+    },
     resave: false,
     saveUninitialized: false
 };
-if (app.get("env") === "production") {
-    // Serve secure cookies, requires HTTPS
-    session.cookie.secure = true;
-}
+//if (app.get("env") === "production") {
+//    // Serve secure cookies, requires HTTPS
+//    session.cookie.secure = true;
+//}
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -79,7 +89,16 @@ app.use(
 // "GET" Routes (retrieve data)
 ///////////////////////////////////////////
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
+    // Log access
+    try {
+        let currentUserID = await jsFx.getUserProfile(req.oidc.user.name);
+        let logEventResult = await jsFx.logEvent('Page Access', 'Root', 0, 'Informational', 'User Accessed Page',
+            0, 0, currentUserID, '');
+    } catch(e) {
+        console.log(`Current User ID lookup failed: ${e}`);
+    };
+    // Redirect the user to the Scholarship Search Page as the default
     res.redirect('/search/scholarships');
 });
 

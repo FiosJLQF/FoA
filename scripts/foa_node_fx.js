@@ -19,6 +19,24 @@ require("dotenv").config();  // load all ".env" variables into "process.env" for
 const nodemailer = require('nodemailer');  // allows SMPT push emails to be sent
 
 
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// Get the current user's profile
+//////////////////////////////////////////////////////////////////////////////////////////
+async function getUserProfile(userName) {
+
+    let getUserProfileResult = 0;
+    let userProfiles = [];
+    if ( userName ) {
+        userProfiles = await UserProfiles.findAndCountAll( { where: { Username: userName }});
+        if ( userProfiles.count !== 0 ) {  // The user was found
+            getUserProfileResult = userProfiles.rows[0].UserID;
+        };
+    };
+    return getUserProfileResult;
+};
+
+
 //////////////////////////////////////////////////////////////////////////////////////////
 // Create a log entry
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -601,6 +619,7 @@ console.log(`After newuser.save`);
 
 
 module.exports = {
+    getUserProfile,
     convertOptionsToDelimitedString,
     getSponsorPermissionsForCurrentUser,
     getScholarshipPermissionsForCurrentUser,

@@ -48,8 +48,14 @@
   /**********************************************************/
   /* "Featured Sponsor" panel                               */
   /**********************************************************/
+  .featured-sponsor-col1 {
+    width: 150px;
+  }
+  .featured-sponsor-logo {
+    width: 150px;
+  }
   .featured-sponsor-col2 {
-    width: 475px;
+    width: 525px;
     font-size: 1.5em;
   }
   .featured-sponsor-badge {
@@ -66,13 +72,18 @@
     /* float: left; */
     margin: 0px 0px 0px 60px;
   }
-  
   .featured-sponsor-fieldofstudy-col2 {
     width: 177px;
     font-size: .6em;
     /* line-height: 1.25; */
     /* float: left; */
     margin: 0px 60px 0px 0px;
+  }
+  .sponsor-view-scholarships {
+    width: 150px;
+  }
+  .sponsor-no-scholarships-img {
+    width: 150px;
   }
 
   /**********************************************************/

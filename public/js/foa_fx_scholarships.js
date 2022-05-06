@@ -1250,13 +1250,13 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria, isFe
 //                const imgSponsorIsFeatured = document.createElement('img');
 //                imgSponsorIsFeatured.src = "/img/imgFeaturedSponsor.png";
 //                imgSponsorIsFeatured.alt = "Featured Sponsor Badge";
-//                imgSponsorIsFeatured.classList.add('featuredbadge');
+//                imgSponsorIsFeatured.classList.add('featured-sponsor-badge');
 //                divScholarshipRow1Col3Rows.appendChild(imgSponsorIsFeatured);
 /*            } else */ if ( scholarship['ScholarshipIsFeatured'] ) {
                 const imgScholarshipIsFeatured = document.createElement('img');
                 imgScholarshipIsFeatured.src = "/img/imgFeaturedScholarship.png";
                 imgScholarshipIsFeatured.alt = "Featured Scholarship Badge";
-                imgScholarshipIsFeatured.classList.add('featuredbadge');
+                imgScholarshipIsFeatured.classList.add('featured-scholarship-badge');
                 divScholarshipRow1Col3Rows.appendChild(imgScholarshipIsFeatured);
             };
 

@@ -19,6 +19,7 @@
   font-family: 'Julius Sans One', sans-serif;
   font-size: 1.125em;
   color: var(--amcg-blue);
+  width: 100%;
 /*  background: #616161;  /* fallback for old browsers */  
 /*  background: -webkit-linear-gradient(to right, #9bc5c3, #616161);  /* Chrome 10-25, Safari 5.1-6 */
 /*  background: linear-gradient(to right, #9bc5c3, #616161); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
@@ -446,6 +447,7 @@ select.single-choice {
   padding: 5px 0px 0px 0px;
   font-size: 0.875em;
   width: 200px;
+  height: auto;
   white-space: normal;
   overflow: hidden;
   vertical-align: top;
@@ -455,7 +457,7 @@ select.single-choice {
 .featured-sponsor-col2 {
   width: 760px;
   margin: 0px;
-  padding: 30px 0px 0px 12px;
+  padding: 45px 0px 0px 12px;
   line-height: 1.8;
   position: relative;
   vertical-align: middle;
@@ -470,7 +472,7 @@ select.single-choice {
 }
 
 .featured-sponsor-name {
-  margin: 10px 0px 40px 10px;
+  margin: 10px 0px 0px 10px;
   font-size: 1.1em;
   font-weight: bold;
   /* position: absolute;
@@ -490,6 +492,16 @@ select.single-choice {
 }
 
 .featured-sponsor-badge {
+  width: 125px;
+  height: auto;
+  position: absolute;
+  top: 5px;
+  right: 0px;
+  margin: 0px 5px 0px 0px;
+  padding: 0px;
+}
+
+.featured-scholarship-badge {
   width: 125px;
   height: auto;
   position: absolute;
@@ -521,19 +533,30 @@ select.single-choice {
   margin: 0px 110px 0px 0px;
 }
 
-.featured-sponsor-view-scholarships {
+.sponsor-view-scholarships {
   width: 175px;
   margin: 0px;
-  height: 51px;
+  height: auto; /* 40px */
   position: absolute;
   bottom: 0;
   right: 0;
   margin: 0px;
-  padding: 0px;
+  padding: 0px 5px 0px 0px;
 }
 
-.featured-sponsor-view-scholarships-img{
+.sponsor-view-scholarships-img{
   width: 100%;
+}
+
+.sponsor-no-scholarships-img {
+  width: 175px;
+  margin: 0px;
+  height: auto; /* 40px */
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 0px;
+  padding: 0px 5px 0px 0px;
 }
 
 .sponsorsearchresultscol4.text-block.description-short {
@@ -693,16 +716,6 @@ td.amcg_main_td {
 
 .button-icon-refresh {
   width: 25px;
-}
-
-.featuredbadge {
-  width: 7em;
-  height: auto;
-  position: absolute;
-  top: 5px;
-  right: 0px;
-  margin: 0px 5px 0px 0px;
-  padding: 0px;
 }
 
 .featured-scholarships-block {

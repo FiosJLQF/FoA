@@ -241,10 +241,19 @@ function buildFeaturedSponsorSearchResultDiv(selectedSponsor, matchingScholarshi
     divFeaturedSponsorCol1.classList.add('featured-sponsor-col1');
 
     // Sponsor logo
+    const lnkSponsorLogo = document.createElement('a');
+    lnkSponsorLogo.id = "lnkSponsorLogo_" + selectedSponsor['SponsorID'];
+//    lnkSponsorLogo.classList.add('sponsor-view-scholarships');
+    lnkSponsorLogo.href = selectedSponsor['SponsorWebsite'];
+    lnkSponsorLogo.target = "_blank";
+
     const imgSponsorLogo = document.createElement('img');
     imgSponsorLogo.src = selectedSponsor['SponsorLogo'];
     imgSponsorLogo.classList.add('featured-sponsor-logo');
-    divFeaturedSponsorCol1.appendChild(imgSponsorLogo);
+    imgSponsorLogo.alt = "Link to the Sponsor's Website";
+    lnkSponsorLogo.appendChild(imgSponsorLogo);
+
+    divFeaturedSponsorCol1.appendChild(lnkSponsorLogo);
 
     // Sponsor Name
     const divSponsorName = document.createElement('div');
@@ -252,14 +261,14 @@ function buildFeaturedSponsorSearchResultDiv(selectedSponsor, matchingScholarshi
     divSponsorName.innerText = selectedSponsor['SponsorName'];
     divFeaturedSponsorCol1.appendChild(divSponsorName);
 
-    // Sponsor Website
-    const lnkSponsorWebsite = document.createElement('a');
-    lnkSponsorWebsite.id = "lnkSponsorWebsite_" + selectedSponsor['SponsorWebsite'];
-    lnkSponsorWebsite.classList.add('featured-sponsor-website');
-    lnkSponsorWebsite.href = selectedSponsor['SponsorWebsite'];
-    lnkSponsorWebsite.target = "_blank";
-    lnkSponsorWebsite.innerText = selectedSponsor['SponsorWebsite'];
-    divFeaturedSponsorCol1.appendChild(lnkSponsorWebsite);
+    // Sponsor Website (deprecated 2/2022 by RB)
+//    const lnkSponsorWebsite = document.createElement('a');
+//    lnkSponsorWebsite.id = "lnkSponsorWebsite_" + selectedSponsor['SponsorWebsite'];
+//    lnkSponsorWebsite.classList.add('featured-sponsor-website');
+//    lnkSponsorWebsite.href = selectedSponsor['SponsorWebsite'];
+//    lnkSponsorWebsite.target = "_blank";
+//    lnkSponsorWebsite.innerText = selectedSponsor['SponsorWebsite'];
+//    divFeaturedSponsorCol1.appendChild(lnkSponsorWebsite);
 
     // add column 1 to the <div>
     divFeaturedSponsor.appendChild(divFeaturedSponsorCol1);
@@ -277,62 +286,90 @@ function buildFeaturedSponsorSearchResultDiv(selectedSponsor, matchingScholarshi
     imgSponsorIsFeatured.classList.add('featured-sponsor-badge');
     divFeaturedSponsorCol2.appendChild(imgSponsorIsFeatured);
 
-    // add the header text "Offering ## scholarships in"
-    const divFeaturedSponsorScholarshipCount = document.createElement('div');
-//    divFeaturedSponsorScholarshipCount.classList.add('searchresultscol3A');
-    divFeaturedSponsorScholarshipCount.textContent = 'Offering ' + matchingScholarships.length + ' scholarships in';
-    divFeaturedSponsorCol2.appendChild(divFeaturedSponsorScholarshipCount);
+    //////////////////////////////////////////////
+    // build and add the "active scholarships profile" block, if there are active scholarships
+    //////////////////////////////////////////////
+    if ( matchingScholarships.length > 0 ) {
+        // add the header text "Offering ## scholarships in"
+        const divFeaturedSponsorScholarshipCount = document.createElement('div');
+//        divFeaturedSponsorScholarshipCount.classList.add('searchresultscol3A');
+        divFeaturedSponsorScholarshipCount.textContent = 'Offering ' + matchingScholarships.length + ' scholarships in';
+        divFeaturedSponsorCol2.appendChild(divFeaturedSponsorScholarshipCount);
 
-    // add list of scholarship types (2 columns)
-    const divScholarshipTypes = document.createElement('div');
-    divScholarshipTypes.classList.add('featured-sponsor-fieldofstudy');
+        // add list of scholarship types (2 columns)
+        const divScholarshipTypes = document.createElement('div');
+        divScholarshipTypes.classList.add('featured-sponsor-fieldofstudy');
 
-    // compile a list of all Field of Study categories
-    for ( let i = 0; i < matchingScholarships.length; i++ ) {
-        fieldOfStudyListCompiled += matchingScholarships[i]['Criteria_FieldOfStudyText'] + '; ';
-    }
-    fieldOfStudyListCompiled = fieldOfStudyListCompiled.substring(0, fieldOfStudyListCompiled.length-2);
-    console.log(`FoS Raw: ${fieldOfStudyListCompiled}`);
-    const fieldOfStudyListArray = fieldOfStudyListCompiled.split('; ');
-    console.log(`FoS Count Raw: ${fieldOfStudyListArray.length}`);
-    const fieldOfStudyListUnique = fieldOfStudyListArray.filter((v, i, a) => a.indexOf(v) === i);
-    fieldOfStudyListUnique.sort();
-    console.log(`FoS Count Unique: ${fieldOfStudyListUnique.length}`);
-    console.log(`FoS Unique: ${fieldOfStudyListUnique}`);
+        // compile a list of all Field of Study categories
+        for ( let i = 0; i < matchingScholarships.length; i++ ) {
+            fieldOfStudyListCompiled += matchingScholarships[i]['Criteria_FieldOfStudyText'] + '; ';
+        }
+        fieldOfStudyListCompiled = fieldOfStudyListCompiled.substring(0, fieldOfStudyListCompiled.length-2);
+        console.log(`FoS Raw: ${fieldOfStudyListCompiled}`);
+        const fieldOfStudyListArray = fieldOfStudyListCompiled.split('; ');
+        console.log(`FoS Count Raw: ${fieldOfStudyListArray.length}`);
+        const fieldOfStudyListUnique = fieldOfStudyListArray.filter((v, i, a) => a.indexOf(v) === i);
+        fieldOfStudyListUnique.sort();
+        console.log(`FoS Count Unique: ${fieldOfStudyListUnique.length}`);
+        console.log(`FoS Unique: ${fieldOfStudyListUnique}`);
 
-    // create the first of two columns of "Field of Study" categories
-    const divScholarshipTypesCol1 = document.createElement('div');
-    divScholarshipTypesCol1.classList.add('featured-sponsor-fieldofstudy-col1');
-    for ( let i = 0; i <= Math.ceil((fieldOfStudyListUnique.length)/2)-1; i++ ) {
-        divScholarshipTypesCol1.innerHTML += '<br>' + fieldOfStudyListUnique[i];
-    }
-    divScholarshipTypes.appendChild(divScholarshipTypesCol1);
+        // create the first of two columns of "Field of Study" categories
+        const divScholarshipTypesCol1 = document.createElement('div');
+        divScholarshipTypesCol1.classList.add('featured-sponsor-fieldofstudy-col1');
+        for ( let i = 0; i <= Math.ceil((fieldOfStudyListUnique.length)/2)-1; i++ ) {
+            divScholarshipTypesCol1.innerHTML += '<br>' + fieldOfStudyListUnique[i];
+        }
+        divScholarshipTypes.appendChild(divScholarshipTypesCol1);
 
-    // create the second of two columns of "Field of Study" categories
-    const divScholarshipTypesCol2 = document.createElement('div');
-    divScholarshipTypesCol2.classList.add('featured-sponsor-fieldofstudy-col2');
-    for ( let i = Math.ceil((fieldOfStudyListUnique.length)/2); i < fieldOfStudyListUnique.length; i++ ) {
-        divScholarshipTypesCol2.innerHTML += '<br>' + fieldOfStudyListUnique[i];
-    }
-    divScholarshipTypes.appendChild(divScholarshipTypesCol2);
+        // create the second of two columns of "Field of Study" categories
+        const divScholarshipTypesCol2 = document.createElement('div');
+        divScholarshipTypesCol2.classList.add('featured-sponsor-fieldofstudy-col2');
+        for ( let i = Math.ceil((fieldOfStudyListUnique.length)/2); i < fieldOfStudyListUnique.length; i++ ) {
+            divScholarshipTypesCol2.innerHTML += '<br>' + fieldOfStudyListUnique[i];
+        }
+        divScholarshipTypes.appendChild(divScholarshipTypesCol2);
 
-    // add the two "Field of Study" category columns to its parent
-    divFeaturedSponsorCol2.append(divScholarshipTypes);
+        // add the two "Field of Study" category columns to its parent
+        divFeaturedSponsorCol2.append(divScholarshipTypes);
 
-    // "View Scholarships" button
-    const lnkViewScholarships = document.createElement('a');
-    lnkViewScholarships.id = "lnkViewScholarships_" + selectedSponsor['SponsorID'];
-    lnkViewScholarships.classList.add('featured-sponsor-view-scholarships');
-    lnkViewScholarships.href = "scholarships?sponsorid=" + selectedSponsor['SponsorID'];
-    lnkViewScholarships.target = "_blank";
+    } else {  // no active scholarships
 
-    const imgViewScholarships = document.createElement('img');
-    imgViewScholarships.src = "/img/imgViewScholarships.png";
-    imgViewScholarships.alt = "View Scholarships for this Sponsor";
-    imgViewScholarships.classList.add('featured-sponsor-view-scholarships-img');
-    lnkViewScholarships.appendChild(imgViewScholarships);
+        // add the header text "Check back for upcoming scholarships"
+        const divFeaturedSponsorScholarshipCount = document.createElement('div');
+        divFeaturedSponsorScholarshipCount.textContent = 'Check back for upcoming scholarships!';
+        divFeaturedSponsorCol2.appendChild(divFeaturedSponsorScholarshipCount);
 
-    divFeaturedSponsorCol2.appendChild(lnkViewScholarships);
+    };
+
+    /////////////////////////////////////////////////////////////
+    // "View Scholarships" button, if there are active scholarships
+    /////////////////////////////////////////////////////////////
+    if ( matchingScholarships.length > 0 ) {
+
+        const lnkViewScholarships = document.createElement('a');
+        lnkViewScholarships.id = "lnkViewScholarships_" + selectedSponsor['SponsorID'];
+        lnkViewScholarships.classList.add('sponsor-view-scholarships');
+        lnkViewScholarships.href = "scholarships?sponsorid=" + selectedSponsor['SponsorID'];
+        lnkViewScholarships.target = "_blank";
+
+        const imgViewScholarships = document.createElement('img');
+        imgViewScholarships.src = "/img/imgViewScholarships.png";
+        imgViewScholarships.alt = "View Scholarships for this Sponsor";
+        imgViewScholarships.classList.add('sponsor-view-scholarships-img');
+        lnkViewScholarships.appendChild(imgViewScholarships);
+
+        divFeaturedSponsorCol2.appendChild(lnkViewScholarships);
+
+    } else {
+
+        const imgNoActiveScholarships = document.createElement('img');
+        imgNoActiveScholarships.src = "/img/imgNoActiveScholarships.png";
+        imgNoActiveScholarships.alt = "No Active Scholarships for this Sponsor";
+        imgNoActiveScholarships.classList.add('sponsor-no-scholarships-img');
+
+        divFeaturedSponsorCol2.appendChild(imgNoActiveScholarships);
+
+    };
     
     // add column 2 to the <div>
     divFeaturedSponsor.appendChild(divFeaturedSponsorCol2);
