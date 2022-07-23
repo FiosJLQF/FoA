@@ -26,6 +26,13 @@
   // Show all active scholarships by default
   var spnRows = <%- JSON.stringify(sponsorsActiveView.rows) %>;
   var schRows = <%- JSON.stringify(scholarshipsActive.rows) %>;
-  showAllScholarships(schRows, spnRows);
+
+  // If previous values exist, then this load is the result of a search - set the controls appropriately
+  var previousValues = <%- JSON.stringify(previousValues) %>;
+  if ( typeof previousValues !== 'object' ) {
+    showAllScholarships(schRows, spnRows);
+  } else {
+    showSelectedScholarships(schRows, spnRows);
+  }
 
 </script>

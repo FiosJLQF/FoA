@@ -43,6 +43,8 @@ function loadSelectOptionsList(selectEl, notSelectedText, notSelectedValue, opti
 function toggleSearchCriteriaInputBlock(elIcon, elBlock, elInput, statusToSet) {
     // if the current display is hidden and the forced statusToSet <> "hide", then show
 
+    console.log(`Changing search criteria block display for ${elBlock.id}.`);
+
     if (statusToSet !== "hide" && elBlock.style.display !== "block") {
         elBlock.style.display = "block";
         elIcon.classList.remove("fa-chevron-down");
@@ -138,14 +140,15 @@ function convertOptionsToDelimitedString(optionsToConvert, delimiterToUse = "|",
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // parse the formatted SELECT object's "selected values"
+//     input values string must be in the format:  "|value1|value2|...|"
 //////////////////////////////////////////////////////////////////////////////////////////
-function loadSelectedValues(selectEl, selectedValuesString) {
+function loadSelectedValues(selectEl, selectedValuesString, delimiterToUse) {
 
     // get the SELECT object
     var selectObject = document.getElementById(selectEl);
 
     // convert the "selected values" delimited string to an array
-    var selectedValuesArray = selectedValuesString.split('|').slice(1, -1);
+    var selectedValuesArray = selectedValuesString.split(delimiterToUse).slice(1, -1);
 
     // for each "selected value" find and mark it in the SELECT object
     if ( selectedValuesArray.length !== 0 ) {

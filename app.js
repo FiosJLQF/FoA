@@ -1,4 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////////
+// Global Variables
+///////////////////////////////////////////////////////////////////////////////////
+global.currentUserID = 0;
+
+
+///////////////////////////////////////////////////////////////////////////////////
 // Import external libraries/files/modules, and config global variables
 ///////////////////////////////////////////////////////////////////////////////////
 const express = require('express');
@@ -12,9 +18,11 @@ const expressSession = require("express-session");
 const { auth, requiresAuth } = require('express-openid-connect');
 const port = process.env.PORT || 3000;
 const cors = require('cors');
+const rootRoutes = require('./routes/root.routes.js');
 const switchboardRoutes = require('./routes/switchboard.routes.js');
 const searchRoutes = require('./routes/search.routes.js');
 const jsFx = require('./scripts/foa_node_fx');
+const favicon = require('serve-favicon');
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -27,6 +35,7 @@ app.use(express.urlencoded( { extended: true })); // allows for parsing "body" o
 app.use(express.json());
 app.use(methodOverride('_method')); // allows use of the PUT/DELETE method extensions
 app.use(cors({origin: '*'}));
+app.use(favicon(__dirname + '/favicon.ico'));
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -34,9 +43,9 @@ app.use(cors({origin: '*'}));
 ///////////////////////////////////////////////////////////////////////////////////
 const session = {
     secret: process.env.SESSION_SECRET,
-    genid: function(req) {
-        return genuuid();
-    },
+    // genid: function(req) {
+    //     return genuuid();
+    // },
     name: process.env.SESSION_NAME,
     cookie: {
         httpOnly: true,
@@ -50,7 +59,7 @@ const session = {
 //if (app.get("env") === "production") {
 //    // Serve secure cookies, requires HTTPS
 //    session.cookie.secure = true;
-//}
+//};
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -61,6 +70,7 @@ app.set('view engine', 'ejs');  // Sets the EJS engine
 app.engine('ejs', ejsMate);
 app.use('/switchboard', switchboardRoutes);  // sets the base URL for all "switchboard" routes
 app.use('/search', searchRoutes);  // sets the base URL for all "search" routes (e.g., "/sponsorsearch")
+app.use('/', rootRoutes);  // sets the base URL for all "site root" routes !!!! MUST BE LISTED LAST AFTER OTHER ROUTES !!!!
 app.use(expressSession(session));  // uses the Session environment create above
 
 
@@ -79,79 +89,18 @@ app.use(
       auth0Logout: true
     })
 );
-
-
-///////////////////////////////////////////////////////////////////////////////////
-// Routes
-///////////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////
-// "GET" Routes (retrieve data)
-///////////////////////////////////////////
-
-app.get('/', async (req, res) => {
-    // Log access
-    try {
-        let currentUserID = await jsFx.getUserProfile(req.oidc.user.name);
-        let logEventResult = await jsFx.logEvent('Page Access', 'Root', 0, 'Informational', 'User Accessed Page',
-            0, 0, currentUserID, '');
-    } catch(e) {
-        console.log(`Current User ID lookup failed: ${e}`);
+// If a user is logged in, get the account information from the database
+async (req, res) => {
+    console.log(`req.oidc.user.name: ${req.oidc.user.name}`);
+    if ( req.oidc.user.name ) {
+        try {
+            currentUserID = await jsFx.getUserProfile(req.oidc.user.name);
+        } catch(e) {
+            console.log(`Current User ID lookup failed: ${e}`);
+        };
     };
-    // Redirect the user to the Scholarship Search Page as the default
-    res.redirect('/search/scholarships');
-});
-
-app.get('/error', async (req, res) => {
-    return res.render('error');
-});
-
-app.get('/portal', async (req, res) => {
-    try {
-        return res.render('portal', {
-            user: req.oidc.user,
-            userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
-        } )
-    } catch(err) {
-        console.log('Error:' + err);
-    }
-});
-
-app.get("/sign-up/:page", (req, res) => {
-    const { page } = req.params;
-    res.oidc.login({
-        returnTo: page,
-        authorizationParams: {
-            screen_hint: "signup",
-        },
-    });
-});
-app.get("/login/:page", (req, res) => {
-    const { page } = req.params;
-    res.oidc.login({
-      returnTo: page,
-    });
-});
-app.get("/logout/:page", (req, res) => {
-    const { page } = req.params;
-    res.oidc.logout({
-      returnTo: page,
-    });
-});
-app.get('/profile', requiresAuth(), (req, res) => {
-    res.send(JSON.stringify(req.oidc.user));
-  });
-
-
-///////////////////////////////////////////
-// Invalid Routes
-///////////////////////////////////////////
-app.get('*', async (req, res) => {
-    return res.render('error', {
-        userName: '',
-        errorCode: 901  // invalid route
-    });
-});
+};
+console.log(`Current User ID: ${currentUserID}`);
 
 
 ///////////////////////////////////////////////////////////////////////////////////

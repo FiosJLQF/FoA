@@ -761,10 +761,10 @@
         }
       });
     };
-    loadSelectedValues("criteriaMilitaryService", "<%- scholarshipDetails[0].Criteria_USMilitaryService %>");
-    loadSelectedValues("criteriaFAAPilotCertificate", "<%- scholarshipDetails[0].Criteria_FAAPilotCertificate %>");
-    loadSelectedValues("criteriaFAAPilotRating", "<%- scholarshipDetails[0].Criteria_FAAPilotRating %>");
-    loadSelectedValues("criteriaFAAMechanicCertificate", "<%- scholarshipDetails[0].Criteria_FAAMechanicCertificate %>");
+    loadSelectedValues("criteriaMilitaryService", "<%- scholarshipDetails[0].Criteria_USMilitaryService %>", "|");
+    loadSelectedValues("criteriaFAAPilotCertificate", "<%- scholarshipDetails[0].Criteria_FAAPilotCertificate %>"), "|";
+    loadSelectedValues("criteriaFAAPilotRating", "<%- scholarshipDetails[0].Criteria_FAAPilotRating %>", "|");
+    loadSelectedValues("criteriaFAAMechanicCertificate", "<%- scholarshipDetails[0].Criteria_FAAMechanicCertificate %>", "|");
 
     // Disable the controls if the user is not an FoA Admin
     if ( <%- !userIsDataAdmin %> ) {

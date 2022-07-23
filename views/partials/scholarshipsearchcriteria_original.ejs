@@ -1,0 +1,278 @@
+<div>
+    <div class="bodylayout1col1title" id="searchCriteriaTitle">Search Criteria</div>
+    <hr class="bodycol1break">
+    <div class="searchInstructions">Enter criteria below and click "search".</div><br>
+
+    <!-- Field(s) of Study -->
+    Field of Study: <button type="button" class="btn btn-default button-small"
+        onclick="toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterFieldOfStudyIcon'),
+            document.querySelector('#filterFieldOfStudyInputBlock'),
+            document.querySelector('#filterFieldOfStudyInput'), '')">
+        <i id="filterFieldOfStudyIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+    </button><br>
+    <div id="filterFieldOfStudyInputBlock" class="filter-input-block">
+        <div class="searchInstructions">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
+        <select id="filterFieldOfStudyInput" class="filter_select" multiple></select><br>
+    </div>
+
+    <!-- Sponsor Name(s) -->
+    Sponsor: <button type="button" class="btn btn-default button-small"
+        onclick="toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterSponsorNamesIcon'),
+            document.querySelector('#filterSponsorNamesInputBlock'),
+            document.querySelector('#filterSponsorNamesInput'), '')">
+        <i id="filterSponsorNamesIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+    </button><br>
+    <div id="filterSponsorNamesInputBlock" class="filter-input-block">
+        <div class="searchInstructions">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
+        <select id="filterSponsorNamesInput" class="filter_select" multiple></select><br>
+    </div>
+
+    <!-- Gender -->
+<!--
+    Gender: <button type="button" class="btn btn-default button-small"
+        onclick="toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterGenderIcon'),
+            document.querySelector('#filterGenderInputBlock'),
+            document.querySelector('#filterGenderInput'), '')">
+        <i id="filterGenderIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+    </button><br>
+    <div id="filterGenderInputBlock" class="filter-input-block">
+        <select id="filterGenderInput" class="filter_select"></select><br>
+    </div>
+-->
+    <!-- Age -->
+        Age: <button type="button" class="btn btn-default button-small"
+        onclick="toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterAgeIcon'),
+            document.querySelector('#filterAgeInputBlock'),
+            document.querySelector('#filterAgeInput'), '')">
+        <i id="filterAgeIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+    </button><br>
+    <div id="filterAgeInputBlock" class="filter-input-block">
+<!--        <div class="searchInstructions">(Enter an age between 16 and 99)</div>    -->
+        <span id="filterAgeInputError"></span>
+        <input type="text" id="filterAgeInput" class="filter-input filter_textbox" placeholder="##"><br>
+    </div>
+
+    <!-- Citizenship -->
+    Citizenship: <button type="button" class="btn btn-default button-small"
+        onclick="toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterCitizenshipIcon'),
+            document.querySelector('#filterCitizenshipInputBlock'),
+            document.querySelector('#filterCitizenshipInput'), '')">
+        <i id="filterCitizenshipIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+    </button><br>
+    <div id="filterCitizenshipInputBlock" class="filter-input-block">
+        <select id="filterCitizenshipInput" class="filter_select"></select><br>
+    </div>
+
+    <!-- Year of Need / Desired Program -->
+    Year of Need / Desired Program: <button type="button" class="btn btn-default button-small"
+        onclick="toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterYearOfNeedIcon'),
+            document.querySelector('#filterYearOfNeedInputBlock'),
+            document.querySelector('#filterYearOfNeedInput'), '')">
+        <i id="filterYearOfNeedIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+    </button><br>
+    <div id="filterYearOfNeedInputBlock" class="filter-input-block">
+        <select id="filterYearOfNeedInput" class="filter_select"></select><br>
+    </div>  
+
+    <!-- Keyword(s) -->
+    Keywords: <button type="button" class="btn btn-default button-small"
+        onclick="toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterKeywordsIcon'),
+            document.querySelector('#filterKeywordsInputBlock'),
+            document.querySelector('#filterKeywordsInput'), '')">
+        <i id="filterKeywordsIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+    </button><br>
+    <div id="filterKeywordsInputBlock" class="filter-input-block">
+        <div class="searchInstructions">(Separate words/phrases with commas)</div>
+        <input type="text" id="filterKeywordsInput" class="filter-input filter_textbox"><br>
+    </div>
+
+<!-- "Advanced Search" section -->
+<span onclick="toggleAdvancedSearchCriteriaInputBlock(
+    document.querySelector('#advancedSearchIcon'),
+    document.querySelector('#advancedSearchInputBlock'), '', '')"
+    class="textbold">Advanced Search: </span>
+<span>
+<button type="button" class="btn btn-default button-small"
+        onclick="toggleAdvancedSearchCriteriaInputBlock(
+            document.querySelector('#advancedSearchIcon'),
+            document.querySelector('#advancedSearchInputBlock'), '', '')">
+        <i id="advancedSearchIcon" class="fas fa-angle-double-down expand-filter chevrons"></i>
+    </button>
+</span><br>
+
+<div id="advancedSearchInputBlock" class="filter-input-block advanced-search-criteria">
+
+    <!-- Gender -->
+    Female Applicant: <button type="button" class="btn btn-default button-small"
+        onclick="toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterGenderIcon'),
+            document.querySelector('#filterGenderInputBlock'),
+            document.querySelector('#filterGenderInput'), '')">
+        <i id="filterGenderIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+    </button><br>
+    <div id="filterGenderInputBlock" class="filter-input-block">
+        <select id="filterGenderInput" class="filter_select"></select><br>
+    </div>
+
+    <!-- Enrollment Status -->
+    College Enrollment Status: <button type="button" class="btn btn-default button-small"
+        onclick="toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterEnrollmentStatusIcon'),
+            document.querySelector('#filterEnrollmentStatusInputBlock'),
+            document.querySelector('#filterEnrollmentStatusInput'), '')">
+        <i id="filterEnrollmentStatusIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+    </button><br>
+    <div id="filterEnrollmentStatusInputBlock" class="filter-input-block">
+        <select id="filterEnrollmentStatusInput" class="filter_select"></select><br>
+    </div>
+
+    <!-- GPA -->
+    GPA: <button type="button" class="btn btn-default button-small"
+        onclick="toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterGPAIcon'),
+            document.querySelector('#filterGPAInputBlock'),
+            document.querySelector('#filterGPAInput'), '')">
+        <i id="filterGPAIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+    </button><br>
+    <div id="filterGPAInputBlock" class="filter-input-block">
+        <div class="searchInstructions">(Enter a number between 0.00 and 4.00)</div>
+        <span id="filterGPAInputError"></span>
+        <input type="text" id="filterGPAInput" class="filter-input filter_textbox"><br>
+    </div>
+
+    <!-- U.S. Military Service -->
+    U.S. Military Service: <button type="button" class="btn btn-default button-small"
+        onclick="toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterUSMilitaryServiceIcon'),
+            document.querySelector('#filterUSMilitaryServiceInputBlock'),
+            document.querySelector('#filterUSMilitaryServiceInput'), '')">
+        <i id="filterUSMilitaryServiceIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+    </button><br>
+    <div id="filterUSMilitaryServiceInputBlock" class="filter-input-block">
+        <select id="filterUSMilitaryServiceInput" class="filter_select"></select><br>
+    </div>
+
+    <!-- FAA Pilot Airman Certificate -->
+    FAA Pilot Airman Certificate<br>
+    <span class="searchInstructions">&nbsp;&nbsp;&nbsp;(Interested In / Currently Obtaining)</span>
+    <button type="button" class="btn btn-default button-small"
+        onclick="toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterFAAPilotCertificateIcon'),
+            document.querySelector('#filterFAAPilotCertificateInputBlock'),
+            document.querySelector('#filterFAAPilotCertificateInput'), '')">
+        <i id="filterFAAPilotCertificateIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+    </button><br>
+    <div id="filterFAAPilotCertificateInputBlock" class="filter-input-block">
+        <div class="searchInstructions">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
+        <select id="filterFAAPilotCertificateInput" class="filter_select" multiple></select><br>
+    </div>
+
+    <!-- FAA Pilot Airman Rating -->
+    FAA Pilot Airman Rating<br>
+    <span class="searchInstructions">&nbsp;&nbsp;&nbsp;(Interested In / Currently Obtaining)</span>
+    <button type="button" class="btn btn-default button-small"
+        onclick="toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterFAAPilotRatingIcon'),
+            document.querySelector('#filterFAAPilotRatingInputBlock'),
+            document.querySelector('#filterFAAPilotRatingInput'), '')">
+        <i id="filterFAAPilotRatingIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+    </button><br>
+    <div id="filterFAAPilotRatingInputBlock" class="filter-input-block">
+        <div class="searchInstructions">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
+        <select id="filterFAAPilotRatingInput" class="filter_select" multiple></select><br>
+    </div>
+
+    <!-- FAA Mechanic Airman Certificate/Rating -->
+    FAA Mechanic Airman Cert./Ratings<br>
+    <span class="searchInstructions">&nbsp;&nbsp;&nbsp;(Interested In / Currently Obtaining)</span>
+    <button type="button" class="btn btn-default button-small"
+        onclick="toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterFAAMechanicCertRatingIcon'),
+            document.querySelector('#filterFAAMechanicCertRatingInputBlock'),
+            document.querySelector('#filterFAAMechanicCertRatingInput'), '')">
+        <i id="filterFAAMechanicCertRatingIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+    </button><br>
+    <div id="filterFAAMechanicCertRatingInputBlock" class="filter-input-block">
+        <div class="searchInstructions">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
+        <select id="filterFAAMechanicCertRatingInput" class="filter_select" multiple></select><br>
+    </div>
+
+</div>    <!-- end "Advanced Search" section -->
+
+<br>
+
+    <div style="text-align:left">
+        <button type="button" class="btn btn-default button-search" onclick="searchScholarships(schRows, spnRows);">
+            <img src="/img/imgMagnifyingGlass.png" alt="Magnifying Glass" class="img-responsive button-icon-magglass">
+            Search
+        </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-default button-search" onclick="showAllScholarships(schRows, spnRows);">
+            <img src="/img/imgRefresh.png" alt="arrow circling clockwise" class="img-responsive button-icon-refresh">
+            Reset Search
+        </button>
+        <!-- <button type="button" class="btn btn-default button-small" onclick="showAllScholarships(schRows);">
+            >> Show All Scholarships
+        </button><br>
+        <button type="button" class="btn btn-default button-small" onclick="clearScholarshipSearchCriteria();">
+            >> Reset Search
+        </button> -->
+    </div>
+
+</div>
+
+<script>
+
+    // Set the browser tab name (i.e., title)
+    document.title = "Future of Aviation - Scholarship Search";
+
+    // Load the Field of Study options into the DDL
+    var fosRows = <%- JSON.stringify(fieldOfStudyCategoriesDDL.rows) %>;
+    loadSelectOptionsList("filterFieldOfStudyInput", "(Not Selected)", 0, fosRows);
+
+    // Load the Sponsor List into the DDL
+    var splRows = <%- JSON.stringify(sponsorsActiveDDL.rows) %>;
+    loadSelectOptionsList("filterSponsorNamesInput", "(Not Selected)", 0, splRows);
+
+    // Load the Gender options into the DDL
+    var genRows = <%- JSON.stringify(genderCategoriesDDL.rows) %>;
+    loadSelectOptionsList("filterGenderInput", "(Not Selected)", 0, genRows);
+
+    // Load the Citizenship options into the DDL
+    var citRows = <%- JSON.stringify(citizenshipCategoriesDDL.rows) %>;
+    loadSelectOptionsList("filterCitizenshipInput", "(Not Selected)", 0, citRows);
+
+    // Load the Year of Need options into the DDL
+    var yonRows = <%- JSON.stringify(yearOfNeedCategoriesDDL.rows) %>;
+    loadSelectOptionsList("filterYearOfNeedInput", "(Not Selected)", 0, yonRows);
+
+    // Load the Enrollment Status options into the DDL
+    var esRows = <%- JSON.stringify(enrollmentStatusCategoriesDDL.rows) %>;
+    loadSelectOptionsList("filterEnrollmentStatusInput", "(Not Selected)", 0, esRows);
+
+    // Load the Military Service Type options into the DDL
+    var msRows = <%- JSON.stringify(militaryServiceCategoriesDDL.rows) %>;
+    loadSelectOptionsList("filterUSMilitaryServiceInput", "(Not Selected)", 0, msRows);
+
+    // Load the FAA Pilot Certificate options into the DDL
+    var fpcRows = <%- JSON.stringify(faaPilotCertificateCategoriesDDL.rows) %>;
+    loadSelectOptionsList("filterFAAPilotCertificateInput", "(Not Selected)", 0, fpcRows);
+
+    // Load the FAA Pilot Rating options into the DDL
+    var fprRows = <%- JSON.stringify(faaPilotRatingCategoriesDDL.rows) %>;
+    loadSelectOptionsList("filterFAAPilotRatingInput", "(Not Selected)", 0, fprRows);
+
+    // Load the FAA Mechanic Certificate options into the DDL
+    var fmcRows = <%- JSON.stringify(faaMechanicCertificateCategoriesDDL.rows) %>;
+    loadSelectOptionsList("filterFAAMechanicCertRatingInput", "(Not Selected)", 0, fmcRows);
+
+    // Load all active scholarships into the "Search" button destinations
+    var schRows = <%- JSON.stringify(scholarshipsActive.rows) %>;
+
+</script>

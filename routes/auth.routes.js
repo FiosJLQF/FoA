@@ -68,6 +68,7 @@ router.get("/logout", (req, res) => {
 // Invalid Routes
 ///////////////////////////////////////////
 router.get('*', async (req, res) => {
+  console.log(`Invalid route: ${req.url}`);
   return res.render('error', {
       userName: '',
       errorCode: 901  // invalid route

@@ -12,6 +12,9 @@ const { ScholarshipsTable, /* ScholarshipsTableTest, */ ScholarshipsActive, /* S
     FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
     UsersAllDDL, UserPermissionsActive, UserProfiles
     } = require('../models/sequelize.js');
+const jsFx = require('../scripts/foa_node_fx');
+const jsSearchFx = require('../scripts/foa_search_scripts');
+const { Op } = require('sequelize');  // enables WHERE clause operators
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -36,12 +39,24 @@ router.use(
 ///////////////////////////////////////////////////////////////////////////////////
 
 router.get('/', (req, res) => {
+    // Log access
+    try {
+        let logEventResult = jsFx.logEvent('Page Access', 'Search Root', 0, 'Informational', 'User Accessed Page',
+            0, 0, currentUserID, '');
+    } catch(e) {
+        console.log(`Log event failed: ${e}`);
+    };
+    // Redirect to scholarship search page (default)
     res.redirect('/search/scholarships');
 });
 
 router.get('/scholarships', async (req, res) => {
 
+    console.log('\search\scholarships requested.');
+    console.log(`req.query.filterFieldOfStudyInput: ${req.query.filterFieldOfStudyInput}`);
+
     // local variables
+    let previousValues = '';    // added for compatibility with reload after POST
     let sponsorIDRequested = '';
     let scholarshipsActive = '';
     let sponsorsActiveView = '';
@@ -82,6 +97,13 @@ router.get('/scholarships', async (req, res) => {
     };  // End "sponsorid" validation checks
 
     ////////////////////////////////////////////////////
+    // Transform submitted data for search logic
+    ////////////////////////////////////////////////////
+    const criteriaFieldOfStudyFormatted = jsFx.convertOptionsToDelimitedString(req.body.filterFieldOfStudyInput, "|", "0", "false");
+console.log(`criteriaFieldOfStudy string: ${criteriaFieldOfStudyFormatted}`);
+
+
+    ////////////////////////////////////////////////////
     // Retrieve data from database
     ////////////////////////////////////////////////////
 
@@ -106,6 +128,14 @@ router.get('/scholarships', async (req, res) => {
     const faaPilotRatingCategoriesDDL = await FAAPilotRatingCategoriesDDL.findAndCountAll({});
     const faaMechanicCertificateCategoriesDDL = await FAAMechanicCertificateCategoriesDDL.findAndCountAll({});
 
+    // Log access
+    try {
+        let logEventResult = jsFx.logEvent('Page Access', 'Scholarship Search', 0, 'Informational', 'User Accessed Page',
+            0, 0, currentUserID, '');
+    } catch(e) {
+        console.log(`Log event failed: ${e}`);
+    };
+
     // render the page
     res.render('scholarshipsearch', {
         userName: ( req.oidc.user == null ? '' : req.oidc.user.name ), 
@@ -114,7 +144,168 @@ router.get('/scholarships', async (req, res) => {
         sponsorsActiveView, 
         fieldOfStudyCategoriesDDL, sponsorsActiveDDL, genderCategoriesDDL, citizenshipCategoriesDDL, yearOfNeedCategoriesDDL, 
         enrollmentStatusCategoriesDDL, militaryServiceCategoriesDDL, faaPilotCertificateCategoriesDDL,
-        faaPilotRatingCategoriesDDL, faaMechanicCertificateCategoriesDDL
+        faaPilotRatingCategoriesDDL, faaMechanicCertificateCategoriesDDL,
+        previousValues: previousValues
+    });
+});
+
+////////////////////////////////////////////////////
+// Scholarship Search POST Response
+////////////////////////////////////////////////////
+router.post('/scholarships', async (req, res) => {
+
+    // local variables
+    let scholarshipsActive = '';
+    let sponsorsActiveView = '';
+    let criteriaFieldOfStudyFormatted = [];
+    let criteriaSponsorFormatted = [];
+
+    ////////////////////////////////////////////////////
+    // Transform submitted data for search logic
+    ////////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////////
+    // Retrieve data from database
+    ////////////////////////////////////////////////////
+
+    //////////////////////////////////////
+    // Field(s) of Study
+    //////////////////////////////////////
+        try {
+            criteriaFieldOfStudyFormatted = await jsSearchFx.formatSearchCriteriaArray(req.body.filterFieldOfStudyInput)
+        }
+        catch(e) {
+            let logEventResult = jsFx.logEvent('Scholarship Search Criteria Formatting', 'Field of Study', 0, 'Error',
+            e.message, 0, 0, currentUserID, '');
+        };
+    console.log(`criteriaFieldOfStudyFormatted.searchCriteriaSearchFormat: ${criteriaFieldOfStudyFormatted.searchCriteriaSearchFormat}`);
+    // Log search criteria
+    if ( criteriaFieldOfStudyFormatted.searchCriteriaSearchFormat !== '{}' ) {
+        try {
+            let logEventResult = jsFx.logEvent('Scholarship Search', 'Field of Study', 0, 'Informational',
+            criteriaFieldOfStudyFormatted.searchCriteriaLogFormat, 0, 0, currentUserID, '');
+        } catch(e) {
+            console.log(`Log event failed: ${e}`);
+        };
+    };
+    //////////////////////////////////////
+    // Sponsor(s)
+    //////////////////////////////////////
+    try {
+        criteriaSponsorFormatted = await jsSearchFx.formatSearchCriteriaArray(req.body.filterSponsorNamesInput);
+    }
+    catch(e) {
+        let logEventResult = jsFx.logEvent('Sponsor Search Criteria Formatting', 'Sponsor', 0, 'Error',
+        e.message, 0, 0, currentUserID, '');
+    };
+    console.log(`criteriaSponsorFormatted.searchCriteriaSearchFormat: ${criteriaSponsorFormatted.searchCriteriaSearchFormat}`);
+    // Log search criteria
+    if ( criteriaSponsorFormatted.searchCriteriaSearchFormat !== '{}' ) {
+        try {
+            let logEventResult = jsFx.logEvent('Scholarship Search', 'Sponsor', 0, 'Informational',
+            criteriaSponsorFormatted.searchCriteriaLogFormat, 0, 0, currentUserID, '');
+        } catch(e) {
+            console.log(`Log event failed: ${e}`);
+        };
+    };
+    //////////////////////////////////////
+    // Age
+    //////////////////////////////////////
+    criteriaAge = req.body.filterAgeInput;
+    console.log(`criteriaAge: ${criteriaAge}`);
+    // Log search criteria
+    if ( criteriaAge.length > 0 ) {
+        try {
+            let logEventResult = jsFx.logEvent('Scholarship Search', 'Age', 0, 'Informational',
+            criteriaAge, 0, 0, currentUserID, '');
+        } catch(e) {
+            console.log(`Log event failed: ${e}`);
+        };
+    };
+
+    // add the search parameters, and find the resultant records
+    try {
+        scholarshipsActive = await ScholarshipsActive.findAndCountAll( {
+            where: {
+                [Op.or]: {
+                    Criteria_FieldOfStudy: {
+                        [Op.like]: {    
+                            [Op.any]: criteriaFieldOfStudyFormatted.searchCriteriaSearchFormat } },
+                    SponsorID: {
+                        [Op.like]: {    
+                            [Op.any]: criteriaSponsorFormatted.searchCriteriaSearchFormat } },
+                    // [Op.and]: {
+                    //     Criteria_AgeMinimum: {
+                    //         [Op.lt]: criteriaAge },
+                    //     Criteria_AgeMaximum: {
+                    //         [Op.gt]: criteriaAge }
+                    // },
+                            
+
+
+// TODO:  Add remaining criteria
+
+
+
+
+
+                } } } );
+    } catch(e) {
+        console.log(e);
+    };
+
+    // Get a list of all active Sponsors
+    sponsorsActiveView = await SponsorsActiveView.findAndCountAll({});
+    console.log(`active scholarships: ${scholarshipsActive.count}`);
+
+    // Get the ranking for each matching scholarship
+    for (let matchingScholarship of scholarshipsActive.rows) {
+        console.log(`matchingScholarship[name]: ${matchingScholarship['ScholarshipName']}`);
+
+// TODO: create function scholarshipSearchResultRank(matchingScholarship, req.body)
+
+
+
+
+
+
+
+
+
+    };
+
+    ///////////////////////////////////////////////////
+    // get the options data for the SELECT objects
+    ///////////////////////////////////////////////////
+    const fieldOfStudyCategoriesDDL = await FieldOfStudyCategoriesDDL.findAndCountAll({});
+    const sponsorsActiveDDL = await SponsorsActiveDDL.findAndCountAll({});
+    const genderCategoriesDDL = await GenderCategoriesDDL.findAndCountAll({});
+    const citizenshipCategoriesDDL = await CitizenshipCategoriesDDL.findAndCountAll({});
+    const yearOfNeedCategoriesDDL = await YearOfNeedCategoriesDDL.findAndCountAll({});
+    const enrollmentStatusCategoriesDDL = await EnrollmentStatusCategoriesDDL.findAndCountAll({});
+    const militaryServiceCategoriesDDL = await MilitaryServiceCategoriesDDL.findAndCountAll({});
+    const faaPilotCertificateCategoriesDDL = await FAAPilotCertificateCategoriesDDL.findAndCountAll({});
+    const faaPilotRatingCategoriesDDL = await FAAPilotRatingCategoriesDDL.findAndCountAll({});
+    const faaMechanicCertificateCategoriesDDL = await FAAMechanicCertificateCategoriesDDL.findAndCountAll({});
+
+    // Log access
+    try {
+        let logEventResult = jsFx.logEvent('Page Access', 'Scholarship Search', 0, 'Informational', 'User Accessed Page',
+            0, 0, currentUserID, '');
+    } catch(e) {
+        console.log(`Log event failed: ${e}`);
+    };
+
+    // render the page
+    res.render('scholarshipsearch', {
+        userName: ( req.oidc.user == null ? '' : req.oidc.user.name ), 
+        pageTitle: "Scholarship Search",
+        scholarshipsActive, 
+        sponsorsActiveView, 
+        fieldOfStudyCategoriesDDL, sponsorsActiveDDL, genderCategoriesDDL, citizenshipCategoriesDDL, yearOfNeedCategoriesDDL, 
+        enrollmentStatusCategoriesDDL, militaryServiceCategoriesDDL, faaPilotCertificateCategoriesDDL,
+        faaPilotRatingCategoriesDDL, faaMechanicCertificateCategoriesDDL,
+        previousValues: req.body
     });
 });
 
@@ -132,6 +323,7 @@ router.get('/sponsors', async (req, res) => {
         sponsorTypeCategoriesDDL, 
         scholarshipsActive });
 });
+
 
 ///////////////////////////////////////////
 // Invalid Routes
