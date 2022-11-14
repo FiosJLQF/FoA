@@ -5,7 +5,8 @@ const express = require("express");
 const router = express.Router();
 const { auth, requiresAuth } = require('express-openid-connect');
 require("dotenv").config();  // load all ".env" variables into "process.env" for use
-const jsFx = require('../scripts/foa_node_fx');
+//const jsFx = require('../scripts/foa_fx_server');
+const commonFx = require('../scripts/common_fx_server');
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -36,7 +37,7 @@ router.use(
 router.get('/', (req, res) => {
     // Log access
     try {
-        let logEventResult = jsFx.logEvent('Page Access', 'Root', 0, 'Informational', 'User Accessed Page',
+        let logEventResult = commonFx.logEvent('Page Access', 'Root', 0, 'Informational', 'User Accessed Page',
             0, 0, currentUserID, '');
     } catch(e) {
         console.log(`Log event failed: ${e}`);
@@ -54,7 +55,7 @@ router.get('/portal', (req, res) => {
 //    console.log(`Accessing portal page`);
     // Log access
     try {
-        let logEventResult = jsFx.logEvent('Page Access', 'Portal', 0, 'Informational', 'User Accessed Page',
+        let logEventResult = commonFx.logEvent('Page Access', 'Portal', 0, 'Informational', 'User Accessed Page',
             0, 0, currentUserID, '');
     } catch(e) {
         console.log(`Log event failed: ${e}`);
@@ -73,7 +74,7 @@ router.get('/portal', (req, res) => {
 router.get("/sign-up/:page", (req, res) => {
     // Log access
     try {
-        let logEventResult = jsFx.logEvent('Page Access', 'Sign-up', 0, 'Informational', 'User Accessed Page',
+        let logEventResult = commonFx.logEvent('Page Access', 'Sign-up', 0, 'Informational', 'User Accessed Page',
             0, 0, currentUserID, '');
     } catch(e) {
         console.log(`Log event failed: ${e}`);
@@ -91,7 +92,7 @@ router.get("/sign-up/:page", (req, res) => {
 router.get("/login/:page", (req, res) => {
     // Log access
     try {
-        let logEventResult = jsFx.logEvent('Page Access', 'Log-in', 0, 'Informational', 'User Accessed Page',
+        let logEventResult = commonFx.logEvent('Page Access', 'Log-in', 0, 'Informational', 'User Accessed Page',
             0, 0, currentUserID, '');
     } catch(e) {
         console.log(`Log event failed: ${e}`);
@@ -106,7 +107,7 @@ router.get("/login/:page", (req, res) => {
 router.get("/logout/:page", (req, res) => {
     // Log access
     try {
-        let logEventResult = jsFx.logEvent('Page Access', 'Log-out', 0, 'Informational', 'User Accessed Page',
+        let logEventResult = commonFx.logEvent('Page Access', 'Log-out', 0, 'Informational', 'User Accessed Page',
             0, 0, currentUserID, '');
     } catch(e) {
         console.log(`Log event failed: ${e}`);
@@ -121,7 +122,7 @@ router.get("/logout/:page", (req, res) => {
 router.get('/profile', requiresAuth(), (req, res) => {
     // Log access
     try {
-        let logEventResult = jsFx.logEvent('Page Access', 'Profile', 0, 'Informational', 'User Accessed Page',
+        let logEventResult = commonFx.logEvent('Page Access', 'Profile', 0, 'Informational', 'User Accessed Page',
             0, 0, currentUserID, '');
     } catch(e) {
         console.log(`Log event failed: ${e}`);
@@ -141,7 +142,7 @@ router.get('*', (req, res) => {
 //    console.log(`Invalid route: ${req.url}`);
     // Log access
     try {
-        let logEventResult = jsFx.logEvent('Page Access', req.url, 0, 'Error', 'Attempted Access to Invalid Page',
+        let logEventResult = commonFx.logEvent('Page Access', req.url, 0, 'Error', 'Attempted Access to Invalid Page',
             0, 0, currentUserID, '');
     } catch(e) {
         console.log(`Log event failed: ${e}`);

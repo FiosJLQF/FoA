@@ -15,7 +15,7 @@ const cors = require('cors');
 const miscellaneousRoutes = require('./routes/miscellaneous.routes.js');
 const switchboardRoutes = require('./routes/switchboard.routes.js');
 const searchRoutes = require('./routes/search.routes.js');
-const jsFx = require('./scripts/foa_node_fx');
+const jsFx = require('./scripts/foa_fx_server');
 let currentUserID = '';
 
 

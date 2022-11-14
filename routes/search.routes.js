@@ -5,15 +5,18 @@ const express = require("express");
 const router = express.Router();
 const { auth, requiresAuth } = require('express-openid-connect');
 require("dotenv").config();  // load all ".env" variables into "process.env" for use
-const { ScholarshipsTable, /* ScholarshipsTableTest, */ ScholarshipsActive, /* ScholarshipsActiveDDL, */ ScholarshipsAllDDL,
-    SponsorsAllView, SponsorsAllDDL, SponsorsActiveView, SponsorsActiveDDL,
-    GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
-    EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
-    FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL,
-    UsersAllDDL, UserPermissionsActive, UserProfiles
-    } = require('../models/sequelize.js');
-const jsFx = require('../scripts/foa_node_fx');
+const { ScholarshipsActive, SponsorsAllView, SponsorsActiveView, SponsorsActiveDDL,
+        GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
+        EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
+        FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL, SponsorTypeCategoriesDDL
+    } = require('../models/sequelize_foa.js');
+const { UsersTable, UsersAllView, UsersAllDDL, 
+        UserPermissionsActive, UserPermissionsAllDDL, UserPermissionsAllView, UserPermissionsTable,
+        UserPermissionCategoriesAllDDL
+    } = require('../models/sequelize_common.js');
+//const jsFx = require('../scripts/foa_fx_server');
 const jsSearchFx = require('../scripts/foa_search_scripts');
+const commonFx = require('../scripts/common_fx_server');
 const { Op } = require('sequelize');  // enables WHERE clause operators
 
 
@@ -41,7 +44,7 @@ router.use(
 router.get('/', (req, res) => {
     // Log access
     try {
-        let logEventResult = jsFx.logEvent('Page Access', 'Search Root', 0, 'Informational', 'User Accessed Page',
+        let logEventResult = commonFx.logEvent('Page Access', 'Search Root', 0, 'Informational', 'User Accessed Page',
             0, 0, currentUserID, '');
     } catch(e) {
         console.log(`Log event failed: ${e}`);
@@ -71,7 +74,7 @@ router.get('/scholarships', async (req, res) => {
         if ( sponsorIDRequested == 0 || sponsorIDRequested === '' || Number.isNaN(sponsorIDRequested)) {
             errorCode = 908; // Invalid, missing or non-existent SponsorID
             // Log the event
-            let logEventResult = await jsFx.logEvent('SponsorID Validation', '', 0, 'Failure',
+            let logEventResult = await commonFx.logEvent('SponsorID Validation', '', 0, 'Failure',
                 `SponsorID is not a valid format (${req.query['sponsorid']})`,
                 0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
             // redirect the user to the error screen
@@ -84,7 +87,7 @@ router.get('/scholarships', async (req, res) => {
             if ( doesSponsorIDExist.count == 0 ) {
                 errorCode = 908; // Invalid, missing or non-existent SponsorID
                 // Log the event
-                let logEventResult = await jsFx.logEvent('SponsorID Validation', '', 0, 'Failure',
+                let logEventResult = await commonFx.logEvent('SponsorID Validation', '', 0, 'Failure',
                     `SponsorID does not exist (${req.query['sponsorid']})`,
                     0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
                 // redirect the user to the error screen
@@ -99,7 +102,7 @@ router.get('/scholarships', async (req, res) => {
     ////////////////////////////////////////////////////
     // Transform submitted data for search logic
     ////////////////////////////////////////////////////
-    const criteriaFieldOfStudyFormatted = jsFx.convertOptionsToDelimitedString(req.body.filterFieldOfStudyInput, "|", "0", "false");
+    const criteriaFieldOfStudyFormatted = commonFx.convertOptionsToDelimitedString(req.body.filterFieldOfStudyInput, "|", "0", "false");
 console.log(`criteriaFieldOfStudy string: ${criteriaFieldOfStudyFormatted}`);
 
 
@@ -130,7 +133,7 @@ console.log(`criteriaFieldOfStudy string: ${criteriaFieldOfStudyFormatted}`);
 
     // Log access
     try {
-        let logEventResult = jsFx.logEvent('Page Access', 'Scholarship Search', 0, 'Informational', 'User Accessed Page',
+        let logEventResult = commonFx.logEvent('Page Access', 'Scholarship Search', 0, 'Informational', 'User Accessed Page',
             0, 0, currentUserID, '');
     } catch(e) {
         console.log(`Log event failed: ${e}`);
@@ -175,14 +178,14 @@ router.post('/scholarships', async (req, res) => {
             criteriaFieldOfStudyFormatted = await jsSearchFx.formatSearchCriteriaArray(req.body.filterFieldOfStudyInput)
         }
         catch(e) {
-            let logEventResult = jsFx.logEvent('Scholarship Search Criteria Formatting', 'Field of Study', 0, 'Error',
+            let logEventResult = commonFx.logEvent('Scholarship Search Criteria Formatting', 'Field of Study', 0, 'Error',
             e.message, 0, 0, currentUserID, '');
         };
     console.log(`criteriaFieldOfStudyFormatted.searchCriteriaSearchFormat: ${criteriaFieldOfStudyFormatted.searchCriteriaSearchFormat}`);
     // Log search criteria
     if ( criteriaFieldOfStudyFormatted.searchCriteriaSearchFormat !== '{}' ) {
         try {
-            let logEventResult = jsFx.logEvent('Scholarship Search', 'Field of Study', 0, 'Informational',
+            let logEventResult = commonFx.logEvent('Scholarship Search', 'Field of Study', 0, 'Informational',
             criteriaFieldOfStudyFormatted.searchCriteriaLogFormat, 0, 0, currentUserID, '');
         } catch(e) {
             console.log(`Log event failed: ${e}`);
@@ -195,14 +198,14 @@ router.post('/scholarships', async (req, res) => {
         criteriaSponsorFormatted = await jsSearchFx.formatSearchCriteriaArray(req.body.filterSponsorNamesInput);
     }
     catch(e) {
-        let logEventResult = jsFx.logEvent('Sponsor Search Criteria Formatting', 'Sponsor', 0, 'Error',
+        let logEventResult = commonFx.logEvent('Sponsor Search Criteria Formatting', 'Sponsor', 0, 'Error',
         e.message, 0, 0, currentUserID, '');
     };
     console.log(`criteriaSponsorFormatted.searchCriteriaSearchFormat: ${criteriaSponsorFormatted.searchCriteriaSearchFormat}`);
     // Log search criteria
     if ( criteriaSponsorFormatted.searchCriteriaSearchFormat !== '{}' ) {
         try {
-            let logEventResult = jsFx.logEvent('Scholarship Search', 'Sponsor', 0, 'Informational',
+            let logEventResult = commonFx.logEvent('Scholarship Search', 'Sponsor', 0, 'Informational',
             criteriaSponsorFormatted.searchCriteriaLogFormat, 0, 0, currentUserID, '');
         } catch(e) {
             console.log(`Log event failed: ${e}`);
@@ -216,7 +219,7 @@ router.post('/scholarships', async (req, res) => {
     // Log search criteria
     if ( criteriaAge.length > 0 ) {
         try {
-            let logEventResult = jsFx.logEvent('Scholarship Search', 'Age', 0, 'Informational',
+            let logEventResult = commonFx.logEvent('Scholarship Search', 'Age', 0, 'Informational',
             criteriaAge, 0, 0, currentUserID, '');
         } catch(e) {
             console.log(`Log event failed: ${e}`);
@@ -290,7 +293,7 @@ router.post('/scholarships', async (req, res) => {
 
     // Log access
     try {
-        let logEventResult = jsFx.logEvent('Page Access', 'Scholarship Search', 0, 'Informational', 'User Accessed Page',
+        let logEventResult = commonFx.logEvent('Page Access', 'Scholarship Search', 0, 'Informational', 'User Accessed Page',
             0, 0, currentUserID, '');
     } catch(e) {
         console.log(`Log event failed: ${e}`);

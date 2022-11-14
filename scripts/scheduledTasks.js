@@ -1,4 +1,6 @@
-const jsFx = require('./foa_node_fx');
+const jsFx = require('./foa_fx_server');
+const commonFx = require('../common_fx_server');
+
 //const { SponsorsDDL, SponsorTypeCategoriesDDL } = require('../models/sequelize.js');
 
 /**************************************************************************************************
@@ -40,7 +42,7 @@ async function checkTasksToRun() {
   if ( today.getDate() === 1 ) { // Run on the 1st of the month
     let scholarshipDatesResult = scholarshipDates(today, sequelize);
   } else {
-    let emailResultError = jsFx.sendEmail('fiosjlqf@gmail.com', `Today is the ${today.getDate()} day of the month`, '', '');
+    let emailResultError = commonFx.sendEmail('fiosjlqf@gmail.com', `Today is the ${today.getDate()} day of the month`, '', '');
   };
 
 }; // end checkTasksToRun
@@ -55,10 +57,10 @@ function scholarshipDates(today, sequelize) {
     { type: sequelize.QueryTypes.SELECT })
   .then( async htmlTable => {
     // send the email notification
-    let emailResultError = jsFx.sendEmail('fiosjlqf@gmail.com; rblackford@amcg.aero', 'Scholarship Date(s) Notifications', '',
+    let emailResultError = commonFx.sendEmail('fiosjlqf@gmail.com; rblackford@amcg.aero', 'Scholarship Date(s) Notifications', '',
       htmlTable[0].TableDef);
     // log the event
-    let logEventResult = await jsFx.logEvent('Scheduled Task', 'scholarshipDates', 0,
+    let logEventResult = await commonFx.logEvent('Scheduled Task', 'scholarshipDates', 0,
       'Success', '', 0, 0, 0, process.env.EMAIL_WEBMASTER_LIST);
   });
 

@@ -8,7 +8,8 @@ require("dotenv").config();  // load all ".env" variables into "process.env" for
 const { sequelize, Op } = require('sequelize');  // Sequelize "Operators" functions for querying
 const methodOverride = require('method-override');  // allows PUT and other non-standard methods
 router.use(methodOverride('_method')); // allows use of the PUT/DELETE method extensions
-const jsFx = require('../scripts/foa_node_fx');
+const foaFx = require('../scripts/foa_fx_server');
+const commonFx = require('../scripts/common_fx_server');
 const { check, validationResult } = require('express-validator');
 const htmlEntities = require('html-entities');
 
@@ -16,18 +17,16 @@ const htmlEntities = require('html-entities');
 ///////////////////////////////////////////////////////////////////////////////////
 // Data Models
 ///////////////////////////////////////////////////////////////////////////////////
-const { ScholarshipsTable, ScholarshipsActive, ScholarshipsAllDDL, ScholarshipsAllMgmtView,
+const { ScholarshipsTable, ScholarshipsAllMgmtView,
     ScholarshipRecurrenceCategoriesDDL, ScholarshipStatusCategoriesDDL,
-    SponsorsTable, SponsorsAllDLL, Sponsors, SponsorsDDL, SponsorsAllView,
+    SponsorsTable, SponsorsAllView,
     SponsorTypeCategoriesDDL, SponsorStatusCategoriesDDL,
     GenderCategoriesDDL, FieldOfStudyCategoriesDDL, CitizenshipCategoriesDDL, YearOfNeedCategoriesDDL,
     EnrollmentStatusCategoriesDDL, MilitaryServiceCategoriesDDL, FAAPilotCertificateCategoriesDDL,
-    FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL,
-    UsersAllDDL, UsersTable, UserProfiles, UsersAllView,
-    UserPermissionsAllView, UserPermissionsAllDDL, UserPermissionsActive,
-    UserPermissionsTable, UserPermissionCategoriesAllDDL
-} = require('../models/sequelize.js');
-
+    FAAPilotRatingCategoriesDDL, FAAMechanicCertificateCategoriesDDL
+    } = require('../models/sequelize_foa.js');
+const { UsersTable, UsersAllView, UserPermissionsAllView, UserPermissionsTable, UserPermissionCategoriesAllDDL
+    } = require('../models/sequelize_common.js');
 
 ///////////////////////////////////////////////////////////////////////////////////
 // Auth0 Configuration
@@ -61,10 +60,11 @@ router.get('/newuser', requiresAuth(), async (req, res) => {
     try {
 
         // Log the request (10001 = "New User Page Redirect")
-//        const logResult = jsFx.createLogEntry(10001, req.oidc.user.name);
+//        const logResult = foaFx.createLogEntry(10001, req.oidc.user.email);
+        console.log('New User!');
         return res.render('switchboard_newuser', {
             user: req.oidc.user,
-            userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+            userName: ( req.oidc.user == null ? '' : req.oidc.user.email )
         } )
     } catch(err) {
         console.log('Error:' + err);
@@ -86,10 +86,10 @@ router.get('/', requiresAuth(), async (req, res) => {
             'adduser', 'edituser', 'adduserpermission', 'edituserpermission'
         ];
         let statusMessage = '';
+        let logEventResult = '';
         // Current User variables
-        let userProfiles = [];
+        let currentUserProfile = [];
         let currentUserID = 0;
-        let currentUsername = '';  // TODO: Is This Still Needed?
         let userIsDataAdmin = 0;
         // Querystring parameters
         let actionRequested = '';
@@ -97,7 +97,7 @@ router.get('/', requiresAuth(), async (req, res) => {
         let scholarshipIDRequested = '';
         let userIDRequested = '';
         let userPermissionIDRequested = '';
-        // DDL options lists
+        // SELECT object options
         let sponsorStatusCategories = [];
         let sponsorTypeCategoriesDDL = [];
         let scholarshipStatusCategories = [];
@@ -116,14 +116,16 @@ router.get('/', requiresAuth(), async (req, res) => {
         ////////////////////////////////////////////////////
         // Get the current user's profile and permissions
         ////////////////////////////////////////////////////
-        userProfiles = await UserProfiles.findAndCountAll( { where: { Username: req.oidc.user.name }});
+        currentUserProfile = await UsersAllView.findAndCountAll( { where: { Username: req.oidc.user.email }});
 
-        if ( userProfiles.count == 0 ) {  // The new user has not yet been set up
-            const { errorCode, newUserID } = await jsFx.checkForNewUser( req.oidc.user.name );
+        // Does the user profile exist?  If not, add the basic account information.
+        if ( currentUserProfile.count == 0 ) {  // The new user has not yet been set up
+            const { errorCode, newUserID } = await commonFx.checkForNewUser( req.oidc.user.email );
+            console.log(`newUserID from CheckForNewUser: ${newUserID}`);
             if ( errorCode !== 0 ) { // If an error was raised during the New User configuration, redirect the user
                 return res.render( 'error', {
                     errorCode: errorCode,
-                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.email )
                 });
             } else { // New User was successfully created, so redirect to the New User Data Mgmt screen
                 res.redirect(`/switchboard?userid=${newUserID}` +
@@ -133,15 +135,18 @@ router.get('/', requiresAuth(), async (req, res) => {
         }; // END: Does the User Profile exist?
 
         // Current User exists and is configured; continue processing
-        currentUserID = userProfiles.rows[0].UserID;
+        currentUserID = currentUserProfile.rows[0].UserID;
         // Log the access by the Current User
-        let logEventResult = await jsFx.logEvent('Page Access', 'Switchboard', 0, 'Informational', 'User Accessed Page',
+        logEventResult = await commonFx.logEvent('Page Access', 'Switchboard', 0, 'Informational', 'User Accessed Page',
             0, 0, currentUserID, '');
         // Check to see if the current User is a "Data Admin" (FoA or AMCG web manager)
-        userIsDataAdmin = await jsFx.checkUserPermission(currentUserID, '923010', 'CanRead');
+        userIsDataAdmin = await commonFx.checkUserPermission(currentUserID, '923010', 'CanRead');
 
         ////////////////////////////////////////////////////
         // Validate any query string parameters
+        //   - client-side validation already occurred before form submittal
+        //   - this step only validates value formats for changes post-submittal
+        //   - authorization verification and domain checking will occur in a subsequent step
         ////////////////////////////////////////////////////
 
         // Validate the "action requested", if present
@@ -151,13 +156,13 @@ router.get('/', requiresAuth(), async (req, res) => {
             } else {
                 errorCode = 948; // Invalid, missing or non-existant "action requested"
                 // Log the event
-                let logEventResult = await jsFx.logEvent('Action Requested Validation', '', 0, 'Failure',
+                logEventResult = await commonFx.logEvent('Action Requested Validation', '', 0, 'Failure',
                     `Action Requested is not valid (${req.query['actionrequested']})`,
                     0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
                 // redirect the user to the error screen
                 return res.render( 'error', {
                     errorCode: errorCode,
-                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.email )
                 });
             };
         };
@@ -168,26 +173,26 @@ router.get('/', requiresAuth(), async (req, res) => {
             if ( sponsorIDRequested == 0 || sponsorIDRequested === '' || Number.isNaN(sponsorIDRequested)) {
                 errorCode = 908; // Invalid, missing or non-existent SponsorID
                 // Log the event
-                let logEventResult = await jsFx.logEvent('SponsorID Validation', '', 0, 'Failure',
+                logEventResult = await commonFx.logEvent('SponsorID Validation', '', 0, 'Failure',
                     `SponsorID is not a valid format (${req.query['sponsorid']})`,
                     0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
                 // redirect the user to the error screen
                 return res.render( 'error', {
                     errorCode: errorCode,
-                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.email )
                 });
             } else { // value is in a valid format; check to see if it exists in the database
                 let doesSponsorIDExist = await SponsorsAllView.findAndCountAll( { where: { SponsorID: sponsorIDRequested } } );
                 if ( doesSponsorIDExist.count == 0 ) {
                     errorCode = 908; // Invalid, missing or non-existent SponsorID
                     // Log the event
-                    let logEventResult = await jsFx.logEvent('SponsorID Validation', '', 0, 'Failure',
+                    logEventResult = await commonFx.logEvent('SponsorID Validation', '', 0, 'Failure',
                         `SponsorID does not exist (${req.query['sponsorid']})`,
                         0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
                     // redirect the user to the error screen
                     return res.render( 'error', {
                         errorCode: errorCode,
-                        userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                        userName: ( req.oidc.user == null ? '' : req.oidc.user.email )
                     });
                 };
             };
@@ -199,57 +204,57 @@ router.get('/', requiresAuth(), async (req, res) => {
             if ( scholarshipIDRequested == 0 || scholarshipIDRequested === '' || Number.isNaN(scholarshipIDRequested)) {
                 errorCode = 909; // Invalid, missing or non-existent ScholarshipID
                 // Log the event
-                let logEventResult = await jsFx.logEvent('ScholarshipID Validation', '', 0, 'Failure',
+                logEventResult = await commonFx.logEvent('ScholarshipID Validation', '', 0, 'Failure',
                     `ScholarshipID is not a valid format (${req.query['scholarshipid']})`,
                     0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
                 // Redirect the user to the error screen
                 return res.render( 'error', {
                     errorCode: errorCode,
-                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.email )
                 });
             } else {  // Value is in a valid format; check to see if it exists in the database
                 let doesScholarshipIDExist = await ScholarshipsAllMgmtView.findAndCountAll( { where: { ScholarshipID: scholarshipIDRequested } } );
                 if ( doesScholarshipIDExist.count == 0 ) {
                     errorCode = 909; // Non-existant ScholarshipID
                     // Log the event
-                    let logEventResult = await jsFx.logEvent('ScholarshipID Validation', '', 0, 'Failure',
+                    logEventResult = await commonFx.logEvent('ScholarshipID Validation', '', 0, 'Failure',
                         `ScholarshipID does not exist (${req.query['scholarshipid']})`,
                         0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
                     // Redirect the user to the error screen
                     return res.render( 'error', {
                         errorCode: errorCode,
-                        userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                        userName: ( req.oidc.user == null ? '' : req.oidc.user.email )
                     });
                 };
             };
         };
         
-        // If a requested "userid" is blank, zero or not a number, redirect to the generic Switchboard page
-        if ( req.query['userid'] != undefined ) {  // If the querystring variable exists, check its format
+        // Validate the "Requested Website User ID" parameter, if present
+        if ( req.query['userid'] != undefined ) {
             userIDRequested = Number(req.query['userid']);
             if ( userIDRequested == 0 || userIDRequested === '' || Number.isNaN(userIDRequested)) {
                 errorCode = 910; // Invalid, missing or non-existent UserID
                 // Log the event
-                let logEventResult = await jsFx.logEvent('UserID Validation', '', 0, 'Failure',
+                logEventResult = await commonFx.logEvent('UserID Validation', '', 0, 'Failure',
                     `UserID is not a valid format (${req.query['userid']})`,
                     0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
                 // Redirect the user to the error screen
                 return res.render( 'error', {
                     errorCode: errorCode,
-                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.email )
                 });
             } else {  // Value is in a valid format; check to see if it exists in the database
                 let doesUserIDExist = await UsersAllView.findAndCountAll( { where: { UserID: userIDRequested } } );
                 if ( doesUserIDExist.count == 0 ) {
                     errorCode = 910; // Non-existant UserID
                     // Log the event
-                    let logEventResult = await jsFx.logEvent('UserID Validation', '', 0, 'Failure',
+                    logEventResult = await commonFx.logEvent('UserID Validation', '', 0, 'Failure',
                         `UserID does not exist (${req.query['userid']})`,
                         0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
                     // Redirect the user to the error screen
                     return res.render( 'error', {
                         errorCode: errorCode,
-                        userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                        userName: ( req.oidc.user == null ? '' : req.oidc.user.email )
                     });
                 };
             };
@@ -261,38 +266,70 @@ router.get('/', requiresAuth(), async (req, res) => {
             if ( userPermissionIDRequested == 0 || userPermissionIDRequested === '' || Number.isNaN(userPermissionIDRequested)) {
                 errorCode = 911; // Invalid, missing or non-existent UserPermissionID
                 // Log the event
-                let logEventResult = await jsFx.logEvent('UserPermissionID Validation', '', 0, 'Failure',
+                logEventResult = await commonFx.logEvent('UserPermissionID Validation', '', 0, 'Failure',
                     `UserPermissionID is not a valid format (${req.query['userpermissionid']})`,
                     0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
                 // Redirect the user to the error screen
                 return res.render( 'error', {
                     errorCode: errorCode,
-                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.email )
                 });
             } else {  // Value is in a valid format; check to see if it exists in the database
                 let doesUserPermissionIDExist = await UserPermissionsAllView.findAndCountAll( { where: { WebsiteUserPermissionID: userPermissionIDRequested } } );
                 if ( doesUserPermissionIDExist.count == 0 ) {
                     errorCode = 911; // Non-existant UserPermissionID
                     // Log the event
-                    let logEventResult = await jsFx.logEvent('UserPermissionID Validation', '', 0, 'Failure',
+                    logEventResult = await commonFx.logEvent('UserPermissionID Validation', '', 0, 'Failure',
                         `UserPermissionID does not exist (${req.query['userpermissionid']})`,
                         0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
                     // Redirect the user to the error screen
                     return res.render( 'error', {
                         errorCode: errorCode,
-                        userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                        userName: ( req.oidc.user == null ? '' : req.oidc.user.email )
                     });
                 };
             };
         };
                         
         ////////////////////////////////////////////////////
+        // Process any querystring "status message"
+        ////////////////////////////////////////////////////
+        if ( req.query['status'] === 'sponsorupdatesuccess' ) {
+            statusMessage = 'Sponsor was updated.';
+        } else if ( req.query['status'] === 'sponsordeletesuccess' ) {
+            statusMessage = 'Sponsor was deleted.';
+        } else if ( req.query['status'] === 'sponsorcreatesuccess' ) {
+            statusMessage = 'Sponsor was added.';
+        } else if ( req.query['status'] === 'scholarshipupdatesuccess' ) {
+            statusMessage = 'Scholarship was updated.';
+        } else if ( req.query['status'] === 'scholarshipdeletesuccess' ) {
+            statusMessage = 'Scholarship was deleted.';
+        } else if ( req.query['status'] === 'scholarshipcreatesuccess' ) {
+            statusMessage = 'Scholarship was added.';
+        } else if ( req.query['status'] === 'userupdatesuccess' ) {
+            statusMessage = 'User was updated.';
+        } else if ( req.query['status'] === 'userdeletesuccess' ) {
+            statusMessage = 'User was deleted.';
+        } else if ( req.query['status'] === 'usercreatesuccess' ) {
+            statusMessage = 'User was added.';
+        } else if ( req.query['status'] === 'userpermissionupdatesuccess' ) {
+            statusMessage = 'User Permission was updated.';
+        } else if ( req.query['status'] === 'userpermissiondeletesuccess' ) {
+            statusMessage = 'User Permission was deleted.';
+        } else if ( req.query['status'] === 'userpermissioncreatesuccess' ) {
+            statusMessage = 'User Permission was added.';
+        } else{
+            statusMessage = '';
+        };
+
+
+        ////////////////////////////////////////////////////
         //  Sponsor Data Permissions / Details (DDL, Add Sponsor, Default Sponsor, etc.)
         ////////////////////////////////////////////////////
         console.log(`Checking Sponsor Permissions for Current User (${currentUserID})`);
         const { userCanReadSponsorsDDL, userCanCreateSponsors, sponsorsAllowedDDL, sponsorDetails, doesSponsorExist,
                 userCanReadSponsor, userCanUpdateSponsor, userCanDeleteSponsor
-        } = await jsFx.getSponsorPermissionsForCurrentUser( currentUserID, sponsorIDRequested );
+        } = await foaFx.getSponsorPermissionsForCurrentUser( currentUserID, sponsorIDRequested );
 
         // If the current User can see the Sponsors DDL, validate the requested Sponsor (if one was requested)
         if ( userCanReadSponsorsDDL && sponsorIDRequested.length > 0 ) {
@@ -302,13 +339,13 @@ router.get('/', requiresAuth(), async (req, res) => {
             if ( !doesSponsorExist ) {  // Sponsor ID does not exist
                 errorCode = 908;
                 // Log the event
-                let logEventResult = await jsFx.logEvent('SponsorID Validation', '', errorCode, 'Failure',
+                logEventResult = await commonFx.logEvent('SponsorID Validation', '', errorCode, 'Failure',
                     `SponsorID does not exist (${sponsorIDRequested})`,
                     0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
                 // redirect the user to the error screen
                 return res.render( 'error', {
                     errorCode: errorCode,
-                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.email )
                 });
             };
 
@@ -316,13 +353,13 @@ router.get('/', requiresAuth(), async (req, res) => {
             if ( !userCanReadSponsor ) { // User does not have permission to read Sponsor's data - trap and log error
                 errorCode = 909;
                 // Log the event
-                let logEventResult = await jsFx.logEvent('SponsorID Authorization', '', errorCode, 'Failure',
+                logEventResult = await commonFx.logEvent('SponsorID Authorization', '', errorCode, 'Failure',
                     `User does not have permission to view SponsorID (${sponsorIDRequested})`,
                     0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
                 // redirect the user to the error screen
                 return res.render( 'error', {
                     errorCode: errorCode,
-                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.email )
                 });
             };
         }; // END: Can the current User see the Sponsors' DDL?
@@ -334,7 +371,7 @@ router.get('/', requiresAuth(), async (req, res) => {
         console.log(`Checking Scholarship Permissions for Current User (${currentUserID})`);
         const { userCanReadScholarshipsDDL, userCanCreateScholarships, scholarshipsAllowedDDL, scholarshipDetails,
                 doesScholarshipExist, userCanReadScholarship, userCanUpdateScholarship, userCanDeleteScholarship
-        } = await jsFx.getScholarshipPermissionsForCurrentUser( currentUserID, sponsorIDRequested, scholarshipIDRequested );
+        } = await foaFx.getScholarshipPermissionsForCurrentUser( currentUserID, sponsorIDRequested, scholarshipIDRequested );
 
         // If the current User can see the Scholarships DDL, validate the requested Scholarship (if one was requested)
         if ( userCanReadScholarshipsDDL && scholarshipIDRequested.length > 0 ) {
@@ -344,13 +381,13 @@ router.get('/', requiresAuth(), async (req, res) => {
             if ( !doesScholarshipExist ) {  // Scholarship ID does not exist
                 errorCode = 918;  // Unknown Scholarship
                 // Log the event
-                let logEventResult = await jsFx.logEvent('ScholarshipID Validation', '', errorCode, 'Failure',
+                logEventResult = await commonFx.logEvent('ScholarshipID Validation', '', errorCode, 'Failure',
                     `ScholarshipID does not exist (${scholarshipIDRequested})`,
                     0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
                 // redirect the user to the error screen
                 return res.render( 'error', {
                     errorCode: errorCode,
-                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.email )
                 });
             };
 
@@ -358,13 +395,13 @@ router.get('/', requiresAuth(), async (req, res) => {
             if ( !userCanReadScholarship ) { // User does not have permission to read Scholarship's data - trap and log error
                 errorCode = 919;  // Invalid Access to Scholarship
                 // Log the event
-                let logEventResult = await jsFx.logEvent('ScholarshipID Authorization', '', errorCode, 'Failure',
+                logEventResult = await commonFx.logEvent('ScholarshipID Authorization', '', errorCode, 'Failure',
                     `User does not have permission to view ScholarshipID (${scholarshipIDRequested})`,
                     0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
                 // redirect the user to the error screen
                 return res.render( 'error', {
                     errorCode: errorCode,
-                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.email )
                 });
             };
         }; // END: Can the current User see the Scholarships' DDL?
@@ -374,9 +411,10 @@ router.get('/', requiresAuth(), async (req, res) => {
         //  Website User Data Permissions / Details (DDL, Add User, Default User, etc.)
         ////////////////////////////////////////////////////
         console.log(`Checking Website User Permissions for Current User (${currentUserID})`);
-        const { userCanReadUsersDDL, userCanCreateUsers, usersAllowedDDL, userDetails, doesUserExist,
-            userCanReadUser, userCanUpdateUser, userCanDeleteUser
-        } = await jsFx.getWebsiteUserPermissionsForCurrentUser( currentUserID, userIDRequested );
+        const { userCanReadUsersDDL, userCanCreateUsers, usersAllowedDDL,
+                userDetails, doesUserExist,
+                userCanReadUser, userCanUpdateUser, userCanDeleteUser
+        } = await commonFx.getWebsiteUserPermissionsForCurrentUser( currentUserID, userIDRequested );
 
         // If the current User can see the Website User DDL, validate the requested Website User (if one was requested)
         if ( userCanReadUsersDDL && userIDRequested.length > 0 ) {
@@ -386,13 +424,12 @@ router.get('/', requiresAuth(), async (req, res) => {
             if ( !doesUserExist ) {  // User ID does not exist
                 errorCode = 928;  // Unknown User
                 // Log the event
-                let logEventResult = await jsFx.logEvent('UserID Validation', '', errorCode, 'Failure',
-                    `UserID does not exist (${userIDRequested})`,
-                    0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
+                logEventResult = await commonFx.logEvent('UserID Validation', `Website User: ${ userIDRequested }`, errorCode,
+                    'Failure', `UserID does not exist`, 0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
                 // redirect the user to the error screen
                 return res.render( 'error', {
                     errorCode: errorCode,
-                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.email )
                 });
             };
 
@@ -400,14 +437,17 @@ router.get('/', requiresAuth(), async (req, res) => {
             if ( !userCanReadUser ) { // Current User does not have permission to read Website User's data - trap and log error
                 errorCode = 929;  // Invalid Access to Website User
                 // Log the event
-                let logEventResult = await jsFx.logEvent('UserID Authorization', '', errorCode, 'Failure',
-                    `User does not have permission to view UserID (${userIDRequested})`,
-                    0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
+                logEventResult = await commonFx.logEvent('Website User Access', `Website User: ${ userIDRequested }`, errorCode,
+                   'Failure', 'User not authorized to view website user data', 0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
                 // redirect the user to the error screen
                 return res.render( 'error', {
                     errorCode: errorCode,
-                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.email )
                 });
+            } else {
+                // Log the access
+                logEventResult = await commonFx.logEvent('Content Access', `Website User: ${ userIDRequested }`, 930,
+                    'Success', '', 0, 0, currentUserID, '');
             };
         }; // END: Can the Current User see the Website Users' DDL?
 
@@ -419,7 +459,7 @@ router.get('/', requiresAuth(), async (req, res) => {
         const { userCanReadUserPermissionsDDL, userCanCreateUserPermissions, userPermissionsAllowedDDL,
                 userPermissionDetails, doesUserPermissionExist,
                 userCanReadUserPermission, userCanUpdateUserPermission, userCanDeleteUserPermission
-        } = await jsFx.getWebsiteUserPermissionPermissionsForCurrentUser( currentUserID, userIDRequested, userPermissionIDRequested );
+        } = await commonFx.getWebsiteUserPermissionPermissionsForCurrentUser( currentUserID, userPermissionIDRequested );
 
         // If the Current User can see the User Permissions DDL, validate the requested User Permission (if one was requested)
         if ( userCanReadUserPermissionsDDL && userPermissionIDRequested.length > 0 ) {
@@ -429,13 +469,12 @@ router.get('/', requiresAuth(), async (req, res) => {
             if ( !doesUserPermissionExist ) {  // User Permission ID does not exist
                 errorCode = 938;  // Unknown User Permission
                 // Log the event
-                let logEventResult = await jsFx.logEvent('UserPermissionID Validation', '', errorCode, 'Failure',
-                    `UserPermissionID does not exist (${userPermissionIDRequested})`,
-                    0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
+                logEventResult = await commonFx.logEvent('User Permission Access', `Website User Permission: ${ userPermissionIDRequested }`,
+                     errorCode, 'Failure', 'UserPermissionID does not exist', 0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
                 // redirect the user to the error screen
                 return res.render( 'error', {
                     errorCode: errorCode,
-                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.email )
                 });
             };
 
@@ -443,14 +482,17 @@ router.get('/', requiresAuth(), async (req, res) => {
             if ( !userCanReadUserPermission ) { // Current User does not have permission to read User Permission's data - trap and log error
                 errorCode = 939;  // Invalid Access to User Permission
                 // Log the event
-                let logEventResult = await jsFx.logEvent('UserPermissionID Authorization', '', errorCode, 'Failure',
-                    `Current User does not have permission to view UserPermissionID (${userPermissionIDRequested})`,
-                    0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
+                logEventResult = await commonFx.logEvent('Website User Permission Access', `Website User Permission: ${ userPermissionIDRequested }`, errorCode,
+                   'Failure', 'User not authorized to view website user permission data', 0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
                 // redirect the user to the error screen
                 return res.render( 'error', {
                     errorCode: errorCode,
-                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.email )
                 });
+            } else {
+                // Log the access
+                logEventResult = await commonFx.logEvent('Content Access', `Website User Permission: ${ userPermissionIDRequested }`, 931,
+                    'Success', '', 0, 0, currentUserID, '');
             };
         }; // END: Can the Current User see the User Permissions' DDL?
 
@@ -485,78 +527,6 @@ router.get('/', requiresAuth(), async (req, res) => {
                 break;
         };
 
-        ////////////////////////////////////////////////////
-        //  Process any querystring "actions requested" (this will tell the form how to render for the user)
-        ////////////////////////////////////////////////////
-
-// IS THIS NEEDED???????
-/*
-        if ( actionRequested === 'addsponsor' ) {
-            if ( userCanCreateSponsors ) {
-                actionRequested = 'addsponsor';
-            };
-        } else if ( actionRequested === 'editsponsor' ) {
-            if ( userCanReadSponsor ) {
-                actionRequested = 'editsponsor';
-            };
-        } else if ( actionRequested === 'addscholarship' ) {
-            if ( userCanCreateScholarships ) {
-                actionRequested = 'addscholarship';
-            };
-        } else if ( actionRequested === 'editscholarship' ) {
-            if ( userCanReadScholarship ) {
-                actionRequested = 'editscholarship';
-            };
-        } else if ( actionRequested === 'adduser' ) {
-            if ( userCanCreateUsers ) {
-                actionRequested = 'adduser';
-            };
-        } else if ( actionRequested === 'edituser' ) {
-            if ( userCanReadUser ) {
-                actionRequested = 'edituser';
-            };
-        } else if ( actionRequested === 'adduserpermission' ) {
-            if ( userCanCreateUserPermissions ) {
-                actionRequested = 'adduserpermission';
-            };
-        } else if ( actionRequested === 'edituserpermission' ) {
-            if ( userCanReadUserPermission ) {
-                actionRequested = 'edituserpermission';
-            };
-        } else {
-        };
-*/
-
-        ////////////////////////////////////////////////////
-        // Process any querystring "status message"
-        ////////////////////////////////////////////////////
-        if ( req.query['status'] === 'sponsorupdatesuccess' ) {
-            statusMessage = 'Sponsor was updated.';
-        } else if ( req.query['status'] === 'sponsordeletesuccess' ) {
-            statusMessage = 'Sponsor was deleted.';
-        } else if ( req.query['status'] === 'sponsorcreatesuccess' ) {
-            statusMessage = 'Sponsor was added.';
-        } else if ( req.query['status'] === 'scholarshipupdatesuccess' ) {
-            statusMessage = 'Scholarship was updated.';
-        } else if ( req.query['status'] === 'scholarshipdeletesuccess' ) {
-            statusMessage = 'Scholarship was deleted.';
-        } else if ( req.query['status'] === 'scholarshipcreatesuccess' ) {
-            statusMessage = 'Scholarship was added.';
-        } else if ( req.query['status'] === 'userupdatesuccess' ) {
-            statusMessage = 'User was updated.';
-        } else if ( req.query['status'] === 'userdeletesuccess' ) {
-            statusMessage = 'User was deleted.';
-        } else if ( req.query['status'] === 'usercreatesuccess' ) {
-            statusMessage = 'User was added.';
-        } else if ( req.query['status'] === 'userpermissionupdatesuccess' ) {
-            statusMessage = 'User Permission was updated.';
-        } else if ( req.query['status'] === 'userpermissiondeletesuccess' ) {
-            statusMessage = 'User Permission was deleted.';
-        } else if ( req.query['status'] === 'userpermissioncreatesuccess' ) {
-            statusMessage = 'User Permission was added.';
-        } else{
-            statusMessage = '';
-        };
 
         ////////////////////////////////////////////////////
         // Render the page
@@ -569,7 +539,9 @@ router.get('/', requiresAuth(), async (req, res) => {
             statusMessage,
             // User data
             user: req.oidc.user,
-            userName: ( req.oidc.user == null ? '' : req.oidc.user.name ),
+            userName: ( req.oidc.user == null ? '' : req.oidc.user.email ),
+            currentUserID,
+            userIDRequested,
             userIsDataAdmin,
             // Main Menu Data
             // Sponsor Information
@@ -597,6 +569,8 @@ router.get('/', requiresAuth(), async (req, res) => {
             usersAllowedDDL,
             userCanCreateUsers,
             // User Permission Information
+//            userPermissionID,
+            userPermissionIDRequested,
             userCanReadUserPermissionsDDL,
             userPermissionsAllowedDDL,
             userCanCreateUserPermissions,
@@ -611,10 +585,12 @@ router.get('/', requiresAuth(), async (req, res) => {
             scholarshipRecurrenceCategories,
             // Website User CRUD Information
             userID: userIDRequested.toString(),
+            userIDRequested,
             userDetails,
-            userCanReadUser, userCanUpdateUser, userCanDeleteUser,
-            // Website User CRUD Information
-            userPermissionID: userPermissionIDRequested.toString(),
+            userCanReadUser,
+            userCanUpdateUser,
+            userCanDeleteUser,
+            // Website User Permission CRUD Information
             userPermissionDetails,
             userPermissionsCategoriesAllDLL,
             userCanReadUserPermission, userCanUpdateUserPermission, userCanDeleteUserPermission
@@ -642,8 +618,8 @@ router.post('/sponsoradd', requiresAuth(),
     async (req, res) => {
 
     // Reformat the SELECT options into a pipe-delimited array for storage
-    const sponsorStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.sponsorStatus, "|", "0", "false");
-    const sponsorTypesFormatted = jsFx.convertOptionsToDelimitedString(req.body.sponsorTypes, "|", "0", "false");
+    const sponsorStatusFormatted = commonFx.convertOptionsToDelimitedString(req.body.sponsorStatus, "|", "0", "false");
+    const sponsorTypesFormatted = commonFx.convertOptionsToDelimitedString(req.body.sponsorTypes, "|", "0", "false");
 
     // Reformat checkboxes to boolean values to be updated into Postgres
     let SponsorIsFeatured = (req.body.sponsorIsFeatured === "SponsorIsFeatured") ? true : false;
@@ -702,17 +678,17 @@ router.post('/scholarshipadd', requiresAuth(),
     async (req, res) => {
 
     // Reformat the multiple-option SELECT values into a pipe-delimited array for storage
-    const scholarshipStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.scholarshipStatus, "|", "0", "false");
-    const scholarshipRecurrenceFormatted = jsFx.convertOptionsToDelimitedString(req.body.scholarshipRecurrence, "|", "0", "false");
-    const criteriaFieldOfStudyFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFieldOfStudy, "|", "0", "false");
-    const criteriaCitizenshipFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaCitizenship, "|", "0", "false");
-    const criteriaYearOfNeedFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaYearOfNeed, "|", "0", "false");
-    const criteriaFemaleApplicantsOnlyFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFemaleApplicantsOnly, "|", "0", "false");
-    const criteriaEnrollmentStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaEnrollmentStatus, "|", "0", "false");
-    const criteriaMilitaryServiceFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaMilitaryService, "|", "0", "false");
-    const criteriaFAAPilotCertificateFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAPilotCertificate, "|", "0", "false");
-    const criteriaFAAPilotRatingFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAPilotRating, "|", "0", "false");
-    const criteriaFAAMechanicCertificateFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAMechanicCertificate, "|", "0", "false");
+    const scholarshipStatusFormatted = commonFx.convertOptionsToDelimitedString(req.body.scholarshipStatus, "|", "0", "false");
+    const scholarshipRecurrenceFormatted = commonFx.convertOptionsToDelimitedString(req.body.scholarshipRecurrence, "|", "0", "false");
+    const criteriaFieldOfStudyFormatted = commonFx.convertOptionsToDelimitedString(req.body.criteriaFieldOfStudy, "|", "0", "false");
+    const criteriaCitizenshipFormatted = commonFx.convertOptionsToDelimitedString(req.body.criteriaCitizenship, "|", "0", "false");
+    const criteriaYearOfNeedFormatted = commonFx.convertOptionsToDelimitedString(req.body.criteriaYearOfNeed, "|", "0", "false");
+    const criteriaFemaleApplicantsOnlyFormatted = commonFx.convertOptionsToDelimitedString(req.body.criteriaFemaleApplicantsOnly, "|", "0", "false");
+    const criteriaEnrollmentStatusFormatted = commonFx.convertOptionsToDelimitedString(req.body.criteriaEnrollmentStatus, "|", "0", "false");
+    const criteriaMilitaryServiceFormatted = commonFx.convertOptionsToDelimitedString(req.body.criteriaMilitaryService, "|", "0", "false");
+    const criteriaFAAPilotCertificateFormatted = commonFx.convertOptionsToDelimitedString(req.body.criteriaFAAPilotCertificate, "|", "0", "false");
+    const criteriaFAAPilotRatingFormatted = commonFx.convertOptionsToDelimitedString(req.body.criteriaFAAPilotRating, "|", "0", "false");
+    const criteriaFAAMechanicCertificateFormatted = commonFx.convertOptionsToDelimitedString(req.body.criteriaFAAMechanicCertificate, "|", "0", "false");
 
     // Reformat blank dates and numbers to NULL values to be updated into Postgres
     let ApplListDate = (req.body.scholarshipApplListDate === "") ? null : req.body.scholarshipApplListDate;
@@ -906,8 +882,8 @@ router.post('/userpermissionadd', requiresAuth(),
 router.put('/sponsorupdate', requiresAuth(), async (req, res) => {
 
     // Reformat the SELECT options into a pipe-delimited array for storage
-    const sponsorStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.sponsorStatus, "|", "0", "false");
-    const sponsorTypesFormatted = jsFx.convertOptionsToDelimitedString(req.body.sponsorTypes, "|", "0", "false");
+    const sponsorStatusFormatted = commonFx.convertOptionsToDelimitedString(req.body.sponsorStatus, "|", "0", "false");
+    const sponsorTypesFormatted = commonFx.convertOptionsToDelimitedString(req.body.sponsorTypes, "|", "0", "false");
 
     // Reformat checkboxes to boolean values to be updated into Postgres
     let SponsorIsFeatured = (req.body.sponsorIsFeatured === "SponsorIsFeatured") ? true : false;
@@ -946,17 +922,17 @@ router.put('/scholarshipupdate', requiresAuth(), async (req, res) => {
     console.log(`ScholarshipDescription (unformatted): ${req.body.scholarshipDescription}`);
 
     // Reformat the multiple-option SELECT values into a pipe-delimited array for storage
-    const scholarshipStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.scholarshipStatus, "|", "0", "false");
-    const scholarshipRecurrenceFormatted = jsFx.convertOptionsToDelimitedString(req.body.scholarshipRecurrence, "|", "0", "false");
-    const criteriaFieldOfStudyFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFieldOfStudy, "|", "0", "false");
-    const criteriaCitizenshipFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaCitizenship, "|", "0", "false");
-    const criteriaYearOfNeedFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaYearOfNeed, "|", "0", "false");
-    const criteriaFemaleApplicantsOnlyFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFemaleApplicantsOnly, "|", "0", "false");
-    const criteriaEnrollmentStatusFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaEnrollmentStatus, "|", "0", "false");
-    const criteriaMilitaryServiceFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaMilitaryService, "|", "0", "false");
-    const criteriaFAAPilotCertificateFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAPilotCertificate, "|", "0", "false");
-    const criteriaFAAPilotRatingFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAPilotRating, "|", "0", "false");
-    const criteriaFAAMechanicCertificateFormatted = jsFx.convertOptionsToDelimitedString(req.body.criteriaFAAMechanicCertificate, "|", "0", "false");
+    const scholarshipStatusFormatted = commonFx.convertOptionsToDelimitedString(req.body.scholarshipStatus, "|", "0", "false");
+    const scholarshipRecurrenceFormatted = commonFx.convertOptionsToDelimitedString(req.body.scholarshipRecurrence, "|", "0", "false");
+    const criteriaFieldOfStudyFormatted = commonFx.convertOptionsToDelimitedString(req.body.criteriaFieldOfStudy, "|", "0", "false");
+    const criteriaCitizenshipFormatted = commonFx.convertOptionsToDelimitedString(req.body.criteriaCitizenship, "|", "0", "false");
+    const criteriaYearOfNeedFormatted = commonFx.convertOptionsToDelimitedString(req.body.criteriaYearOfNeed, "|", "0", "false");
+    const criteriaFemaleApplicantsOnlyFormatted = commonFx.convertOptionsToDelimitedString(req.body.criteriaFemaleApplicantsOnly, "|", "0", "false");
+    const criteriaEnrollmentStatusFormatted = commonFx.convertOptionsToDelimitedString(req.body.criteriaEnrollmentStatus, "|", "0", "false");
+    const criteriaMilitaryServiceFormatted = commonFx.convertOptionsToDelimitedString(req.body.criteriaMilitaryService, "|", "0", "false");
+    const criteriaFAAPilotCertificateFormatted = commonFx.convertOptionsToDelimitedString(req.body.criteriaFAAPilotCertificate, "|", "0", "false");
+    const criteriaFAAPilotRatingFormatted = commonFx.convertOptionsToDelimitedString(req.body.criteriaFAAPilotRating, "|", "0", "false");
+    const criteriaFAAMechanicCertificateFormatted = commonFx.convertOptionsToDelimitedString(req.body.criteriaFAAMechanicCertificate, "|", "0", "false");
 
     // Reformat blank dates and numbers to NULL values to be updated into Postgres
     let ApplListDate = (req.body.scholarshipApplListDate === "") ? null : req.body.scholarshipApplListDate;
@@ -1039,7 +1015,7 @@ router.put('/userupdate', requiresAuth(), async (req, res) => {
 });
 
 ///////////////////////////////
-// User Permission (Insert)
+// User Permission (Update)
 ///////////////////////////////
 router.put('/userpermissionupdate', requiresAuth(), async (req, res) => {
 
@@ -1090,6 +1066,7 @@ router.put('/userpermissionupdate', requiresAuth(), async (req, res) => {
         });
 //    };
 });
+
 
 ////////////////////////////////////////////////////////////
 // "DELETE" Routes (Delete data)
