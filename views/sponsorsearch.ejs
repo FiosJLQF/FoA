@@ -1,6 +1,10 @@
 <% layout('layouts/boilerplate') %>
 <%- include('partials/splashbar_main') %>
 
+<!-- Custom Script Libraries -->
+<script src="/js/foa_fx_search_generic.js"></script>
+<script src="/js/foa_fx_search_sponsors.js"></script>
+
 <div class="container pagetitle" align="center">
   Find a Sponsor
   <hr class="pagetitlebreak">
@@ -11,7 +15,9 @@
   <!-- Search Options -->
   <div class="row">
     <div id="sponsorsearchcriteria" class="col-3 bodylayout1col1">
+
       <%- include('partials/sponsorsearchcriteria') %>
+
     </div>
     <div id="searchresultscolumn" class="col-9 bodylayout1col2">
       <div id="searchresultsmaintitle">
@@ -23,8 +29,12 @@
 </div>
 
 <script>
-  // Show all active sponsors by default
-  var spnRows = <%- JSON.stringify(sponsorsActiveView.rows) %>;
-  var schRows = <%- JSON.stringify(scholarshipsActive.rows) %>;
-  showAllSponsors(spnRows, schRows);
+
+  // Local variables
+  var spnRows = <%- JSON.stringify(sponsorsMatching.rows) %>;
+  var sponsorsAllOrMatched = <%- JSON.stringify(sponsorsAllOrMatched) %>;
+
+  // Display the Sponsors (all, matched, or none)
+  showSelectedSponsors(spnRows, sponsorsAllOrMatched);
+
 </script>

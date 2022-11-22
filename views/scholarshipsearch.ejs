@@ -1,6 +1,10 @@
 <% layout('layouts/boilerplate') %>
 <%- include('partials/splashbar_main') %>
 
+<!-- Custom Script Libraries -->
+<script src="/js/foa_fx_search_generic.js"></script>
+<script src="/js/foa_fx_search_scholarships.js"></script>
+
 <div class="container pagetitle" align="center">
   Find a Scholarship
   <hr class="pagetitlebreak">
@@ -23,16 +27,13 @@
 </div>
 
 <script>
-  // Show all active scholarships by default
-  var spnRows = <%- JSON.stringify(sponsorsActiveView.rows) %>;
-  var schRows = <%- JSON.stringify(scholarshipsActive.rows) %>;
 
-  // If previous values exist, then this load is the result of a search - set the controls appropriately
-  var previousValues = <%- JSON.stringify(previousValues) %>;
-  if ( typeof previousValues !== 'object' ) {
-    showAllScholarships(schRows, spnRows);
-  } else {
-    showSelectedScholarships(schRows, spnRows);
-  }
+  // Local variables
+  var spnRows = <%- JSON.stringify(sponsorsActiveView.rows) %>;
+  var schRows = <%- JSON.stringify(scholarshipsMatching.rows) %>;
+  var scholarshipsAllOrMatched = <%- JSON.stringify(scholarshipsAllOrMatched) %>;
+
+  // Display the scholarships (all, matched, or none)
+  showSelectedScholarships(schRows, spnRows, scholarshipsAllOrMatched);
 
 </script>

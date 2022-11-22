@@ -11,6 +11,11 @@ require("dotenv").config();
 ///////////////////////////////////////////////////////////////////////////////////
 // Routes Definitions
 ///////////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////
+// Login route (handled by Auth0)
+///////////////////////////////////////////
 router.get( "/login", 
     passport.authenticate("auth0", {
       scope: "openid email profile"
@@ -20,6 +25,9 @@ router.get( "/login",
     }
   );
 
+///////////////////////////////////////////
+// Callback after successful login (handled by Auth0)
+///////////////////////////////////////////
 router.get("/callback", (req, res, next) => {
 
   console.log('Entered router.get callback');
@@ -43,6 +51,9 @@ router.get("/callback", (req, res, next) => {
     })(req, res, next);
 });
 
+///////////////////////////////////////////
+// Logout route and redirect (handled by Auth0)
+///////////////////////////////////////////
 router.get("/logout", (req, res) => {
     req.logOut();
     let returnTo = req.protocol + "://" + req.hostname;

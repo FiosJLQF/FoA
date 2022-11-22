@@ -3,53 +3,59 @@
     <hr class="bodycol1break">
     <div class="searchInstructions">Enter criteria below and click "search".</div><br>
 
-    <!-- Keyword(s) -->
-    Keywords: <button type="button" class="btn btn-default button-small"
-        onclick="toggleSearchCriteriaInputBlock(
-            document.querySelector('#filterKeywordsIcon'),
-            document.querySelector('#filterKeywordsInputBlock'),
-            document.querySelector('#filterKeywordsInput'), '')">
-        <i id="filterKeywordsIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
-    </button><br>
-    <div id="filterKeywordsInputBlock" class="filter-input-block">
-        <div class="searchInstructions">(Separate words/phrases with commas)</div>
-        <input type="text" id="filterKeywordsInput" class="filter-input filter_textbox"><br>
-    </div>
+    <form action="/search/sponsors" method="POST" id="sponsorSearchCriteria" name="sponsorSearchCriteria">
 
-    <!-- Sponsor Name(s) -->
-    Sponsor: <button type="button" class="btn btn-default button-small"
-        onclick="toggleSearchCriteriaInputBlock(
-            document.querySelector('#filterSponsorNamesIcon'),
-            document.querySelector('#filterSponsorNamesInputBlock'),
-            document.querySelector('#filterSponsorNamesInput'), '')">
-        <i id="filterSponsorNamesIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
-    </button><br>
-    <div id="filterSponsorNamesInputBlock" class="filter-input-block">
-        <div class="searchInstructions">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
-        <select id="filterSponsorNamesInput" class="filter_select" multiple></select><br>
-    </div>
+        <!-- Hidden values for post form submittal -->
+        <input type="hidden" id="showAllSponsorsFlag" name="showAllSponsorsFlag">
 
-    <!-- Sponsor Type(s) -->
-    Sponsor Type: <button type="button" class="btn btn-default button-small"
-        onclick="toggleSearchCriteriaInputBlock(
-            document.querySelector('#filterSponsorTypeIcon'),
-            document.querySelector('#filterSponsorTypeInputBlock'),
-            document.querySelector('#filterSponsorTypeInput'), '')">
-        <i id="filterSponsorTypeIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
-    </button><br>
-    <div id="filterSponsorTypeInputBlock" class="filter-input-block">
-        <div class="searchInstructions">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
-        <select id="filterSponsorTypeInput" class="filter_select" multiple></select><br>
-    </div>
+        <!-- Keyword(s) -->
+        Keywords: <button type="button" class="btn btn-default button-small"
+            onclick="toggleSearchCriteriaInputBlock(
+                document.querySelector('#filterKeywordsIcon'),
+                document.querySelector('#filterKeywordsInputBlock'),
+                document.querySelector('#filterKeywordsInput'), '')">
+            <i id="filterKeywordsIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+        </button><br>
+        <div id="filterKeywordsInputBlock" class="filter-input-block">
+            <div class="searchInstructions">(Separate words/phrases with commas)</div>
+            <input type="text" id="filterKeywordsInput" name="filterKeywordsInput" class="filter-input filter_textbox"><br>
+        </div>
 
-<br>
+        <!-- Sponsor Name(s) -->
+        Sponsor: <button type="button" class="btn btn-default button-small"
+            onclick="toggleSearchCriteriaInputBlock(
+                document.querySelector('#filterSponsorNamesIcon'),
+                document.querySelector('#filterSponsorNamesInputBlock'),
+                document.querySelector('#filterSponsorNamesInput'), '')">
+            <i id="filterSponsorNamesIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+        </button><br>
+        <div id="filterSponsorNamesInputBlock" class="filter-input-block">
+            <div class="searchInstructions">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
+            <select id="filterSponsorNamesInput" name="filterSponsorNamesInput" class="filter_select" multiple></select><br>
+        </div>
+
+        <!-- Sponsor Type(s) -->
+        Sponsor Type: <button type="button" class="btn btn-default button-small"
+            onclick="toggleSearchCriteriaInputBlock(
+                document.querySelector('#filterSponsorTypeIcon'),
+                document.querySelector('#filterSponsorTypeInputBlock'),
+                document.querySelector('#filterSponsorTypeInput'), '')">
+            <i id="filterSponsorTypeIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+        </button><br>
+        <div id="filterSponsorTypeInputBlock" class="filter-input-block">
+            <div class="searchInstructions">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
+            <select id="filterSponsorTypeInput" name="filterSponsorTypeInput" class="filter_select" multiple></select><br>
+        </div>
+
+        <br>
+    </form> <!-- End search criteria form -->
 
     <div style="text-align:left">
-        <button type="button" class="btn btn-default button-search" onclick="searchSponsors(spnRows, schRows);">
+        <button type="button" class="btn btn-default button-search" onclick="showMatchingSponsors();">
             <img src="/img/imgMagnifyingGlass.png" alt="Magnifying Glass" class="img-responsive button-icon-magglass">
             Search
         </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <button type="button" class="btn btn-default button-search" onclick="showAllSponsors(spnRows, schRows);">
+        <button type="button" class="btn btn-default button-search" onclick="showAllSponsors();">
             <img src="/img/imgRefresh.png" alt="arrow circling clockwise" class="img-responsive button-icon-refresh">
             Reset Search
         </button>
@@ -62,18 +68,68 @@
     // Set the browser tab name (i.e., title)
     document.title = "Future of Aviation - Sponsor Search";
 
-    // Load the Sponsor List into the DDL
+    // Set hidden controls' default values
+    document.getElementById('showAllSponsorsFlag').value = ""
+
+////////////////////////////////////////
+// MOVE THESE TO SERVER-SIDE PROCESSING!
+////////////////////////////////////////
+
+    // Load the Sponsor List into the DDL and set any selected values (if search result)
     var splRows = <%- JSON.stringify(sponsorsActiveDDL.rows) %>;
     loadSelectOptionsList("filterSponsorNamesInput", "(Not Selected)", 0, splRows);
+    var sponsorNamesSelected = "<%- previousValues.filterSponsorNamesInput %>";
+    console.log("Previous Sponsor values (original): " + sponsorNamesSelected);
+    if ( sponsorNamesSelected.length !== 0 && sponsorNamesSelected !== '0') {
+        sponsorNamesSelected = '|' + sponsorNamesSelected.replace(',','|') + '|';
+        console.log("Previous Sponsor values (formatted): " + sponsorNamesSelected);
+        loadSelectedValues("filterSponsorNamesInput", sponsorNamesSelected, "|");
+        toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterSponsorNamesIcon'),
+            document.querySelector('#filterSponsorNamesInputBlock'),
+            document.querySelector('#filterSponsorNamesInput'), '');
+    };
 
     // Load the Sponsor Type options into the DDL
     var spsRows = <%- JSON.stringify(sponsorTypeCategoriesDDL.rows) %>;
     loadSelectOptionsList("filterSponsorTypeInput", "(Not Selected)", 0, spsRows);
+    var sponsorTypeCategoriesSelected = "<%- previousValues.filterSponsorTypeInput %>";
+    console.log("Previous Sponsor Type values (original): " + sponsorTypeCategoriesSelected);
+    if ( sponsorTypeCategoriesSelected.length !== 0 && sponsorTypeCategoriesSelected !== '0') {
+        sponsorTypeCategoriesSelected = '|' + sponsorTypeCategoriesSelected.replace(',','|') + '|';
+        console.log("Previous Sponsor Type values (formatted): " + sponsorTypeCategoriesSelected);
+        loadSelectedValues("filterSponsorTypeInput", sponsorTypeCategoriesSelected, "|");
+        toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterSponsorTypeIcon'),
+            document.querySelector('#filterSponsorTypeInputBlock'),
+            document.querySelector('#filterSponsorTypeInput'), '');
+    };
 
-    // Load distinct list of Sponsors into the "Search" button destinations
-    var spnRows = <%- JSON.stringify(sponsorsActiveView.rows) %>;
+    /////////////////////////////////////////////////////////////////////
+    // Process the "show all sponsors" precheck and submittal
+    /////////////////////////////////////////////////////////////////////
+    function showAllSponsors() {
 
-    // Load all active scholarships into the "Search" button destinations
-    var schRows = <%- JSON.stringify(scholarshipsActive.rows) %>;
+        // set any status flags and submit the form
+//        alert('Show all Sponsors');
+        document.getElementById('showAllSponsorsFlag').value = "yes";
+        document.getElementById('sponsorSearchCriteria').submit();
+    };
+
+    /////////////////////////////////////////////////////////////////////
+    // Process the "show matching sponsors" precheck and submittal
+    /////////////////////////////////////////////////////////////////////
+    function showMatchingSponsors() {
+
+        // validate entries before submittal
+        if ( validateSponsorSearchCriteria() == 'validated' ) { // submit for search
+            document.getElementById('showAllSponsorsFlag').value = "";
+            document.getElementById('sponsorSearchCriteria').submit();
+        } else if ( validateSponsorSearchCriteria() == 'none' ) {  // submit for "Reset Search"
+            document.getElementById('showAllSponsorsFlag').value = "yes";
+            document.getElementById('sponsorSearchCriteria').submit();
+        }; // else errors occurred, do not submit
+
+    };
 
 </script>

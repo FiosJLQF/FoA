@@ -5,6 +5,9 @@
 
     <form action="/search/scholarships" method="POST" id="scholarshipSearchCriteria" name="scholarshipSearchCriteria">
 
+        <!-- Hidden values for post form submittal -->
+        <input type="hidden" id="showAllScholarshipsFlag" name="showAllScholarshipsFlag">
+
     <!-- Field(s) of Study -->
     Field of Study: <button type="button" class="btn btn-default button-small"
         onclick="toggleSearchCriteriaInputBlock(
@@ -195,28 +198,18 @@
 
 </div>    <!-- end "Advanced Search" section -->
 
-<br>
+        <br>
     </form> <!-- End search criteria form -->
 
     <div style="text-align:left">
-        <button type="button" class="btn btn-default button-search" onclick="searchScholarships(schRows, spnRows);">
+        <button type="submit" class="btn btn-default button-search" onclick="showMatchingScholarships();">
             <img src="/img/imgMagnifyingGlass.png" alt="Magnifying Glass" class="img-responsive button-icon-magglass">
             Search
         </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <button type="button" class="btn btn-default button-search" onclick="showAllScholarships(schRows, spnRows);">
+        <button type="button" class="btn btn-default button-search" onclick="showAllScholarships();">
             <img src="/img/imgRefresh.png" alt="arrow circling clockwise" class="img-responsive button-icon-refresh">
             Reset Search
-        </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <button type="submit" class="btn btn-default button-search" form="scholarshipSearchCriteria">
-            <img src="/img/imgMagnifyingGlass.png" alt="Magnifying Glass" class="img-responsive button-icon-magglass">
-            Search (New)
         </button>
-        <!-- <button type="button" class="btn btn-default button-small" onclick="showAllScholarships(schRows);">
-            >> Show All Scholarships
-        </button><br>
-        <button type="button" class="btn btn-default button-small" onclick="clearScholarshipSearchCriteria();">
-            >> Reset Search
-        </button> -->
     </div>
 
 </div>
@@ -225,6 +218,13 @@
 
     // Set the browser tab name (i.e., title)
     document.title = "Future of Aviation - Scholarship Search";
+
+    // Set hidden controls' default values
+    document.getElementById('showAllScholarshipsFlag').value = ""
+
+////////////////////////////////////////
+// MOVE THESE TO SERVER-SIDE PROCESSING!
+////////////////////////////////////////
 
     // Load the Field of Study options into the DDL and set any selected values (if search result)
     var fosRows = <%- JSON.stringify(fieldOfStudyCategoriesDDL.rows) %>;
@@ -267,7 +267,7 @@
             document.querySelector('#filterAgeInput'), '');
     };
 
-    // Load the Citizenship options into the DDL
+    // Load the Citizenship options into the DDL and set any selected value (if search result)
     var citRows = <%- JSON.stringify(citizenshipCategoriesDDL.rows) %>;
     loadSelectOptionsList("filterCitizenshipInput", "(Not Selected)", 0, citRows);
     var citizenshipsSelected = "<%- previousValues.filterCitizenshipInput %>";
@@ -282,35 +282,182 @@
             document.querySelector('#filterCitizenshipInput'), '');
     };
 
-    // Load the Year of Need options into the DDL
+    // Load the Year of Need options into the DDL and set any selected value (if search result)
     var yonRows = <%- JSON.stringify(yearOfNeedCategoriesDDL.rows) %>;
     loadSelectOptionsList("filterYearOfNeedInput", "(Not Selected)", 0, yonRows);
+    var yearOfNeedSelected = "<%- previousValues.filterYearOfNeedInput %>";
+    console.log("Previous Year of Need values (original): " + yearOfNeedSelected);
+    if ( yearOfNeedSelected.length !== 0 && yearOfNeedSelected !== '0') {
+        yearOfNeedSelected = '|' + yearOfNeedSelected.replace(',','|') + '|';
+        console.log("Previous Year of Need values (formatted): " + yearOfNeedSelected);
+        loadSelectedValues("filterYearOfNeedInput", yearOfNeedSelected, "|");
+        toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterYearOfNeedIcon'),
+            document.querySelector('#filterYearOfNeedInputBlock'),
+            document.querySelector('#filterYearOfNeedInput'), '');
+    };
 
-    // Load the Gender options into the DDL
+    // Load any keywords (if search result)
+    var keywordsSelected = "<%- previousValues.filterKeywordsInput %>";
+    console.log("Previous Keywords values (original): " + keywordsSelected);
+    if ( keywordsSelected.length !== 0 ) {
+        document.getElementById('filterKeywordsInput').value = keywordsSelected;
+        toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterKeywordsIcon'),
+            document.querySelector('#filterKeywordsInputBlock'),
+            document.querySelector('#filterKeywordsInput'), '');
+    } else {
+        document.getElementById('filterKeywordsInput').value = '';
+    };
+
+    // Load the "Female Applicants Only?" options into the DDL
     var genRows = <%- JSON.stringify(genderCategoriesDDL.rows) %>;
     loadSelectOptionsList("filterGenderInput", "(Not Selected)", 0, genRows);
+    var femaleOnlySelected = "<%- previousValues.filterGenderInput %>";
+    console.log("Previous Female Only values (original): " + femaleOnlySelected);
+    if ( femaleOnlySelected.length !== 0 && femaleOnlySelected !== '0') {
+        femaleOnlySelected = '|' + femaleOnlySelected.replace(',','|') + '|';
+        console.log("Previous Female Only values (formatted): " + femaleOnlySelected);
+        loadSelectedValues("filterGenderInput", femaleOnlySelected, "|");
+        toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterGenderIcon'),
+            document.querySelector('#filterGenderInputBlock'),
+            document.querySelector('#filterGenderInput'), '');
+        toggleAdvancedSearchCriteriaInputBlock(
+            document.querySelector('#advancedSearchIcon'),
+            document.querySelector('#advancedSearchInputBlock'), '', 'show');
+    };
 
     // Load the Enrollment Status options into the DDL
     var esRows = <%- JSON.stringify(enrollmentStatusCategoriesDDL.rows) %>;
     loadSelectOptionsList("filterEnrollmentStatusInput", "(Not Selected)", 0, esRows);
+    var enrollmentStatusSelected = "<%- previousValues.filterEnrollmentStatusInput %>";
+    console.log("Previous Enrollment Status values (original): " + enrollmentStatusSelected);
+    if ( enrollmentStatusSelected.length !== 0 && enrollmentStatusSelected !== '0') {
+        enrollmentStatusSelected = '|' + enrollmentStatusSelected.replace(',','|') + '|';
+        console.log("Previous Enrollment Status values (formatted): " + enrollmentStatusSelected);
+        loadSelectedValues("filterEnrollmentStatusInput", enrollmentStatusSelected, "|");
+        toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterEnrollmentStatusIcon'),
+            document.querySelector('#filterEnrollmentStatusInputBlock'),
+            document.querySelector('#filterEnrollmentStatusInput'), '');
+        toggleAdvancedSearchCriteriaInputBlock(
+            document.querySelector('#advancedSearchIcon'),
+            document.querySelector('#advancedSearchInputBlock'), '', 'show');
+    };
+
+    // Load any previously-entered GPA (if search result)
+    var gpaSelected = "<%- previousValues.filterGPAInput %>";
+    console.log("Previous GPA values: " + gpaSelected);
+    if ( gpaSelected.length !== 0 ) {
+        document.getElementById('filterGPAInput').value = gpaSelected;
+        toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterGPAIcon'),
+            document.querySelector('#filterGPAInputBlock'),
+            document.querySelector('#filterGPAInput'), '');
+        toggleAdvancedSearchCriteriaInputBlock(
+            document.querySelector('#advancedSearchIcon'),
+            document.querySelector('#advancedSearchInputBlock'), '', 'show');
+    };
 
     // Load the Military Service Type options into the DDL
     var msRows = <%- JSON.stringify(militaryServiceCategoriesDDL.rows) %>;
     loadSelectOptionsList("filterUSMilitaryServiceInput", "(Not Selected)", 0, msRows);
+    var militaryServiceSelected = "<%- previousValues.filterUSMilitaryServiceInput %>";
+    console.log("Previous Military Service values (original): " + militaryServiceSelected);
+    if ( militaryServiceSelected.length !== 0 && militaryServiceSelected !== '0') {
+        militaryServiceSelected = '|' + militaryServiceSelected.replace(',','|') + '|';
+        console.log("Previous Military Service values (formatted): " + militaryServiceSelected);
+        loadSelectedValues("filterUSMilitaryServiceInput", militaryServiceSelected, "|");
+        toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterUSMilitaryServiceIcon'),
+            document.querySelector('#filterUSMilitaryServiceInputBlock'),
+            document.querySelector('#filterUSMilitaryServiceInput'), '');
+        toggleAdvancedSearchCriteriaInputBlock(
+            document.querySelector('#advancedSearchIcon'),
+            document.querySelector('#advancedSearchInputBlock'), '', 'show');
+    };
 
     // Load the FAA Pilot Certificate options into the DDL
     var fpcRows = <%- JSON.stringify(faaPilotCertificateCategoriesDDL.rows) %>;
     loadSelectOptionsList("filterFAAPilotCertificateInput", "(Not Selected)", 0, fpcRows);
+    var faaPilotCertificateCategoriesSelected = "<%- previousValues.filterFAAPilotCertificateInput %>";
+    console.log("Previous FAA Pilot Certificate values (original): " + faaPilotCertificateCategoriesSelected);
+    if ( faaPilotCertificateCategoriesSelected.length !== 0 && faaPilotCertificateCategoriesSelected !== '0') {
+        faaPilotCertificateCategoriesSelected = '|' + faaPilotCertificateCategoriesSelected.replace(',','|') + '|';
+        console.log("Previous FAA Pilot Certificate values (formatted): " + faaPilotCertificateCategoriesSelected);
+        loadSelectedValues("filterFAAPilotCertificateInput", faaPilotCertificateCategoriesSelected, "|");
+        toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterFAAPilotCertificateIcon'),
+            document.querySelector('#filterFAAPilotCertificateInputBlock'),
+            document.querySelector('#filterFAAPilotCertificateInput'), '');
+            toggleAdvancedSearchCriteriaInputBlock(
+            document.querySelector('#advancedSearchIcon'),
+            document.querySelector('#advancedSearchInputBlock'), '', 'show');
+    };
 
     // Load the FAA Pilot Rating options into the DDL
     var fprRows = <%- JSON.stringify(faaPilotRatingCategoriesDDL.rows) %>;
     loadSelectOptionsList("filterFAAPilotRatingInput", "(Not Selected)", 0, fprRows);
+    var faaPilotRatingCategoriesSelected = "<%- previousValues.filterFAAPilotRatingInput %>";
+    console.log("Previous FAA Pilot Rating values (original): " + faaPilotRatingCategoriesSelected);
+    if ( faaPilotRatingCategoriesSelected.length !== 0 && faaPilotRatingCategoriesSelected !== '0') {
+        faaPilotRatingCategoriesSelected = '|' + faaPilotRatingCategoriesSelected.replace(',','|') + '|';
+        console.log("Previous FAA Pilot Rating values (formatted): " + faaPilotRatingCategoriesSelected);
+        loadSelectedValues("filterFAAPilotRatingInput", faaPilotRatingCategoriesSelected, "|");
+        toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterFAAPilotRatingIcon'),
+            document.querySelector('#filterFAAPilotRatingInputBlock'),
+            document.querySelector('#filterFAAPilotRatingInput'), '');
+            toggleAdvancedSearchCriteriaInputBlock(
+            document.querySelector('#advancedSearchIcon'),
+            document.querySelector('#advancedSearchInputBlock'), '', 'show');
+    };
 
     // Load the FAA Mechanic Certificate options into the DDL
     var fmcRows = <%- JSON.stringify(faaMechanicCertificateCategoriesDDL.rows) %>;
     loadSelectOptionsList("filterFAAMechanicCertRatingInput", "(Not Selected)", 0, fmcRows);
+    var faaMechanicCertificateCategoriesSelected = "<%- previousValues.filterFAAMechanicCertRatingInput %>";
+    console.log("Previous FAA Mechanic Certificate values (original): " + faaMechanicCertificateCategoriesSelected);
+    if ( faaMechanicCertificateCategoriesSelected.length !== 0 && faaMechanicCertificateCategoriesSelected !== '0') {
+        faaMechanicCertificateCategoriesSelected = '|' + faaMechanicCertificateCategoriesSelected.replace(',','|') + '|';
+        console.log("Previous FAA Mechanic Certificate values (formatted): " + faaMechanicCertificateCategoriesSelected);
+        loadSelectedValues("filterFAAMechanicCertRatingInput", faaMechanicCertificateCategoriesSelected, "|");
+        toggleSearchCriteriaInputBlock(
+            document.querySelector('#filterFAAMechanicCertRatingIcon'),
+            document.querySelector('#filterFAAMechanicCertRatingInputBlock'),
+            document.querySelector('#filterFAAMechanicCertRatingInput'), '');
+            toggleAdvancedSearchCriteriaInputBlock(
+            document.querySelector('#advancedSearchIcon'),
+            document.querySelector('#advancedSearchInputBlock'), '', 'show');
+    };
 
-    // Load all active scholarships into the "Search" button destinations
-    var schRows = <%- JSON.stringify(scholarshipsActive.rows) %>;
+    /////////////////////////////////////////////////////////////////////
+    // Process the "show all scholarships" precheck and submittal
+    /////////////////////////////////////////////////////////////////////
+    function showAllScholarships() {
+
+        // set any status flags and submit the form
+//        alert('Show all scholarships');
+        document.getElementById('showAllScholarshipsFlag').value = "yes";
+        document.getElementById('scholarshipSearchCriteria').submit();
+
+    };
+
+    /////////////////////////////////////////////////////////////////////
+    // Process the "show matching scholarships" precheck and submittal
+    /////////////////////////////////////////////////////////////////////
+    function showMatchingScholarships() {
+
+        // validate entries before submittal
+        if ( validateScholarshipSearchCriteria() == 'validated' ) {  // submit for search
+            document.getElementById('showAllScholarshipsFlag').value = "";
+            document.getElementById('scholarshipSearchCriteria').submit();
+        } else if ( validateScholarshipSearchCriteria() == 'none' ) {  // submit for "Reset Search"
+            document.getElementById('showAllScholarshipsFlag').value = "yes";
+            document.getElementById('scholarshipSearchCriteria').submit();
+        }; // else errors occurred, do not submit
+
+    };
 
 </script>

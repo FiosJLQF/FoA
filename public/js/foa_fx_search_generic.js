@@ -166,27 +166,25 @@ function loadSelectedValues(selectEl, selectedValuesString, delimiterToUse) {
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
-// parse the formatted SELECT object's "selected values"
+// build the block(s) for any "Featured Sponsors"
 //////////////////////////////////////////////////////////////////////////////////////////
-function buildFeaturedSponsorsBlock(sponsors, scholarships) {
+function buildFeaturedSponsorsBlock(sponsors) {
 
     // local variables
     // build a "featured results" div, to return to the calling function
     const divFeaturedResults = document.createElement('div');
     divFeaturedResults.id = 'featuredsponsors'
     divFeaturedResults.classList.add('featured-sponsors-block');
-//    const divFeaturedSponsorsBlock = document.createElement('div');
-//    divFeaturedSponsorsBlock.classList.add('featured-block');
 
     // extract the "featured" items
     const featuredItems = sponsors.filter( obj => obj['SponsorIsFeatured'] );
     featuredItemsCount = featuredItems.length;
     console.log(`number of featured sponsors: ${featuredItemsCount}`);
 
-    // if "featured" items were found, build the "Featured Scholarships" block
+    // if "featured" items were found, build the "Featured Sponsors" block
     if ( featuredItemsCount > 0 ) {
 
-        // add the "Featured Scholarships" label (with break hr)
+        // add the "Featured Sponsors" label (with break hr)
         const divFeaturedItemsBlockTitle = document.createElement('div');
         divFeaturedItemsBlockTitle.classList.add('bodylayout1col2title');
         divFeaturedItemsBlockTitle.innerText = "Featured Sponsors";
@@ -198,22 +196,14 @@ function buildFeaturedSponsorsBlock(sponsors, scholarships) {
         // for each featured item, build the initial display with the details hidden
         for (let featuredItem of featuredItems) {
 
-            // get the matching scholarships for "count" display
-            const matchingScholarships = scholarships.filter( function(e) {
-                return e.SponsorID == featuredItem['SponsorID'];
-            });
-
             // build a Sponsor Search Result div
-            const divItemSearchResult = buildFeaturedSponsorSearchResultDiv(featuredItem, matchingScholarships);
+            const divItemSearchResult = buildFeaturedSponsorSearchResultDiv(featuredItem);
             divFeaturedResults.append(divItemSearchResult);
 
             // add the sub-block break line to the search results div
             const hrItemBreak = document.createElement('hr');
             hrItemBreak.classList.add('searchresults-subblock-break-hr');
             divFeaturedResults.append(hrItemBreak);
-
-//            // add all item search results divs to the body at the top of the search results column
-//            divFeaturedSponsorsBlock.prepend(divFeaturedResults);
 
         };  // loop to the next featured item in the array
 
@@ -227,7 +217,7 @@ function buildFeaturedSponsorsBlock(sponsors, scholarships) {
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // builds a <div> of a "Featured Sponsor"
 /////////////////////////////////////////////////////////////////////////////////////////////////
-function buildFeaturedSponsorSearchResultDiv(selectedSponsor, matchingScholarships) {
+function buildFeaturedSponsorSearchResultDiv(selectedSponsor) {
 
     // local variables
     let fieldOfStudyListCompiled = '';
@@ -246,7 +236,6 @@ function buildFeaturedSponsorSearchResultDiv(selectedSponsor, matchingScholarshi
     // Sponsor logo
     const lnkSponsorLogo = document.createElement('a');
     lnkSponsorLogo.id = "lnkSponsorLogo_" + selectedSponsor['SponsorID'];
-//    lnkSponsorLogo.classList.add('sponsor-view-scholarships');
     lnkSponsorLogo.href = selectedSponsor['SponsorWebsite'];
     lnkSponsorLogo.target = "_blank";
 
@@ -263,15 +252,6 @@ function buildFeaturedSponsorSearchResultDiv(selectedSponsor, matchingScholarshi
     divSponsorName.classList.add('featured-sponsor-name');
     divSponsorName.innerText = selectedSponsor['SponsorName'];
     divFeaturedSponsorCol1.appendChild(divSponsorName);
-
-    // Sponsor Website (deprecated 2/2022 by RB)
-//    const lnkSponsorWebsite = document.createElement('a');
-//    lnkSponsorWebsite.id = "lnkSponsorWebsite_" + selectedSponsor['SponsorWebsite'];
-//    lnkSponsorWebsite.classList.add('featured-sponsor-website');
-//    lnkSponsorWebsite.href = selectedSponsor['SponsorWebsite'];
-//    lnkSponsorWebsite.target = "_blank";
-//    lnkSponsorWebsite.innerText = selectedSponsor['SponsorWebsite'];
-//    divFeaturedSponsorCol1.appendChild(lnkSponsorWebsite);
 
     // add column 1 to the <div>
     divFeaturedSponsor.appendChild(divFeaturedSponsorCol1);
@@ -292,24 +272,26 @@ function buildFeaturedSponsorSearchResultDiv(selectedSponsor, matchingScholarshi
     //////////////////////////////////////////////
     // build and add the "active scholarships profile" block, if there are active scholarships
     //////////////////////////////////////////////
-    if ( matchingScholarships.length > 0 ) {
+//    if ( matchingScholarships.length > 0 ) {
+    if ( selectedSponsor['ScholarshipCountActive'] > 0 ) {
         // add the header text "Offering ## scholarships in"
         const divFeaturedSponsorScholarshipCount = document.createElement('div');
-//        divFeaturedSponsorScholarshipCount.classList.add('searchresultscol3A');
-        divFeaturedSponsorScholarshipCount.textContent = 'Offering ' + matchingScholarships.length + ' scholarships in';
+//        divFeaturedSponsorScholarshipCount.textContent = 'Offering ' + matchingScholarships.length + ' scholarships in';
+        divFeaturedSponsorScholarshipCount.textContent = 'Offering ' + selectedSponsor['ScholarshipCountActive'] + ' scholarships in';
         divFeaturedSponsorCol2.appendChild(divFeaturedSponsorScholarshipCount);
 
         // add list of scholarship types (2 columns)
         const divScholarshipTypes = document.createElement('div');
         divScholarshipTypes.classList.add('featured-sponsor-fieldofstudy');
 
-        // compile a list of all Field of Study categories
-        for ( let i = 0; i < matchingScholarships.length; i++ ) {
-            fieldOfStudyListCompiled += matchingScholarships[i]['Criteria_FieldOfStudyText'] + '; ';
-        }
-        fieldOfStudyListCompiled = fieldOfStudyListCompiled.substring(0, fieldOfStudyListCompiled.length-2);
+//        // compile a list of all Field of Study categories
+//        for ( let i = 0; i < matchingScholarships.length; i++ ) {
+//            fieldOfStudyListCompiled += matchingScholarships[i]['Criteria_FieldOfStudyText'] + '; ';
+//        }
+//        fieldOfStudyListCompiled = fieldOfStudyListCompiled.substring(0, fieldOfStudyListCompiled.length-2);
+        fieldOfStudyListCompiled = selectedSponsor['SponsorFieldOfStudyList'];
         console.log(`FoS Raw: ${fieldOfStudyListCompiled}`);
-        const fieldOfStudyListArray = fieldOfStudyListCompiled.split('; ');
+        const fieldOfStudyListArray = fieldOfStudyListCompiled.split(';');
         console.log(`FoS Count Raw: ${fieldOfStudyListArray.length}`);
         const fieldOfStudyListUnique = fieldOfStudyListArray.filter((v, i, a) => a.indexOf(v) === i);
         fieldOfStudyListUnique.sort();
@@ -347,7 +329,8 @@ function buildFeaturedSponsorSearchResultDiv(selectedSponsor, matchingScholarshi
     /////////////////////////////////////////////////////////////
     // "View Scholarships" button, if there are active scholarships
     /////////////////////////////////////////////////////////////
-    if ( matchingScholarships.length > 0 ) {
+//    if ( matchingScholarships.length > 0 ) {
+    if ( selectedSponsor['ScholarshipCountActive'] > 0 ) {
 
         const lnkViewScholarships = document.createElement('a');
         lnkViewScholarships.id = "lnkViewScholarships_" + selectedSponsor['SponsorID'];

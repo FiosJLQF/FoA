@@ -10,8 +10,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         SponsorIDMatching:           DataTypes.STRING,
         SponsorName:                 DataTypes.STRING,
+        SponsorNameMatching:         DataTypes.STRING,
         SponsorLogo:                 DataTypes.STRING,
         SponsorDescription:          DataTypes.STRING,
+        SponsorDescriptionMatching:  DataTypes.STRING,
         SponsorWebsite:              DataTypes.STRING,
         SponsorContactFName:         DataTypes.STRING,
         SponsorContactLName:         DataTypes.STRING,
@@ -22,7 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         SponsorType:                 DataTypes.STRING,
         SponsorTypeMatchingText:     DataTypes.STRING,
         SponsorStatusID:             DataTypes.STRING,
-        SponsorIsFeatured:           DataTypes.BOOLEAN
+        SponsorIsFeatured:           DataTypes.BOOLEAN,
+        ScholarshipCountAll:         DataTypes.STRING,
+        ScholarshipCountActive:      DataTypes.STRING,
+        SponsorFieldOfStudyList:     DataTypes.STRING
     }, {
     freezeTableName: true,  // don't have Sequelize automatically pluralize the table name
     timestamps: false,  // don't add the timestamp attributes (updatedAt, createdAt)

@@ -30,10 +30,13 @@ router.use(
 // Routes Definitions
 ///////////////////////////////////////////////////////////////////////////////////
 
-///////////////////////////////////////////
+///////////////////////////////////////////////////////////////
 // "GET" Routes (retrieve data)
-///////////////////////////////////////////
+///////////////////////////////////////////////////////////////
 
+///////////////////////////////////////////
+// Root (redirect to scholarship search)
+///////////////////////////////////////////
 router.get('/', (req, res) => {
     // Log access
     try {
@@ -46,11 +49,17 @@ router.get('/', (req, res) => {
     res.redirect('../search/scholarships');
 });
 
+///////////////////////////////////////////
+// Error processing
+///////////////////////////////////////////
 router.get('/error', (req, res) => {
 //    console.log(`Accessing error page`);
     return res.render('error');
 });
 
+///////////////////////////////////////////
+// Portal splash page
+///////////////////////////////////////////
 router.get('/portal', (req, res) => {
 //    console.log(`Accessing portal page`);
     // Log access
@@ -71,6 +80,9 @@ router.get('/portal', (req, res) => {
     }
 });
 
+///////////////////////////////////////////
+// Sign-up for new account (handled by Auth0)
+///////////////////////////////////////////
 router.get("/sign-up/:page", (req, res) => {
     // Log access
     try {
@@ -89,6 +101,7 @@ router.get("/sign-up/:page", (req, res) => {
     });
 });
 
+/*
 router.get("/login/:page", (req, res) => {
     // Log access
     try {
@@ -103,7 +116,9 @@ router.get("/login/:page", (req, res) => {
       returnTo: page,
     });
 });
+*/
 
+/*
 router.get("/logout/:page", (req, res) => {
     // Log access
     try {
@@ -118,8 +133,10 @@ router.get("/logout/:page", (req, res) => {
       returnTo: page,
     });
 });
+*/
 
-router.get('/profile', requiresAuth(), (req, res) => {
+/*
+    router.get('/profile', requiresAuth(), (req, res) => {
     // Log access
     try {
         let logEventResult = commonFx.logEvent('Page Access', 'Profile', 0, 'Informational', 'User Accessed Page',
@@ -134,6 +151,7 @@ router.get('/profile', requiresAuth(), (req, res) => {
 
 
   });
+*/
 
 ///////////////////////////////////////////
 // Invalid Routes
@@ -153,4 +171,8 @@ router.get('*', (req, res) => {
     });
 });
 
+
+///////////////////////////////////////////////////////////////////////////////////
+// Module Exports
+///////////////////////////////////////////////////////////////////////////////////
 module.exports = router;

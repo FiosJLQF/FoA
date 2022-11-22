@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
         EventDuration:               DataTypes.NUMBER,
         EventRows:                   DataTypes.NUMBER,
         EventUserID:                 DataTypes.NUMBER,
-        EventCode:                   DataTypes.NUMBER
+        EventCode:                   DataTypes.NUMBER,
+        EventLocation:               DataTypes.STRING
     }, {
         freezeTableName: true,  // don't have Sequelize automatically pluralize the table name
         timestamps: false,  // don't add the timestamp attributes (updatedAt, createdAt)
