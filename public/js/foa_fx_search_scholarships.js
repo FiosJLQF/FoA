@@ -3,17 +3,13 @@
 // Scripts for the Scholarship Search Engine (client-side scripts)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   showSelectedScholarships
-//   clearScholarshipSearchResults
 //   buildScholarshipSearchResults
 //      - buildScholarshipSearchResultDiv
 //      - buildScholarshipPageNavigator
 //   toggleShowScholarshipDetails
 //   toggleShowScholarshipDescDetails
-
-//   ToDo:  add checkForTextAreaOverflow (and abstract from individual uses)
-
 //   validateScholarshipSearchCriteria
-//   openScholarshipTab
+//   logApplyButtonClick
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -24,33 +20,10 @@
 function showSelectedScholarships(scholarships, sponsors, scholarshipsAllOrMatched) {
 
     // clear any previous search results
-    clearScholarshipSearchResults();
+    clearSearchResults();
 
     // load all scholarships
-//    console.log(`showSelectedScholarships count: ${scholarships.length}`);
     buildScholarshipSearchResults(scholarships, sponsors, 1, false, scholarshipsAllOrMatched);
-}
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
-// clear Search Results
-/////////////////////////////////////////////////////////////////////////////////////////////////
-function clearScholarshipSearchResults() {
-
-    document.querySelector('#searchResultsTitle').textContent = 'Enter criteria and click "Search"';
-
-    if ( document.querySelector('#featuredsponsors') !== null ) {
-        document.querySelector('#searchresultscolumn').removeChild(featuredsponsors);
-    };
-    if ( document.querySelector('#featuredscholarships') !== null ) {
-        document.querySelector('#searchresultscolumn').removeChild(featuredscholarships);
-    };
-    if ( document.querySelector('#searchResults') !== null ) {
-        document.querySelector('#searchresultscolumn').removeChild(searchResults);
-    };
-    if ( document.querySelector('#pagination') !== null ) {
-        document.querySelector('#searchresultscolumn').removeChild(pagination);
-    };
 
 }
 
@@ -67,19 +40,15 @@ function buildScholarshipSearchResults(matchingScholarships, sponsors, pageNumbe
     let selectedItemSliceEnd = 0;
 
     // clear any previous search results
-    clearScholarshipSearchResults();
+    clearSearchResults();
     document.querySelector('#searchresultsmaintitle').style.display = 'none';
-//    if ( document.getElementById('featuredscholarships') != undefined ) {
-//        document.getElementById('featuredscholarships').style.display = 'none';
-//    };
 
-    // create the main <div> for column 2
-    const divSearchResultsColumn = document.querySelector('#searchresultscolumn');
+    // find the main <div> for column 2 (i.e., the search results column)
+    const divSearchResultsColumn = document.querySelector('#panel_body_right');
 
     ///////////////////////////////////////////////////////////
     // if building the 1st page (and not filtered to one sponsor), show the "featured" items first
     ///////////////////////////////////////////////////////////
-    console.log(`sponsors.count: ${sponsors.length}`);
     if ( pageNumber === 1 && sponsors.length > 1 ) {
 
         //////////////////////////////////////////////////////////////////
@@ -130,32 +99,16 @@ function buildScholarshipSearchResults(matchingScholarships, sponsors, pageNumbe
 //                divSearchResultsColumn.prepend(divFeaturedResults);
                 divSearchResultsColumn.append(divFeaturedResults);
 
-                ///////////////////////////////////////////////////////////////////////////////
-                // post-render scripts
-                ///////////////////////////////////////////////////////////////////////////////
-/*  // Deprecated 3/1/2022
-                // if the "Scholarship Description" does not overflow, hide the "show/hide" chevron
-                const spanScholarshipDescription = document.getElementById('pscholarshipdesc_' + featuredItem['ScholarshipID'] + 'F');
-                if ( spanScholarshipDescription.clientHeight >= spanScholarshipDescription.scrollHeight ) {
-                    document.getElementById('iconDescExpand_' + featuredItem['ScholarshipID'] + 'F').style.display = 'none';
-                };
-*/
             };  // loop to the next featured item in the array
 
         }; // END: if any featured items were found
-
-//    } else { // page number is greater than 1, so remove the "featured item" block
-
-        // if ( document.getElementById('featuredresults') != undefined ) {
-        //     document.getElementById('featuredresults').style.display = 'none';
-        // };
 
     }; // END:  Featured Items block (if page number is 1)
 
     ///////////////////////////////////////////////////////////
     // add the "Matched Items"
     ///////////////////////////////////////////////////////////
-    console.log(`matchingScholarships.length: ${matchingScholarships.length}`);
+//    console.log(`matchingScholarships.length: ${matchingScholarships.length}`);
 
     // create the search results div for column 2
     const divSearchResultsDivs = document.createElement('div');
@@ -164,7 +117,7 @@ function buildScholarshipSearchResults(matchingScholarships, sponsors, pageNumbe
     // create the title (with hr break)
     const divMatchedItemsBlockTitle = document.createElement('div');
     divMatchedItemsBlockTitle.classList.add('bodylayout1col2title');
-    console.log(`scholarshipsAllOrMatched: ${scholarshipsAllOrMatched}`);
+//    console.log(`scholarshipsAllOrMatched: ${scholarshipsAllOrMatched}`);
     if ( scholarshipsAllOrMatched === 'matched' ) {
         if ( matchingScholarships.length == 0 ) { // no matches found
             divMatchedItemsBlockTitle.textContent = 'No results found. Try changing the search criteria for better results.';
@@ -202,9 +155,6 @@ function buildScholarshipSearchResults(matchingScholarships, sponsors, pageNumbe
             hrItemBreak.classList.add('searchresults-subblock-break-hr');
             divSearchResultsDivs.appendChild(hrItemBreak);
 
-//            // add all search results divs to the body
-//            divSearchResultsColumn.appendChild(divSearchResultsDivs);
-
         };  // loop to the next Item in the array
     
     };
@@ -233,7 +183,7 @@ function buildScholarshipPageNavigator(matchingScholarships, sponsors, pageNumbe
     const numberOfPages = Math.ceil(matchingScholarships.length / pageScholarshipVolume);
 
     // find the "parent" div to which to add the pagination controls
-    const divSearchResultsColumn = document.querySelector('#searchresultscolumn');
+    const divSearchResultsColumn = document.querySelector('#panel_body_right');
     const divPaginationNavBar = document.createElement('div');
     divPaginationNavBar.id = 'pagination';
     divPaginationNavBar.classList.add('paginationnavbar');
@@ -259,8 +209,7 @@ function buildScholarshipPageNavigator(matchingScholarships, sponsors, pageNumbe
             spanPageNumber.classList.add('paginationItemSelected');
         };
         spanPageNumber.addEventListener('click', function() {
-//            clearScholarshipSearchCriteria();
-            clearScholarshipSearchResults();
+            clearSearchResults();
             buildScholarshipSearchResults(matchingScholarships, sponsors, pageNumberToLoad, showMatchingCriteria, scholarshipsAllOrMatched);
         });
 
@@ -328,29 +277,6 @@ function toggleShowScholarshipDescDetails(buttonID, detailsID) {
     }
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
-// when a user clicks on "I agreed and understand...", enable the Apply button
-/////////////////////////////////////////////////////////////////////////////////////////////////
-/*
-function toggleApplyButton(checkStatus, linkID, linkHref) {
-
-    let lnkToChange = document.querySelector("#" + linkID);
-//    alert('Link (' + lnkToChange.id + ') has been selected!');
-
-    if (checkStatus) {
-        lnkToChange.classList.remove("button-disabled");
-        lnkToChange.classList.add("button-enabled");
-        lnkToChange.href = linkHref;
-        lnkToChange.target = "_blank";
-    } else {
-        lnkToChange.classList.add("button-disabled");
-        lnkToChange.classList.remove("button-enabled");
-        lnkToChange.href = "javascript:void(0)";
-        lnkToChange.target = "";
-    }
-}
-*/
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // validate Search Criteria
@@ -517,27 +443,6 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria, isFe
 
         divScholarshipRow1.append(divScholarshipRow1Col1);
 
-/*
-        //////////////////////////////////////////////
-        // build and add the second column to the first row
-        //////////////////////////////////////////////
-        const divScholarshipRow1Col2 = document.createElement('div');
-        divScholarshipRow1Col2.classList.add('searchresultscol2');
-
-            const iconExpand = document.createElement('i');
-            iconExpand.id = "iconExpand_" + scholarship['ScholarshipID'];
-            iconExpand.classList.add('fas');
-            iconExpand.classList.add('fa-chevron-down');
-            iconExpand.addEventListener('click', function() {
-                toggleShowScholarshipDetails(iconExpand.id, 
-                    "scholarshipDetails_" + scholarship['ScholarshipID']);
-            });
-
-        divScholarshipRow1Col2.appendChild(iconExpand);
-
-        divScholarshipRow1.append(divScholarshipRow1Col2);
-*/
-
         //////////////////////////////////////////////
         // build and add the third column to the first row
         //////////////////////////////////////////////
@@ -558,7 +463,6 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria, isFe
 
             const divScholarshipRow1Col3Row1Col2 = document.createElement('div');
             // If the Sponsor or Scholarship is "Featured", change the div styling
-//            if ( scholarship['SponsorIsFeatured'] || scholarship['ScholarshipIsFeatured'] ) {
             if ( scholarship['ScholarshipIsFeatured'] ) {
                 divScholarshipRow1Col3Row1Col2.classList.add('searchresultscol3Bfeatured');
             } else {
@@ -571,14 +475,7 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria, isFe
             ////////////////////////////////////////
             // "Is Featured" Badge
             ////////////////////////////////////////
-//console.log(`SponsorIsFeatured: ${scholarship['SponsorIsFeatured']}`);
-//            if ( scholarship['SponsorIsFeatured'] ) {
-//                const imgSponsorIsFeatured = document.createElement('img');
-//                imgSponsorIsFeatured.src = "/img/imgFeaturedSponsor.png";
-//                imgSponsorIsFeatured.alt = "Featured Sponsor Badge";
-//                imgSponsorIsFeatured.classList.add('featured-sponsor-badge');
-//                divScholarshipRow1Col3Rows.appendChild(imgSponsorIsFeatured);
-/*            } else */ if ( scholarship['ScholarshipIsFeatured'] ) {
+            if ( scholarship['ScholarshipIsFeatured'] ) {
                 const imgScholarshipIsFeatured = document.createElement('img');
                 imgScholarshipIsFeatured.src = "/img/imgFeaturedScholarship.png";
                 imgScholarshipIsFeatured.alt = "Featured Scholarship Badge";
@@ -691,7 +588,6 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria, isFe
     divScholarshipRow2.classList.add('row');
 
     // If the Sponsor or Scholarship is "Featured", change the div styling
-//    if ( scholarship['SponsorIsFeatured'] || scholarship['ScholarshipIsFeatured'] ) {
     if ( scholarship['ScholarshipIsFeatured'] ) {
         divScholarshipRow2.classList.add('searchresults-mainblock-featured'); /* change background color */
     } else {
@@ -707,7 +603,8 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria, isFe
         
         const lnkApply = document.createElement('a');
         lnkApply.id = "lnkApply_" + scholarshipID;
-        lnkApply.href = scholarship['ScholarshipLink'];
+//        lnkApply.href = scholarship['ScholarshipLink'];
+        lnkApply.href = "./scholarshipapply?scholarshipid=" + scholarship['ScholarshipID'];
         lnkApply.target = "_blank";
 
         const imgApply = document.createElement('img');
@@ -718,16 +615,6 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria, isFe
         divScholarshipRow2Col1.appendChild(lnkApply);
 
     divScholarshipRow2.appendChild(divScholarshipRow2Col1);
-
-/*        
-        //////////////////////////////////////////////
-        // build and add the second column to the second row (empty)
-        //////////////////////////////////////////////
-        const divScholarshipRow2Col2 = document.createElement('div');
-        divScholarshipRow2Col2.classList.add('searchresultscol2');
-
-        divScholarshipRow2.appendChild(divScholarshipRow2Col2);
-*/
 
         //////////////////////////////////////////////
         // build and add the third column to the second row
@@ -773,17 +660,6 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria, isFe
 
             divScholarshipRow2Col3Row1Col2.appendChild(spanScholarshipDescription);
 
-/*  // Deprecated 3/1/2022
-            const iconDescExpand = document.createElement('i');
-            iconDescExpand.id = "iconDescExpand_" + scholarshipID;
-            iconDescExpand.classList.add('fas');
-            iconDescExpand.classList.add('fa-chevron-down');
-            iconDescExpand.addEventListener('click', function() {
-                toggleShowScholarshipDescDetails(iconDescExpand.id, spanScholarshipDescription.id);
-            });
-
-            divScholarshipRow2Col3Row1Col2.appendChild(iconDescExpand);
-*/
         divScholarshipRow2Col3Rows.appendChild(divScholarshipRow2Col3Row1Col2);
 
             ////////////////////////////////////////
@@ -855,39 +731,17 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria, isFe
     divScholarship.appendChild(divScholarshipRow2);
 
     return divScholarship;
+
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////
-// on the data mgmt forms, show/hide the "Edit" or "Preview" tab, as indicated
-//////////////////////////////////////////////////////////////////////////////////////////
-function openScholarshipTab(evt, tabName) {
-    // Declare all variables
-    var i, tabcontent, tablinks;
 
-    // Get all elements with class="tabcontent" and hide them
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
-    }
-  
-    // Get all elements with class="tablinks" and remove the class "active"
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-  
-    // Show the current tab, and add an "active" class to the button that opened the tab
-    document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.className += " active";
+/////////////////////////////////////////////////////////////////////////////////////////////////
+// log when a user clicks an Apply button
+/////////////////////////////////////////////////////////////////////////////////////////////////
+function logApplyButtonClick(scholarshipID) {
 
-    // Build the scholarship preview DIV
-    if ( tabName === 'tabPreview') {
-        // Clear any status messages
-        if ( document.getElementById('statusMessage') ) {
-            document.getElementById('statusMessage').innerText = '';
-        };
-        const divScholarshipPreview = buildScholarshipSearchResultDiv(scholarshipData, false, false);
-        document.getElementById('tabPreview').replaceChildren(divScholarshipPreview);
-    };
+    
 
-  } 
+
+
+}

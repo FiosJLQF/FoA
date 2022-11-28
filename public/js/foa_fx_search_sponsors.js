@@ -3,18 +3,10 @@
 // Scripts for the Sponsor Search Engine (client-side scripts)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   showSelectedSponsors
-//   clearSponsorSearchResults
-
-
-
 //   buildSponsorSearchResults
 //      - buildSponsorSearchResultDiv
 //      - buildSponsorPageNavigator
-//   toggleShowSponsorDetails
-//   checkForTextAreaOverflow
-//   searchSponsors (??? where used?)
-//   validateSponsorSearchCriteria (current no criteria elements to validate)
-//   openSponsorTab
+//   validateSponsorSearchCriteria
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -25,33 +17,13 @@
 function showSelectedSponsors(sponsors, sponsorsAllOrMatched) {
 
     // clear any previous search results
-    clearSponsorSearchResults();
+    clearSearchResults();
 
     // load all sponsors
-    console.log(`showSelectedSponsors count: ${sponsors.length}`);
     buildSponsorSearchResults(sponsors, 1, false, sponsorsAllOrMatched);
 
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
-// clear Search Results
-/////////////////////////////////////////////////////////////////////////////////////////////////
-function clearSponsorSearchResults() {
-
-    document.querySelector('#searchResultsTitle').textContent = 'Enter criteria and click "Search"';
-
-    if ( document.querySelector('#featuredsponsors') !== null ) {
-        document.querySelector('#searchresultscolumn').removeChild(featuredsponsors);
-    };
-    if ( document.querySelector('#searchResults') !== null ) {
-        document.querySelector('#searchresultscolumn').removeChild(searchResults);
-    };
-    if ( document.querySelector('#pagination') !== null ) {
-        document.querySelector('#searchresultscolumn').removeChild(pagination);
-    };
-
-}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // build the sponsor search results divs
@@ -64,11 +36,11 @@ function buildSponsorSearchResults(matchingSponsors, pageNumber, showMatchingCri
     let selectedItemSliceEnd = 0;
 
     // clear any previous search results
-    clearSponsorSearchResults();
+    clearSearchResults();
     document.querySelector('#searchresultsmaintitle').style.display = 'none';
 
-    // create the main div for column 2 (i.e., the Search Results column)
-    const divSearchResultsColumn = document.querySelector('#searchresultscolumn');
+    // find the main div for column 2 (i.e., the search results column)
+    const divSearchResultsColumn = document.querySelector('#panel_body_right');
     const divSearchResultsDivs = document.createElement('div');
     divSearchResultsDivs.id = 'searchResults';
 
@@ -107,11 +79,6 @@ function buildSponsorSearchResults(matchingSponsors, pageNumber, showMatchingCri
     // for each selected item, build the initial display with the details hidden
     for (let selectedItem of selectedItems) {
 
-//        // get the matching scholarships for "count" display
-//        const matchingScholarships = scholarships.filter( function(e) {
-//            return e.SponsorID == selectedItem['SponsorID'];
-//        });
-
         // build a Scholarship Search Result div
         const divItemSearchResult = buildSponsorSearchResultDiv(selectedItem);
         divSearchResultsDivs.appendChild(divItemSearchResult);
@@ -147,7 +114,7 @@ function buildSponsorPageNavigator(matchingSponsors, pageNumberSelected) {
     const numberOfPages = Math.ceil(matchingSponsors.length / pageSponsorVolume);
 
     // find the "parent" div to which to add the pagination controls
-    const divSearchResultsColumn = document.querySelector('#searchresultscolumn');
+    const divSearchResultsColumn = document.querySelector('#panel_body_right');
     const divPaginationNavBar = document.createElement('div');
     divPaginationNavBar.id = 'pagination';
     divPaginationNavBar.classList.add('paginationnavbar');
@@ -173,8 +140,7 @@ function buildSponsorPageNavigator(matchingSponsors, pageNumberSelected) {
             spanPageNumber.classList.add('paginationItemSelected');
         };
         spanPageNumber.addEventListener('click', function() {
-//            clearSponsorSearchCriteria();
-            clearSponsorSearchResults();
+            clearSearchResults();
             buildSponsorSearchResults(matchingSponsors, pageNumberToLoad, true);
             window.scrollTo(0,0);
         });
@@ -188,30 +154,6 @@ function buildSponsorPageNavigator(matchingSponsors, pageNumberSelected) {
     // add all scholarship search results divs to the body
     divSearchResultsColumn.append(divPaginationNavBar);
 
-}
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
-// when a user clicks on the "expand/collapse" button for a sponsor, show/hide the details
-/////////////////////////////////////////////////////////////////////////////////////////////////
-function toggleShowSponsorDetails(buttonID, detailsID) {
-
-    const enableButton = document.querySelector("#" + buttonID);
-    const divDetails = document.querySelector("#" + detailsID);
-
-    // if the current display is hidden, then show
-    if ( divDetails.style.display !== "inline-block") {
-        divDetails.style.display = "inline-block";
-        enableButton.classList.remove("fa-chevron-down");
-        enableButton.classList.add("fa-chevron-up");
-
-        checkForTextAreaOverflow();
-
-    } else {  // if the current display is shown, then hide
-        divDetails.style.display = "none";
-        enableButton.classList.remove("fa-chevron-up");
-        enableButton.classList.add("fa-chevron-down");
-    }
 }
 
 
@@ -417,48 +359,6 @@ function buildSponsorSearchResultDiv(selectedSponsor) {
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
-// when a text block description is rendered, check for overflow and show/hide the chevron
-/////////////////////////////////////////////////////////////////////////////////////////////////
-function checkForTextAreaOverflow() {
-
-    // for all "Scholarship Description" divs, if the text does not overflow, hide the chevron
-    const scholarshipDescriptions = document.querySelectorAll('[id^=spanScholarshipDesc]');
-//alert('scholarship blocks found: ' + scholarshipDescriptions.length);
-    let scholarshipID = '';
-    let spanID = '';
-    for (var i=0; i < scholarshipDescriptions.length; i++) {
-        spanID = scholarshipDescriptions[i].id;
-        scholarshipID = spanID.split("_").pop();
-//alert('scholarshipDescriptions[i].clientHeight: ' + scholarshipDescriptions[i].clientHeight);
-//alert('scholarshipDescriptions[i].scrollHeight: ' + scholarshipDescriptions[i].scrollHeight);
-        if ( scholarshipDescriptions[i].clientHeight >= scholarshipDescriptions[i].scrollHeight ) {
-//            alert('scholarship ' + scholarshipID + ' overflows');
-            document.getElementById('iconDescExpand_' + scholarshipID).style.display = 'none';
-        };
-    };
-
-}
-
-
-//////////////////////////////////////////////////////////////////////////////////////////
-// process Search Criteria submission
-//////////////////////////////////////////////////////////////////////////////////////////
-function searchSponsors(sponsors, scholarships) {
-
-    // clear any previous search results
-    clearSponsorSearchResults();
-
-    // validate the input values
-    const dataAreValidated = validateSponsorSearchCriteria();
-    if ( dataAreValidated ) {
-        // validation passed => find and display sponsors
-        findMatchingSponsors(sponsors, scholarships, 1);
-    };
-
-}
-
-
 //////////////////////////////////////////////////////////////////////////////////////////
 // validate Search Criteria
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -500,38 +400,38 @@ function validateSponsorSearchCriteria() {
 }
 
 
-//////////////////////////////////////////////////////////////////////////////////////////
-// on the data mgmt forms, show/hide the "Edit" or "Preview" tab, as indicated
-//////////////////////////////////////////////////////////////////////////////////////////
-function openSponsorTab(evt, tabName) {
-    // Declare all variables
-    var i, tabcontent, tablinks;
+// //////////////////////////////////////////////////////////////////////////////////////////
+// // On the data mgmt forms, show/hide the "Edit" or "Preview" tab, as indicated
+// //////////////////////////////////////////////////////////////////////////////////////////
+// function openSponsorTab(evt, tabName) {
+//     // Declare all variables
+//     var i, tabcontent, tablinks;
   
-    // Get all elements with class="tabcontent" and hide them
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
-    }
+//     // Get all elements with class="tabcontent" and hide them
+//     tabcontent = document.getElementsByClassName("tabcontent");
+//     for (i = 0; i < tabcontent.length; i++) {
+//       tabcontent[i].style.display = "none";
+//     }
   
-    // Get all elements with class="tablinks" and remove the class "active"
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
+//     // Get all elements with class="tablinks" and remove the class "active"
+//     tablinks = document.getElementsByClassName("tablinks");
+//     for (i = 0; i < tablinks.length; i++) {
+//       tablinks[i].className = tablinks[i].className.replace(" active", "");
+//     }
   
-    // Show the current tab, and add an "active" class to the button that opened the tab
-    document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.className += " active";
+//     // Show the current tab, and add an "active" class to the button that opened the tab
+//     document.getElementById(tabName).style.display = "block";
+//     evt.currentTarget.className += " active";
 
-    // Build the sponsor preview DIV
-    if ( tabName === 'tabPreview') {
-        // Clear any status messages
-        if ( document.getElementById('statusMessage') ) {
-            document.getElementById('statusMessage').innerText = '';
-        };
-        const divSponsorPreview = buildSponsorSearchResultDiv(sponsorData, sponsorData['ScholarshipCountActive']);
-        document.getElementById('tabPreview').replaceChildren(divSponsorPreview);
-        document.getElementById('iconExpand_undefined').classList.remove('fa-chevron-down');
-    };
+//     // Build the sponsor preview DIV
+//     if ( tabName === 'tabPreview') {
+//         // Clear any status messages
+//         if ( document.getElementById('statusMessage') ) {
+//             document.getElementById('statusMessage').innerText = '';
+//         };
+//         const divSponsorPreview = buildSponsorSearchResultDiv(sponsorData, sponsorData['ScholarshipCountActive']);
+//         document.getElementById('tabPreview').replaceChildren(divSponsorPreview);
+//         document.getElementById('iconExpand_undefined').classList.remove('fa-chevron-down');
+//     };
 
-  } 
+//   } 

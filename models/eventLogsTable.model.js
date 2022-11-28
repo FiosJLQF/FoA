@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         EventDate:                   DataTypes.DATE,
         ProcessName:                 DataTypes.STRING,
         EventObject:                 DataTypes.STRING,
+        EventObjectID:               DataTypes.STRING,
         EventStatus:                 DataTypes.STRING,
         EventDescription:            DataTypes.STRING,
         EventDuration:               DataTypes.NUMBER,

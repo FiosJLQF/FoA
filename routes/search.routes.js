@@ -238,6 +238,63 @@ router.post('/scholarships', async (req, res) => {
 });
 
 ////////////////////////////////////////////////////
+// Scholarship Apply (Get)
+////////////////////////////////////////////////////
+router.get('/scholarshipapply', async (req, res) => {
+
+    console.log('\\search\\scholarshipapply requested (get).');
+
+    // local variables
+    let scholarshipsMatching = '';
+    let scholarshipIDRequested = '';
+
+    // validate Scholarship ID
+    if ( req.query['scholarshipid'] != undefined ) {  // if the querystring variable exists, check its format
+
+        scholarshipIDRequested = Number(req.query['scholarshipid']);
+        console.log(`scholarshipIDRequested: ${scholarshipIDRequested}`);
+
+        if ( scholarshipIDRequested == 0 || scholarshipIDRequested === '' || Number.isNaN(scholarshipIDRequested)) {
+            errorCode = 909; // Invalid, missing or non-existent ScholarshipID
+            // Log the event
+            let logEventResult = await commonFx.logEvent('ScholarshipID Validation', '', 0, 'Failure',
+                `ScholarshipID is not a valid format (${req.query['scholarshipid']})`,
+                0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
+            // Redirect the user to the error screen
+            return res.render( 'error', {
+                errorCode: errorCode,
+                userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+            });
+        } else { // value is in a valid format; check to see if it exists in the database
+            scholarshipsMatching = await ScholarshipsActive.findAndCountAll( { where: { ScholarshipID: scholarshipIDRequested } } );
+            if ( scholarshipsMatching.count == 0 ) {
+                errorCode = 909; // Invalid, missing or non-existent ScholarshipID
+                // Log the event
+                let logEventResult = await commonFx.logEvent('ScholarshipID Validation', '', 0, 'Failure',
+                    `ScholarshipID does not exist (${req.query['scholarshipid']})`,
+                    0, 0, currentUserID, process.env.EMAIL_WEBMASTER_LIST);
+                // redirect the user to the error screen
+                return res.render( 'error', {
+                    errorCode: errorCode,
+                    userName: ( req.oidc.user == null ? '' : req.oidc.user.name )
+                });
+            };
+        };
+    };  // End "scholarshipid" validation checks; scholarship id was in the proper format and exists in the database
+
+    console.log(`scholarship Apply link: ${scholarshipsMatching.rows[0].ScholarshipLink}`);
+
+    // log apply event
+    let logEventResult = await commonFx.logEvent('Scholarship Application', 'Scholarship Search', 0, 'Success',
+        `Scholarship "${scholarshipsMatching.rows[0].ScholarshipName}" apply button clicked.`, 0, 0, currentUserID,
+        process.env.EMAIL_WEBMASTER_LIST, scholarshipIDRequested);
+
+    // redirect the user to the link
+    res.redirect(scholarshipsMatching.rows[0].ScholarshipLink);
+
+});
+
+////////////////////////////////////////////////////
 // Sponsor Search (Get)
 ////////////////////////////////////////////////////
 router.get('/sponsors', async (req, res) => {

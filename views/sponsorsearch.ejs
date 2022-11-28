@@ -5,6 +5,7 @@
 <script src="/js/foa_fx_search_generic.js"></script>
 <script src="/js/foa_fx_search_sponsors.js"></script>
 
+<!-- Set the page title -->
 <div class="container pagetitle" align="center">
   Find a Sponsor
   <hr class="pagetitlebreak">
@@ -14,15 +15,15 @@
 <div class="container">
   <!-- Search Options -->
   <div class="row">
-    <div id="sponsorsearchcriteria" class="col-3 bodylayout1col1">
-
+    <div id="panel_body_left" class="col-3 bodylayout1col1">
       <%- include('partials/sponsorsearchcriteria') %>
-
     </div>
-    <div id="searchresultscolumn" class="col-9 bodylayout1col2">
+    <div id="panel_body_right" class="col-9 bodylayout1col2">
       <div id="searchresultsmaintitle">
         <span class="bodylayout1col2title" id="searchResultsTitle">Enter criteria and click "Search"</span><br>
         <hr class="bodycol2break">
+      </div>
+      <div id="panel_search_results">
       </div>
     </div>
   </div>

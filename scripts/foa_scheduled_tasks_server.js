@@ -1,4 +1,8 @@
-const jsFx = require('./foa_fx_server');
+
+
+
+
+//const jsFx = require('./foa_fx_datamgmt_server');
 const commonFx = require('../common_fx_server');
 
 //const { SponsorsDDL, SponsorTypeCategoriesDDL } = require('../models/sequelize.js');

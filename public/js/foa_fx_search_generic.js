@@ -1,10 +1,47 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Scripts for any Search Engine (client-side scripts)
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   clearSearchResults
+//   loadSelectOptionsList
+//   toggleSearchCriteriaInputBlock
+//   toggleAdvancedSearchCriteriaInputBlock
+//   convertOptionsToDelimitedString
+//   loadSelectedValues
+//   buildFeaturedSponsorsBlock (used on sponsor and scholarship search results)
+//   buildFeaturedSponsorSearchResultDiv (used on sponsor and scholarship search results)
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 //////////////////////////////////////////////////////////////////////////////////////////
 // global variables
 //////////////////////////////////////////////////////////////////////////////////////////
-
-//const { eventNames } = require("../../app");
 const pageScholarshipVolume = 15; // number of scholarships to be displayed on a page
 const pageSponsorVolume = 15; // number of sponsors to be displayed on a page
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+// clear Search Results
+/////////////////////////////////////////////////////////////////////////////////////////////////
+function clearSearchResults() {
+
+    document.querySelector('#searchResultsTitle').textContent = 'Enter criteria and click "Search"';
+
+    if ( document.querySelector('#featuredsponsors') !== null ) {
+        document.querySelector('#panel_body_right').removeChild(featuredsponsors);
+    };
+    if ( document.querySelector('#featuredscholarships') !== null ) {
+        document.querySelector('#panel_body_right').removeChild(featuredscholarships);
+    };
+    if ( document.querySelector('#searchResults') !== null ) {
+        document.querySelector('#panel_body_right').removeChild(searchResults);
+    };
+    if ( document.querySelector('#pagination') !== null ) {
+        document.querySelector('#panel_body_right').removeChild(pagination);
+    };
+
+}
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -99,7 +136,7 @@ function toggleAdvancedSearchCriteriaInputBlock(elIcon, elBlock, elInput, status
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // Format selected options in a SELECT control into a delimited string for database storage
-// => client-side version (see scripts/foa_fx.js for server-side version)
+// => client-side version (see scripts/common_fx_server.js for server-side version)
 //////////////////////////////////////////////////////////////////////////////////////////
 function convertOptionsToDelimitedString(optionsToConvert, delimiterToUse = "|", notSelectedValue, trimEdges) {
 

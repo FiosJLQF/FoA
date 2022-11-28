@@ -694,7 +694,7 @@ async function processSponsorSearchCriteria(reqBody) {
         // Add the matching criteria count to the sponsor record
         matchingSponsor['matchCount'] = matchCount;
         console.log(`     - matched on ${matchingSponsor['matchCount']} criteria.`);
-        matchingSponsor['SponsorName'] += ' (' + matchCount + ')';
+//        matchingSponsor['SponsorName'] += ' (' + matchCount + ')';
 
     }; // loop to the next sponsor to process
         

@@ -21,7 +21,7 @@ const cors = require('cors');
 const rootRoutes = require('./routes/root.routes.js');
 const switchboardRoutes = require('./routes/switchboard.routes.js');
 const searchRoutes = require('./routes/search.routes.js');
-const jsFx = require('./scripts/foa_fx_server');
+//const jsFx = require('./scripts/foa_fx_datamgmt_server');
 const favicon = require('serve-favicon');
 
 

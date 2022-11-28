@@ -5,7 +5,7 @@ const express = require("express");
 const router = express.Router();
 const { auth, requiresAuth } = require('express-openid-connect');
 require("dotenv").config();  // load all ".env" variables into "process.env" for use
-//const jsFx = require('../scripts/foa_fx_server');
+//const jsFx = require('../scripts/foa_fx_datamgmt_server');
 const commonFx = require('../scripts/common_fx_server');
 
 

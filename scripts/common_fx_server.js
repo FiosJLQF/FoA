@@ -13,7 +13,7 @@ const nodemailer = require('nodemailer');  // allows SMPT push emails to be sent
 // Create a log entry
 //////////////////////////////////////////////////////////////////////////////////////////
 async function logEvent(processName, eventObject, eventCode, eventStatus, eventDescription, eventDuration,
-    eventRows, eventUserID, sendEmailTo) {
+    eventRows, eventUserID, sendEmailTo, eventObjectID) {
 
     let logEventResult = false;
     console.log('Logging event now...');
@@ -25,6 +25,7 @@ async function logEvent(processName, eventObject, eventCode, eventStatus, eventD
             EventDate: Date().toString(),
             ProcessName: processName,
             EventObject: eventObject,
+            EventObjectID: eventObjectID,
             EventStatus: eventStatus,
             EventDescription: eventDescription,
             EventDuration: eventDuration,
@@ -44,7 +45,7 @@ async function logEvent(processName, eventObject, eventCode, eventStatus, eventD
         let emailResultError = sendEmail(process.env.EMAIL_WEBMASTER_LIST, 'Event Log Error',
         `An error occurred logging an event: ${error}`);
         console.log(`Event not logged (${error})`);
-        };
+    };
 
     return logEventResult;
 
@@ -377,16 +378,16 @@ function sendEmail(emailRecipient, emailSubject, emailBody, emailBodyHTML) {
     // create message
     var msg = {
         to: emailRecipient,
-        from: process.env.EMAIL_SENDER,
+//        from: process.env.EMAIL_SENDER_FIOS,  // Gmail
+        from: process.env.EMAIL_SENDER_FOA,  // Fatcow
+        replyTo: process.env.EMAIL_REPLY_TO,
         subject: emailSubject,
         text: emailBody,
         html: emailBodyHTML
     };
-
-    // send the message
-    // nodemailer example
+/*
+    // create the transport object (gmail)
     var transporter = nodemailer.createTransport( {  // the email account to send SMTP emails
-//        service: 'smtp.fatcow.com',
         host: 'smtp.gmail.com',
         port: 465, // 587 without SSL
         secure: true,
@@ -398,28 +399,32 @@ function sendEmail(emailRecipient, emailSubject, emailBody, emailBodyHTML) {
             refreshToken: process.env.EMAIL_OAUTH_REFRESHTOKEN
         },
     });
+*/
+    // create the transport object (Fatcow)
+    var transporter = nodemailer.createTransport( {  // the email account to send SMTP emails
+        host: 'smtp.fatcow.com',
+        port: 465, // 587 without SSL
+        secure: true,
+        auth: {
+            user: process.env.EMAIL_SENDER_FOA,
+            pass: process.env.EMAIL_PWD_FOA
+          }
+    });
+
+    // send the email
     transporter.sendMail( msg, function (error, info) {
         if (error) {
             console.log(error);
             // ToDo: log error in "events" table
+
+
         } else {
             console.log('Email sent: ' + info.response);
             // ToDo: log event in "events" table
+
+
         }
     });
-/*
-    // sendGrid example
-    sendgrid
-      .send(msg)
-      .then((resp) => {
-        console.log('Email sent\n', resp)
-        // ToDo: log event in "events" table
-        })
-      .catch((error) => {
-        console.error(error)
-        // ToDo: log error in "events" table
-        });
-*/
 
 }; // end "sendEmail"
 

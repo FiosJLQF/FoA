@@ -11,92 +11,6 @@ const nodemailer = require('nodemailer');  // allows SMPT push emails to be sent
 const commonFx = require('./common_fx_server');
 
 
-// //////////////////////////////////////////////////////////////////////////////////////////
-// // Create a log entry
-// //////////////////////////////////////////////////////////////////////////////////////////
-// async function logEvent(processName, eventObject, eventCode, eventStatus, eventDescription, eventDuration,
-//                         eventRows, eventUserID, sendEmailTo) {
-
-//     let logEventResult = false;
-//     console.log('Logging event now...');
-
-// //    async (req, res) => {
-//     try {
-//         console.log('Writing event to log...');
-//         const newEventLog = new EventLogsTable( {
-//             EventDate: Date().toString(),
-//             ProcessName: processName,
-//             EventObject: eventObject,
-//             EventStatus: eventStatus,
-//             EventDescription: eventDescription,
-//             EventDuration: eventDuration,
-//             EventRows: eventRows,
-//             EventUserID: eventUserID,
-//             EventCode: eventCode
-//         });
-//         await newEventLog.save();
-//         console.log('Event written to log...');
-//         logEventResult = true;
-//         console.log('Event logged.');
-//         if ( sendEmailTo.length !== 0 ) {
-//             let emailResultLogSuccess = sendEmail(sendEmailTo, `Event Logged (${eventStatus})`,
-//                 `An event was logged for ${processName}:  ${eventDescription}`, '');
-//         };
-//     } catch (error) {
-//         let emailResultError = sendEmail(process.env.EMAIL_WEBMASTER_LIST, 'Event Log Error',
-//             `An error occurred logging an event: ${error}`, '');
-//         console.log(`Event not logged (${error})`);
-//     };
-// //    };
-// //    console.log(`Event Log Error (${error})`);
-
-//     return logEventResult;
-    
-// };
-
-
-// //////////////////////////////////////////////////////////////////////////////////////////
-// // Format selected options in a SELECT control into a delimited string for database storage
-// // => server-side version (see public/js/foa_fx.js for client-side version)
-// //////////////////////////////////////////////////////////////////////////////////////////
-// function convertOptionsToDelimitedString(optionsToConvert, delimiterToUse = "|", notSelectedValue, trimEdges) {
-
-//     let optionsOrig = optionsToConvert;
-//     let optionsFormatted = '';
-
-//     // If the SELECT control has a "Not Selected" option, and it should be removed
-//     if ( Array.isArray(optionsOrig) ) { // More than one options was selected
-//         if ( optionsOrig.indexOf(notSelectedValue) >= 0 ) { // Remove 'Not Selected'
-//             optionsOrig.splice(optionsOrig.indexOf(notSelectedValue), 1);
-//         };
-//     } else { // One or no options were selected
-//         if ( optionsOrig === notSelectedValue ) {  // 'Not Selected' was the only option selected
-//             optionsOrig = '';
-//         };
-//     };
-
-//     // Reformat the input Options list to a delimited string
-//     if ( Array.isArray(optionsOrig) ) { // More than one options was selected
-//         optionsFormatted = delimiterToUse + optionsOrig.join(delimiterToUse) + delimiterToUse;
-//     } else { // One or no options were selected
-//         if ( optionsOrig === '' ) {  // 'Not Selected' was the only option selected, or no options were selected
-//             optionsFormatted = '';    
-//         } else {
-//             optionsFormatted = delimiterToUse + optionsOrig + delimiterToUse;
-//         };
-//     };
-
-//     // If the function call requests the edges to be trimmed, remove the delimiter from the left and right edges
-//     if ( trimEdges === "true" ) {
-//         optionsFormatted = optionsFormatted.slice(delimiterToUse.length, optionsFormatted.length - delimiterToUse.length);
-//     };
-
-//     // Return the formatted string
-//     return optionsFormatted;
-    
-// };
-
-
 //////////////////////////////////////////////////////////////////////////////////////////
 // Get the Current User's Sponsor permissions
 // Notes:  Input parameters are validated prior to this function call.
@@ -151,18 +65,7 @@ async function getSponsorPermissionsForCurrentUser( currentUserID, sponsorIDRequ
     } else { // populate a blank data set
         sponsorsAllowedDDL = await SponsorsAllDDL.findAndCountAll( { where: { optionid: 0 } } );
     }; // End: Current User can read the Website Users DDL
-/*
-    console.log(`sponsorIDRequested: ${sponsorIDRequested}`);
-    console.log(`userCanReadSponsorsDDL: ${userCanReadSponsorsDDL}`);
-    console.log(`currentUserID: ${currentUserID}`);
-    console.log(`sponsorsAllowedToUser: ${sponsorsAllowedToUser}`);
-    console.log(`sponsorsAllowedToUserArray: ${sponsorsAllowedToUserArray}`);
-    console.log(`sponsorsAllowedDDL.count: ${sponsorsAllowedDDL.count}`);
-    console.log(`sponsorIDRequested: ${sponsorIDRequested}`);
-    console.log(`doesSponsorExist: ${doesSponsorExist}`);
-    console.log(`userCanReadSponsor: ${userCanReadSponsor}`);
-    console.log(`sponsorsAllowedToUserArray.indexOf(sponsorIDRequested.toString()): ${sponsorsAllowedToUserArray.indexOf(sponsorIDRequested.toString())}`);
-*/
+
     return { userCanReadSponsorsDDL, userCanCreateSponsors, sponsorsAllowedDDL,
              sponsorDetails, doesSponsorExist, userCanReadSponsor, userCanUpdateSponsor, userCanDeleteSponsor };
 };
@@ -235,14 +138,7 @@ async function getScholarshipPermissionsForCurrentUser( currentUserID, sponsorID
     } else { // populate a blank data set
         scholarshipsAllowedDDL = await ScholarshipsAllDDL.findAndCountAll( { where: { optionid: 0 } } );
     }; // End: User can read the Scholarships DDL (no "else" as the variable defaults above are set to this condition)
-/*
-    console.log(`sponsorIDRequested: ${sponsorIDRequested}`);
-    console.log(`userCanReadScholarshipsDDL: ${userCanReadScholarshipsDDL}`);
-    console.log(`currentUserID: ${currentUserID}`);
-    console.log(`scholarshipsAllowedToUser: ${scholarshipsAllowedToUser}`);
-    console.log(`scholarshipsAllowedDDL.count: ${scholarshipsAllowedDDL.count}`);
-    console.log(`scholarshipIDRequested: ${scholarshipIDRequested}`);
-*/
+
     return { userCanReadScholarshipsDDL, userCanCreateScholarships, scholarshipsAllowedDDL,
              scholarshipDetails, doesScholarshipExist,
              userCanReadScholarship, userCanUpdateScholarship, userCanDeleteScholarship };
@@ -316,6 +212,7 @@ async function getScholarshipPermissionsForCurrentUser( currentUserID, sponsorID
 //              userDetails, doesUserExist, userCanReadUser, userCanUpdateUser, userCanDeleteUser };
 // };
 
+
 // //////////////////////////////////////////////////////////////////////////////////////////
 // // Get the Current User's Website User's Permission permissions
 // //   (permissions to let the Current User manage other Website Users' permissions)
@@ -387,61 +284,6 @@ async function getScholarshipPermissionsForCurrentUser( currentUserID, sponsorID
 //              userPermissionDetails, doesUserPermissionExist,
 //              userCanReadUserPermission, userCanUpdateUserPermission, userCanDeleteUserPermission };
 // };
-
-
-// //////////////////////////////////////////////////////////////////////////////////////////
-// // Send email
-// //////////////////////////////////////////////////////////////////////////////////////////
-// function sendEmail(emailRecipient, emailSubject, emailBody, emailBodyHTML) {
-
-//     // create message
-//     var msg = {
-//         to: emailRecipient,
-//         from: process.env.EMAIL_SENDER,
-//         subject: emailSubject,
-//         text: emailBody,
-//         html: emailBodyHTML
-//     };
-
-//     // send the message
-//     // nodemailer example
-//     var transporter = nodemailer.createTransport( {  // the email account to send SMTP emails
-// //        service: 'smtp.fatcow.com',
-//         host: 'smtp.gmail.com',
-//         port: 465, // 587 without SSL
-//         secure: true,
-//         auth: {
-//             type: 'OAuth2',
-//             user: process.env.EMAIL_SENDER,
-//             clientId: process.env.EMAIL_OAUTH_CLIENTID,
-//             clientSecret: process.env.EMAIL_OAUTH_CLIENTSECRET,
-//             refreshToken: process.env.EMAIL_OAUTH_REFRESHTOKEN
-//         },
-//     });
-//     transporter.sendMail( msg, function (error, info) {
-//         if (error) {
-//             console.log(error);
-//             // ToDo: log error in "events" table
-//         } else {
-//             console.log('Email sent: ' + info.response);
-//             // ToDo: log event in "events" table
-//         }
-//     });
-// /*
-//     // sendGrid example
-//     sendgrid
-//       .send(msg)
-//       .then((resp) => {
-//         console.log('Email sent\n', resp)
-//         // ToDo: log event in "events" table
-//         })
-//       .catch((error) => {
-//         console.error(error)
-//         // ToDo: log error in "events" table
-//         });
-// */
-
-// }; // end "sendEmail"
 
 
 // //////////////////////////////////////////////////////////////////////////////////////////
@@ -570,13 +412,10 @@ async function getScholarshipPermissionsForCurrentUser( currentUserID, sponsorID
 
 
 module.exports = {
-//    convertOptionsToDelimitedString,
     getSponsorPermissionsForCurrentUser,
     getScholarshipPermissionsForCurrentUser,
 //    getWebsiteUserPermissionsForCurrentUser,
 //    getWebsiteUserPermissionPermissionsForCurrentUser
-//    sendEmail
-//    logEvent
 //    checkUserPermission
 //    checkForNewUser
 };

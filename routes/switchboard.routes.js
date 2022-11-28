@@ -8,7 +8,7 @@ require("dotenv").config();  // load all ".env" variables into "process.env" for
 const { sequelize, Op } = require('sequelize');  // Sequelize "Operators" functions for querying
 const methodOverride = require('method-override');  // allows PUT and other non-standard methods
 router.use(methodOverride('_method')); // allows use of the PUT/DELETE method extensions
-const foaFx = require('../scripts/foa_fx_server');
+const foaFx = require('../scripts/foa_fx_datamgmt_server');
 const commonFx = require('../scripts/common_fx_server');
 const { check, validationResult } = require('express-validator');
 const htmlEntities = require('html-entities');
