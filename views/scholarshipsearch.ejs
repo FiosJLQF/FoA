@@ -2,11 +2,12 @@
 <%- include('partials/splashbar_main') %>
 
 <!-- Custom Script Libraries -->
+<script src="/js/common_fx_client.js"></script>
 <script src="/js/foa_fx_search_generic.js"></script>
 <script src="/js/foa_fx_search_scholarships.js"></script>
 
 <!-- Set the page title -->
-<div class="container pagetitle" align="center">
+<div class="container pagetitle">
   Find a Scholarship
   <hr class="pagetitlebreak">
 </div>
@@ -35,6 +36,16 @@
   var spnRows = <%- JSON.stringify(sponsorsActiveView.rows) %>;
   var schRows = <%- JSON.stringify(scholarshipsMatching.rows) %>;
   var scholarshipsAllOrMatched = <%- JSON.stringify(scholarshipsAllOrMatched) %>;
+
+  // If the screen size is "small" and a search was performed, collapse the Search Criteria panel
+  if ( window.innerWidth < 768 ) { // collapse the hamburger menu by default
+    console.log(`scholarshipsAllOrMatched: ${scholarshipsAllOrMatched}`);
+    if ( scholarshipsAllOrMatched == 'matched' ) {
+      toggleBlockShowHide(
+        document.querySelector('#searchPanelCriteriaBlockIcon'),
+        document.querySelector('#searchPanelCriteriaBlock'), '', 'hide');
+    };
+  };
 
   // Display the scholarships (all, matched, or none)
   showSelectedScholarships(schRows, spnRows, scholarshipsAllOrMatched);

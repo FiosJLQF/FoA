@@ -46,7 +46,7 @@ async function checkTasksToRun() {
   if ( today.getDate() === 1 ) { // Run on the 1st of the month
     let scholarshipDatesResult = scholarshipDates(today, sequelize);
   } else {
-    let emailResultError = commonFx.sendEmail('fiosjlqf@gmail.com', `Today is the ${today.getDate()} day of the month`, '', '');
+    let emailResultError = commonFx.sendEmail(process.env.EMAIL_WEBMASTER_LIST, `Today is the ${today.getDate()} day of the month`, '', '');
   };
 
 }; // end checkTasksToRun
@@ -61,7 +61,7 @@ function scholarshipDates(today, sequelize) {
     { type: sequelize.QueryTypes.SELECT })
   .then( async htmlTable => {
     // send the email notification
-    let emailResultError = commonFx.sendEmail('fiosjlqf@gmail.com; rblackford@amcg.aero', 'Scholarship Date(s) Notifications', '',
+    let emailResultError = commonFx.sendEmail(process.env.EMAIL_WEBMASTER_LIST, 'Scholarship Date(s) Notifications', '',
       htmlTable[0].TableDef);
     // log the event
     let logEventResult = await commonFx.logEvent('Scheduled Task', 'scholarshipDates', 0,

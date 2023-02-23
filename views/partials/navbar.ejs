@@ -1,38 +1,56 @@
-<div class="flexcontainer-nav" id="logoandnavbar">
-    <div class="column navbars-wrapper">
-        <div class="navbar-login">
-            <span class="navbar-toprow-left"></span>
-            <span class="navbar-toprow-center">
-                <a href="http://futureofaviation.aero">
-                    <img src="/img/imgFofALogo_Large_Cropped.png" alt="Logo for Future of Aviation Website"
-                    class="navbar-logo-img image-L">
-                    <img src="/img/imgFofALogo_Cropped_150.png" alt="Logo for Future of Aviation Website"
-                    class="navbar-logo-img image-M">
-                </a>
-            </span>
-            <span id="loginBar" class="float-right navbar-toprow-right">
-                <a class="navitem-login" href="../switchboard" id="navbarSwitchboard">Switchboard</a>&nbsp;&nbsp;
-                <a class="navitem-login" href="../portal" id="navbarLogIn">Log In / Sign up</a>
-            </span>
-        </div>
-        <div class="navbar navbar-expand-lg navbar-main">
-            <div class="navbar-item"><a href="http://futureofaviation.aero/">home</a></div>
-            <div class="navbar-item"><a href="http://futureofaviation.aero/about/">about</a></div>
-            <div class="navbar-item"><a href="http://futureofaviation.aero/scholarships/">scholarships</a></div>
-            <div class="navbar-item"><a href="http://futureofaviation.aero/sponsors/">sponsors</a></div>
-            <div class="navbar-item"><a href="http://futureofaviation.aero/supporters/">supporters</a></div>
-            <div class="navbar-item"><a href="http://futureofaviation.aero/contact/">contact</a></div>
-            <div class="navbar-item">
-                <span class="nav-dropdown">
-                    <button class="nav-dropdown-button">more <i id="navMoreChevron" class="fas fa-chevron-down"></i></button>
-                    <div class="nav-dropdown-content">
-                        <a class="nav-link-dropdown" href="http://futureofaviation.aero/grants/">Grants</a><br>
-                        <a class="nav-link-dropdown" href="http://futureofaviation.aero/internships/">Internships</a><br>
-                        <a class="nav-link-dropdown" href="http://futureofaviation.aero/donate/">Donate</a>
-                        <a class="nav-link-dropdown" href="https://www.futureofaviation.aero/news">News</a>
-                    </div>
-                </span>
+<div class="container-logo-login">
+    <span class="navbar-toprow-left"></span>
+    <span class="navbar-toprow-center">
+        <a href="http://futureofaviation.aero">
+            <img src="/img/imgFofALogo_Large_Cropped.png" alt="Logo for Future of Aviation Website" class="navbar-logo-img image-L">
+            <img src="/img/imgFofALogo_Cropped_150.png" alt="Logo for Future of Aviation Website" class="navbar-logo-img image-M">
+        </a>
+    </span>
+    <span class="float-right navbar-toprow-right">
+        <span id="menuLogin">
+            <a class="navitem-login" href="../switchboard" id="navbarSwitchboard">Switchboard</a>&nbsp;&nbsp;
+            <a class="navitem-login" href="../portal" id="navbarLogIn">Log In / Sign up</a>
+        </span>
+        <span id="menuSmallToggle">
+            <button type="button" class="btn btn-default button-icon"
+                onclick="toggleAdvancedSearchCriteriaInputBlock(
+                    document.querySelector('#menuSmallToggleIcon'),
+                    document.querySelector('#menuSmall'), '', '')">
+                <img id="menuSmallToggleIcon" src="/img/imgHMenu_50_Orig.png">
+            </button>
+        </span>
+    </span>
+</div>  <!-- End logo and login links -->
+
+<div id="menuBar" class="container-nav-horizontal">
+    <div class="navbar-item"><a href="http://futureofaviation.aero/">home</a></div>
+    <div class="navbar-item"><a href="http://futureofaviation.aero/about/">about</a></div>
+    <div class="navbar-item"><a href="http://futureofaviation.aero/scholarships/">scholarships</a></div>
+    <div class="navbar-item"><a href="http://futureofaviation.aero/sponsors/">sponsors</a></div>
+    <div class="navbar-item"><a href="http://futureofaviation.aero/supporters/">supporters</a></div>
+    <div class="navbar-item"><a href="http://futureofaviation.aero/contact/">contact</a></div>
+    <div class="navbar-item">
+        <span class="nav-dropdown">
+            <button class="nav-dropdown-button">more <i id="navMoreChevron" class="fas fa-chevron-down"></i></button>
+            <div class="nav-dropdown-content">
+                <a class="nav-link-dropdown" href="http://futureofaviation.aero/grants/">Grants</a><br>
+                <a class="nav-link-dropdown" href="http://futureofaviation.aero/internships/">Internships</a><br>
+                <a class="nav-link-dropdown" href="http://futureofaviation.aero/donate/">Donate</a>
+                <a class="nav-link-dropdown" href="https://www.futureofaviation.aero/news">News</a>
             </div>
-        </div>
+        </span>
     </div>
+</div>  <!-- End horizontal nav bar -->
+
+<div id="menuSmall" class="container-nav-small">
+    <div class="navbar-item-small"><a href="http://futureofaviation.aero/">home</a></div>
+    <div class="navbar-item-small"><a href="http://futureofaviation.aero/about/">about</a></div>
+    <div class="navbar-item-small"><a href="http://futureofaviation.aero/scholarships/">scholarships</a></div>
+    <div class="navbar-item-small"><a href="http://futureofaviation.aero/sponsors/">sponsors</a></div>
+    <div class="navbar-item-small"><a href="http://futureofaviation.aero/supporters/">supporters</a></div>
+    <div class="navbar-item-small"><a href="http://futureofaviation.aero/contact/">contact</a></div>
+    <div class="navbar-item-small"><a href="http://futureofaviation.aero/grants/">Grants</a></div>
+    <div class="navbar-item-small"><a href="http://futureofaviation.aero/internships/">Internships</a></div>
+    <div class="navbar-item-small"><a href="http://futureofaviation.aero/donate/">Donate</a></div>
+    <div class="navbar-item-small"><a href="https://www.futureofaviation.aero/news">News</a></div>
 </div>

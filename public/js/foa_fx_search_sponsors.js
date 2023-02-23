@@ -167,7 +167,7 @@ function buildSponsorSearchResultDiv(selectedSponsor) {
 
     // If the Sponsor is "Featured", change the div styling
     if ( selectedSponsor['SponsorIsFeatured'] ) {
-        divSponsor.classList.add('searchresults-mainblock-featured'); /* change background color */
+        divSponsor.classList.add('featured-item-block'); /* change background color */
     } else {
         divSponsor.classList.add('searchresults-mainblock');
     };

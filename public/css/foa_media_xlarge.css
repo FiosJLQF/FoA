@@ -1,0 +1,214 @@
+
+@media (min-width: 1200px) {
+
+
+/**********************************************************
+  Header and Login Links
+/**********************************************************/
+
+.container-logo-login {
+  display: block;
+  width: 959px;  /* to match FatCow layout*/
+  height: 100px;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.navbar-toprow-left {
+  display: inline-block;
+  width: 33%;
+}
+
+.navbar-toprow-center {
+  display: inline-block;
+  justify-content: center;
+  width: 33%;
+}
+
+.navbar-toprow-right {
+  display: inline-flex;
+  align-items: center;
+  width: 33%;
+  height: 100%;
+  justify-content: right;
+  padding-right: 25px;
+}
+
+.navbar-logo-img {
+  width: 220px;
+}
+
+
+/**********************************************************
+  Nav Bar (Horizontal)
+/**********************************************************/
+
+.container-nav-horizontal {
+  flex-direction: column;
+  display: block;
+  width: 959px;  /* to match FatCow layout (959px) */
+  height: 100%;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+.navbar-item {
+  display: inline-block;
+  text-align: center;
+  width: 131px;
+}
+
+
+/**********************************************************
+  Nav Bar (Hamburger - Small)
+/**********************************************************/
+
+#menuSmall {
+  display: none;
+}
+
+#menuSmallToggle {
+  display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /**********************************************************/
+  /* "SEARCH" pages */
+  /**********************************************************/
+
+  .bodylayout1col1 {
+    width: 285px;
+  }
+
+  .bodylayout1col2 {
+    width: 855px;
+  }
+
+  .searchresults-mainblock {
+    width: 840px;
+  }
+
+  .featured-item-block {
+    background-color: var(--amcg-blue-08);
+    width: 840px;
+  }
+
+  .searchresults-subblock {
+    width: 840px;
+  }
+  .searchresults-subblock-break {
+    width: 840px;
+  }
+  .searchresultscol3 {
+    width: 715px;
+  }
+  .searchresultscol3A {
+    width: 140px;
+  }
+  .searchresultscol3A.text-block {
+    width: 140px;
+  }
+  .searchresultscol3B {
+    width: 575px;
+  }
+  .searchresultscol3Bfeatured {
+    width: 450px;
+  }
+  .searchresultscol3B.text-block {
+    width: 575px;
+  }
+  /* .searchresultscol3Bfeatured.text-block {
+    width: 420px;
+  } */
+
+#toggleSearchCriteriaPanelBlockButton {
+  display: none;
+}
+
+/**********************************************************/
+/* "Featured Sponsor" panel                               */
+/**********************************************************/
+
+.featured-sponsors-block {
+  width: 100%;
+}
+
+.featured-sponsor-col1 {
+  width: 175px;
+}
+
+.featured-sponsor-logo {
+  width: 175px;
+}
+
+.featured-sponsor-col2 {
+  width: 665px;
+  font-size: 1.75em;
+}
+
+
+
+
+.featured-sponsor-badge {
+    width: 100px;
+  }
+  .featured-sponsor-fieldofstudy {
+    width: 640px;
+    overflow: hidden;
+  }
+  .featured-sponsor-fieldofstudy-col1 {
+    width: 240px;
+    font-size: .5em;
+    /* line-height: 1.25; */
+    /* float: left; */
+    margin: 0px 0px 0px 70px;
+  }
+  .featured-sponsor-fieldofstudy-col2 {
+    width: 240px;
+    font-size: .5em;
+    /* line-height: 1.25; */
+    /* float: left; */
+    margin: 0px 70px 0px 0px;
+  }
+  .featured-scholarship-badge {
+    width: 100px;
+  }
+  #toggleSearchCriteriaPanelBlock {
+    display: inline-block;
+  }
+
+    
+  /**********************************************************/
+  /* "DATA MGMT" pages */
+  /**********************************************************/
+  .bodylayout1col2-datamgmt {
+    width: 914px;
+  }
+  .data-mgmt-row {
+    width: 899px;
+  }
+  .data-mgmt-value-div {
+    width: 704px;
+  }
+
+}

@@ -83,7 +83,7 @@ router.get('/portal', (req, res) => {
 ///////////////////////////////////////////
 // Sign-up for new account (handled by Auth0)
 ///////////////////////////////////////////
-router.get("/sign-up/:page", (req, res) => {
+router.get("/sign-up", (req, res) => {
     // Log access
     try {
         let logEventResult = commonFx.logEvent('Page Access', 'Sign-up', 0, 'Informational', 'User Accessed Page',
@@ -94,7 +94,7 @@ router.get("/sign-up/:page", (req, res) => {
     // Redirect to the Auth0 signup page
     const { page } = req.params;
     res.oidc.login({
-        returnTo: page,
+        returnTo: 'switchboard/newuser',
         authorizationParams: {
             screen_hint: "signup",
         },

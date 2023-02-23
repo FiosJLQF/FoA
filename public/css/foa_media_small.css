@@ -1,0 +1,233 @@
+
+@media (max-width: 767px) {
+
+
+/**********************************************************
+  Header and Login Links
+/**********************************************************/
+
+.container-logo-login {
+  display: block;
+  width: 100%;
+  height: 80px;
+  margin: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.navbar-toprow-left {
+  width: 0%;
+}
+
+.navbar-toprow-center {
+  display: inline-block;
+  justify-content: center;
+  width: 80%;
+  padding-left: 10px;
+}
+
+.navbar-toprow-right {
+  width: 15%;
+}
+
+.navbar-logo-img {
+  width: 170px;
+}
+
+
+/**********************************************************
+  Nav Bar (Horizontal) -- HIDDEN
+/**********************************************************/
+
+.container-nav-horizontal {
+  display: none;
+}
+
+.navbar-item-small {
+  text-align: center;
+  width: 120px;
+  /* font-size: 0.8em; */
+  font-weight: bold;
+}
+
+/**********************************************************
+  Nav Bar (Hamburger - Small)
+/**********************************************************/
+
+#menuLogin {
+  display: none;
+}
+
+#menuSmall {
+  display: block;
+  line-height: 50px;
+}
+
+#menuSmallToggle {
+  display: block;
+}
+
+.container-nav-small {
+  display: block;
+  margin-left: 20px;
+}
+
+.button-icon {
+  font-size: 0.825em;
+  height: 50px;
+  padding: 0px;
+  margin: 0px 0px 0px 5px;
+  color: var(--amcg-blue);
+}
+
+
+
+
+
+
+
+
+
+/*
+
+  .splashbar {
+    width: 100%;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    align-items: center;
+  }
+  img.splashbar {
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+  }
+*/
+
+/**********************************************************/
+/* "SEARCH" pages  (col1 and col2 are stacked and are full-width) */
+/**********************************************************/
+
+.bodylayout1col1 {
+  width: 500px;
+  padding: 0px 5px 0px 5px;
+  border-width: 0px;
+  margin-bottom: 20px;
+}
+
+.search-panel {
+  margin: 0px;
+}
+
+.search-panel-criteria-elements {
+  font-size: 1.25em;
+  line-height: 2em;
+  padding: 0px 0px 10px 0px;
+}
+
+.bodylayout1col2 {
+  width: 500px;
+  padding: 0px 5px 0px 5px;
+}
+
+.searchresults-mainblock {
+  width: 500px;
+}
+
+.featured-item-block {
+  background-color: var(--amcg-blue-08);
+  width: 490px;
+}
+
+.sponsor-view-scholarships {
+  display: none;
+}
+
+.searchresults-subblock {
+      width: 675px;
+    }
+    .searchresults-subblock-break {
+      width: 675px;
+    }
+    .searchresultscol3 {
+      width: 550px;
+    }
+    .searchresultscol3A {
+      width: 140px;
+    }
+    .searchresultscol3A.text-block {
+      width: 140px;
+    }
+    .searchresultscol3B {
+      width: 410px;
+    }
+    .searchresultscol3Bfeatured {
+      width: 290px;
+    }
+    .searchresultscol3B.text-block {
+      width: 410px;
+    }
+    #toggleSearchCriteriaPanelBlockButton {
+      display: inline-block;
+    }
+
+/**********************************************************/
+/* "Featured Sponsor" panel                               */
+/**********************************************************/
+  
+.featured-sponsors-block {
+  width: 100%;
+}
+
+.featured-sponsor-col1 {
+  width: 175px;
+}
+
+.featured-sponsor-logo {
+  width: 175px;
+}
+
+.featured-sponsor-name {
+  width: 175px;
+  margin: 10px 0px 0px 5px;
+  font-size: 1.2em;
+}
+
+.featured-sponsor-col2 {
+  width: 315px;
+  padding: 55px 0px 0px 5px;
+  font-size: 1.5em;
+}
+
+.featured-sponsor-badge {
+  width: 100px;
+}
+
+.featured-sponsor-fieldofstudy {
+  width: 310px;
+  overflow: hidden;
+  margin: 0px;
+}
+
+.featured-sponsor-fieldofstudy-col1 {
+  width: 310px;
+  font-size: .8em;
+  margin: 0px;
+}
+
+.featured-sponsor-fieldofstudy-col2 {
+  display: none;
+  width: 0px;
+  font-size: .6em;
+  margin: 0px 60px 0px 0px;
+}
+
+
+
+
+
+
+.featured-scholarship-badge {
+    width: 90px;
+  }
+
+}

@@ -1,25 +1,39 @@
-<div>
-    <div class="bodylayout1col1title" id="searchCriteriaTitle">Search Criteria</div>
-    <hr class="bodycol1break">
-    <div class="searchInstructions">Enter criteria below and click "search".</div><br>
+<div id="searchPanel" class="search-panel">
 
-    <form action="/search/scholarships" method="POST" id="scholarshipSearchCriteria" name="scholarshipSearchCriteria">
-
-        <!-- Hidden values for post form submittal -->
-        <input type="hidden" id="showAllScholarshipsFlag" name="showAllScholarshipsFlag">
-
-    <!-- Field(s) of Study -->
-    Field of Study: <button type="button" class="btn btn-default button-small"
-        onclick="toggleSearchCriteriaInputBlock(
-            document.querySelector('#filterFieldOfStudyIcon'),
-            document.querySelector('#filterFieldOfStudyInputBlock'),
-            document.querySelector('#filterFieldOfStudyInput'), '')">
-        <i id="filterFieldOfStudyIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
-    </button><br>
-    <div id="filterFieldOfStudyInputBlock" class="filter-input-block">
-        <div class="searchInstructions">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
-        <select id="filterFieldOfStudyInput" name="filterFieldOfStudyInput" class="filter_select" multiple></select><br>
+    <div class="bodylayout1col1title" id="searchCriteriaTitle">Search Criteria
+        <span>
+            <button type="button" class="btn btn-default button-small" id="toggleSearchCriteriaPanelBlockButton"
+            onclick="toggleSearchCriteriaPanelBlock(
+                document.querySelector('#searchPanelCriteriaBlockIcon'),
+                document.querySelector('#searchPanelCriteriaBlock'), '')">
+                <i id="searchPanelCriteriaBlockIcon" class="fas fa-angle-double-up expand-filter chevrons"></i>
+            </button>
+        </span>
     </div>
+
+    <div id="searchPanelCriteriaBlock" class="search-panel-criteria-block">
+
+        <hr class="bodycol1break">
+        <div class="search-instructions">Enter criteria below and click "search".</div><br>
+
+        <form action="/search/scholarships" method="POST" id="scholarshipSearchCriteria" name="scholarshipSearchCriteria"
+            class="search-panel-criteria-elements">
+
+            <!-- Hidden values for post form submittal -->
+            <input type="hidden" id="showAllScholarshipsFlag" name="showAllScholarshipsFlag">
+
+            <!-- Field(s) of Study -->
+            Field of Study: <button type="button" class="btn btn-default button-small"
+                onclick="toggleSearchCriteriaInputBlock(
+                    document.querySelector('#filterFieldOfStudyIcon'),
+                    document.querySelector('#filterFieldOfStudyInputBlock'),
+                    document.querySelector('#filterFieldOfStudyInput'), '')">
+                <i id="filterFieldOfStudyIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+            </button><br>
+            <div id="filterFieldOfStudyInputBlock" class="filter-input-block">
+                <div class="search-instructions">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
+                <select id="filterFieldOfStudyInput" name="filterFieldOfStudyInput" class="filter_select" multiple></select><br>
+            </div>
 
     <!-- Sponsor Name(s) -->
     Sponsor: <button type="button" class="btn btn-default button-small"
@@ -30,7 +44,7 @@
         <i id="filterSponsorNamesIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
     </button><br>
     <div id="filterSponsorNamesInputBlock" class="filter-input-block">
-        <div class="searchInstructions">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
+        <div class="search-instructions">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
         <select id="filterSponsorNamesInput" name="filterSponsorNamesInput" class="filter_select" multiple></select><br>
     </div>
 
@@ -43,7 +57,7 @@
         <i id="filterAgeIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
     </button><br>
     <div id="filterAgeInputBlock" class="filter-input-block">
-<!--        <div class="searchInstructions">(Enter an age between 16 and 99)</div>    -->
+<!--        <div class="search-instructions">(Enter an age between 16 and 99)</div>    -->
         <span id="filterAgeInputError"></span>
         <input type="text" id="filterAgeInput" name="filterAgeInput" class="filter-input filter_textbox" placeholder="##"><br>
     </div>
@@ -81,7 +95,7 @@
         <i id="filterKeywordsIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
     </button><br>
     <div id="filterKeywordsInputBlock" class="filter-input-block">
-        <div class="searchInstructions">(Separate words/phrases with commas)</div>
+        <div class="search-instructions">(Separate words/phrases with commas)</div>
         <input type="text" id="filterKeywordsInput" name="filterKeywordsInput" class="filter-input filter_textbox"><br>
     </div>
 
@@ -134,7 +148,7 @@
         <i id="filterGPAIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
     </button><br>
     <div id="filterGPAInputBlock" class="filter-input-block">
-        <div class="searchInstructions">(Enter a number between 0.00 and 4.00)</div>
+        <div class="search-instructions">(Enter a number between 0.00 and 4.00)</div>
         <span id="filterGPAInputError"></span>
         <input type="text" id="filterGPAInput" name="filterGPAInput" class="filter-input filter_textbox"><br>
     </div>
@@ -153,7 +167,7 @@
 
     <!-- FAA Pilot Airman Certificate -->
     FAA Pilot Airman Certificate<br>
-    <span class="searchInstructions">&nbsp;&nbsp;&nbsp;(Interested In / Currently Obtaining)</span>
+    <span class="search-instructions">&nbsp;&nbsp;&nbsp;(Interested In / Currently Obtaining)</span>
     <button type="button" class="btn btn-default button-small"
         onclick="toggleSearchCriteriaInputBlock(
             document.querySelector('#filterFAAPilotCertificateIcon'),
@@ -162,13 +176,13 @@
         <i id="filterFAAPilotCertificateIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
     </button><br>
     <div id="filterFAAPilotCertificateInputBlock" class="filter-input-block">
-        <div class="searchInstructions">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
+        <div class="search-instructions">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
         <select id="filterFAAPilotCertificateInput" name="filterFAAPilotCertificateInput" class="filter_select" multiple></select><br>
     </div>
 
     <!-- FAA Pilot Airman Rating -->
     FAA Pilot Airman Rating<br>
-    <span class="searchInstructions">&nbsp;&nbsp;&nbsp;(Interested In / Currently Obtaining)</span>
+    <span class="search-instructions">&nbsp;&nbsp;&nbsp;(Interested In / Currently Obtaining)</span>
     <button type="button" class="btn btn-default button-small"
         onclick="toggleSearchCriteriaInputBlock(
             document.querySelector('#filterFAAPilotRatingIcon'),
@@ -177,13 +191,13 @@
         <i id="filterFAAPilotRatingIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
     </button><br>
     <div id="filterFAAPilotRatingInputBlock" class="filter-input-block">
-        <div class="searchInstructions">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
+        <div class="search-instructions">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
         <select id="filterFAAPilotRatingInput" name="filterFAAPilotRatingInput" class="filter_select" multiple></select><br>
     </div>
 
     <!-- FAA Mechanic Airman Certificate/Rating -->
     FAA Mechanic Airman Cert./Ratings<br>
-    <span class="searchInstructions">&nbsp;&nbsp;&nbsp;(Interested In / Currently Obtaining)</span>
+    <span class="search-instructions">&nbsp;&nbsp;&nbsp;(Interested In / Currently Obtaining)</span>
     <button type="button" class="btn btn-default button-small"
         onclick="toggleSearchCriteriaInputBlock(
             document.querySelector('#filterFAAMechanicCertRatingIcon'),
@@ -192,13 +206,12 @@
         <i id="filterFAAMechanicCertRatingIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
     </button><br>
     <div id="filterFAAMechanicCertRatingInputBlock" class="filter-input-block">
-        <div class="searchInstructions">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
+        <div class="search-instructions">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
         <select id="filterFAAMechanicCertRatingInput" name="filterFAAMechanicCertRatingInput" class="filter_select" multiple></select><br>
     </div>
 
-</div>    <!-- end "Advanced Search" section -->
+    </div>    <!-- end "Advanced Search" section -->
 
-        <br>
     </form> <!-- End search criteria form -->
 
     <div style="text-align:left">
@@ -212,7 +225,9 @@
         </button>
     </div>
 
-</div>
+    </div>  <!-- Search Criteria Block -->
+
+</div>  <!-- Search Panel -->
 
 <script>
 

@@ -1,0 +1,218 @@
+
+@media (min-width: 992px) and (max-width: 1199px){
+
+
+/**********************************************************
+  Header and Login Links
+/**********************************************************/
+
+.container-logo-login {
+  display: block;
+  width: 959px;  /* to match FatCow layout*/
+  height: 100px;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.navbar-toprow-left {
+  display: inline-block;
+  width: 33%;
+}
+
+.navbar-toprow-center {
+  display: inline-block;
+  justify-content: center;
+  width: 33%;
+}
+
+.navbar-toprow-right {
+  display: inline-flex;
+  align-items: center;
+  width: 33%;
+  height: 100%;
+  justify-content: right;
+  padding-right: 25px;
+}
+
+.navbar-logo-img {
+  width: 220px;
+}
+
+
+/**********************************************************
+  Nav Bar (Horizontal)
+/**********************************************************/
+
+.container-nav-horizontal {
+  flex-direction: column;
+  display: block;
+  width: 959px;  /* to match FatCow layout (959px) */
+  height: 100%;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+.navbar-item {
+  display: inline-block;
+  text-align: center;
+  width: 131px;
+}
+
+
+/**********************************************************
+  Nav Bar (Hamburger - Small)
+/**********************************************************/
+
+#menuSmall {
+  display: none;
+}
+
+#menuSmallToggle {
+  display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**********************************************************/
+/* "SEARCH" pages */
+/**********************************************************/
+
+.bodylayout1col1 {
+  width: 265px;
+  padding: 0px 0px 0px 0px;
+}
+
+.bodylayout1col2 {
+  width: 690px;
+}
+
+.searchresults-mainblock {
+  width: 675px;
+}
+
+.featured-item-block {
+  background-color: var(--amcg-blue-08);
+  width: 675px;
+}
+
+.searchresults-subblock {
+      width: 675px;
+    }
+    .searchresults-subblock-break {
+      width: 675px;
+    }
+    .searchresultscol3 {
+      width: 550px;
+    }
+    .searchresultscol3A {
+      width: 140px;
+    }
+    .searchresultscol3A.text-block {
+      width: 140px;
+    }
+    .searchresultscol3B {
+      width: 410px;
+    }
+    .searchresultscol3Bfeatured {
+      width: 290px;
+    }
+    .searchresultscol3B.text-block {
+      width: 410px;
+    }
+    /* .searchresultscol3Bfeatured.text-block {
+      width: 270px;
+    } */
+    .featured-scholarship-badge {
+      width: 90px;
+    }
+    #toggleSearchCriteriaPanelBlock {
+      display: inline-block;
+    }
+
+
+/**********************************************************/
+/* "Featured Sponsor" panel                               */
+/**********************************************************/
+  
+.featured-sponsors-block {
+  width: 100%;
+}
+  
+.featured-sponsor-col1 {
+  width: 150px;
+}
+
+.featured-sponsor-logo {
+  width: 150px;
+}
+
+.featured-sponsor-col2 {
+  width: 525px;
+  font-size: 1.5em;
+}
+
+.featured-sponsor-badge {
+  width: 90px;
+}
+
+
+
+  .featured-sponsor-fieldofstudy {
+    width: 475px;
+    overflow: hidden;
+  }
+  .featured-sponsor-fieldofstudy-col1 {
+    width: 177px;
+    font-size: .6em;
+    /* line-height: 1.25; */
+    /* float: left; */
+    margin: 0px 0px 0px 60px;
+  }
+  .featured-sponsor-fieldofstudy-col2 {
+    width: 177px;
+    font-size: .6em;
+    /* line-height: 1.25; */
+    /* float: left; */
+    margin: 0px 60px 0px 0px;
+  }
+  .sponsor-view-scholarships {
+    width: 150px;
+  }
+  .sponsor-no-scholarships-img {
+    width: 150px;
+  }
+
+  /**********************************************************/
+  /* "DATA MGMT" pages */
+  /**********************************************************/
+  .bodylayout1col2-datamgmt {
+    width: 734px;
+  }
+  .data-mgmt-row {
+    width: 719px;
+  }
+  .data-mgmt-value-div {
+    width: 524px;
+  }
+  .data-mgmt-text-fifth {
+    width: 25%; /* keep at 1/4 width so dates fully display */
+  }
+  
+}
+  

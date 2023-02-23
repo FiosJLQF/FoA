@@ -11,7 +11,7 @@ router.use(methodOverride('_method')); // allows use of the PUT/DELETE method ex
 const foaFx = require('../scripts/foa_fx_datamgmt_server');
 const commonFx = require('../scripts/common_fx_server');
 const { check, validationResult } = require('express-validator');
-const htmlEntities = require('html-entities');
+//const htmlEntities = require('html-entities');
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -57,13 +57,20 @@ router.use(
 // If the user has not yet been granted any permissions
 ////////////////////////////////////////
 router.get('/newuser', requiresAuth(), async (req, res) => {
+
+    let currentUserProfile = '';
+
     try {
 
+        // Retrieve the user's ID
+        currentUserProfile = await UsersAllView.findAndCountAll( { where: { Username: req.oidc.user.email }});
+
         // Log the request (10001 = "New User Page Redirect")
-//        const logResult = foaFx.createLogEntry(10001, req.oidc.user.email);
         console.log('New User!');
+        console.log(`UserID: ${currentUserProfile.rows[0].UserID}`);
         return res.render('switchboard_newuser', {
             user: req.oidc.user,
+            userID: currentUserProfile.rows[0].UserID,
             userName: ( req.oidc.user == null ? '' : req.oidc.user.email )
         } )
     } catch(err) {

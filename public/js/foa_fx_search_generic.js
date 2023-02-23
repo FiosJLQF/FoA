@@ -3,7 +3,6 @@
 // Scripts for any Search Engine (client-side scripts)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   clearSearchResults
-//   loadSelectOptionsList
 //   toggleSearchCriteriaInputBlock
 //   toggleAdvancedSearchCriteriaInputBlock
 //   convertOptionsToDelimitedString
@@ -45,48 +44,49 @@ function clearSearchResults() {
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
- // load the options into a SELECT element
+// load the options into a SELECT element
+// MOVED TO COMMON_FX_GENERIC 2/2/2023
 //////////////////////////////////////////////////////////////////////////////////////////
-function loadSelectOptionsList(selectEl, notSelectedText, notSelectedValue, optionsArr, selectedValue = '') {
+// function loadSelectOptionsList(selectEl, notSelectedText, notSelectedValue, optionsArr, selectedValue = '') {
 
-    // get a reference to the SELECT element
-    const selectElement = document.querySelector("#" + selectEl);
+//     // get a reference to the SELECT element
+//     const selectElement = document.querySelector("#" + selectEl);
     
-    // create and add the "(Not Selected)" default option
-    const optNotSelected = document.createElement("option");
-    optNotSelected.textContent = notSelectedText;
-    optNotSelected.value = notSelectedValue;
-    selectElement.appendChild(optNotSelected);
-    optNotSelected.selected = true;
+//     // create and add the "(Not Selected)" default option
+//     const optNotSelected = document.createElement("option");
+//     optNotSelected.textContent = notSelectedText;
+//     optNotSelected.value = notSelectedValue;
+//     selectElement.appendChild(optNotSelected);
+//     optNotSelected.selected = true;
 
-    // add options
-    optionsArr.forEach( function(option, ind) {
-        const optionEl = document.createElement("option");
-        optionEl.textContent = option['optiontext'];
-        optionEl.value = option['optionid'];
-        if (optionEl.value === selectedValue) {
-//            alert(`optionEl.value: (${option['optionid']}); selectedValue: (${selectedValue})`);
-            optionEl.selected = true;
-        };
-        optionEl.classList.add('filter-option');
-        selectElement.appendChild(optionEl);
-    });
+//     // add options
+//     optionsArr.forEach( function(option, ind) {
+//         const optionEl = document.createElement("option");
+//         optionEl.textContent = option['optiontext'];
+//         optionEl.value = option['optionid'];
+//         if (optionEl.value === selectedValue) {
+// //            alert(`optionEl.value: (${option['optionid']}); selectedValue: (${selectedValue})`);
+//             optionEl.selected = true;
+//         };
+//         optionEl.classList.add('filter-option');
+//         selectElement.appendChild(optionEl);
+//     });
     
-}
+// }
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // toggle the Search Critera input elements, when the icon is clicked
 //////////////////////////////////////////////////////////////////////////////////////////
 function toggleSearchCriteriaInputBlock(elIcon, elBlock, elInput, statusToSet) {
-    // if the current display is hidden and the forced statusToSet <> "hide", then show
 
     console.log(`Changing search criteria block display for ${elBlock.id}.`);
 
+    // if the current display is hidden and the forced statusToSet <> "hide", then show
     if (statusToSet !== "hide" && elBlock.style.display !== "block") {
         elBlock.style.display = "block";
         elIcon.classList.remove("fa-chevron-down");
         elIcon.classList.add("fa-chevron-up");
-    } else {
+    } else { // current display is set to "show" - clear any element values and hide
         if (elInput !== "") {
             switch (elInput.nodeName.toLowerCase()) {
                 case "input":
@@ -258,17 +258,24 @@ function buildFeaturedSponsorSearchResultDiv(selectedSponsor) {
 
     // local variables
     let fieldOfStudyListCompiled = '';
+    let numberOfFieldOfStudyColumns = 2; // default
+    if ( window.innerWidth < 768 ) {  // mobile format only displays 1 column
+        numberOfFieldOfStudyColumns = 1;
+    };
 
     // create the empty <div> and apply styles
     const divFeaturedSponsor = document.createElement('div');
-    divFeaturedSponsor.classList.add('row');
-    divFeaturedSponsor.classList.add('searchresults-mainblock-featured'); /* change background color */
+    divFeaturedSponsor.id = 'featured-sponsor';
+    const divFeaturedSponsorContent = document.createElement('div');
+    divFeaturedSponsorContent.id = 'featured_sponsor_content';
+    divFeaturedSponsorContent.classList.add('row');
+    divFeaturedSponsorContent.classList.add('featured-item-block'); /* change background color */
 
     /////////////////////////////////////////////////////////////
     // build and add the first column (Sponsor Logo, Sponsor Name, and Website)
     /////////////////////////////////////////////////////////////
-    const divFeaturedSponsorCol1 = document.createElement('div');
-    divFeaturedSponsorCol1.classList.add('featured-sponsor-col1');
+    const divFeaturedSponsorContentCol1 = document.createElement('div');
+    divFeaturedSponsorContentCol1.classList.add('featured-sponsor-col1');
 
     // Sponsor logo
     const lnkSponsorLogo = document.createElement('a');
@@ -282,91 +289,87 @@ function buildFeaturedSponsorSearchResultDiv(selectedSponsor) {
     imgSponsorLogo.alt = "Link to the Sponsor's Website";
     lnkSponsorLogo.appendChild(imgSponsorLogo);
 
-    divFeaturedSponsorCol1.appendChild(lnkSponsorLogo);
+    divFeaturedSponsorContentCol1.appendChild(lnkSponsorLogo);
 
     // Sponsor Name
     const divSponsorName = document.createElement('div');
     divSponsorName.classList.add('featured-sponsor-name');
     divSponsorName.innerText = selectedSponsor['SponsorName'];
-    divFeaturedSponsorCol1.appendChild(divSponsorName);
+    divFeaturedSponsorContentCol1.appendChild(divSponsorName);
 
     // add column 1 to the <div>
-    divFeaturedSponsor.appendChild(divFeaturedSponsorCol1);
+    divFeaturedSponsorContent.appendChild(divFeaturedSponsorContentCol1);
 
     /////////////////////////////////////////////////////////////
     // build and add the second column ("Featured" badge, scholarship type summary)
     /////////////////////////////////////////////////////////////
-    const divFeaturedSponsorCol2 = document.createElement('div');
-    divFeaturedSponsorCol2.classList.add('featured-sponsor-col2');
+    const divFeaturedSponsorContentCol2 = document.createElement('div');
+    divFeaturedSponsorContentCol2.classList.add('featured-sponsor-col2');
 
     // Sponsor "Is Featured" Flag
     const imgSponsorIsFeatured = document.createElement('img');
     imgSponsorIsFeatured.src = "/img/imgFeaturedSponsor.png";
     imgSponsorIsFeatured.alt = "Featured Sponsor Badge";
     imgSponsorIsFeatured.classList.add('featured-sponsor-badge');
-    divFeaturedSponsorCol2.appendChild(imgSponsorIsFeatured);
+    divFeaturedSponsorContentCol2.appendChild(imgSponsorIsFeatured);
 
     //////////////////////////////////////////////
     // build and add the "active scholarships profile" block, if there are active scholarships
     //////////////////////////////////////////////
-//    if ( matchingScholarships.length > 0 ) {
     if ( selectedSponsor['ScholarshipCountActive'] > 0 ) {
+
         // add the header text "Offering ## scholarships in"
         const divFeaturedSponsorScholarshipCount = document.createElement('div');
-//        divFeaturedSponsorScholarshipCount.textContent = 'Offering ' + matchingScholarships.length + ' scholarships in';
         divFeaturedSponsorScholarshipCount.textContent = 'Offering ' + selectedSponsor['ScholarshipCountActive'] + ' scholarships in';
-        divFeaturedSponsorCol2.appendChild(divFeaturedSponsorScholarshipCount);
+        divFeaturedSponsorContentCol2.appendChild(divFeaturedSponsorScholarshipCount);
 
-        // add list of scholarship types (2 columns)
+        // add list of scholarship types
         const divScholarshipTypes = document.createElement('div');
         divScholarshipTypes.classList.add('featured-sponsor-fieldofstudy');
-
-//        // compile a list of all Field of Study categories
-//        for ( let i = 0; i < matchingScholarships.length; i++ ) {
-//            fieldOfStudyListCompiled += matchingScholarships[i]['Criteria_FieldOfStudyText'] + '; ';
-//        }
-//        fieldOfStudyListCompiled = fieldOfStudyListCompiled.substring(0, fieldOfStudyListCompiled.length-2);
         fieldOfStudyListCompiled = selectedSponsor['SponsorFieldOfStudyList'];
-        console.log(`FoS Raw: ${fieldOfStudyListCompiled}`);
         const fieldOfStudyListArray = fieldOfStudyListCompiled.split(';');
-        console.log(`FoS Count Raw: ${fieldOfStudyListArray.length}`);
         const fieldOfStudyListUnique = fieldOfStudyListArray.filter((v, i, a) => a.indexOf(v) === i);
         fieldOfStudyListUnique.sort();
-        console.log(`FoS Count Unique: ${fieldOfStudyListUnique.length}`);
-        console.log(`FoS Unique: ${fieldOfStudyListUnique}`);
 
         // create the first of two columns of "Field of Study" categories
         const divScholarshipTypesCol1 = document.createElement('div');
         divScholarshipTypesCol1.classList.add('featured-sponsor-fieldofstudy-col1');
-        for ( let i = 0; i <= Math.ceil((fieldOfStudyListUnique.length)/2)-1; i++ ) {
-            divScholarshipTypesCol1.innerHTML += '<br>' + fieldOfStudyListUnique[i];
-        }
+        for ( let i = 0; i <= Math.ceil((fieldOfStudyListUnique.length)/numberOfFieldOfStudyColumns)-1; i++ ) {
+            divScholarshipTypesCol1.innerHTML += fieldOfStudyListUnique[i] + '<br>';
+        };
+        if ( divScholarshipTypesCol1.innerHTML.slice(-2) == '<br>' ) {
+            divScholarshipTypesCol1.innerHTML = divScholarshipTypesCol1.substring(0, divScholarshipTypesCol1.length-4);
+        };
         divScholarshipTypes.appendChild(divScholarshipTypesCol1);
 
-        // create the second of two columns of "Field of Study" categories
-        const divScholarshipTypesCol2 = document.createElement('div');
-        divScholarshipTypesCol2.classList.add('featured-sponsor-fieldofstudy-col2');
-        for ( let i = Math.ceil((fieldOfStudyListUnique.length)/2); i < fieldOfStudyListUnique.length; i++ ) {
-            divScholarshipTypesCol2.innerHTML += '<br>' + fieldOfStudyListUnique[i];
-        }
-        divScholarshipTypes.appendChild(divScholarshipTypesCol2);
+        // create the second of two columns of "Field of Study" categories (if screen size allows)
+        if ( numberOfFieldOfStudyColumns > 1 ) {
+            const divScholarshipTypesCol2 = document.createElement('div');
+            divScholarshipTypesCol2.classList.add('featured-sponsor-fieldofstudy-col2');
+            for ( let i = Math.ceil((fieldOfStudyListUnique.length)/numberOfFieldOfStudyColumns); i < fieldOfStudyListUnique.length; i++ ) {
+                divScholarshipTypesCol2.innerHTML += fieldOfStudyListUnique[i] + '<br>';
+            };
+            if ( divScholarshipTypesCol2.innerHTML.slice(-2) == '<br>' ) {
+                divScholarshipTypesCol2.innerHTML = divScholarshipTypesCol2.substring(0, divScholarshipTypesCol2.length-4);
+            };
+            divScholarshipTypes.appendChild(divScholarshipTypesCol2);
+        };
 
-        // add the two "Field of Study" category columns to its parent
-        divFeaturedSponsorCol2.append(divScholarshipTypes);
+        // add the "Field of Study" category column(s) to its parent
+        divFeaturedSponsorContentCol2.append(divScholarshipTypes);
 
     } else {  // no active scholarships
 
         // add the header text "Check back for upcoming scholarships"
         const divFeaturedSponsorScholarshipCount = document.createElement('div');
         divFeaturedSponsorScholarshipCount.textContent = 'Check back for upcoming scholarships!';
-        divFeaturedSponsorCol2.appendChild(divFeaturedSponsorScholarshipCount);
+        divFeaturedSponsorContentCol2.appendChild(divFeaturedSponsorScholarshipCount);
 
     };
 
     /////////////////////////////////////////////////////////////
-    // "View Scholarships" button, if there are active scholarships
+    // "View Scholarships" link, if there are active scholarships
     /////////////////////////////////////////////////////////////
-//    if ( matchingScholarships.length > 0 ) {
     if ( selectedSponsor['ScholarshipCountActive'] > 0 ) {
 
         const lnkViewScholarships = document.createElement('a');
@@ -381,7 +384,7 @@ function buildFeaturedSponsorSearchResultDiv(selectedSponsor) {
         imgViewScholarships.classList.add('sponsor-view-scholarships-img');
         lnkViewScholarships.appendChild(imgViewScholarships);
 
-        divFeaturedSponsorCol2.appendChild(lnkViewScholarships);
+        divFeaturedSponsorContentCol2.appendChild(lnkViewScholarships);
 
     } else {
 
@@ -390,12 +393,57 @@ function buildFeaturedSponsorSearchResultDiv(selectedSponsor) {
         imgNoActiveScholarships.alt = "No Active Scholarships for this Sponsor";
         imgNoActiveScholarships.classList.add('sponsor-no-scholarships-img');
 
-        divFeaturedSponsorCol2.appendChild(imgNoActiveScholarships);
+        divFeaturedSponsorContentCol2.appendChild(imgNoActiveScholarships);
 
     };
     
+    /////////////////////////////////////////////////////////////
+    // if mobile layout, add link to scholarship list for the sponsor
+    /////////////////////////////////////////////////////////////
+    if ( numberOfFieldOfStudyColumns == 1 ) {
+
+        // const lnkViewScholarshipsPanel = document.createElement('a');
+        // lnkViewScholarshipsPanel.id = "lnkViewScholarshipsPanel_" + selectedSponsor['SponsorID'];
+        // lnkViewScholarshipsPanel.classList.add('sponsor-view-scholarships');
+        // lnkViewScholarshipsPanel.href = "scholarships?sponsorid=" + selectedSponsor['SponsorID'];
+        // lnkViewScholarshipsPanel.target = "_blank";
+        // lnkViewScholarshipsPanel.appendChild(divFeaturedSponsorContent);
+        // divFeaturedSponsor.appendChild(lnkViewScholarshipsPanel);
+
+//        divFeaturedSponsorContentCol2.onclick = 'location.href="scholarships?sponsorid=' + selectedSponsor['SponsorID'] + '"';
+//        divFeaturedSponsorContentCol2.setAttribute("onclick",
+//            'location.href="scholarships?sponsorid=' + selectedSponsor['SponsorID'] + '";' +
+//            'location.target=\'_blank\'');
+            divFeaturedSponsorContentCol2.setAttribute("onclick",
+            "window.open('scholarships?sponsorid=" + selectedSponsor['SponsorID'] + "', '_blank')");
+
+    };
+
     // add column 2 to the <div>
-    divFeaturedSponsor.appendChild(divFeaturedSponsorCol2);
+    divFeaturedSponsorContent.appendChild(divFeaturedSponsorContentCol2);
+
+    // add the content to the Featured Sponsor div
+    divFeaturedSponsor.appendChild(divFeaturedSponsorContent);
 
     return divFeaturedSponsor;
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// toggle the Search Critera Panel, when the icon is clicked
+//////////////////////////////////////////////////////////////////////////////////////////
+function toggleSearchCriteriaPanelBlock( elIcon, elBlock ) {
+    // if the current display is hidden and the forced statusToSet <> "hide", then show
+    console.log(`elBlock.style.display: (${elBlock.style.display})`);
+
+//    if (statusToSet !== "hide" && elBlock.style.display !== "block") {
+    if ( elBlock.style.display !== "block" && elBlock.style.display !== "" ) {
+        elBlock.style.display = "block";
+        elIcon.classList.remove("fa-angle-double-down");
+        elIcon.classList.add("fa-angle-double-up");
+    } else {
+        elBlock.style.display = "none";
+        elIcon.classList.remove("fa-angle-double-up");
+        elIcon.classList.add("fa-angle-double-down");
+    }
 }

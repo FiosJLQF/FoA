@@ -416,7 +416,7 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria, isFe
     // If the Sponsor or Scholarship is "Featured", change the div styling
 //    if ( scholarship['SponsorIsFeatured'] || scholarship['ScholarshipIsFeatured'] ) {
     if ( scholarship['ScholarshipIsFeatured'] ) {
-        divScholarshipRow1.classList.add('searchresults-mainblock-featured'); /* change background color */
+        divScholarshipRow1.classList.add('featured-item-block'); /* change background color */
     } else {
         divScholarshipRow1.classList.add('searchresults-mainblock');
     };
@@ -589,7 +589,7 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria, isFe
 
     // If the Sponsor or Scholarship is "Featured", change the div styling
     if ( scholarship['ScholarshipIsFeatured'] ) {
-        divScholarshipRow2.classList.add('searchresults-mainblock-featured'); /* change background color */
+        divScholarshipRow2.classList.add('featured-item-block'); /* change background color */
     } else {
         divScholarshipRow2.classList.add('searchresults-mainblock');
     };

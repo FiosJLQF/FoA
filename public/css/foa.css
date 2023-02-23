@@ -212,9 +212,13 @@ select.single-choice {
   font-weight: bold;
 }
 
-.searchInstructions {
+.search-instructions {
   font-size: 0.825em;
-  white-space:nowrap;
+  white-space: nowrap;
+}
+
+.search-panel-criteria-elements {
+  padding: 0px 0px 10px 0px;
 }
 
 .button-small {
@@ -339,7 +343,7 @@ select.single-choice {
   padding-bottom: 10px;
 }
 
-.searchresults-mainblock-featured {
+.featured-item-block {
   width: 960px;
   background-color: var(--amcg-blue-08);
   margin: 0px;
@@ -735,4 +739,8 @@ td.amcg_main_td {
   right: 0px;
   margin: 0px 5px 0px 0px;
   padding: 0px;
+}
+
+#toggleSearchCriteriaPanelBlockButton {
+  display: none;
 }

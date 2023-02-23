@@ -136,7 +136,7 @@ console.log(`After newuser.save`);
 
     // ToDo: Send email notification
     let emailResultError = sendEmail(
-        'fiosjlqf@gmail.com',
+        process.env.EMAIL_WEBMASTER_LIST,
         `New User Account Created`,
         `A New User Account was successfully created for ${usernameToCheck}.`,
         '');

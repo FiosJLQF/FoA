@@ -22,10 +22,10 @@
     <link rel="stylesheet" href="/css/foa.css">
     <link rel="stylesheet" href="/css/foa_boilerplate.css">
     <link rel="stylesheet" href="/css/foa_dataforms.css">
-    <link rel="stylesheet" href="/css/foa_media_1200_1399.css">
-    <link rel="stylesheet" href="/css/foa_media_992_1199.css">
-    <link rel="stylesheet" href="/css/foa_media_768_991.css">
-    <!-- <link rel="icon" type="image/ico" href="/img/1614279732.ico"> -->
+    <link rel="stylesheet" href="/css/foa_media_small.css">
+    <link rel="stylesheet" href="/css/foa_media_medium.css">
+    <link rel="stylesheet" href="/css/foa_media_large.css">
+    <link rel="stylesheet" href="/css/foa_media_xlarge.css">
     <link rel="icon" type="image/ico" href="/img/favicon.ico">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/validator/13.1.17/validator.min.js"></script>
 
@@ -57,7 +57,7 @@
       var userName = <%- JSON.stringify(userName) %>;
       if ( userName !== '' ) {
         navbarLoginLink.textContent = "Log Out";
-        navbarLoginLink.href = "/logout/portal";
+        navbarLoginLink.href = "/logout";
         navbarSwitchboardLink.style.display = "inline-flex";
         navbarSwitchboardLink.textContent = "Switchboard";
         navbarSwitchboardLink.href = "/switchboard";
@@ -69,6 +69,13 @@
         navbarSwitchboardLink.textContent = "";
         navbarSwitchboardLink.href = "";
       };
+
+      // If the screen size is "small", swap the standard navigation bar for the hamburger menu
+      if ( window.innerWidth < 768 ) { // collapse the hamburger menu by default
+        toggleAdvancedSearchCriteriaInputBlock(
+          document.querySelector('#menuSmallToggleIcon'),
+          document.querySelector('#menuSmall'), '', 'hide');
+      }
 </script>
   </body>
 </html>
