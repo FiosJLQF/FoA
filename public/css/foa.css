@@ -354,11 +354,11 @@ select.single-choice {
   margin: 0px 0px 0px 0px;
 }
 
-.searchresults-subblock {
+/* .searchresults-subblock {
   width: 960px;
   margin: 0px;
   padding: 0px;
-}
+} */
 
 .searchresults-subblock-featured {
   background-color: var(--amcg-blue-08);
