@@ -12,7 +12,6 @@ const { ScholarshipsActive, SponsorsAllView, SponsorsActiveView, SponsorsActiveD
     } = require('../models/sequelize_foa.js');
 const jsSearchFx = require('../scripts/foa_fx_search_generic_server');
 const commonFx = require('../scripts/common_fx_server');
-//const { Op } = require('sequelize');  // enables WHERE clause operators
 
 
 ///////////////////////////////////////////////////////////////////////////////////
