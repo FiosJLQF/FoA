@@ -72,9 +72,10 @@
 
       // If the screen size is "small", swap the standard navigation bar for the hamburger menu
       if ( window.innerWidth < 768 ) { // collapse the hamburger menu by default
-        toggleAdvancedSearchCriteriaInputBlock(
+        toggleBlockShowHide(
           document.querySelector('#menuSmallToggleIcon'),
-          document.querySelector('#menuSmall'), '', 'hide');
+          document.querySelector('#menuSmall'), '', 'hide',
+            'fa-angle-double-up', 'fa-angle-double-down');
       }
 </script>
   </body>

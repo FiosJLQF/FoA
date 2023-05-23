@@ -1,3 +1,12 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Common scripts for all pages (client-side scripts)
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   loadSelectOptionsList
+//   toggleBlockShowHide
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 //////////////////////////////////////////////////////////////////////////////////////////
  // load the options into a SELECT element
@@ -39,15 +48,25 @@ function loadSelectOptionsList(selectEl, notSelectedText, notSelectedValue, opti
 //////////////////////////////////////////////////////////////////////////////////////////
 // toggle a block of elements to show/hide, when the icon is clicked
 //////////////////////////////////////////////////////////////////////////////////////////
-function toggleBlockShowHide(elIcon, elBlock, elInput, statusToSet) {
+function toggleBlockShowHide(elIcon, elBlock, elInput, statusToSet, upIconName, downIconName) {
+
+    // Get the current style properties for the Block
+    const cssStyles = window.getComputedStyle(elBlock, null);
 
     console.log(`Changing block display for ${elBlock.id}.`);
+    console.log(`statustoSet: ${statusToSet}`);
+//    console.log(`1A) computedStyle.display: ${cssStyles.getPropertyValue("display")}`);
 
     // if the current display is hidden and the forced statusToSet <> "hide", then show
-    if (statusToSet !== "hide" && elBlock.style.display !== "block") {
+    if (statusToSet !== "hide" && cssStyles.getPropertyValue("display") !== "block"
+       ) {
+
         elBlock.style.display = "block";
-        elIcon.classList.remove("fa-angle-double-down");
-        elIcon.classList.add("fa-angle-double-up");
+        elIcon.classList.remove(downIconName);
+        elIcon.classList.add(upIconName);
+
+//        console.log(`2) style.display: ${elBlock.style.display}`);
+
     } else { // current display is set to "show" - clear any element values and hide
 
         if (elInput !== "") {
@@ -64,8 +83,10 @@ function toggleBlockShowHide(elIcon, elBlock, elInput, statusToSet) {
         }
 
         elBlock.style.display = "none";
-        elIcon.classList.remove("fa-angle-double-up");
-        elIcon.classList.add("fa-angle-double-down");
+        elIcon.classList.remove(upIconName);
+        elIcon.classList.add(downIconName);
+
+//        console.log(`3) style.display: ${elBlock.style.display}`);
 
     };
 

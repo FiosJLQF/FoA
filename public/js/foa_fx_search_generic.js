@@ -3,12 +3,10 @@
 // Scripts for any Search Engine (client-side scripts)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   clearSearchResults
-//   toggleSearchCriteriaInputBlock
-//   toggleAdvancedSearchCriteriaInputBlock
 //   convertOptionsToDelimitedString
 //   loadSelectedValues
-//   buildFeaturedSponsorsBlock (used on sponsor and scholarship search results)
-//   buildFeaturedSponsorSearchResultDiv (used on sponsor and scholarship search results)
+//   buildFeaturedSponsorsBlock (used on both sponsor and scholarship search results pages)
+//   buildFeaturedSponsorSearchResultDiv (used on both sponsor and scholarship search results pages)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -40,97 +38,6 @@ function clearSearchResults() {
         document.querySelector('#panel_body_right').removeChild(pagination);
     };
 
-}
-
-
-//////////////////////////////////////////////////////////////////////////////////////////
-// load the options into a SELECT element
-// MOVED TO COMMON_FX_GENERIC 2/2/2023
-//////////////////////////////////////////////////////////////////////////////////////////
-// function loadSelectOptionsList(selectEl, notSelectedText, notSelectedValue, optionsArr, selectedValue = '') {
-
-//     // get a reference to the SELECT element
-//     const selectElement = document.querySelector("#" + selectEl);
-    
-//     // create and add the "(Not Selected)" default option
-//     const optNotSelected = document.createElement("option");
-//     optNotSelected.textContent = notSelectedText;
-//     optNotSelected.value = notSelectedValue;
-//     selectElement.appendChild(optNotSelected);
-//     optNotSelected.selected = true;
-
-//     // add options
-//     optionsArr.forEach( function(option, ind) {
-//         const optionEl = document.createElement("option");
-//         optionEl.textContent = option['optiontext'];
-//         optionEl.value = option['optionid'];
-//         if (optionEl.value === selectedValue) {
-// //            alert(`optionEl.value: (${option['optionid']}); selectedValue: (${selectedValue})`);
-//             optionEl.selected = true;
-//         };
-//         optionEl.classList.add('filter-option');
-//         selectElement.appendChild(optionEl);
-//     });
-    
-// }
-
-//////////////////////////////////////////////////////////////////////////////////////////
-// toggle the Search Critera input elements, when the icon is clicked
-//////////////////////////////////////////////////////////////////////////////////////////
-function toggleSearchCriteriaInputBlock(elIcon, elBlock, elInput, statusToSet) {
-
-    console.log(`Changing search criteria block display for ${elBlock.id}.`);
-
-    // if the current display is hidden and the forced statusToSet <> "hide", then show
-    if (statusToSet !== "hide" && elBlock.style.display !== "block") {
-        elBlock.style.display = "block";
-        elIcon.classList.remove("fa-chevron-down");
-        elIcon.classList.add("fa-chevron-up");
-    } else { // current display is set to "show" - clear any element values and hide
-        if (elInput !== "") {
-            switch (elInput.nodeName.toLowerCase()) {
-                case "input":
-                    elInput.value = "";
-                    break;
-                case "select":
-                    elInput.value = 0;
-                    break;
-               default:
-                elInput.value = "";
-            };
-        };
-        elBlock.style.display = "none";
-        elIcon.classList.remove("fa-chevron-up");
-        elIcon.classList.add("fa-chevron-down");
-    }
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////
-// toggle the Advanced Search Critera input elements, when the icon is clicked
-//////////////////////////////////////////////////////////////////////////////////////////
-function toggleAdvancedSearchCriteriaInputBlock(elIcon, elBlock, elInput, statusToSet) {
-    // if the current display is hidden and the forced statusToSet <> "hide", then show
-    if (statusToSet !== "hide" && elBlock.style.display !== "block") {
-        elBlock.style.display = "block";
-        elIcon.classList.remove("fa-angle-double-down");
-        elIcon.classList.add("fa-angle-double-up");
-    } else {
-        if (elInput !== "") {
-            switch (elInput.nodeName.toLowerCase()) {
-                case "input":
-                    elInput.value = "";
-                    break;
-                case "select":
-                    elInput.value = 0;
-                    break;
-               default:
-                elInput.value = "";
-            }
-        }
-        elBlock.style.display = "none";
-        elIcon.classList.remove("fa-angle-double-up");
-        elIcon.classList.add("fa-angle-double-down");
-    }
 }
 
 
@@ -426,24 +333,4 @@ function buildFeaturedSponsorSearchResultDiv(selectedSponsor) {
     divFeaturedSponsor.appendChild(divFeaturedSponsorContent);
 
     return divFeaturedSponsor;
-}
-
-
-//////////////////////////////////////////////////////////////////////////////////////////
-// toggle the Search Critera Panel, when the icon is clicked
-//////////////////////////////////////////////////////////////////////////////////////////
-function toggleSearchCriteriaPanelBlock( elIcon, elBlock ) {
-    // if the current display is hidden and the forced statusToSet <> "hide", then show
-    console.log(`elBlock.style.display: (${elBlock.style.display})`);
-
-//    if (statusToSet !== "hide" && elBlock.style.display !== "block") {
-    if ( elBlock.style.display !== "block" && elBlock.style.display !== "" ) {
-        elBlock.style.display = "block";
-        elIcon.classList.remove("fa-angle-double-down");
-        elIcon.classList.add("fa-angle-double-up");
-    } else {
-        elBlock.style.display = "none";
-        elIcon.classList.remove("fa-angle-double-up");
-        elIcon.classList.add("fa-angle-double-down");
-    }
 }

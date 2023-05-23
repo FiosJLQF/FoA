@@ -10,10 +10,11 @@
 
         <!-- Keyword(s) -->
         Keywords: <button type="button" class="btn btn-default button-small"
-            onclick="toggleSearchCriteriaInputBlock(
+            onclick="toggleBlockShowHide(
                 document.querySelector('#filterKeywordsIcon'),
                 document.querySelector('#filterKeywordsInputBlock'),
-                document.querySelector('#filterKeywordsInput'), '')">
+                document.querySelector('#filterKeywordsInput'), '',
+                    'fa-chevron-up', 'fa-chevron-down')">
             <i id="filterKeywordsIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
         </button><br>
         <div id="filterKeywordsInputBlock" class="filter-input-block">
@@ -23,10 +24,11 @@
 
         <!-- Sponsor Name(s) -->
         Sponsor: <button type="button" class="btn btn-default button-small"
-            onclick="toggleSearchCriteriaInputBlock(
+            onclick="toggleBlockShowHide(
                 document.querySelector('#filterSponsorNamesIcon'),
                 document.querySelector('#filterSponsorNamesInputBlock'),
-                document.querySelector('#filterSponsorNamesInput'), '')">
+                document.querySelector('#filterSponsorNamesInput'), '',
+                    'fa-chevron-up', 'fa-chevron-down')">
             <i id="filterSponsorNamesIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
         </button><br>
         <div id="filterSponsorNamesInputBlock" class="filter-input-block">
@@ -36,10 +38,11 @@
 
         <!-- Sponsor Type(s) -->
         Sponsor Type: <button type="button" class="btn btn-default button-small"
-            onclick="toggleSearchCriteriaInputBlock(
+            onclick="toggleBlockShowHide(
                 document.querySelector('#filterSponsorTypeIcon'),
                 document.querySelector('#filterSponsorTypeInputBlock'),
-                document.querySelector('#filterSponsorTypeInput'), '')">
+                document.querySelector('#filterSponsorTypeInput'), '',
+                    'fa-chevron-up', 'fa-chevron-down')">
             <i id="filterSponsorTypeIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
         </button><br>
         <div id="filterSponsorTypeInputBlock" class="filter-input-block">
@@ -84,10 +87,11 @@
         sponsorNamesSelected = '|' + sponsorNamesSelected.replace(',','|') + '|';
         console.log("Previous Sponsor values (formatted): " + sponsorNamesSelected);
         loadSelectedValues("filterSponsorNamesInput", sponsorNamesSelected, "|");
-        toggleSearchCriteriaInputBlock(
+        toggleBlockShowHide(
             document.querySelector('#filterSponsorNamesIcon'),
             document.querySelector('#filterSponsorNamesInputBlock'),
-            document.querySelector('#filterSponsorNamesInput'), '');
+            document.querySelector('#filterSponsorNamesInput'), '',
+                'fa-chevron-up', 'fa-chevron-down');
     };
 
     // Load the Sponsor Type options into the DDL
@@ -99,10 +103,11 @@
         sponsorTypeCategoriesSelected = '|' + sponsorTypeCategoriesSelected.replace(',','|') + '|';
         console.log("Previous Sponsor Type values (formatted): " + sponsorTypeCategoriesSelected);
         loadSelectedValues("filterSponsorTypeInput", sponsorTypeCategoriesSelected, "|");
-        toggleSearchCriteriaInputBlock(
+        toggleBlockShowHide(
             document.querySelector('#filterSponsorTypeIcon'),
             document.querySelector('#filterSponsorTypeInputBlock'),
-            document.querySelector('#filterSponsorTypeInput'), '');
+            document.querySelector('#filterSponsorTypeInput'), '',
+                'fa-chevron-up', 'fa-chevron-down');
     };
 
     /////////////////////////////////////////////////////////////////////

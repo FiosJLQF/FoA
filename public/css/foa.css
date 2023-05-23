@@ -235,6 +235,14 @@ select.single-choice {
   color: var(--amcg-blue);
 }
 
+/* .search-panel-criteria-block {
+  display: block;
+} */
+
+#searchPanelCriteriaBlock {
+  display: block;
+}
+
 .advanced-search-criteria {
   margin-left: 1.5em;
 }
