@@ -219,6 +219,12 @@ function buildFeaturedSponsorSearchResultDiv(selectedSponsor) {
     imgSponsorIsFeatured.alt = "Featured Sponsor Badge";
     imgSponsorIsFeatured.classList.add('featured-sponsor-badge');
     divFeaturedSponsorContentCol2.appendChild(imgSponsorIsFeatured);
+    // Sponsor "Is Featured" Flag (Mobile Version)
+    const imgSponsorIsFeaturedMobile = document.createElement('img');
+    imgSponsorIsFeaturedMobile.src = "/img/imgFeaturedSponsor_Mobile.png";
+    imgSponsorIsFeaturedMobile.alt = "Featured Sponsor Badge";
+    imgSponsorIsFeaturedMobile.classList.add('featured-sponsor-badge-mobile');
+    divFeaturedSponsorContentCol2.appendChild(imgSponsorIsFeaturedMobile);
 
     //////////////////////////////////////////////
     // build and add the "active scholarships profile" block, if there are active scholarships

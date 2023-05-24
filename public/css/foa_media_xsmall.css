@@ -1,5 +1,4 @@
-
-@media (min-width: 640px) and (max-width: 767px){
+@media (max-width: 639px){
 
 
 /**********************************************************
@@ -22,8 +21,8 @@
 .navbar-toprow-center {
   display: inline-block;
   justify-content: center;
-  width: 80%;
-  padding-left: 10px;
+  width: 50%;
+  padding-left: 5px;
 }
 
 .navbar-toprow-right {
@@ -80,28 +79,19 @@
   color: var(--amcg-blue);
 }
 
+.splashbar {
+  width: 100%;
+  margin-top: 0px;
+  margin-bottom: 10px;
+  align-items: center;
+}
 
+img.splashbar {
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+}
 
-
-
-
-
-
-
-/*
-
-  .splashbar {
-    width: 100%;
-    margin-top: 0px;
-    margin-bottom: 10px;
-    align-items: center;
-  }
-  img.splashbar {
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
-  }
-*/
 
 /**********************************************************/
 /* "SEARCH" pages  (col1 and col2 are stacked and are full-width) */
@@ -179,7 +169,7 @@
 }
 
 .featured-sponsor-col1 {
-  width: 175px;
+  width: 33%;
 }
 
 .featured-sponsor-logo {
@@ -193,7 +183,7 @@
 }
 
 .featured-sponsor-col2 {
-  width: 315px;
+  width: 66%;
   padding: 55px 0px 0px 5px;
   font-size: 1.5em;
 }

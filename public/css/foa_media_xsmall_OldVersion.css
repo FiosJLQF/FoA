@@ -1,5 +1,4 @@
-
-@media (max-width: 576px){
+@media (max-width: 639px){
 
 
 /**********************************************************
@@ -46,9 +45,9 @@
 .navbar-item-small {
   text-align: center;
   width: 120px;
-  /* font-size: 0.8em; */
   font-weight: bold;
 }
+
 
 /**********************************************************
   Nav Bar (Hamburger - Small)
@@ -76,19 +75,9 @@
   margin-left: 20px;
 }
 
-
-
-
-
-
 .search-panel {
   margin-left: 20px;
 }
-
-
-
-
-
 
 
   /**********************************************************/
@@ -168,22 +157,6 @@
   .featured-scholarship-badge {
     width: 90px;
   }
-  
-  /**********************************************************/
-  /* "DATA MGMT" pages */
-  /**********************************************************/
-  /* .bodylayout1col2-datamgmt { */
-    /* width: 734px; */
-  /* } */
-  /* .data-mgmt-row { */
-    /* width: 719px; */
-  /* } */
-  /* .data-mgmt-value-div { */
-    /* width: 524px; */
-  /* } */
-  /* .data-mgmt-text-fifth { */
-/*    width: 25%; /* keep at 1/4 width so dates fully display */
-  /* } */
   
 }
   

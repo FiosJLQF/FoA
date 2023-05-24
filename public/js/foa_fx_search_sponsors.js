@@ -229,11 +229,18 @@ function buildSponsorSearchResultDiv(selectedSponsor) {
             // Sponsor "Is Featured" Flag
             ////////////////////////////////////////
             if ( selectedSponsor['SponsorIsFeatured'] ) {
+                // Add the "Featured Sponsor" banner
                 const imgSponsorIsFeatured = document.createElement('img');
                 imgSponsorIsFeatured.src = "/img/imgFeaturedSponsor.png";
                 imgSponsorIsFeatured.alt = "Featured Sponsor Badge";
                 imgSponsorIsFeatured.classList.add('featured-sponsor-badge');
                 divSponsorRow1Col3Row1.appendChild(imgSponsorIsFeatured);
+                // Add the "Featured Sponsor" banner (Mobile Version)
+                const imgSponsorIsFeaturedMobile = document.createElement('img');
+                imgSponsorIsFeaturedMobile.src = "/img/imgFeaturedSponsor_Mobile.png";
+                imgSponsorIsFeaturedMobile.alt = "Featured Sponsor Badge";
+                imgSponsorIsFeaturedMobile.classList.add('featured-sponsor-badge-mobile');
+                divSponsorRow1Col3Row1.appendChild(imgSponsorIsFeaturedMobile);
             };
 
             divSponsorRow1Col3.appendChild(divSponsorRow1Col3Row1);

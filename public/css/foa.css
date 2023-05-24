@@ -513,6 +513,18 @@ select.single-choice {
   padding: 0px;
 }
 
+.featured-sponsor-badge-mobile {
+  display: none;
+  width: 125px;
+  height: auto;
+  position: absolute;
+  top: 5px;
+  right: 0px;
+  margin: 0px 5px 0px 0px;
+  padding: 0px;
+}
+
+
 .featured-scholarship-badge {
   width: 125px;
   height: auto;
