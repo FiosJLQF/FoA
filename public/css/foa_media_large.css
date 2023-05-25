@@ -126,18 +126,22 @@
     .searchresultscol3A.text-block {
       width: 140px;
     }
-    .searchresultscol3B {
-      width: 410px;
-    }
+
+.searchresultscol3B {
+  width: 410px;
+}
+
+.searchresultscol3B-award {
+  width: 385px;
+}
+
+.searchresultscol3B.text-block {
+  width: 410px;
+}
+
     .searchresultscol3Bfeatured {
       width: 290px;
     }
-    .searchresultscol3B.text-block {
-      width: 410px;
-    }
-    /* .searchresultscol3Bfeatured.text-block {
-      width: 270px;
-    } */
     .featured-scholarship-badge {
       width: 90px;
     }

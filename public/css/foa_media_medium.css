@@ -135,9 +135,15 @@
     .searchresultscol3A.text-block {
       width: 140px;
     }
-    .searchresultscol3B {
-      width: 410px;
-    }
+
+.searchresultscol3B {
+  width: 410px;
+}
+
+.searchresultscol3B-award {
+  width: 385px;
+}
+
     .searchresultscol3Bfeatured {
       width: 290px;
     }

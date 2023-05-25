@@ -1,4 +1,4 @@
-@media (min-width: 640px) and (max-width: 767px){
+@media (max-width: 767px){
 
 
 /**********************************************************
@@ -21,8 +21,8 @@
 .navbar-toprow-center {
   display: inline-block;
   justify-content: center;
-  width: 80%;
-  padding-left: 10px;
+  width: 50%;
+  padding-left: 5px;
 }
 
 .navbar-toprow-right {
@@ -79,13 +79,25 @@
   color: var(--amcg-blue);
 }
 
+.splashbar {
+  width: 100%;
+  margin-top: 0px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
 
 /**********************************************************/
 /* "SEARCH" pages  (col1 and col2 are stacked and are full-width) */
 /**********************************************************/
 
+.container {
+  max-width: 767px;
+  width: 100%;
+}
+
 .bodylayout1col1 {
-  width: 500px;
+  width: 100%;
   padding: 0px 5px 0px 5px;
   border-width: 0px;
   margin-bottom: 20px;
@@ -106,17 +118,68 @@
 }
 
 .bodylayout1col2 {
-  width: 500px;
+  width: 100%;
   padding: 0px 5px 0px 5px;
 }
 
 .searchresults-mainblock {
-  width: 500px;
+  width: 100%;
 }
 
 .featured-item-block {
   background-color: var(--amcg-blue-08);
-  width: 490px;
+}
+
+.searchresultscol1 {
+  width: 25%;
+}
+
+.sponsorLogo {
+  width: 100%;
+}
+
+.sponsor-name-col1 {
+  display: block;
+  margin: 10px 0px 0px 10px;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.femaleapplicantsonly {
+  margin: 10px auto 0px auto;
+  font-size: 0.85em;
+}
+
+.sponsor-name-col2 {
+  display: none;
+}
+
+.searchresultscol3 {
+  width: 75%;
+}
+
+.searchresultscol3A {
+  width: 100%;
+  padding: 6px 0px 0px 6px;
+}
+
+.searchresultscol3B {
+  width: 100%;
+  padding: 0px 6px 0px 6px;
+}
+
+.searchresultscol3B.text-block {
+  width: 100%;
+  padding: 0px 6px 6px 6px;
+}
+
+.searchresultscol3B-award {
+  padding: 0px 6px 0px 6px;
+}
+
+.searchresultscol3Bfeatured {
+  width: 60%;
+  padding: 0px 6px 0px 6px;
 }
 
 .sponsor-view-scholarships {
@@ -129,25 +192,10 @@
 .searchresults-subblock-break {
       width: 675px;
     }
-    .searchresultscol3 {
-      width: 550px;
-    }
-    .searchresultscol3A {
+.searchresultscol3A.text-block {
       width: 140px;
     }
-    .searchresultscol3A.text-block {
-      width: 140px;
-    }
-    .searchresultscol3B {
-      width: 410px;
-    }
-    .searchresultscol3Bfeatured {
-      width: 290px;
-    }
-    .searchresultscol3B.text-block {
-      width: 410px;
-    }
-    #toggleSearchCriteriaPanelBlockButton {
+#toggleSearchCriteriaPanelBlockButton {
       display: inline-block;
     }
 
@@ -159,18 +207,25 @@
   width: 100%;
 }
 
+.featured-item-block {
+  width: 100%;
+}
+
 .featured-sponsor-col1 {
-  width: 175px;
+  width: 25%;
 }
 
 .featured-sponsor-name {
-  font-size: 1.2em;
+  font-size: 1.1em;
+  margin: 0px;
+  padding: 0px 0px 0px 6px;
+  word-wrap: break-word;
 }
 
 .featured-sponsor-col2 {
-  width: 315px;
-  padding: 55px 0px 0px 5px;
-  font-size: 1.5em;
+  width: 75%;
+  padding: 45px 0px 0px 2px;
+  font-size: 1em;
 }
 
 .featured-sponsor-badge {
@@ -182,14 +237,14 @@
 }
 
 .featured-sponsor-fieldofstudy {
-  width: 310px;
+  width: 100%;
   overflow: hidden;
   margin: 0px;
 }
 
 .featured-sponsor-fieldofstudy-col1 {
-  width: 310px;
-  font-size: .8em;
+  width: 100%;
+  font-size: 1em;
   margin: 0px;
 }
 
@@ -199,11 +254,6 @@
   font-size: .6em;
   margin: 0px 60px 0px 0px;
 }
-
-
-
-
-
 
 .featured-scholarship-badge {
     width: 90px;

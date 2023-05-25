@@ -134,12 +134,14 @@ select.single-choice {
   display: inline-block;
 }
 
- .femaleapplicantsonly {
-     font-weight: bold;
-     float: right;
-     background-color: lightgreen;
-     margin-top: 10px;
-     font-size: 0.85em;
+.femaleapplicantsonly {
+  display: block;
+  font-weight: bold;
+  align-self: center;
+  background-color: lightgreen;
+  margin: 10px auto 0px auto;
+  font-size: 0.85em;
+  width: 86%;
 }
 
 .scholarshipcount {
@@ -325,7 +327,6 @@ select.single-choice {
 /*  -o-text-overflow: ellipsis; */
 }
 
-/* .searchresultscol3B.description-long { */
 .description-long {
   height: auto; /* expand to fit contents */
   overflow: visible;
@@ -457,7 +458,7 @@ select.single-choice {
 }
 
 .searchresultscol3B-award {
-  width: 90%;
+  width: 625px;
   font-size: 0.875em;
   font-variant: normal;
   line-height: 1.3;
