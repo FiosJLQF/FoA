@@ -1,4 +1,3 @@
-
 @media (min-width: 640px) and (max-width: 767px){
 
 
@@ -81,28 +80,6 @@
 }
 
 
-
-
-
-
-
-
-
-/*
-
-  .splashbar {
-    width: 100%;
-    margin-top: 0px;
-    margin-bottom: 10px;
-    align-items: center;
-  }
-  img.splashbar {
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
-  }
-*/
-
 /**********************************************************/
 /* "SEARCH" pages  (col1 and col2 are stacked and are full-width) */
 /**********************************************************/
@@ -122,6 +99,10 @@
   font-size: 1.25em;
   line-height: 2em;
   padding: 0px 0px 10px 0px;
+}
+
+.search-instructions-press-ctrl {
+  display: none;
 }
 
 .bodylayout1col2 {
@@ -182,13 +163,7 @@
   width: 175px;
 }
 
-.featured-sponsor-logo {
-  display: none;
-}
-
 .featured-sponsor-name {
-  width: 175px;
-  margin: 10px 0px 0px 5px;
   font-size: 1.2em;
 }
 

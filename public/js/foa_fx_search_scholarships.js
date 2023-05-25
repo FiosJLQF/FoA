@@ -121,7 +121,7 @@ function buildScholarshipSearchResults(matchingScholarships, sponsors, pageNumbe
         if ( matchingScholarships.length == 0 ) { // no matches found
             divMatchedItemsBlockTitle.textContent = 'No results found. Try changing the search criteria for better results.';
         } else {  // at least one match was found
-            divMatchedItemsBlockTitle.textContent = 'Search Results';
+            divMatchedItemsBlockTitle.textContent = 'Search Results (sorted by best match)';
         }
     } else {
         divMatchedItemsBlockTitle.textContent = 'Showing All Scholarships';
@@ -426,11 +426,27 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria, isFe
         const divScholarshipRow1Col1 = document.createElement('div');
         divScholarshipRow1Col1.classList.add('searchresultscol1');
 
+        // Sponsor Website Link
+        const lnkSponsorWebsite = document.createElement('a');
+        lnkSponsorWebsite.id = "lnkSponsorWebsite_" + scholarship['SponsorID'];
+        lnkSponsorWebsite.href = scholarship['SponsorWebsite'];
+        lnkSponsorWebsite.target = "_blank";
+
+        // Add Sponsor Logo to the link
         const imgSponsorLogo = document.createElement('img');
         imgSponsorLogo.src = scholarship['SponsorLogo'];
-        imgSponsorLogo.classList.add('sponsorLogo');
+        imgSponsorLogo.classList.add('featured-sponsor-logo');
+        imgSponsorLogo.alt = "Link to the Sponsor's Website";
+        lnkSponsorWebsite.appendChild(imgSponsorLogo);
 
-        divScholarshipRow1Col1.appendChild(imgSponsorLogo);
+        // Sponsor Name (mobile version only)
+        const divSponsorName = document.createElement('div');
+        divSponsorName.classList.add('sponsor-name-col1');
+        divSponsorName.innerText = scholarship['SponsorName'];
+        lnkSponsorWebsite.appendChild(divSponsorName);
+
+        // Add link to column 1
+        divScholarshipRow1Col1.appendChild(lnkSponsorWebsite);
 
         // Add "Female Applicants Only" marker
         if (scholarship['Criteria_FemaleApplicantsOnly_Text'].length > 0) {
@@ -456,6 +472,7 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria, isFe
             ////////////////////////////////////////
             const divScholarshipRow1Col3Row1Col1 = document.createElement('div');
             divScholarshipRow1Col3Row1Col1.classList.add('searchresultscol3A');
+            divScholarshipRow1Col3Row1Col1.classList.add('sponsor-name-col2');
             divScholarshipRow1Col3Row1Col1.textContent = 'Sponsor:';
 
         divScholarshipRow1Col3Rows.appendChild(divScholarshipRow1Col3Row1Col1);
@@ -467,6 +484,7 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria, isFe
             } else {
                 divScholarshipRow1Col3Row1Col2.classList.add('searchresultscol3B');
             };
+            divScholarshipRow1Col3Row1Col2.classList.add('sponsor-name-col2');
             divScholarshipRow1Col3Row1Col2.textContent = scholarship['SponsorName'];
 
         divScholarshipRow1Col3Rows.appendChild(divScholarshipRow1Col3Row1Col2);
@@ -512,7 +530,6 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria, isFe
 
             const divScholarshipRow1Col3Row2Col2 = document.createElement('div');
             // If the Sponsor or Scholarship is "Featured", change the div styling
-//            if ( scholarship['SponsorIsFeatured'] || scholarship['ScholarshipIsFeatured'] ) {
             if ( scholarship['ScholarshipIsFeatured'] ) {
                 divScholarshipRow1Col3Row2Col2.classList.add('searchresultscol3Bfeatured');
             } else {
@@ -532,12 +549,7 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria, isFe
         divScholarshipRow1Col3Rows.appendChild(divScholarshipRow1Col3Row3Col1);
 
             const divScholarshipRow1Col3Row3Col2 = document.createElement('div');
-            // divScholarshipRow1Col3Row3Col2.classList.add('searchresultscol3B');
-            if ( scholarship['ScholarshipIsFeatured'] ) {
-                divScholarshipRow1Col3Row3Col2.classList.add('searchresultscol3Bfeatured');
-            } else {
-                divScholarshipRow1Col3Row3Col2.classList.add('searchresultscol3B');
-            };
+            divScholarshipRow1Col3Row3Col2.classList.add('searchresultscol3B');
             divScholarshipRow1Col3Row3Col2.textContent = scholarship['Criteria_FieldOfStudyText'];
 
         divScholarshipRow1Col3Rows.appendChild(divScholarshipRow1Col3Row3Col2);
@@ -567,7 +579,8 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria, isFe
         divScholarshipRow1Col3Rows.appendChild(divScholarshipRow1Col3Row5Col1);
 
             const divScholarshipRow1Col3Row5Col2 = document.createElement('div');
-            divScholarshipRow1Col3Row5Col2.classList.add('searchresultscol3B');
+//            divScholarshipRow1Col3Row5Col2.classList.add('searchresultscol3B');
+            divScholarshipRow1Col3Row5Col2.classList.add('searchresultscol3B-award');
             divScholarshipRow1Col3Row5Col2.textContent = scholarship['ScholarshipAward'];
 
         divScholarshipRow1Col3Rows.appendChild(divScholarshipRow1Col3Row5Col2);

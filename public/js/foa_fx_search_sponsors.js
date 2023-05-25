@@ -62,7 +62,7 @@ function buildSponsorSearchResults(matchingSponsors, pageNumber, showMatchingCri
     const divMatchedItemsBlockTitle = document.createElement('div');
     divMatchedItemsBlockTitle.classList.add('bodylayout1col2title');
     if ( showMatchingCriteria == true ) {
-        divMatchedItemsBlockTitle.textContent = 'Search Results';
+        divMatchedItemsBlockTitle.textContent = 'Search Results (sorted by best match)';
     } else {
         divMatchedItemsBlockTitle.textContent = 'Showing All Sponsors';
     }

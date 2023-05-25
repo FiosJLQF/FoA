@@ -184,25 +184,27 @@ function buildFeaturedSponsorSearchResultDiv(selectedSponsor) {
     const divFeaturedSponsorContentCol1 = document.createElement('div');
     divFeaturedSponsorContentCol1.classList.add('featured-sponsor-col1');
 
-    // Sponsor logo
-    const lnkSponsorLogo = document.createElement('a');
-    lnkSponsorLogo.id = "lnkSponsorLogo_" + selectedSponsor['SponsorID'];
-    lnkSponsorLogo.href = selectedSponsor['SponsorWebsite'];
-    lnkSponsorLogo.target = "_blank";
+    // Sponsor Website Link
+    const lnkSponsorWebsite = document.createElement('a');
+    lnkSponsorWebsite.id = "lnkSponsorWebsite_" + selectedSponsor['SponsorID'];
+    lnkSponsorWebsite.href = selectedSponsor['SponsorWebsite'];
+    lnkSponsorWebsite.target = "_blank";
 
+    // Add Sponsor Logo to the link
     const imgSponsorLogo = document.createElement('img');
     imgSponsorLogo.src = selectedSponsor['SponsorLogo'];
     imgSponsorLogo.classList.add('featured-sponsor-logo');
     imgSponsorLogo.alt = "Link to the Sponsor's Website";
-    lnkSponsorLogo.appendChild(imgSponsorLogo);
+    lnkSponsorWebsite.appendChild(imgSponsorLogo);
 
-    divFeaturedSponsorContentCol1.appendChild(lnkSponsorLogo);
-
-    // Sponsor Name
+    // Add Sponsor Name to the link
     const divSponsorName = document.createElement('div');
     divSponsorName.classList.add('featured-sponsor-name');
     divSponsorName.innerText = selectedSponsor['SponsorName'];
-    divFeaturedSponsorContentCol1.appendChild(divSponsorName);
+    lnkSponsorWebsite.appendChild(divSponsorName);
+
+    // Add Sponsor Website Link to column 1
+    divFeaturedSponsorContentCol1.appendChild(lnkSponsorWebsite);
 
     // add column 1 to the <div>
     divFeaturedSponsorContent.appendChild(divFeaturedSponsorContentCol1);

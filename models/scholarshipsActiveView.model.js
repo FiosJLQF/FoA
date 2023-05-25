@@ -46,6 +46,7 @@ module.exports = (sequelize, DataTypes) => {
         SponsorIDMatching:                           DataTypes.STRING,
         SponsorLogo:                                 DataTypes.STRING,
         SponsorName:                                 DataTypes.STRING,
+        SponsorWebsite:                              DataTypes.STRING,
         SponsorNameMatching:                         DataTypes.STRING,
         SponsorTypeMatchingText:                     DataTypes.STRING,
         SponsorIsFeatured:                           DataTypes.BOOLEAN,

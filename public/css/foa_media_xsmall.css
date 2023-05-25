@@ -1,4 +1,4 @@
-@media (max-width: 639px){
+@media (max-width: 767px){
 
 
 /**********************************************************
@@ -86,19 +86,18 @@
   align-items: center;
 }
 
-img.splashbar {
-  width: 100%;
-  margin: 0px;
-  padding: 0px;
-}
-
 
 /**********************************************************/
 /* "SEARCH" pages  (col1 and col2 are stacked and are full-width) */
 /**********************************************************/
 
+.container {
+  max-width: 767px;
+  width: 100%;
+}
+
 .bodylayout1col1 {
-  width: 500px;
+  width: 100%;
   padding: 0px 5px 0px 5px;
   border-width: 0px;
   margin-bottom: 20px;
@@ -114,18 +113,72 @@ img.splashbar {
   padding: 0px 0px 10px 0px;
 }
 
+.search-instructions-press-ctrl {
+  display: none;
+}
+
 .bodylayout1col2 {
-  width: 500px;
+  width: 100%;
   padding: 0px 5px 0px 5px;
 }
 
 .searchresults-mainblock {
-  width: 500px;
+  width: 100%;
 }
 
 .featured-item-block {
   background-color: var(--amcg-blue-08);
-  width: 490px;
+}
+
+.searchresultscol1 {
+  width: 25%;
+}
+
+.sponsorLogo {
+  width: 100%;
+}
+
+.sponsor-name-col1 {
+  display: block;
+  margin: 10px 0px 0px 10px;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.sponsor-name-col2 {
+  display: none;
+}
+
+.searchresultscol3 {
+  width: 75%;
+}
+
+.searchresultscol3A {
+  width: 100%;
+  padding: 6px 0px 0px 6px;
+}
+
+.searchresultscol3B {
+  width: 100%;
+  padding: 0px 6px 0px 6px;
+}
+
+.searchresultscol3B.text-block {
+  width: 690px;
+  font-size: 0.875em;
+  font-variant: normal;
+  padding: 6px 0px 0px 0px;
+  line-height: 1.3;
+  white-space: pre-wrap;
+}
+
+.searchresultscol3B-award {
+  padding: 0px 6px 0px 6px;
+}
+
+.searchresultscol3Bfeatured {
+  width: 60%;
+  padding: 0px 6px 0px 6px;
 }
 
 .sponsor-view-scholarships {
@@ -138,25 +191,13 @@ img.splashbar {
 .searchresults-subblock-break {
       width: 675px;
     }
-    .searchresultscol3 {
-      width: 550px;
-    }
-    .searchresultscol3A {
+.searchresultscol3A.text-block {
       width: 140px;
     }
-    .searchresultscol3A.text-block {
-      width: 140px;
-    }
-    .searchresultscol3B {
+.searchresultscol3B.text-block {
       width: 410px;
     }
-    .searchresultscol3Bfeatured {
-      width: 290px;
-    }
-    .searchresultscol3B.text-block {
-      width: 410px;
-    }
-    #toggleSearchCriteriaPanelBlockButton {
+#toggleSearchCriteriaPanelBlockButton {
       display: inline-block;
     }
 
@@ -168,24 +209,25 @@ img.splashbar {
   width: 100%;
 }
 
-.featured-sponsor-col1 {
-  width: 33%;
+.featured-item-block {
+  width: 100%;
 }
 
-.featured-sponsor-logo {
-  display: none;
+.featured-sponsor-col1 {
+  width: 25%;
 }
 
 .featured-sponsor-name {
-  width: 175px;
-  margin: 10px 0px 0px 5px;
-  font-size: 1.2em;
+  font-size: 1.1em;
+  margin: 0px;
+  padding: 0px 0px 0px 6px;
+  word-wrap: break-word;
 }
 
 .featured-sponsor-col2 {
-  width: 66%;
-  padding: 55px 0px 0px 5px;
-  font-size: 1.5em;
+  width: 75%;
+  padding: 45px 0px 0px 2px;
+  font-size: 1em;
 }
 
 .featured-sponsor-badge {
@@ -197,14 +239,14 @@ img.splashbar {
 }
 
 .featured-sponsor-fieldofstudy {
-  width: 310px;
+  width: 100%;
   overflow: hidden;
   margin: 0px;
 }
 
 .featured-sponsor-fieldofstudy-col1 {
-  width: 310px;
-  font-size: .8em;
+  width: 100%;
+  font-size: 1em;
   margin: 0px;
 }
 
@@ -214,11 +256,6 @@ img.splashbar {
   font-size: .6em;
   margin: 0px 60px 0px 0px;
 }
-
-
-
-
-
 
 .featured-scholarship-badge {
     width: 90px;
