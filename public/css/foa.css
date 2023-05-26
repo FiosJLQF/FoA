@@ -593,10 +593,12 @@ select.single-choice {
 }
 
 .sponsor-view-scholarships-img{
+  /* always inside sponsor-view-scholarship link, so no specifications needed here */
   width: 100%;
 }
 
 .sponsor-no-scholarships-img {
+  /* never inside sponsor-view-scholarship link, so all specifications needed here */
   width: 175px;
   margin: 0px;
   height: auto; /* 40px */

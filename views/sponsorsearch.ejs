@@ -36,6 +36,17 @@
   var spnRows = <%- JSON.stringify(sponsorsMatching.rows) %>;
   var sponsorsAllOrMatched = <%- JSON.stringify(sponsorsAllOrMatched) %>;
 
+  // If the screen size is "small" and a search was performed, collapse the Search Criteria panel
+  if ( window.innerWidth < 768 ) { // collapse the hamburger menu by default
+    console.log(`sponsorsAllOrMatched: ${sponsorsAllOrMatched}`);
+    if ( sponsorsAllOrMatched == 'matched' ) {
+      toggleBlockShowHide(
+        document.querySelector('#searchPanelCriteriaBlockIcon'),
+        document.querySelector('#searchPanelCriteriaBlock'), '', 'hide',
+        'fa-angle-double-up', 'fa-angle-double-down');
+    };
+  };
+
   // Display the Sponsors (all, matched, or none)
   showSelectedSponsors(spnRows, sponsorsAllOrMatched);
 

@@ -331,7 +331,6 @@ function buildSponsorSearchResultDiv(selectedSponsor) {
         // Build and Add the "View Scholarships" link, if any active scholarships exist
         ////////////////////////////////////////
 
-//        if ( intScholarships > 0 ) { // display the link if there are active scholarships
         if ( selectedSponsor['ScholarshipCountActive'] > 0 ) { // display the link if there are active scholarships
 
             // "View Scholarships" button

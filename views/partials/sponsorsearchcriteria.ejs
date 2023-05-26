@@ -1,57 +1,72 @@
-<div>
-    <div class="bodylayout1col1title" id="searchCriteriaTitle">Search Criteria</div>
-    <hr class="bodycol1break">
-    <div class="search-instructions">Enter criteria below and click "search".</div><br>
+<div id="searchPanel" class="search-panel">
 
-    <form action="/search/sponsors" method="POST" id="sponsorSearchCriteria" name="sponsorSearchCriteria">
-
-        <!-- Hidden values for post form submittal -->
-        <input type="hidden" id="showAllSponsorsFlag" name="showAllSponsorsFlag">
-
-        <!-- Keyword(s) -->
-        Keywords: <button type="button" class="btn btn-default button-small"
+    <div class="bodylayout1col1title" id="searchCriteriaTitle">Search Criteria
+        <span>
+            <button type="button" class="btn btn-default button-small" id="toggleSearchCriteriaPanelBlockButton"
             onclick="toggleBlockShowHide(
-                document.querySelector('#filterKeywordsIcon'),
-                document.querySelector('#filterKeywordsInputBlock'),
-                document.querySelector('#filterKeywordsInput'), '',
+                document.querySelector('#searchPanelCriteriaBlockIcon'),
+                document.querySelector('#searchPanelCriteriaBlock'), '', '',
+                'fa-angle-double-up','fa-angle-double-down')">
+                <i id="searchPanelCriteriaBlockIcon" class="fas fa-angle-double-up expand-filter chevrons"></i>
+            </button>
+        </span>
+    </div>
+
+    <div id="searchPanelCriteriaBlock" class="search-panel-criteria-block">
+
+        <hr class="bodycol1break">
+        <div class="search-instructions">Enter criteria below and click "search".</div><br>
+    
+        <form action="/search/sponsors" method="POST" id="sponsorSearchCriteria"
+            name="sponsorSearchCriteria" class="search-panel-criteria-elements">
+
+            <!-- Hidden values for post form submittal -->
+            <input type="hidden" id="showAllSponsorsFlag" name="showAllSponsorsFlag">
+
+            <!-- Keyword(s) -->
+            Keywords: <button type="button" class="btn btn-default button-small"
+                onclick="toggleBlockShowHide(
+                    document.querySelector('#filterKeywordsIcon'),
+                    document.querySelector('#filterKeywordsInputBlock'),
+                    document.querySelector('#filterKeywordsInput'), '',
                     'fa-chevron-up', 'fa-chevron-down')">
-            <i id="filterKeywordsIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
-        </button><br>
-        <div id="filterKeywordsInputBlock" class="filter-input-block">
-            <div class="search-instructions">(Separate words/phrases with commas)</div>
-            <input type="text" id="filterKeywordsInput" name="filterKeywordsInput" class="filter-input filter_textbox"><br>
-        </div>
+                <i id="filterKeywordsIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+            </button><br>
+            <div id="filterKeywordsInputBlock" class="filter-input-block">
+                <div class="search-instructions">(Separate words/phrases with commas)</div>
+                <input type="text" id="filterKeywordsInput" name="filterKeywordsInput" class="filter-input filter_textbox"><br>
+            </div>
 
-        <!-- Sponsor Name(s) -->
-        Sponsor: <button type="button" class="btn btn-default button-small"
-            onclick="toggleBlockShowHide(
-                document.querySelector('#filterSponsorNamesIcon'),
-                document.querySelector('#filterSponsorNamesInputBlock'),
-                document.querySelector('#filterSponsorNamesInput'), '',
+            <!-- Sponsor Name(s) -->
+            Sponsor: <button type="button" class="btn btn-default button-small"
+                onclick="toggleBlockShowHide(
+                    document.querySelector('#filterSponsorNamesIcon'),
+                    document.querySelector('#filterSponsorNamesInputBlock'),
+                    document.querySelector('#filterSponsorNamesInput'), '',
                     'fa-chevron-up', 'fa-chevron-down')">
-            <i id="filterSponsorNamesIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
-        </button><br>
-        <div id="filterSponsorNamesInputBlock" class="filter-input-block">
-            <div class="search-instructions-press-ctrl">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
-            <select id="filterSponsorNamesInput" name="filterSponsorNamesInput" class="filter_select" multiple></select><br>
-        </div>
+                <i id="filterSponsorNamesIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+            </button><br>
+            <div id="filterSponsorNamesInputBlock" class="filter-input-block">
+                <div class="search-instructions-press-ctrl">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
+                <select id="filterSponsorNamesInput" name="filterSponsorNamesInput" class="filter_select" multiple></select><br>
+            </div>
 
-        <!-- Sponsor Type(s) -->
-        Sponsor Type: <button type="button" class="btn btn-default button-small"
-            onclick="toggleBlockShowHide(
-                document.querySelector('#filterSponsorTypeIcon'),
-                document.querySelector('#filterSponsorTypeInputBlock'),
-                document.querySelector('#filterSponsorTypeInput'), '',
+            <!-- Sponsor Type(s) -->
+            Sponsor Type: <button type="button" class="btn btn-default button-small"
+                onclick="toggleBlockShowHide(
+                    document.querySelector('#filterSponsorTypeIcon'),
+                    document.querySelector('#filterSponsorTypeInputBlock'),
+                    document.querySelector('#filterSponsorTypeInput'), '',
                     'fa-chevron-up', 'fa-chevron-down')">
             <i id="filterSponsorTypeIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
-        </button><br>
-        <div id="filterSponsorTypeInputBlock" class="filter-input-block">
-            <div class="search-instructions-press-ctrl">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
-            <select id="filterSponsorTypeInput" name="filterSponsorTypeInput" class="filter_select" multiple></select><br>
-        </div>
+            </button><br>
+            <div id="filterSponsorTypeInputBlock" class="filter-input-block">
+                <div class="search-instructions-press-ctrl">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
+                <select id="filterSponsorTypeInput" name="filterSponsorTypeInput" class="filter_select" multiple></select><br>
+            </div>
 
-        <br>
-    </form> <!-- End search criteria form -->
+            <br>
+        </form> <!-- End search criteria form -->
 
     <div style="text-align:left">
         <button type="button" class="btn btn-default button-search" onclick="showMatchingSponsors();">
@@ -64,7 +79,9 @@
         </button>
     </div>
 
-</div>
+    </div>  <!-- Search Criteria Block -->
+
+</div>  <!-- Search Panel -->
 
 <script>
 
@@ -73,10 +90,6 @@
 
     // Set hidden controls' default values
     document.getElementById('showAllSponsorsFlag').value = ""
-
-////////////////////////////////////////
-// MOVE THESE TO SERVER-SIDE PROCESSING!
-////////////////////////////////////////
 
     // Load the Sponsor List into the DDL and set any selected values (if search result)
     var splRows = <%- JSON.stringify(sponsorsActiveDDL.rows) %>;

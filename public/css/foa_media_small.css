@@ -173,6 +173,10 @@
   padding: 0px 6px 6px 6px;
 }
 
+.searchresultscol3B.text-link {
+  padding: 0px 6px 0px 6px;
+}
+
 .searchresultscol3B-award {
   padding: 0px 6px 0px 6px;
 }
@@ -181,13 +185,6 @@
   width: 60%;
   padding: 0px 6px 0px 6px;
 }
-
-.sponsor-view-scholarships {
-  display: none;
-}
-
-
-
 
 .searchresults-subblock-break {
       width: 675px;
@@ -258,5 +255,23 @@
 .featured-scholarship-badge {
     width: 90px;
   }
+
+
+/**********************************************************/
+/* "Search Results" panel                                 */
+/**********************************************************/
+  
+.sponsor-view-scholarships {
+  width: 125px;
+}
+  
+/* always inside sponsor-view-scholarship link, so no specifications needed here */
+/* .sponsor-view-scholarships-img{
+} */
+  
+.sponsor-no-scholarships-img {
+  /* never inside sponsor-view-scholarship link, so all specifications needed here */
+  width: 125px;
+}
 
 }
