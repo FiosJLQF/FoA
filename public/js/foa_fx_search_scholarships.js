@@ -478,6 +478,7 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria, isFe
         divScholarshipRow1Col3Rows.appendChild(divScholarshipRow1Col3Row1Col1);
 
             const divScholarshipRow1Col3Row1Col2 = document.createElement('div');
+
             // If the Sponsor or Scholarship is "Featured", change the div styling
             if ( scholarship['ScholarshipIsFeatured'] ) {
                 divScholarshipRow1Col3Row1Col2.classList.add('searchresultscol3Bfeatured');
@@ -490,14 +491,21 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria, isFe
         divScholarshipRow1Col3Rows.appendChild(divScholarshipRow1Col3Row1Col2);
 
             ////////////////////////////////////////
-            // "Is Featured" Badge
+            // Scholarship "Is Featured" Flag
             ////////////////////////////////////////
             if ( scholarship['ScholarshipIsFeatured'] ) {
+                // Add the "Featured Scholarship" banner
                 const imgScholarshipIsFeatured = document.createElement('img');
                 imgScholarshipIsFeatured.src = "/img/imgFeaturedScholarship.png";
                 imgScholarshipIsFeatured.alt = "Featured Scholarship Badge";
                 imgScholarshipIsFeatured.classList.add('featured-scholarship-badge');
                 divScholarshipRow1Col3Rows.appendChild(imgScholarshipIsFeatured);
+                // Add the "Featured Scholarship" banner (Mobile Version)
+                const imgScholarshipIsFeaturedMobile = document.createElement('img');
+                imgScholarshipIsFeaturedMobile.src = "/img/imgFeaturedScholarship_Mobile.png";
+                imgScholarshipIsFeaturedMobile.alt = "Featured Scholarship Badge";
+                imgScholarshipIsFeaturedMobile.classList.add('featured-scholarship-badge-mobile');
+                divScholarshipRow1Col3Rows.appendChild(imgScholarshipIsFeaturedMobile);
             };
 
             ////////////////////////////////////////
@@ -509,8 +517,8 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria, isFe
             // Create "Show" icon
             const iconShow = document.createElement('i');
             iconShow.id = "iconShow_" + scholarshipID;
-            iconShow.classList.add('fas');
-            iconShow.classList.add('fa-chevron-down');
+            // iconShow.classList.add('fas');
+            iconShow.classList.add('chevron-scholarship-details-down');
             iconShow.classList.add('scholarship-results-expandchevron');
             iconShow.addEventListener('click', function() {
                 toggleShowScholarshipDetails(iconShow.id, iconHide.id,
@@ -641,8 +649,8 @@ function buildScholarshipSearchResultDiv(scholarship, showMatchingCriteria, isFe
             // Expand Chevron To See Scholarship Details
             // Note: Object instantiated up in the "icon Show" declaration
             ////////////////////////////////////////
-            iconHide.classList.add('fas');
-            iconHide.classList.add('fa-chevron-up');
+            // iconHide.classList.add('fas');
+            iconHide.classList.add('chevron-scholarship-details-up');
             iconHide.classList.add('scholarship-results-expandchevron');
             iconHide.addEventListener('click', function() {
                 toggleShowScholarshipDetails(iconShow.id, iconHide.id, 

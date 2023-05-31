@@ -4,10 +4,10 @@
         <span>
             <button type="button" class="btn btn-default button-small" id="toggleSearchCriteriaPanelBlockButton"
             onclick="toggleBlockShowHide(
-                document.querySelector('#searchPanelCriteriaBlockIcon'),
+                document.querySelector('#searchPanelCriteriaBlockChevron'),
                 document.querySelector('#searchPanelCriteriaBlock'), '', '',
-                'fa-angle-double-up','fa-angle-double-down')">
-                <i id="searchPanelCriteriaBlockIcon" class="fas fa-angle-double-up expand-filter chevrons"></i>
+                'chevron-double-small-up', 'chevron-double-small-down')">
+                <img id="searchPanelCriteriaBlockChevron" class="chevron-double-small-up">
             </button>
         </span>
     </div>
@@ -26,11 +26,11 @@
             <!-- Field(s) of Study -->
             Field of Study: <button type="button" class="btn btn-default button-small"
                 onclick="toggleBlockShowHide(
-                    document.querySelector('#filterFieldOfStudyIcon'),
+                    document.querySelector('#filterFieldOfStudyChevron'),
                     document.querySelector('#filterFieldOfStudyInputBlock'),
                     document.querySelector('#filterFieldOfStudyInput'), '',
-                    'fa-chevron-up', 'fa-chevron-down')">
-                <i id="filterFieldOfStudyIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+                    'chevron-small-up', 'chevron-small-down')">
+                <img id="filterFieldOfStudyChevron" class="chevron-small-down">
             </button><br>
             <div id="filterFieldOfStudyInputBlock" class="filter-input-block">
                 <div class="search-instructions-press-ctrl">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
@@ -40,11 +40,11 @@
             <!-- Sponsor Name(s) -->
             Sponsor: <button type="button" class="btn btn-default button-small"
                 onclick="toggleBlockShowHide(
-                    document.querySelector('#filterSponsorNamesIcon'),
+                    document.querySelector('#filterSponsorNamesChevron'),
                     document.querySelector('#filterSponsorNamesInputBlock'),
                     document.querySelector('#filterSponsorNamesInput'), '',
-                    'fa-chevron-up', 'fa-chevron-down')">
-            <i id="filterSponsorNamesIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+                    'chevron-small-up', 'chevron-small-down')">
+                <img id="filterSponsorNamesChevron" class="chevron-small-down">
             </button><br>
             <div id="filterSponsorNamesInputBlock" class="filter-input-block">
                 <div class="search-instructions-press-ctrl">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
@@ -54,11 +54,11 @@
             <!-- Age -->
             Age: <button type="button" class="btn btn-default button-small"
                 onclick="toggleBlockShowHide(
-                    document.querySelector('#filterAgeIcon'),
+                    document.querySelector('#filterAgeChevron'),
                     document.querySelector('#filterAgeInputBlock'),
                     document.querySelector('#filterAgeInput'), '',
-                    'fa-chevron-up', 'fa-chevron-down')">
-                <i id="filterAgeIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+                    'chevron-small-up', 'chevron-small-down')">
+                <img id="filterAgeChevron" class="chevron-small-down">
             </button><br>
             <div id="filterAgeInputBlock" class="filter-input-block">
 <!--        <div class="search-instructions">(Enter an age between 16 and 99)</div>    -->
@@ -69,11 +69,11 @@
             <!-- Citizenship -->
             Citizenship: <button type="button" class="btn btn-default button-small"
                 onclick="toggleBlockShowHide(
-                    document.querySelector('#filterCitizenshipIcon'),
+                    document.querySelector('#filterCitizenshipChevron'),
                     document.querySelector('#filterCitizenshipInputBlock'),
                     document.querySelector('#filterCitizenshipInput'), '',
-                    'fa-chevron-up', 'fa-chevron-down')">
-                <i id="filterCitizenshipIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+                    'chevron-small-up', 'chevron-small-down')">
+                <img id="filterCitizenshipChevron" class="chevron-small-down">
             </button><br>
             <div id="filterCitizenshipInputBlock" class="filter-input-block">
                 <select id="filterCitizenshipInput" name="filterCitizenshipInput" class="filter_select"></select><br>
@@ -82,11 +82,11 @@
             <!-- Year of Need / Desired Program -->
             Year of Need / Desired Program: <button type="button" class="btn btn-default button-small"
                 onclick="toggleBlockShowHide(
-                    document.querySelector('#filterYearOfNeedIcon'),
+                    document.querySelector('#filterYearOfNeedChevron'),
                     document.querySelector('#filterYearOfNeedInputBlock'),
                     document.querySelector('#filterYearOfNeedInput'), '',
-                    'fa-chevron-up', 'fa-chevron-down')">
-                <i id="filterYearOfNeedIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+                    'chevron-small-up', 'chevron-small-down')">
+                <img id="filterYearOfNeedChevron" class="chevron-small-down">
             </button><br>
             <div id="filterYearOfNeedInputBlock" class="filter-input-block">
                 <select id="filterYearOfNeedInput" name="filterYearOfNeedInput" class="filter_select"></select><br>
@@ -95,11 +95,11 @@
             <!-- Keyword(s) -->
             Keywords: <button type="button" class="btn btn-default button-small"
                 onclick="toggleBlockShowHide(
-                    document.querySelector('#filterKeywordsIcon'),
+                    document.querySelector('#filterKeywordsChevron'),
                     document.querySelector('#filterKeywordsInputBlock'),
                     document.querySelector('#filterKeywordsInput'), '',
-                    'fa-chevron-up', 'fa-chevron-down')">
-                <i id="filterKeywordsIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+                    'chevron-small-up', 'chevron-small-down')">
+                <img id="filterKeywordsChevron" class="chevron-small-down">
             </button><br>
             <div id="filterKeywordsInputBlock" class="filter-input-block">
                 <div class="search-instructions">(Separate words/phrases with commas)</div>
@@ -108,138 +108,138 @@
 
             <!-- "Advanced Search" section -->
             <span onclick="toggleBlockShowHide(
-                document.querySelector('#advancedSearchIcon'),
+                document.querySelector('#advancedSearchChevron'),
                 document.querySelector('#advancedSearchInputBlock'), '', '',
-                'fa-angle-double-up','fa-angle-double-down')"
+                'chevron-double-small-up', 'chevron-double-small-down')"
                 class="textbold">Advanced Search: </span>
             <span>
                 <button type="button" class="btn btn-default button-small"
                     onclick="toggleBlockShowHide(
-                        document.querySelector('#advancedSearchIcon'),
+                        document.querySelector('#advancedSearchChevron'),
                         document.querySelector('#advancedSearchInputBlock'), '', '',
-                        'fa-angle-double-up','fa-angle-double-down')">
-                    <i id="advancedSearchIcon" class="fas fa-angle-double-down expand-filter chevrons"></i>
+                        'chevron-double-small-up', 'chevron-double-small-down')">
+                    <img id="advancedSearchChevron" class="chevron-double-small-down">
                 </button>
-           </span><br>
+            </span><br>
 
             <div id="advancedSearchInputBlock" class="filter-input-block advanced-search-criteria">
 
                 <!-- Gender -->
                 Female Applicant: <button type="button" class="btn btn-default button-small"
                     onclick="toggleBlockShowHide(
-                        document.querySelector('#filterGenderIcon'),
+                        document.querySelector('#filterGenderChevron'),
                         document.querySelector('#filterGenderInputBlock'),
                         document.querySelector('#filterGenderInput'), '',
-                        'fa-chevron-up', 'fa-chevron-down')">
-                    <i id="filterGenderIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+                        'chevron-small-up', 'chevron-small-down')">
+                    <img id="filterGenderChevron" class="chevron-small-down">
                 </button><br>
                 <div id="filterGenderInputBlock" class="filter-input-block">
                     <select id="filterGenderInput" name="filterGenderInput" class="filter_select"></select><br>
                 </div>
 
-    <!-- Enrollment Status -->
-    College Enrollment Status: <button type="button" class="btn btn-default button-small"
-        onclick="toggleBlockShowHide(
-            document.querySelector('#filterEnrollmentStatusIcon'),
-            document.querySelector('#filterEnrollmentStatusInputBlock'),
-            document.querySelector('#filterEnrollmentStatusInput'), '',
-            'fa-chevron-up', 'fa-chevron-down')">
-        <i id="filterEnrollmentStatusIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
-    </button><br>
-    <div id="filterEnrollmentStatusInputBlock" class="filter-input-block">
-        <select id="filterEnrollmentStatusInput" name="filterEnrollmentStatusInput" class="filter_select"></select><br>
-    </div>
+                <!-- Enrollment Status -->
+                College Enrollment Status: <button type="button" class="btn btn-default button-small"
+                    onclick="toggleBlockShowHide(
+                        document.querySelector('#filterEnrollmentStatusChevron'),
+                        document.querySelector('#filterEnrollmentStatusInputBlock'),
+                        document.querySelector('#filterEnrollmentStatusInput'), '',
+                        'chevron-small-up', 'chevron-small-down')">
+                    <img id="filterEnrollmentStatusChevron" class="chevron-small-down">
+                </button><br>
+                <div id="filterEnrollmentStatusInputBlock" class="filter-input-block">
+                    <select id="filterEnrollmentStatusInput" name="filterEnrollmentStatusInput" class="filter_select"></select><br>
+                </div>
 
-    <!-- GPA -->
-    GPA: <button type="button" class="btn btn-default button-small"
-        onclick="toggleBlockShowHide(
-            document.querySelector('#filterGPAIcon'),
-            document.querySelector('#filterGPAInputBlock'),
-            document.querySelector('#filterGPAInput'), '',
-            'fa-chevron-up', 'fa-chevron-down')">
-        <i id="filterGPAIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
-    </button><br>
-    <div id="filterGPAInputBlock" class="filter-input-block">
-        <div class="search-instructions">(Enter a number between 0.00 and 4.00)</div>
-        <span id="filterGPAInputError"></span>
-        <input type="text" id="filterGPAInput" name="filterGPAInput" class="filter-input filter_textbox"><br>
-    </div>
+                <!-- GPA -->
+                GPA: <button type="button" class="btn btn-default button-small"
+                    onclick="toggleBlockShowHide(
+                        document.querySelector('#filterGPAChevron'),
+                        document.querySelector('#filterGPAInputBlock'),
+                        document.querySelector('#filterGPAInput'), '',
+                        'chevron-small-up', 'chevron-small-down')">
+                    <img id="filterGPAChevron" class="chevron-small-down">
+                </button><br>
+                <div id="filterGPAInputBlock" class="filter-input-block">
+                    <div class="search-instructions">(Enter a number between 0.00 and 4.00)</div>
+                    <span id="filterGPAInputError"></span>
+                    <input type="text" id="filterGPAInput" name="filterGPAInput" class="filter-input filter_textbox"><br>
+                </div>
 
-    <!-- U.S. Military Service -->
-    U.S. Military Service: <button type="button" class="btn btn-default button-small"
-        onclick="toggleBlockShowHide(
-            document.querySelector('#filterUSMilitaryServiceIcon'),
-            document.querySelector('#filterUSMilitaryServiceInputBlock'),
-            document.querySelector('#filterUSMilitaryServiceInput'), '',
-            'fa-chevron-up', 'fa-chevron-down')">
-        <i id="filterUSMilitaryServiceIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
-    </button><br>
-    <div id="filterUSMilitaryServiceInputBlock" class="filter-input-block">
-        <select id="filterUSMilitaryServiceInput" name="filterUSMilitaryServiceInput" class="filter_select"></select><br>
-    </div>
+                <!-- U.S. Military Service -->
+                U.S. Military Service: <button type="button" class="btn btn-default button-small"
+                    onclick="toggleBlockShowHide(
+                        document.querySelector('#filterUSMilitaryServiceChevron'),
+                        document.querySelector('#filterUSMilitaryServiceInputBlock'),
+                        document.querySelector('#filterUSMilitaryServiceInput'), '',
+                        'chevron-small-up', 'chevron-small-down')">
+                    <img id="filterUSMilitaryServiceChevron" class="chevron-small-down">
+                </button><br>
+                <div id="filterUSMilitaryServiceInputBlock" class="filter-input-block">
+                    <select id="filterUSMilitaryServiceInput" name="filterUSMilitaryServiceInput" class="filter_select"></select><br>
+                </div>
 
-    <!-- FAA Pilot Airman Certificate -->
-    FAA Pilot Airman Certificate<br>
-    <span class="search-instructions">&nbsp;&nbsp;&nbsp;(Interested In / Currently Obtaining)</span>
-    <button type="button" class="btn btn-default button-small"
-        onclick="toggleBlockShowHide(
-            document.querySelector('#filterFAAPilotCertificateIcon'),
-            document.querySelector('#filterFAAPilotCertificateInputBlock'),
-            document.querySelector('#filterFAAPilotCertificateInput'), '',
-            'fa-chevron-up', 'fa-chevron-down')">
-        <i id="filterFAAPilotCertificateIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
-    </button><br>
-    <div id="filterFAAPilotCertificateInputBlock" class="filter-input-block">
-        <div class="search-instructions-press-ctrl">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
-        <select id="filterFAAPilotCertificateInput" name="filterFAAPilotCertificateInput" class="filter_select" multiple></select><br>
-    </div>
+                <!-- FAA Pilot Airman Certificate -->
+                FAA Pilot Airman Certificate<br>
+                <span class="search-instructions">&nbsp;&nbsp;&nbsp;(Interested In / Currently Obtaining)</span>
+                <button type="button" class="btn btn-default button-small"
+                    onclick="toggleBlockShowHide(
+                        document.querySelector('#filterFAAPilotCertificateChevron'),
+                        document.querySelector('#filterFAAPilotCertificateInputBlock'),
+                        document.querySelector('#filterFAAPilotCertificateInput'), '',
+                        'chevron-small-up', 'chevron-small-down')">
+                    <img id="filterFAAPilotCertificateChevron" class="chevron-small-down">
+                </button><br>
+                <div id="filterFAAPilotCertificateInputBlock" class="filter-input-block">
+                    <div class="search-instructions-press-ctrl">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
+                    <select id="filterFAAPilotCertificateInput" name="filterFAAPilotCertificateInput" class="filter_select" multiple></select><br>
+                </div>
 
-    <!-- FAA Pilot Airman Rating -->
-    FAA Pilot Airman Rating<br>
-    <span class="search-instructions">&nbsp;&nbsp;&nbsp;(Interested In / Currently Obtaining)</span>
-    <button type="button" class="btn btn-default button-small"
-        onclick="toggleBlockShowHide(
-            document.querySelector('#filterFAAPilotRatingIcon'),
-            document.querySelector('#filterFAAPilotRatingInputBlock'),
-            document.querySelector('#filterFAAPilotRatingInput'), '',
-            'fa-chevron-up', 'fa-chevron-down')">
-        <i id="filterFAAPilotRatingIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
-    </button><br>
-    <div id="filterFAAPilotRatingInputBlock" class="filter-input-block">
-        <div class="search-instructions-press-ctrl">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
-        <select id="filterFAAPilotRatingInput" name="filterFAAPilotRatingInput" class="filter_select" multiple></select><br>
-    </div>
+                <!-- FAA Pilot Airman Rating -->
+                FAA Pilot Airman Rating<br>
+                <span class="search-instructions">&nbsp;&nbsp;&nbsp;(Interested In / Currently Obtaining)</span>
+                <button type="button" class="btn btn-default button-small"
+                    onclick="toggleBlockShowHide(
+                        document.querySelector('#filterFAAPilotRatingChevron'),
+                        document.querySelector('#filterFAAPilotRatingInputBlock'),
+                        document.querySelector('#filterFAAPilotRatingInput'), '',
+                        'chevron-small-up', 'chevron-small-down')">
+                    <img id="filterFAAPilotRatingChevron" class="chevron-small-down">
+                </button><br>
+                <div id="filterFAAPilotRatingInputBlock" class="filter-input-block">
+                    <div class="search-instructions-press-ctrl">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
+                    <select id="filterFAAPilotRatingInput" name="filterFAAPilotRatingInput" class="filter_select" multiple></select><br>
+                </div>
 
-    <!-- FAA Mechanic Airman Certificate/Rating -->
-    FAA Mechanic Airman Cert./Ratings<br>
-    <span class="search-instructions">&nbsp;&nbsp;&nbsp;(Interested In / Currently Obtaining)</span>
-    <button type="button" class="btn btn-default button-small"
-        onclick="toggleBlockShowHide(
-            document.querySelector('#filterFAAMechanicCertRatingIcon'),
-            document.querySelector('#filterFAAMechanicCertRatingInputBlock'),
-            document.querySelector('#filterFAAMechanicCertRatingInput'), '',
-            'fa-chevron-up', 'fa-chevron-down')">
-        <i id="filterFAAMechanicCertRatingIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
-    </button><br>
-    <div id="filterFAAMechanicCertRatingInputBlock" class="filter-input-block">
-        <div class="search-instructions-press-ctrl">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
-        <select id="filterFAAMechanicCertRatingInput" name="filterFAAMechanicCertRatingInput" class="filter_select" multiple></select><br>
-    </div>
+                <!-- FAA Mechanic Airman Certificate/Rating -->
+                FAA Mechanic Airman Cert./Ratings<br>
+                <span class="search-instructions">&nbsp;&nbsp;&nbsp;(Interested In / Currently Obtaining)</span>
+                <button type="button" class="btn btn-default button-small"
+                    onclick="toggleBlockShowHide(
+                        document.querySelector('#filterFAAMechanicCertRatingChevron'),
+                        document.querySelector('#filterFAAMechanicCertRatingInputBlock'),
+                        document.querySelector('#filterFAAMechanicCertRatingInput'), '',
+                        'chevron-small-up', 'chevron-small-down')">
+                    <img id="filterFAAMechanicCertRatingChevron" class="chevron-small-down">
+                </button><br>
+                <div id="filterFAAMechanicCertRatingInputBlock" class="filter-input-block">
+                    <div class="search-instructions-press-ctrl">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
+                    <select id="filterFAAMechanicCertRatingInput" name="filterFAAMechanicCertRatingInput" class="filter_select" multiple></select><br>
+                </div>
 
-    </div>    <!-- end "Advanced Search" section -->
+            </div>    <!-- end "Advanced Search" section -->
 
-    </form> <!-- End search criteria form -->
+        </form> <!-- End search criteria form -->
 
-    <div style="text-align:left">
-        <button type="submit" class="btn btn-default button-search" onclick="showMatchingScholarships();">
-            <img src="/img/imgMagnifyingGlass.png" alt="Magnifying Glass" class="img-responsive button-icon-magglass">
-            Search
-        </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <button type="button" class="btn btn-default button-search" onclick="showAllScholarships();">
-            <img src="/img/imgRefresh.png" alt="arrow circling clockwise" class="img-responsive button-icon-refresh">
-            Reset Search
-        </button>
-    </div>
+        <div style="text-align:left">
+            <button type="submit" class="btn btn-default button-search" onclick="showMatchingScholarships();">
+                <img src="/img/imgMagnifyingGlass.png" alt="Magnifying Glass" class="img-responsive button-icon-magglass">
+                Search
+            </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" class="btn btn-default button-search" onclick="showAllScholarships();">
+                <img src="/img/imgRefresh.png" alt="arrow circling clockwise" class="img-responsive button-icon-refresh">
+                Reset Search
+            </button>
+        </div>
 
     </div>  <!-- Search Criteria Block -->
 
@@ -263,10 +263,10 @@
         console.log("Previous Field of Study values (formatted): " + fieldOfStudyCategoriesSelected);
         loadSelectedValues("filterFieldOfStudyInput", fieldOfStudyCategoriesSelected, "|");
         toggleBlockShowHide(
-            document.querySelector('#filterFieldOfStudyIcon'),
+            document.querySelector('#filterFieldOfStudyChevron'),
             document.querySelector('#filterFieldOfStudyInputBlock'),
             document.querySelector('#filterFieldOfStudyInput'), '',
-            'fa-chevron-up', 'fa-chevron-down');
+            'chevron-small-up', 'chevron-small-down');
     };
 
     // Load the Sponsor List into the DDL and set any selected values (if search result)
@@ -279,10 +279,10 @@
         console.log("Previous Sponsor values (formatted): " + sponsorNamesSelected);
         loadSelectedValues("filterSponsorNamesInput", sponsorNamesSelected, "|");
         toggleBlockShowHide(
-            document.querySelector('#filterSponsorNamesIcon'),
+            document.querySelector('#filterSponsorNamesChevron'),
             document.querySelector('#filterSponsorNamesInputBlock'),
             document.querySelector('#filterSponsorNamesInput'), '',
-            'fa-chevron-up', 'fa-chevron-down');
+            'chevron-small-up', 'chevron-small-down');
     };
 
     // Load any previously-entered Age (if search result)
@@ -291,10 +291,10 @@
     if ( ageSelected.length !== 0 ) {
         document.getElementById('filterAgeInput').value = ageSelected;
         toggleBlockShowHide(
-            document.querySelector('#filterAgeIcon'),
+            document.querySelector('#filterAgeChevron'),
             document.querySelector('#filterAgeInputBlock'),
             document.querySelector('#filterAgeInput'), '',
-            'fa-chevron-up', 'fa-chevron-down');
+            'chevron-small-up', 'chevron-small-down');
     };
 
     // Load the Citizenship options into the DDL and set any selected value (if search result)
@@ -307,10 +307,10 @@
         console.log("Previous Citizenship values (formatted): " + citizenshipsSelected);
         loadSelectedValues("filterCitizenshipInput", citizenshipsSelected, "|");
         toggleBlockShowHide(
-            document.querySelector('#filterCitizenshipIcon'),
+            document.querySelector('#filterCitizenshipChevron'),
             document.querySelector('#filterCitizenshipInputBlock'),
             document.querySelector('#filterCitizenshipInput'), '',
-            'fa-chevron-up', 'fa-chevron-down');
+            'chevron-small-up', 'chevron-small-down');
     };
 
     // Load the Year of Need options into the DDL and set any selected value (if search result)
@@ -323,10 +323,10 @@
         console.log("Previous Year of Need values (formatted): " + yearOfNeedSelected);
         loadSelectedValues("filterYearOfNeedInput", yearOfNeedSelected, "|");
         toggleBlockShowHide(
-            document.querySelector('#filterYearOfNeedIcon'),
+            document.querySelector('#filterYearOfNeedChevron'),
             document.querySelector('#filterYearOfNeedInputBlock'),
             document.querySelector('#filterYearOfNeedInput'), '',
-            'fa-chevron-up', 'fa-chevron-down');
+            'chevron-small-up', 'chevron-small-down');
     };
 
     // Load any keywords (if search result)
@@ -335,10 +335,10 @@
     if ( keywordsSelected.length !== 0 ) {
         document.getElementById('filterKeywordsInput').value = keywordsSelected;
         toggleBlockShowHide(
-            document.querySelector('#filterKeywordsIcon'),
+            document.querySelector('#filterKeywordsChevron'),
             document.querySelector('#filterKeywordsInputBlock'),
             document.querySelector('#filterKeywordsInput'), '',
-            'fa-chevron-up', 'fa-chevron-down');
+            'chevron-small-up', 'chevron-small-down');
     } else {
         document.getElementById('filterKeywordsInput').value = '';
     };
@@ -353,14 +353,14 @@
         console.log("Previous Female Only values (formatted): " + femaleOnlySelected);
         loadSelectedValues("filterGenderInput", femaleOnlySelected, "|");
         toggleBlockShowHide(
-            document.querySelector('#filterGenderIcon'),
+            document.querySelector('#filterGenderChevron'),
             document.querySelector('#filterGenderInputBlock'),
             document.querySelector('#filterGenderInput'), '',
-            'fa-chevron-up', 'fa-chevron-down');
+            'chevron-small-up', 'chevron-small-down');
         toggleBlockShowHide(
-            document.querySelector('#advancedSearchIcon'),
+            document.querySelector('#advancedSearchChevron'),
             document.querySelector('#advancedSearchInputBlock'), '', 'show',
-            'fa-angle-double-up','fa-angle-double-down');
+            'chevron-double-small-up', 'chevron-double-small-down');
     };
 
     // Load the Enrollment Status options into the DDL
@@ -373,14 +373,14 @@
         console.log("Previous Enrollment Status values (formatted): " + enrollmentStatusSelected);
         loadSelectedValues("filterEnrollmentStatusInput", enrollmentStatusSelected, "|");
         toggleBlockShowHide(
-            document.querySelector('#filterEnrollmentStatusIcon'),
+            document.querySelector('#filterEnrollmentStatusChevron'),
             document.querySelector('#filterEnrollmentStatusInputBlock'),
             document.querySelector('#filterEnrollmentStatusInput'), '',
-            'fa-chevron-up', 'fa-chevron-down');
+            'chevron-small-up', 'chevron-small-down');
         toggleBlockShowHide(
-            document.querySelector('#advancedSearchIcon'),
+            document.querySelector('#advancedSearchChevron'),
             document.querySelector('#advancedSearchInputBlock'), '', 'show',
-            'fa-angle-double-up','fa-angle-double-down');
+            'chevron-double-small-up', 'chevron-double-small-down');
     };
 
     // Load any previously-entered GPA (if search result)
@@ -389,14 +389,14 @@
     if ( gpaSelected.length !== 0 ) {
         document.getElementById('filterGPAInput').value = gpaSelected;
         toggleBlockShowHide(
-            document.querySelector('#filterGPAIcon'),
+            document.querySelector('#filterGPAChevron'),
             document.querySelector('#filterGPAInputBlock'),
             document.querySelector('#filterGPAInput'), '',
-            'fa-chevron-up', 'fa-chevron-down');
+            'chevron-small-up', 'chevron-small-down');
         toggleBlockShowHide(
-            document.querySelector('#advancedSearchIcon'),
+            document.querySelector('#advancedSearchChevron'),
             document.querySelector('#advancedSearchInputBlock'), '', 'show',
-            'fa-angle-double-up','fa-angle-double-down');
+            'chevron-double-small-up', 'chevron-double-small-down');
     };
 
     // Load the Military Service Type options into the DDL
@@ -409,14 +409,14 @@
         console.log("Previous Military Service values (formatted): " + militaryServiceSelected);
         loadSelectedValues("filterUSMilitaryServiceInput", militaryServiceSelected, "|");
         toggleBlockShowHide(
-            document.querySelector('#filterUSMilitaryServiceIcon'),
+            document.querySelector('#filterUSMilitaryServiceChevron'),
             document.querySelector('#filterUSMilitaryServiceInputBlock'),
             document.querySelector('#filterUSMilitaryServiceInput'), '',
-            'fa-chevron-up', 'fa-chevron-down');
+            'chevron-small-up', 'chevron-small-down');
         toggleBlockShowHide(
-            document.querySelector('#advancedSearchIcon'),
+            document.querySelector('#advancedSearchChevron'),
             document.querySelector('#advancedSearchInputBlock'), '', 'show',
-            'fa-angle-double-up','fa-angle-double-down');
+            'chevron-double-small-up', 'chevron-double-small-down');
     };
 
     // Load the FAA Pilot Certificate options into the DDL
@@ -429,14 +429,14 @@
         console.log("Previous FAA Pilot Certificate values (formatted): " + faaPilotCertificateCategoriesSelected);
         loadSelectedValues("filterFAAPilotCertificateInput", faaPilotCertificateCategoriesSelected, "|");
         toggleBlockShowHide(
-            document.querySelector('#filterFAAPilotCertificateIcon'),
+            document.querySelector('#filterFAAPilotCertificateChevron'),
             document.querySelector('#filterFAAPilotCertificateInputBlock'),
             document.querySelector('#filterFAAPilotCertificateInput'), '',
-            'fa-chevron-up', 'fa-chevron-down');
+            'chevron-small-up', 'chevron-small-down');
         toggleBlockShowHide(
-            document.querySelector('#advancedSearchIcon'),
+            document.querySelector('#advancedSearchChevron'),
             document.querySelector('#advancedSearchInputBlock'), '', 'show',
-            'fa-angle-double-up','fa-angle-double-down');
+            'chevron-double-small-up', 'chevron-double-small-down');
     };
 
     // Load the FAA Pilot Rating options into the DDL
@@ -449,14 +449,14 @@
         console.log("Previous FAA Pilot Rating values (formatted): " + faaPilotRatingCategoriesSelected);
         loadSelectedValues("filterFAAPilotRatingInput", faaPilotRatingCategoriesSelected, "|");
         toggleBlockShowHide(
-            document.querySelector('#filterFAAPilotRatingIcon'),
+            document.querySelector('#filterFAAPilotRatingChevron'),
             document.querySelector('#filterFAAPilotRatingInputBlock'),
             document.querySelector('#filterFAAPilotRatingInput'), '',
-            'fa-chevron-up', 'fa-chevron-down');
+            'chevron-small-up', 'chevron-small-down');
         toggleBlockShowHide(
-            document.querySelector('#advancedSearchIcon'),
+            document.querySelector('#advancedSearchChevron'),
             document.querySelector('#advancedSearchInputBlock'), '', 'show',
-            'fa-angle-double-up','fa-angle-double-down');
+            'chevron-double-small-up', 'chevron-double-small-down');
     };
 
     // Load the FAA Mechanic Certificate options into the DDL
@@ -469,14 +469,14 @@
         console.log("Previous FAA Mechanic Certificate values (formatted): " + faaMechanicCertificateCategoriesSelected);
         loadSelectedValues("filterFAAMechanicCertRatingInput", faaMechanicCertificateCategoriesSelected, "|");
         toggleBlockShowHide(
-            document.querySelector('#filterFAAMechanicCertRatingIcon'),
+            document.querySelector('#filterFAAMechanicCertRatingChevron'),
             document.querySelector('#filterFAAMechanicCertRatingInputBlock'),
             document.querySelector('#filterFAAMechanicCertRatingInput'), '',
-            'fa-chevron-up', 'fa-chevron-down');
+            'chevron-small-up', 'chevron-small-down');
         toggleBlockShowHide(
-            document.querySelector('#advancedSearchIcon'),
+            document.querySelector('#advancedSearchChevron'),
             document.querySelector('#advancedSearchInputBlock'), '', 'show',
-            'fa-angle-double-up','fa-angle-double-down');
+            'chevron-double-small-up', 'chevron-double-small-down');
     };
 
     /////////////////////////////////////////////////////////////////////

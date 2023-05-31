@@ -169,13 +169,15 @@
   font-size: 1.75em;
 }
 
-
-
-
 .featured-sponsor-badge {
     width: 100px;
-  }
-  .featured-sponsor-fieldofstudy {
+}
+
+.featured-scholarship-badge {
+  width: 100px;
+}
+
+.featured-sponsor-fieldofstudy {
     width: 640px;
     overflow: hidden;
   }

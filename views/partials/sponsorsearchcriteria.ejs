@@ -4,10 +4,10 @@
         <span>
             <button type="button" class="btn btn-default button-small" id="toggleSearchCriteriaPanelBlockButton"
             onclick="toggleBlockShowHide(
-                document.querySelector('#searchPanelCriteriaBlockIcon'),
+                document.querySelector('#searchPanelCriteriaBlockChevron'),
                 document.querySelector('#searchPanelCriteriaBlock'), '', '',
-                'fa-angle-double-up','fa-angle-double-down')">
-                <i id="searchPanelCriteriaBlockIcon" class="fas fa-angle-double-up expand-filter chevrons"></i>
+                'chevron-double-small-up', 'chevron-double-small-down')">
+                <img id="searchPanelCriteriaBlockChevron" class="chevron-double-small-up">
             </button>
         </span>
     </div>
@@ -26,11 +26,11 @@
             <!-- Keyword(s) -->
             Keywords: <button type="button" class="btn btn-default button-small"
                 onclick="toggleBlockShowHide(
-                    document.querySelector('#filterKeywordsIcon'),
+                    document.querySelector('#filterKeywordsChevron'),
                     document.querySelector('#filterKeywordsInputBlock'),
                     document.querySelector('#filterKeywordsInput'), '',
-                    'fa-chevron-up', 'fa-chevron-down')">
-                <i id="filterKeywordsIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+                    'chevron-small-up', 'chevron-small-down')">
+                <img id="filterKeywordsChevron" class="chevron-small-down">
             </button><br>
             <div id="filterKeywordsInputBlock" class="filter-input-block">
                 <div class="search-instructions">(Separate words/phrases with commas)</div>
@@ -40,11 +40,11 @@
             <!-- Sponsor Name(s) -->
             Sponsor: <button type="button" class="btn btn-default button-small"
                 onclick="toggleBlockShowHide(
-                    document.querySelector('#filterSponsorNamesIcon'),
+                    document.querySelector('#filterSponsorNamesChevron'),
                     document.querySelector('#filterSponsorNamesInputBlock'),
                     document.querySelector('#filterSponsorNamesInput'), '',
-                    'fa-chevron-up', 'fa-chevron-down')">
-                <i id="filterSponsorNamesIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+                    'chevron-small-up', 'chevron-small-down')">
+                <img id="filterSponsorNamesChevron" class="chevron-small-down">
             </button><br>
             <div id="filterSponsorNamesInputBlock" class="filter-input-block">
                 <div class="search-instructions-press-ctrl">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
@@ -54,11 +54,11 @@
             <!-- Sponsor Type(s) -->
             Sponsor Type: <button type="button" class="btn btn-default button-small"
                 onclick="toggleBlockShowHide(
-                    document.querySelector('#filterSponsorTypeIcon'),
+                    document.querySelector('#filterSponsorTypeChevron'),
                     document.querySelector('#filterSponsorTypeInputBlock'),
                     document.querySelector('#filterSponsorTypeInput'), '',
-                    'fa-chevron-up', 'fa-chevron-down')">
-            <i id="filterSponsorTypeIcon" class="fas fa-chevron-down expand-filter chevrons"></i>
+                    'chevron-small-up', 'chevron-small-down')">
+                <img id="filterSponsorTypeChevron" class="chevron-small-down">
             </button><br>
             <div id="filterSponsorTypeInputBlock" class="filter-input-block">
                 <div class="search-instructions-press-ctrl">&nbsp;&nbsp;&nbsp;(Press [ctrl] to select multiples.)</div>
@@ -91,6 +91,20 @@
     // Set hidden controls' default values
     document.getElementById('showAllSponsorsFlag').value = ""
 
+    // Load any keywords (if search result)
+    var keywordsSelected = "<%- previousValues.filterKeywordsInput %>";
+    console.log("Previous Keywords values (original): " + keywordsSelected);
+    if ( keywordsSelected.length !== 0 ) {
+        document.getElementById('filterKeywordsInput').value = keywordsSelected;
+        toggleBlockShowHide(
+            document.querySelector('#filterKeywordsChevron'),
+            document.querySelector('#filterKeywordsInputBlock'),
+            document.querySelector('#filterKeywordsInput'), '',
+            'chevron-small-up', 'chevron-small-down');
+    } else {
+        document.getElementById('filterKeywordsInput').value = '';
+    };
+
     // Load the Sponsor List into the DDL and set any selected values (if search result)
     var splRows = <%- JSON.stringify(sponsorsActiveDDL.rows) %>;
     loadSelectOptionsList("filterSponsorNamesInput", "(Not Selected)", 0, splRows);
@@ -101,10 +115,10 @@
         console.log("Previous Sponsor values (formatted): " + sponsorNamesSelected);
         loadSelectedValues("filterSponsorNamesInput", sponsorNamesSelected, "|");
         toggleBlockShowHide(
-            document.querySelector('#filterSponsorNamesIcon'),
+            document.querySelector('#filterSponsorNamesChevron'),
             document.querySelector('#filterSponsorNamesInputBlock'),
             document.querySelector('#filterSponsorNamesInput'), '',
-                'fa-chevron-up', 'fa-chevron-down');
+            'chevron-small-up', 'chevron-small-down');
     };
 
     // Load the Sponsor Type options into the DDL
@@ -117,10 +131,10 @@
         console.log("Previous Sponsor Type values (formatted): " + sponsorTypeCategoriesSelected);
         loadSelectedValues("filterSponsorTypeInput", sponsorTypeCategoriesSelected, "|");
         toggleBlockShowHide(
-            document.querySelector('#filterSponsorTypeIcon'),
+            document.querySelector('#filterSponsorTypeChevron'),
             document.querySelector('#filterSponsorTypeInputBlock'),
             document.querySelector('#filterSponsorTypeInput'), '',
-                'fa-chevron-up', 'fa-chevron-down');
+            'chevron-small-up', 'chevron-small-down');
     };
 
     /////////////////////////////////////////////////////////////////////

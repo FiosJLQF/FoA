@@ -55,7 +55,6 @@ function toggleBlockShowHide(elIcon, elBlock, elInput, statusToSet, upIconName, 
 
     console.log(`Changing block display for ${elBlock.id}.`);
     console.log(`statustoSet: ${statusToSet}`);
-//    console.log(`1A) computedStyle.display: ${cssStyles.getPropertyValue("display")}`);
 
     // if the current display is hidden and the forced statusToSet <> "hide", then show
     if (statusToSet !== "hide" && cssStyles.getPropertyValue("display") !== "block"
@@ -64,8 +63,6 @@ function toggleBlockShowHide(elIcon, elBlock, elInput, statusToSet, upIconName, 
         elBlock.style.display = "block";
         elIcon.classList.remove(downIconName);
         elIcon.classList.add(upIconName);
-
-//        console.log(`2) style.display: ${elBlock.style.display}`);
 
     } else { // current display is set to "show" - clear any element values and hide
 
@@ -85,8 +82,6 @@ function toggleBlockShowHide(elIcon, elBlock, elInput, statusToSet, upIconName, 
         elBlock.style.display = "none";
         elIcon.classList.remove(upIconName);
         elIcon.classList.add(downIconName);
-
-//        console.log(`3) style.display: ${elBlock.style.display}`);
 
     };
 

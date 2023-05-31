@@ -169,7 +169,7 @@
 }
 
 .searchresultscol3B.text-block {
-  width: 100%;
+  width: 90%;
   padding: 0px 6px 6px 6px;
 }
 
@@ -178,11 +178,12 @@
 }
 
 .searchresultscol3B-award {
+  width: 90%;
   padding: 0px 6px 0px 6px;
 }
 
 .searchresultscol3Bfeatured {
-  width: 60%;
+  width: 75%;
   padding: 0px 6px 0px 6px;
 }
 
@@ -242,20 +243,26 @@
 .featured-sponsor-fieldofstudy-col1 {
   width: 100%;
   font-size: 1em;
-  margin: 0px;
+  margin: 0px 0px 30px 0px;
 }
 
 .featured-sponsor-fieldofstudy-col2 {
   display: none;
-  width: 0px;
+  /* width: 0px;
   font-size: .6em;
-  margin: 0px 60px 0px 0px;
+  margin: 0px 60px 0px 0px; */
 }
 
 .featured-scholarship-badge {
-    width: 90px;
-  }
-
+  /* display: none; */
+  width: 75px;
+}
+  
+/* .featured-scholarship-badge-mobile {
+  display: block;
+  width: 75px;
+} */
+  
 
 /**********************************************************/
 /* "Search Results" panel                                 */
