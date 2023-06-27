@@ -275,10 +275,6 @@ select.single-choice {
   color: var(--amcg-blue);
 }
 
-/* .search-panel-criteria-block {
-  display: block;
-} */
-
 #searchPanelCriteriaBlock {
   display: block;
 }
@@ -321,7 +317,7 @@ select.single-choice {
 }
 
 .button-apply {
-  width:100px;
+  width:90px;
 }
 
 .button-disabled {

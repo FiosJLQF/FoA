@@ -38,7 +38,7 @@
   var scholarshipsAllOrMatched = <%- JSON.stringify(scholarshipsAllOrMatched) %>;
 
   // If the screen size is "small" and a search was performed, collapse the Search Criteria panel
-  if ( window.innerWidth < 768 ) { // collapse the hamburger menu by default
+  if ( window.innerWidth < 768 ) { 
     console.log(`scholarshipsAllOrMatched: ${scholarshipsAllOrMatched}`);
     if ( scholarshipsAllOrMatched == 'matched' ) {
       toggleBlockShowHide(
