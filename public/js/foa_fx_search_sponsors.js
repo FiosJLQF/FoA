@@ -184,12 +184,10 @@ function buildSponsorSearchResultDiv(selectedSponsor) {
         divSponsorRow1Col1.appendChild(imgSponsorLogo);
 
         // Add "Active Scholarships" count
-//        if (intScholarships > 0) {
-            const spnScholarshipCount = document.createElement('span');
-            spnScholarshipCount.classList.add('scholarshipcount');
-            spnScholarshipCount.innerHTML = '<br>Active Scholarships: ' + selectedSponsor['ScholarshipCountActive'];
-            divSponsorRow1Col1.appendChild(spnScholarshipCount);
-//        };
+        const spnScholarshipCount = document.createElement('span');
+        spnScholarshipCount.classList.add('scholarshipcount');
+        spnScholarshipCount.innerHTML = '<br>Active Scholarships: ' + selectedSponsor['ScholarshipCountActive'];
+        divSponsorRow1Col1.appendChild(spnScholarshipCount);
     
         divSponsor.appendChild(divSponsorRow1Col1);
 
@@ -390,9 +388,6 @@ function validateSponsorSearchCriteria() {
     if ( elST.value != '0' && elST.value.length != 0 ) {
         criteriaCount++;
     };
-
-//    alert('Error Count: ' + errorCount);
-//    alert('Criteria Count: ' + criteriaCount);
 
     // Return the value to be processed
     if ( criteriaCount == 0 ) {

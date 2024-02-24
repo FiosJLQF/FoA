@@ -8,7 +8,7 @@
     <button type="button" class="btn btn-default button-normal-nomargins" onclick="gotoMyProfile()">My Account (<%= user.email %>)</button>
   </div><br>
 
-<!-- Sponsor Name(s) -->
+  <!-- Sponsor Name(s) -->
   <% if ( userCanReadSponsorsDDL ) { %>  <!-- If the current user can read the sponsors list, show it and the scholarships list. -->
   <div id="sponsorBlock">
     Sponsors: <span id="testText"></span>
@@ -41,7 +41,7 @@
     <select id="filterScholarshipsInput" class="single-choice" onchange="gotoScholarshipDetails(this.value)"></select><br>
   </div><br>
   <% } %>
-  <% } %>
+  <% } %>  <!-- End Sponsor/Scholarship menu block -->
 
   <!-- User(s) -->
   <% if ( userCanReadUsersDDL ) { %>  <!-- If the current user can read the users list, show it. -->
@@ -61,10 +61,14 @@
   <% if ( userCanReadUserPermissionsDDL ) { %>  <!-- If the current user can read the Website User's Permissions list, show it. -->
     <div>
       User Permissions:
-      <% if ( userCanCreateUserPermissions && userID !== '' ) { %>  <!-- If the current user can create user permissions, show the link. -->
-        <span id="addUserPermission" class="float-right">
-          <a id="addUserPermission" class="btn btn-default button-small"
-            href="/switchboard?actionrequested=adduserpermission&userid=<%=userID %>">Add User Permission</a>&nbsp;</span>
+      <!-- If the current user can add User Permissions to a User, and a User is selected, show the link. -->
+      <% if ( userCanCreateUserPermissions && userID !== '' ) { %>
+        <span class="float-right">
+          <span class="float-right">
+            <a id="addUserPermission" class="btn btn-default button-small" 
+                href="/switchboard?actionrequested=adduserpermission&userid=<%= userID %>">Add UserPermission</a>&nbsp;
+          </span>
+        </span>
       <% } %>
     </div>
     <span class="search-instructions">&nbsp;&nbsp;&nbsp;(Filtered to the User above.)</span>
@@ -105,7 +109,7 @@
   };
 
   //////////////////////////////////////////////////////////////////////
-  // If a Sponsor is selected, enable the "Add Scholarship" link and load the Scholarships DDL
+  // If the Current User can see the Scholarships DDL, and a Sponsor is selected, load the Scholarships DDL
   //////////////////////////////////////////////////////////////////////
   if ( '<%= userCanReadScholarshipsDDL %>' === 'true' ) {
     var ddlSponsors = document.getElementById("filterSponsorsInput");
@@ -162,7 +166,7 @@
   };
 
   //////////////////////////////////////////////////////////////////////
-  // If a User is selected, enable the "Add User Permission" link and load the User Permissions DDL
+  // If the Current User can see the User Permissions DDL, and a User is selected, load the User Permissions DDL
   //////////////////////////////////////////////////////////////////////
   if ( '<%= userCanReadUserPermissionsDDL %>' === 'true' ) {
     var ddlUsers = document.getElementById("filterUsersInput");
@@ -175,7 +179,7 @@
       } else {
         loadSelectOptionsList("filterUserPermissionsInput", "(Not Selected)", 0, perRows, '');
         if ( '<%= userPermissionIDRequested %>' !== '' ) {
-          document.getElementById("filterUserPermissionsInput").value = '<%= userPermissionIDRequested %>';
+          document.getElementById("filterUserPermissionsInput").value = '<%= userPermissionID %>';
         };
       };
     } else {
@@ -192,7 +196,8 @@
       newURL = '/switchboard';
     } else {
       newURL = 'switchboard?actionrequested=edituserpermission' +
-               '&userpermissionid=' + selectedUserPermissionID;
+               '&userpermissionid=' + selectedUserPermissionID + 
+               '&userid=<%= userID %>';
     }
     location.href=newURL;
   };

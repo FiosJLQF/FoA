@@ -221,24 +221,6 @@
         <!-- </div> -->
       </div><br>
 
-      <!-- Eligibility Requirements (Other) -->
-      <!--  Removed by KK request on 5/12/21
-      <div class="data-mgmt-row">
-        <div class="row">
-          <div class="col-3 data-mgmt-label-div">
-            <label for="scholarshipEligReqsOther" class="data-mgmt-label">Other Requirements:</label>
-          </div>
-          <div class="col-1 data-mgmt-required-div">
-            <label for="scholarshipEligReqsOther" class="data-mgmt-label-required"></label>
-          </div>
-          <div class="col-8 data-mgmt-value-div">
-            <textarea id="scholarshipEligReqsOther" name="scholarshipEligReqsOther" class="data-mgmt"></textarea><br>
-            <span class="data-mgmt-span-error" id="scholarshipEligReqsOtherErrors"></span>
-          </div>
-        </div>
-      </div><br>
-      -->
-
       <!-- Recurrence Frequency -->
       <div class="data-mgmt-row">
         <!-- <div class="row"> -->
@@ -926,42 +908,6 @@
     };
 
     //////////////////////////////////////////////////
-    // Scholarship Contact First Name
-    //////////////////////////////////////////////////
-    /*  // Logic removed by KK 5/8/2021
-    var scholarshipContactFName = document.getElementById("scholarshipContactFName").value;
-    var scholarshipContactFNameErrors = document.getElementById("scholarshipContactFNameErrors");
-    scholarshipContactFNameErrors.innerText = '';  // reset value
-    if ( scholarshipContactFName.length === 0 ) {
-      scholarshipContactFNameErrors.innerText = "Scholarship Contact First Name cannot be blank.";
-    };
-    if ( scholarshipContactFNameErrors.innerText.length === 0 ) {  // if no errors, hide the error text
-      scholarshipContactFNameErrors.style.display = "none";
-    } else {
-      scholarshipContactFNameErrors.style.display = "block";
-      dataAreValid = false;
-    };
-    */
-
-    //////////////////////////////////////////////////
-    // Scholarship Contact Last Name
-    //////////////////////////////////////////////////
-    /*  // Logic removed by KK 5/8/2021
-    var scholarshipContactLName = document.getElementById("scholarshipContactLName").value;
-    var scholarshipContactLNameErrors = document.getElementById("scholarshipContactLNameErrors");
-    scholarshipContactLNameErrors.innerText = '';  // reset value
-    if ( scholarshipContactLName.length === 0 ) {
-      scholarshipContactLNameErrors.innerText = "Scholarship Contact Last Name cannot be blank.";
-    };
-    if ( scholarshipContactLNameErrors.innerText.length === 0 ) {  // if no errors, hide the error text
-      scholarshipContactLNameErrors.style.display = "none";
-    } else {
-      scholarshipContactLNameErrors.style.display = "block";
-      dataAreValid = false;
-    };
-    */
-
-    //////////////////////////////////////////////////
     // Scholarship Contact Email
     //////////////////////////////////////////////////
     var scholarshipContactEmail = document.getElementById("scholarshipContactEmail").value;
@@ -1071,12 +1017,10 @@
     // Application End Date
     //////////////////////////////////////////////////
     var scholarshipApplEndDate = document.getElementById("scholarshipApplEndDate").value;
-//  alert('ApplEndDate: ' + scholarshipApplEndDate);
     var scholarshipApplEndDateErrors = document.getElementById("scholarshipApplEndDateErrors");
     scholarshipApplEndDateErrors.innerText = '';  // reset value
     // if present, must be a valid date
     if ( scholarshipApplEndDate.length !== 0 && Date.parse(scholarshipApplEndDate) === NaN ) {
-//      alert('ApplEndDate is NOT a valid date');
       scholarshipApplEndDateErrors.innerText += "Application End Date must be a valid date. ";
     };
     // End Date cannot be blank if either List Date or Start Date is present
@@ -1154,9 +1098,6 @@
      var criteriaCitizenshipFormatted = convertOptionsToDelimitedString(criteriaCitizenship, "|", "0", "false");
      var criteriaCitizenshipErrors = document.getElementById("criteriaCitizenshipErrors");
      criteriaCitizenshipErrors.innerText = '';  // reset value
-//     if ( criteriaCitizenshipFormatted === '||' ) {
-//       criteriaCitizenshipErrors.innerText = "At least one Citizenship Criteria must be selected.";
-//     };
      if ( criteriaCitizenshipErrors.innerText.length === 0 ) {  // if no errors, hide the error text
        criteriaCitizenshipErrors.style.display = "none";
      } else {
@@ -1190,15 +1131,6 @@
     if ( criteriaMinimumGPA.length !== 0 ) {
       if ( !(/^[0-4]\.\d\d$/.test(criteriaMinimumGPA)) ) { // not a valid GPA (0.00 - 4.99)
         criteriaMinimumGPAErrors.innerText += "Minimum GPA must be a valid number (0.00 - 4.99). ";
-//      } else // a valid GPA
-//        if ( criteriaMinimumGPA < 1 || criteriaMinimumAge > 99 ) { // must be between 1 and 99
-//        criteriaMinimumAgeErrors.innerText += "Minimum Age must be between 1 and 99. ";
-//      } else {
-//          if ( criteriaMaximumAge.length !== 0 && /^\d+$/.test(criteriaMaximumAge) ) {
-//            if ( criteriaMinimumAge > criteriaMaximumAge ) {
-//              criteriaMinimumAgeErrors.innerText += "Minimum Age must be before Maximum Age. ";
-//            };
-//          };
       };
     };
     // Were errors found?
@@ -1212,7 +1144,6 @@
     //////////////////////////////////////////////////
     // If no errors, add the Scholarship
     //////////////////////////////////////////////////
-//    dataAreValid = false;  // force stop during debugging
     return dataAreValid;
 
   }

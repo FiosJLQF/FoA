@@ -8,7 +8,6 @@ global.currentUserID = 0;
 // Import external libraries/files/modules, and config global variables
 ///////////////////////////////////////////////////////////////////////////////////
 const express = require('express');
-//const { check, validationResult } = require('express-validator');
 const path = require('path');
 require("dotenv").config();  // load all ".env" variables into "process.env" for use
 const methodOverride = require('method-override');  // allows PUT and other non-standard methods
@@ -21,7 +20,6 @@ const cors = require('cors');
 const rootRoutes = require('./routes/root.routes.js');
 const switchboardRoutes = require('./routes/switchboard.routes.js');
 const searchRoutes = require('./routes/search.routes.js');
-//const jsFx = require('./scripts/foa_fx_datamgmt_server');
 const favicon = require('serve-favicon');
 
 
@@ -43,9 +41,6 @@ app.use(favicon(__dirname + '/favicon.ico'));
 ///////////////////////////////////////////////////////////////////////////////////
 const session = {
     secret: process.env.SESSION_SECRET,
-    // genid: function(req) {
-    //     return genuuid();
-    // },
     name: process.env.SESSION_NAME,
     cookie: {
         httpOnly: true,
@@ -56,10 +51,6 @@ const session = {
     resave: false,
     saveUninitialized: false
 };
-//if (app.get("env") === "production") {
-//    // Serve secure cookies, requires HTTPS
-//    session.cookie.secure = true;
-//};
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -89,18 +80,6 @@ app.use(
       auth0Logout: true
     })
 );
-//// If a user is logged in, get the account information from the database
-//async (req, res) => {
-//    console.log(`req.oidc.user.name: ${req.oidc.user.name}`);
-//    if ( req.oidc.user.name ) {
-//        try {
-//            currentUserID = await commonFx.getUserProfile(req.oidc.user.name);
-//        } catch(e) {
-//            console.log(`Current User ID lookup failed: ${e}`);
-//        };
-//    };
-//};
-//console.log(`Current User ID: ${currentUserID}`);
 
 
 ///////////////////////////////////////////////////////////////////////////////////

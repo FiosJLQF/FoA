@@ -35,7 +35,6 @@ function loadSelectOptionsList(selectEl, notSelectedText, notSelectedValue, opti
         optionEl.textContent = option['optiontext'];
         optionEl.value = option['optionid'];
         if (optionEl.value === selectedValue) {
-//            alert(`optionEl.value: (${option['optionid']}); selectedValue: (${selectedValue})`);
             optionEl.selected = true;
         };
         optionEl.classList.add('filter-option');

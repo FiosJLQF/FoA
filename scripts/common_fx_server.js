@@ -86,11 +86,9 @@ async function checkForNewUser( usernameToCheck ) {
 
     // Add the new data to the database in a new record, and return the newly-generated [UserID] value
     const newUser = new UsersTable( { Username: usernameToCheck });
-console.log(`Before newuser.save`);
     await newUser.save()
         .then( async function() {
             newUserID = newUser.UserID;
-console.log(`newUser.UserID: ${newUserID}`);
 
             // Add New User Permission (Switchboard)
             const newUserPermissionSwitchboard = new UserPermissionsTable( {
@@ -107,7 +105,6 @@ console.log(`newUser.UserID: ${newUserID}`);
             await newUserPermissionSwitchboard.save()
                 .then()
                 .catch( async function(errorSwitchboard) {
-console.log(`newUser Switchboard Permission error: ${errorSwitchboard}`);
                     errorCode = 902;
                     // Log the error
                     let logEventResult = logEvent('Error', 'New Permission', errorCode, 'Failure',
@@ -130,7 +127,6 @@ console.log(`newUser Switchboard Permission error: ${errorSwitchboard}`);
             await newUserPermissionUserMgmt.save()
                 .then()
                 .catch( async function(errorUserMgmt) {
- console.log(`newUser User Data Mgmt Permission error: ${errorUserMgmt}`);
                     errorCode = 902;
                     // Log the error
                     let logEventResult = logEvent('Error', 'New Permission', errorCode, 'Failure',
@@ -139,7 +135,6 @@ console.log(`newUser Switchboard Permission error: ${errorSwitchboard}`);
                 }); // END: Create new User Permission (User Data Mgmt)
 
         }).catch( function(errorUserProfile) { // Could not create new User Profile
-console.log(`newUser error: ${errorUserProfile}`);
             errorCode = 901;
             // Log the error
             let logEventResult = logEvent('Error', 'New User', errorCode, 'Failure',
@@ -147,9 +142,6 @@ console.log(`newUser error: ${errorUserProfile}`);
                 0, 0, newUserID, '');
         }); // END: Create new User Profile
 
-console.log(`After newuser.save`);
-
-    // ToDo: Send email notification
     let emailResultError = sendEmail(
         process.env.EMAIL_WEBMASTER_LIST,
         `New User Account Created`,
@@ -176,7 +168,6 @@ async function checkUserPermission(userID, permissionCategoryID, permissionType)
         where: { UserID: userID,
                  PermissionCategoryID: permissionCategoryID },
     });
-//    console.log(`matchingPermissions.count: ${matchingPermissions.count}`);
 
     // Does the user have the requested permission?
     switch ( permissionType ) {
@@ -289,7 +280,7 @@ async function getWebsiteUserPermissionsForCurrentUser( currentUserID, userIDReq
             };
         };
     }; // End: Retrieve Requested Website User profile
-
+/*
     console.log(`currentUserID: ${currentUserID}`);
     console.log(`userIDRequested: ${userIDRequested}`);
     console.log(`userCanReadUsersDDL: ${userCanReadUsersDDL}`);
@@ -298,18 +289,19 @@ async function getWebsiteUserPermissionsForCurrentUser( currentUserID, userIDReq
     console.log(`userCanReadUser: ${userCanReadUser}`);
     console.log(`userCanUpdateUser: ${userCanUpdateUser}`);
     console.log(`userCanDeleteUser: ${userCanDeleteUser}`);
-
+*/
     return { userCanReadUsersDDL, userCanCreateUsers, usersAllowedDDL,
              userDetails, doesUserExist, userCanReadUser, userCanUpdateUser, userCanDeleteUser };
 };
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
-// Get the Current User's Website User's Permission permissions
+// Get the Current User's Website "User Permission" permissions
 //   (permissions to let the Current User manage other Website Users' permissions)
 //////////////////////////////////////////////////////////////////////////////////////////
-async function getWebsiteUserPermissionPermissionsForCurrentUser( currentUserID, userPermissionIDRequested ) {
+async function getWebsiteUserPermissionPermissionsForCurrentUser( currentUserID, userIDRequested, userPermissionIDRequested ) {
 
+    console.log(`userIDRequested at Permissions fx: ${userIDRequested}`);
     console.log(`userPermissionIDRequested at Permissions fx: ${userPermissionIDRequested}`);
 
     // declare and set local variables
@@ -317,59 +309,64 @@ async function getWebsiteUserPermissionPermissionsForCurrentUser( currentUserID,
     //    (note individual website user permissions are not separated in authority; 
     //     if the current user can see any user permission, they can see all user permissions)
     let userCanReadUserPermissionsDDL = false; // DDL permissions
-    let userCanCreateUserPermissions = false; // "Add Permission" link permission
     let userPermissionsAllowedToCurrentUser = '';
     let userPermissionsAllowedToCurrentUserArray = [];
     let userPermissionsAllowedDDL = [];
     let userPermissionDetails = []; // User Permissions data
     let doesUserPermissionExist = false;
+    let userCanCreateUserPermissions = false;
     let userCanReadUserPermission = false;
     let userCanUpdateUserPermission = false;
     let userCanDeleteUserPermission = false;
 
-    ////////////////////////////////////////////////////////////////////
-    // Get the list of general user permissions-related permissions for the current user
-    ////////////////////////////////////////////////////////////////////
-
-    // "Website User Permissions" DDL on Main Menu
+    // Get the generic "user permission" permissions for the current user
     userCanReadUserPermissionsDDL = await checkUserPermission( currentUserID, '923009', 'CanRead' );
     userCanCreateUserPermissions = await checkUserPermission( currentUserID, '923009', 'CanCreate' );
-
-    // "Website User Permissions" allowed to the Current User (same across all users - not differentiated by user)
     userPermissionsAllowedToCurrentUser = await checkUserPermission( currentUserID, '923008', 'ObjectValues' );
     userPermissionsAllowedToCurrentUserArray = userPermissionsAllowedToCurrentUser.split('|').slice(1, -1);
-    if ( userPermissionsAllowedToCurrentUser === '*' ) {
-        userPermissionsAllowedDDL = await UserPermissionsAllDDL.findAndCountAll({ where: {UserID: currentUserID}});
-    } else {  // Current user can only see specific Website User Permission(s)
-        userPermissionsAllowedDDL = await UserPermissionsAllDDL.findAndCountAll({
-            where: { 
-                optionid: userPermissionsAllowedToCurrentUserArray,
-                UserID: currentUserID
-            }
-        });
-    };
 
-    ////////////////////////////////////////////////////////////////////
-    // If a querystring request was made for a specific User Permission, retrieve the permission details
-    ////////////////////////////////////////////////////////////////////
-    if ( userPermissionIDRequested.toString().length > 0 ) {
-        // Does the requested User Permission exist? Retrieve the User Permission's details from the database.
-        userPermissionDetails = await UserPermissionsAllView.findAll({ where: { WebsiteUserPermissionID: userPermissionIDRequested }});
-        if ( typeof userPermissionDetails[0] === 'undefined' ) {  // User Permission ID does not exist
-            doesUserPermissionExist = false;
-        } else { // User Permission ID does exist
-            doesUserPermissionExist = true;
-            // Can current user view requested website user permission?
-            if ( userPermissionsAllowedToCurrentUserArray.indexOf(userPermissionIDRequested.toString()) > -1
-                 || (userPermissionsAllowedToCurrentUser === '*') ) {
+    // Can the current user view the User Permissions DDL?
+    if ( userCanReadUserPermissionsDDL && userIDRequested.toString().length > 0 ) {
+
+        // "Website User Permissions" allowed to the Current User for the requested UserID
+        // (same across all users - not differentiated by user)
+        if ( userPermissionsAllowedToCurrentUser === '*' ) {
+            userPermissionsAllowedDDL = await UserPermissionsAllDDL.findAndCountAll({ where: {UserID: userIDRequested}});
+        } else {  // Current user can only see specific Website User Permission(s) -- not current used!
+/*
+            userPermissionsAllowedDDL = await UserPermissionsAllDDL.findAndCountAll({
+                where: { 
+                    optionid: userPermissionsAllowedToCurrentUserArray,
+                    UserID: userIDRequested
+                }
+            });
+*/
+        };
+    
+        // If a querystring request was made for a specific User's Permission data, find and validate it
+        if ( userPermissionIDRequested.toString().length > 0 ) {
+            // Does the requested User Permission exist? Retrieve the User Permissions's details from the database.
+            userPermissionDetails = await UserPermissionsAllView.findAll({
+                where: { UserID: userIDRequested,
+                         WebsiteUserPermissionID: userPermissionIDRequested }});
+            if ( typeof userPermissionDetails[0] === 'undefined' ) {  // User Permission does not exist
+                doesUserPermissionExist = false;
+            } else { // User Permission does exist
+                doesUserPermissionExist = true;
+                // Current User has already been validated to *view* any permissions via the "View DDL" check above
+                // so just check on the Current User's ability to make updates, etc.
                 userCanReadUserPermission = await checkUserPermission( currentUserID, '923008', 'CanRead' );
                 userCanUpdateUserPermission = await checkUserPermission( currentUserID, '923008', 'CanUpdate' );
-                userCanDeleteUserPermission= await checkUserPermission( currentUserID, '923008', 'CanDelete' );
+                userCanDeleteUserPermission = await checkUserPermission( currentUserID, '923008', 'CanDelete' );
             };
-        };
-    }; // End: Retrieve Requested Website User Permission details
+        }; // End: Retrieve Requested Website User Permission details
+
+    } else { // populate a blank data set
+        userPermissionsAllowedDDL = await UserPermissionsAllDDL.findAndCountAll( { where: { optionid: 0 } } );
+    }; // End: User can read the User Permissions DDL (no "else" as the variable defaults above are set to this condition)
 
     console.log(`currentUserID: ${currentUserID}`);
+    console.log(`userIDRequested: ${userIDRequested}`);
     console.log(`userPermissionIDRequested: ${userPermissionIDRequested}`);
     console.log(`userCanReadUserPermissionsDDL: ${userCanReadUserPermissionsDDL}`);
     console.log(`userPermissionsAllowedToCurrentUser: ${userPermissionsAllowedToCurrentUser}`);
@@ -377,6 +374,8 @@ async function getWebsiteUserPermissionPermissionsForCurrentUser( currentUserID,
     console.log(`userCanReadUserPermission: ${userCanReadUserPermission}`);
     console.log(`userCanUpdateUserPermission: ${userCanUpdateUserPermission}`);
     console.log(`userCanDeleteUserPermission: ${userCanDeleteUserPermission}`);
+    console.log(`doesUserPermissionExist: ${doesUserPermissionExist}`)
+    console.log(`userPermissionDetails[0]: ${userPermissionDetails[0]}`)
 
     return { userCanReadUserPermissionsDDL, userCanCreateUserPermissions, userPermissionsAllowedDDL,
              userPermissionDetails, doesUserPermissionExist,
@@ -402,21 +401,6 @@ function sendEmail(emailRecipient, emailSubject, emailBody, emailBodyHTML) {
         html: emailBodyHTML
     };
 
-/*
-    // create the transport object (gmail)
-    var transporter = nodemailer.createTransport( {  // the email account to send SMTP emails
-        host: 'smtp.gmail.com',
-        port: 465, // 587 without SSL
-        secure: true,
-        auth: {
-            type: 'OAuth2',
-            user: process.env.EMAIL_SENDER,
-            clientId: process.env.EMAIL_OAUTH_CLIENTID,
-            clientSecret: process.env.EMAIL_OAUTH_CLIENTSECRET,
-            refreshToken: process.env.EMAIL_OAUTH_REFRESHTOKEN
-        },
-    });
-*/
     // create the transport object (Fatcow)
     var transporter = nodemailer.createTransport( {  // the email account to send SMTP emails
         host: 'smtp.fatcow.com',
@@ -437,6 +421,7 @@ function sendEmail(emailRecipient, emailSubject, emailBody, emailBodyHTML) {
 
         } else {
             console.log('Email sent: ' + info.response);
+
             // ToDo: log event in "events" table
 
 

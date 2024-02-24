@@ -11,7 +11,6 @@ router.use(methodOverride('_method')); // allows use of the PUT/DELETE method ex
 const foaFx = require('../scripts/foa_fx_datamgmt_server');
 const commonFx = require('../scripts/common_fx_server');
 const { check, validationResult } = require('express-validator');
-//const htmlEntities = require('html-entities');
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -128,7 +127,7 @@ router.get('/', requiresAuth(), async (req, res) => {
         // Does the user profile exist?  If not, add the basic account information.
         if ( currentUserProfile.count == 0 ) {  // The new user has not yet been set up
             const { errorCode, newUserID } = await commonFx.checkForNewUser( req.oidc.user.email );
-            console.log(`newUserID from CheckForNewUser: ${newUserID}`);
+//            console.log(`newUserID from CheckForNewUser: ${newUserID}`);
             if ( errorCode !== 0 ) { // If an error was raised during the New User configuration, redirect the user
                 return res.render( 'error', {
                     errorCode: errorCode,
@@ -466,10 +465,10 @@ router.get('/', requiresAuth(), async (req, res) => {
         const { userCanReadUserPermissionsDDL, userCanCreateUserPermissions, userPermissionsAllowedDDL,
                 userPermissionDetails, doesUserPermissionExist,
                 userCanReadUserPermission, userCanUpdateUserPermission, userCanDeleteUserPermission
-        } = await commonFx.getWebsiteUserPermissionPermissionsForCurrentUser( currentUserID, userPermissionIDRequested );
+        } = await commonFx.getWebsiteUserPermissionPermissionsForCurrentUser( currentUserID, userIDRequested, userPermissionIDRequested );
 
         // If the Current User can see the User Permissions DDL, validate the requested User Permission (if one was requested)
-        if ( userCanReadUserPermissionsDDL && userPermissionIDRequested.length > 0 ) {
+        if ( userCanReadUserPermissionsDDL && userIDRequested.length > 0 && userPermissionIDRequested.length > 0 ) {
 
             // Does the requested User Permission exist (if requested)?
             console.log(`doesUserPermissionExist: (${doesUserPermissionExist})`);
@@ -576,8 +575,6 @@ router.get('/', requiresAuth(), async (req, res) => {
             usersAllowedDDL,
             userCanCreateUsers,
             // User Permission Information
-//            userPermissionID,
-            userPermissionIDRequested,
             userCanReadUserPermissionsDDL,
             userPermissionsAllowedDDL,
             userCanCreateUserPermissions,
@@ -594,10 +591,10 @@ router.get('/', requiresAuth(), async (req, res) => {
             userID: userIDRequested.toString(),
             userIDRequested,
             userDetails,
-            userCanReadUser,
-            userCanUpdateUser,
-            userCanDeleteUser,
+            userCanReadUser, userCanUpdateUser, userCanDeleteUser,
             // Website User Permission CRUD Information
+            userPermissionID: userPermissionIDRequested.toString(),
+            userPermissionIDRequested,
             userPermissionDetails,
             userPermissionsCategoriesAllDLL,
             userCanReadUserPermission, userCanUpdateUserPermission, userCanDeleteUserPermission
@@ -899,7 +896,6 @@ router.put('/sponsorupdate', requiresAuth(), async (req, res) => {
     const sponsorRecord = await SponsorsTable.findOne( {
         where: { SponsorID: req.body.sponsorIDToUpdate }
     });
-//    console.log(`sponsorRecordToUpdate: ${sponsorRecord.SponsorID}`);
 
     // Update the database record with the new data
     await sponsorRecord.update( {
@@ -1038,40 +1034,27 @@ router.put('/userpermissionupdate', requiresAuth(), async (req, res) => {
     let EffectiveDate = (req.body.effectiveDate === "") ? null : req.body.effectiveDate;
     let ExpirationDate = (req.body.expirationDate === "") ? null : req.body.expirationDate;
 
-    // Validate the input
-//    const validationErrors = validationResult(req);
+    // Get a pointer to the current record
+    const userPermissionRecord = await UserPermissionsTable.findOne( {
+        where: { WebsiteUserPermissionID: req.body.userPermissionIDToUpdate }
+    });
 
-    // If invalid data, return errors to client
-//    if ( !validationErrors.isEmpty() ) {
+    // Update the database record with the new data
+    await userPermissionRecord.update( {
+        ObjectValues: req.body.permissionValues,
+        CanCreate: CanCreate,
+        CanRead: CanRead,
+        CanUpdate: CanUpdate,
+        CanDelete: CanDelete,
+        EffectiveDate: EffectiveDate,
+        ExpirationDate: ExpirationDate,
+    }).then( () => {
+        res.redirect(`/switchboard?userpermissionid=${userPermissionRecord.WebsiteUserPermissionID}` +
+                     `&userid=${userPermissionRecord.UserID}` +
+                     `&status=userpermissionupdatesuccess` +
+                     `&actionrequested=edituserpermission`);
+    });
 
-// ToDo:  Replicate the GET render code above, including parameters prep work
-
-
-//        return res.status(400).json(validationErrors.array());
-
-//    } else {
-
-        // Get a pointer to the current record
-        const userPermissionRecord = await UserPermissionsTable.findOne( {
-            where: { WebsiteUserPermissionID: req.body.userPermissionIDToUpdate }
-        });
-
-        // Update the database record with the new data
-        await userPermissionRecord.update( {
-            ObjectValues: req.body.permissionValues,
-            CanCreate: CanCreate,
-            CanRead: CanRead,
-            CanUpdate: CanUpdate,
-            CanDelete: CanDelete,
-            EffectiveDate: EffectiveDate,
-            ExpirationDate: ExpirationDate,
-        }).then( () => {
-            res.redirect(`/switchboard?userpermissionid=${userPermissionRecord.WebsiteUserPermissionID}` +
-                         `&userid=${userPermissionRecord.UserID}` +
-                         `&status=userpermissionupdatesuccess` +
-                         `&actionrequested=edituserpermission`);
-        });
-//    };
 });
 
 
@@ -1085,11 +1068,9 @@ router.put('/userpermissionupdate', requiresAuth(), async (req, res) => {
 router.delete('/sponsordelete', requiresAuth(), async (req, res) => {
 
     // Get a pointer to the current record
-//    console.log(`body.SponsorID: ${req.body.sponsorIDToDelete}`);
     const sponsorRecord = await SponsorsTable.findOne( {
         where: { SponsorID: req.body.sponsorIDToDelete }
     });
-//    console.log(`sponsorRecord: ${sponsorRecord.SponsorID}`);
 
     // Delete the record, based on the Sponsor ID
     await sponsorRecord.destroy().then( () => {
@@ -1103,11 +1084,9 @@ router.delete('/sponsordelete', requiresAuth(), async (req, res) => {
 router.delete('/scholarshipdelete', requiresAuth(), async (req, res) => {
 
     // Get a pointer to the current record
-    console.log(`body.ScholarshipIDToDelete: ${req.body.scholarshipIDToDelete}`);
     const scholarshipRecord = await ScholarshipsTable.findOne( {
         where: { ScholarshipID: req.body.scholarshipIDToDelete }
     });
-    console.log(`scholarshipRecord: ${scholarshipRecord.ScholarshipID}`);
 
     // Delete the record, based on the Sponsor ID
     await scholarshipRecord.destroy().then( () => {
@@ -1137,11 +1116,9 @@ router.delete('/userdelete', requiresAuth(), async (req, res) => {
 router.delete('/userpermissiondelete', requiresAuth(), async (req, res) => {
 
     // Get a pointer to the current record
-    console.log(`body.userPermissionIDToDelete: ${req.body.userPermissionIDToDelete}`);
     const userPermissionRecord = await UserPermissionsTable.findOne( {
         where: { WebsiteUserPermissionID: req.body.userPermissionIDToDelete }
     });
-    console.log(`userPermissionRecord: ${userPermissionRecord.WebsiteUserPermissionID}`);
 
     // Delete the record
     console.log(`userID to redirect to after user permission deletion: ${req.body.userIDOfPermission}`)

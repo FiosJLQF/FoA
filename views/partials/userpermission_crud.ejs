@@ -183,13 +183,15 @@
     </div><br><br>
     <hr class="bodycol2break">
 
-<script>
+</div>
 
+<script>
+  
   /////////////////////////////////////////////////////////////////////////////////////////////
   // Configure elements
   /////////////////////////////////////////////////////////////////////////////////////////////
   document.getElementById('userID').value = "<%- userID %>";
-  document.getElementById('userName').value = "<%- userPermissionDetails[0].Username %>";
+  document.getElementById('userName').value = "<%- userDetails[0].Username %>";
   document.getElementById('userName').disabled = true; // always read-only
 
   /////////////////////////////////////////////////////////////////////////////////////////////
@@ -197,12 +199,12 @@
   /////////////////////////////////////////////////////////////////////////////////////////////
   var userPermissionCategoryRows = <%- JSON.stringify(userPermissionsCategoriesAllDLL.rows) %>;
   loadSelectOptionsList("permissionCategory", "(Not Selected)", 0, userPermissionCategoryRows);
-
+  
   /////////////////////////////////////////////////////////////////////////////////////////////
   // Customize the page based on the context ("Add User Permission" v. "Manage User Permission")
   /////////////////////////////////////////////////////////////////////////////////////////////
   <% if ( actionRequested === 'adduserpermission' ) { %>  // "Add User Permission"
-
+  
     // Set the browser tab name (i.e., title)
     document.title = "Future of Aviation - Add User Permission";
     // Set the page title
@@ -211,9 +213,9 @@
     document.getElementById('userPermissionInstructions').innerText = "Add the information for the new User Permission below, and click 'Add User Permission'.";
     // Set the User ID for this new User Permission
     document.getElementById('userID').value = "<%= userID %>";
-
+  
   <% } else if ( userPermissionID !== '' ) { %>  // "Read/Update/Delete User Permission"
-
+  
     // Set the browser tab name (i.e., title)
     document.title = "Future of Aviation - Manage User Permission";
     // Set the page title
@@ -234,7 +236,7 @@
     document.getElementById('canCreate').checked = <%- userPermissionDetails[0].CanCreate %>;
     document.getElementById('effectiveDate').value = "<%- userPermissionDetails[0].EffectiveDate %>";
     document.getElementById('expirationDate').value = "<%- userPermissionDetails[0].ExpirationDate %>";
-
+  
     // Disable the controls (and change the instruction) if the user does not have permission to update User Permissions.
     if ( <%- !userCanUpdateUserPermission %> ) {
       document.getElementById('userPermissionInstructions').innerText = "Review the entries below.";
@@ -247,14 +249,15 @@
       document.getElementById('effectiveDate').disabled = true;
       document.getElementById('expirationDate').disabled = true;
     };
-  <% } %>
+
+  <% } %> // End "check Current User permission type"
 
   //////////////////////////////////////////////////////////////////////
   // Validate the data before submitting the form
   //////////////////////////////////////////////////////////////////////
   function validateData() {
     var dataAreValid = true;  // test for errors below
-
+  
     //////////////////////////////////////////////////
     // Permission Category
     //////////////////////////////////////////////////
@@ -270,7 +273,7 @@
       permissionCategoryErrors.style.display = "block";
       dataAreValid = false;
     };
-
+  
     //////////////////////////////////////////////////
     // Permission Values
     //////////////////////////////////////////////////
@@ -286,7 +289,7 @@
       permissionValuesErrors.style.display = "block";
       dataAreValid = false;
     };
-
+  
     //////////////////////////////////////////////////
     // Permission Effective Date
     //////////////////////////////////////////////////
@@ -314,14 +317,14 @@
       effectiveDateErrors.style.display = "block";
       dataAreValid = false;
     };
-
+  
     //////////////////////////////////////////////////
     // Permission Expiration Date
     //////////////////////////////////////////////////
     var expirationDate = document.getElementById("expirationDate").value;
     var expirationDateErrors = document.getElementById("expirationDateErrors");
     expirationDateErrors.innerText = '';  // reset value
-    // if present, must be a valid date
+    // check validation rules
     if ( expirationDate.length > 0 ) {
       // if present, must be a valid date
       if ( Date.parse(expirationDate) === NaN ) {
@@ -341,15 +344,14 @@
       expirationDateErrors.style.display = "block";
       dataAreValid = false;
     };
-
+  
     //////////////////////////////////////////////////
     // If no errors, add the Scholarship
     //////////////////////////////////////////////////
-//    dataAreValid = false;  // force stop during debugging
     return dataAreValid;
-
+  
   }
-
+  
   //////////////////////////////////////////////////////////////////////
   // Confirm the user wants to delete this Scholarship, and process accordingly
   //////////////////////////////////////////////////////////////////////
@@ -359,6 +361,5 @@
       return false;
     };
   };
-
+ 
 </script>
-    

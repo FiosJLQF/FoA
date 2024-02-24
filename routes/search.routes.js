@@ -221,10 +221,6 @@ router.post('/scholarships', async (req, res) => {
         console.log(`Log event failed: ${e}`);
     };
 
-// Send test email to Webmaster
-//let emailScholarshipSearchNoticeResult = commonFx.sendEmail('fiosjlqf@gmail.com', 'Scholarship Search Notice','');
-//console.log(`Scholarship Search Notice result: ${emailScholarshipSearchNoticeResult}`);
-
     // render the page
     res.render('scholarshipsearch', {
         userName: ( req.oidc.user == null ? '' : req.oidc.user.name ), 

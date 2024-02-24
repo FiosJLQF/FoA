@@ -122,7 +122,7 @@ function buildFeaturedSponsorsBlock(sponsors) {
 
     // extract the "featured" items
     const featuredItems = sponsors.filter( obj => obj['SponsorIsFeatured'] );
-    featuredItemsCount = featuredItems.length;
+    const featuredItemsCount = featuredItems.length;
     console.log(`number of featured sponsors: ${featuredItemsCount}`);
 
     // if "featured" items were found, build the "Featured Sponsors" block
@@ -317,18 +317,6 @@ function buildFeaturedSponsorSearchResultDiv(selectedSponsor) {
     /////////////////////////////////////////////////////////////
     if ( numberOfFieldOfStudyColumns == 1 ) {
 
-        // const lnkViewScholarshipsPanel = document.createElement('a');
-        // lnkViewScholarshipsPanel.id = "lnkViewScholarshipsPanel_" + selectedSponsor['SponsorID'];
-        // lnkViewScholarshipsPanel.classList.add('sponsor-view-scholarships');
-        // lnkViewScholarshipsPanel.href = "scholarships?sponsorid=" + selectedSponsor['SponsorID'];
-        // lnkViewScholarshipsPanel.target = "_blank";
-        // lnkViewScholarshipsPanel.appendChild(divFeaturedSponsorContent);
-        // divFeaturedSponsor.appendChild(lnkViewScholarshipsPanel);
-
-//        divFeaturedSponsorContentCol2.onclick = 'location.href="scholarships?sponsorid=' + selectedSponsor['SponsorID'] + '"';
-//        divFeaturedSponsorContentCol2.setAttribute("onclick",
-//            'location.href="scholarships?sponsorid=' + selectedSponsor['SponsorID'] + '";' +
-//            'location.target=\'_blank\'');
             divFeaturedSponsorContentCol2.setAttribute("onclick",
             "window.open('scholarships?sponsorid=" + selectedSponsor['SponsorID'] + "', '_blank')");
 

@@ -5,7 +5,6 @@ const express = require("express");
 const router = express.Router();
 const { auth, requiresAuth } = require('express-openid-connect');
 require("dotenv").config();  // load all ".env" variables into "process.env" for use
-//const jsFx = require('../scripts/foa_fx_datamgmt_server');
 const commonFx = require('../scripts/common_fx_server');
 
 
@@ -101,57 +100,6 @@ router.get("/sign-up", (req, res) => {
     });
 });
 
-/*
-router.get("/login/:page", (req, res) => {
-    // Log access
-    try {
-        let logEventResult = commonFx.logEvent('Page Access', 'Log-in', 0, 'Informational', 'User Accessed Page',
-            0, 0, currentUserID, '');
-    } catch(e) {
-        console.log(`Log event failed: ${e}`);
-    };
-    // Redirect to the Auth0 login page
-    const { page } = req.params;
-    res.oidc.login({
-      returnTo: page,
-    });
-});
-*/
-
-/*
-router.get("/logout/:page", (req, res) => {
-    // Log access
-    try {
-        let logEventResult = commonFx.logEvent('Page Access', 'Log-out', 0, 'Informational', 'User Accessed Page',
-            0, 0, currentUserID, '');
-    } catch(e) {
-        console.log(`Log event failed: ${e}`);
-    };
-    // Redirect to the Auth0 logout page
-    const { page } = req.params;
-    res.oidc.logout({
-      returnTo: page,
-    });
-});
-*/
-
-/*
-    router.get('/profile', requiresAuth(), (req, res) => {
-    // Log access
-    try {
-        let logEventResult = commonFx.logEvent('Page Access', 'Profile', 0, 'Informational', 'User Accessed Page',
-            0, 0, currentUserID, '');
-    } catch(e) {
-        console.log(`Log event failed: ${e}`);
-    };
-    // Redirect to the profile (aka the "User Data Mgmt" page for this user)
-
-// TODO: Add redirect
-
-
-
-  });
-*/
 
 ///////////////////////////////////////////
 // Invalid Routes

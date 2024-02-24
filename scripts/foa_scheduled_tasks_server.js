@@ -1,16 +1,9 @@
 
-
-
-
-//const jsFx = require('./foa_fx_datamgmt_server');
 const commonFx = require('../common_fx_server');
-
-//const { SponsorsDDL, SponsorTypeCategoriesDDL } = require('../models/sequelize.js');
 
 /**************************************************************************************************
   Create the database connection and test
 **************************************************************************************************/
-
 
 async function checkTasksToRun() {
 //    let sponsorTypeCategoriesDDL = await SponsorTypeCategoriesDDL.findAndCountAll({});
@@ -50,6 +43,7 @@ async function checkTasksToRun() {
   };
 
 }; // end checkTasksToRun
+
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // Scholarship Dates (date issues, upcoming Scholarships)
